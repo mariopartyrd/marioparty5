@@ -380,7 +380,7 @@ config.libs = [
             Object(Matching, "game/THPSimple.c"),
             Object(Matching, "game/THPDraw.c"),
             Object(Matching, "game/thpmain.c"),
-            Object(NonMatching, "game/objsub.c"),
+            Object(Matching, "game/objsub.c"),
             Object(Matching, "game/flag.c"),
             Object(NonMatching, "game/saveload.c"),
             Object(Matching, "game/sreset.c"),
@@ -1084,6 +1084,7 @@ config.libs = [
         "m516Dll",
         objects={
             Object(NonMatching, "REL/m516Dll/m516.c"),
+            Object(NonMatching, "REL/m516Dll/camera.c"),
             Object(NonMatching, "REL/m516Dll/player.c"),
             Object(NonMatching, "REL/m516Dll/stage.c"),
             Object(NonMatching, "REL/m516Dll/effect.c"),
