@@ -135,6 +135,6 @@ BOOL MBModelHookObjReset(MBMODELID modelId, char *objName);
 MBMODEL *MBModelGet(MBMODELID modelId);
 
 void MBModelStub(void);
-MSM_SENO MBModelSePlay(MBMODELID modelId, s16 seId);
+int MBModelSePlay(MBMODELID modelId, s16 seId);
 
 #endif

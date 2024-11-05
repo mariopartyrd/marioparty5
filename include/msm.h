@@ -83,11 +83,6 @@
 
 #define MSM_ENTRY_SENO_MAX 32
 
-typedef s32 MSM_STREAMNO;
-typedef s32 MSM_MUSNO;
-typedef s32 MSM_SENO;
-
-
 typedef BOOL (*MSM_OPEN)(s32 entrynum, DVDFileInfo *fileInfo);
 typedef BOOL (*MSM_READ)(DVDFileInfo *fileInfo, void *addr, s32 length, s32 offset, s32 prio);
 typedef BOOL (*MSM_CLOSE)(DVDFileInfo *fileInfo);
@@ -175,34 +170,34 @@ s32 msmSysLoadGroup(s32 grp, void *buf, BOOL flag);
 s32 msmSysGetSampSize(BOOL baseGrp);
 s32 msmSysDelGroupBase(s32 grpNum);
 
-s32 msmSeSetParam(MSM_SENO seNo, MSM_SEPARAM *param);
-MSM_SENO msmSePlay(int seId, MSM_SEPARAM *param);
-s32 msmSeStop(MSM_SENO seNo, s32 speed);
+s32 msmSeSetParam(int seNo, MSM_SEPARAM *param);
+int msmSePlay(int seId, MSM_SEPARAM *param);
+s32 msmSeStop(int seNo, s32 speed);
 s32 msmSePauseAll(BOOL pause, s32 speed);
-s32 msmSePause(MSM_SENO seNo, BOOL pause, s32 speed);
+s32 msmSePause(int seNo, BOOL pause, s32 speed);
 void msmSeStopAll(BOOL checkGrp, s32 speed);
 s32 msmSeSetListener(Vec *pos, Vec *heading, float sndDist, float sndSpeed, MSM_SELISTENER *listener);
 s32 msmSeUpdataListener(Vec *pos, Vec *heading);
 void msmSeDelListener(void);
-s32 msmSeGetStatus(MSM_SENO seNo);
+s32 msmSeGetStatus(int seNo);
 s32 msmSeGetNumPlay(BOOL baseGrp);
-s32 msmSeGetEntryID(s16 seId, MSM_SENO *seNo);
+s32 msmSeGetEntryID(s16 seId, int *seNo);
 
-MSM_MUSNO msmMusPlay(int musId, MSM_MUSPARAM *musParam);
-s32 msmMusStop(MSM_MUSNO musNo, s32 speed);
+int msmMusPlay(int musId, MSM_MUSPARAM *musParam);
+s32 msmMusStop(int musNo, s32 speed);
 s32 msmMusPauseAll(BOOL pause, s32 speed);
-s32 msmMusPause(MSM_MUSNO musNo, BOOL pause, s32 speed);
-s32 msmMusGetMidiCtrl(MSM_MUSNO musNo, s32 channel, s32 ctrl);
+s32 msmMusPause(int musNo, BOOL pause, s32 speed);
+s32 msmMusGetMidiCtrl(int musNo, s32 channel, s32 ctrl);
 void msmMusStopAll(BOOL checkGrp, s32 speed);
-s32 msmMusGetStatus(MSM_MUSNO musNo);
+s32 msmMusGetStatus(int musNo);
 s32 msmMusGetNumPlay(BOOL baseGrp);
 
-MSM_STREAMNO msmStreamPlay(int streamId, MSM_STREAMPARAM *streamParam);
-s32 msmStreamStop(MSM_STREAMNO streamNo, s32 speed);
+int msmStreamPlay(int streamId, MSM_STREAMPARAM *streamParam);
+s32 msmStreamStop(int streamNo, s32 speed);
 s32 msmStreamPauseAll(BOOL pause, s32 speed);
-s32 msmStreamPause(MSM_STREAMNO streamNo, BOOL pause, s32 speed);
+s32 msmStreamPause(int streamNo, BOOL pause, s32 speed);
 
 void msmStreamStopAll(s32 speed);
-s32 msmStreamGetStatus(MSM_STREAMNO streamNo);
+s32 msmStreamGetStatus(int streamNo);
 
 #endif

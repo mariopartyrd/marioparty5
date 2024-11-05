@@ -14,7 +14,7 @@
 #define MSM_FILE_PATH "/sound/MP5_SND.msm"
 #define PDT_FILE_PATH "/sound/MP5_Str.pdt"
 
-static MSM_SENO HuSePlay(int seId, MSM_SEPARAM *param);
+static int HuSePlay(int seId, MSM_SEPARAM *param);
 
 static BOOL charFxLoadF[13];
 static s32 sndFxBuf[64][2];
@@ -117,7 +117,7 @@ static void dummyfloat(unsigned int i)
     float y = i;
 }
 
-MSM_SENO HuAudFXPlay(int seId)
+int HuAudFXPlay(int seId)
 {
     WIPEWORK *wipeP = &wipeData;
 
@@ -127,7 +127,7 @@ MSM_SENO HuAudFXPlay(int seId)
     return HuAudFXPlayVolPan(seId, MSM_VOL_MAX, MSM_PAN_CENTER);
 }
 
-MSM_SENO HuAudFXPlayVol(int seId, s16 vol)
+int HuAudFXPlayVol(int seId, s16 vol)
 {
     if(omSysExitReq) {
         return 0;
@@ -135,7 +135,7 @@ MSM_SENO HuAudFXPlayVol(int seId, s16 vol)
     return HuAudFXPlayVolPan(seId, vol, MSM_PAN_CENTER);
 }
 
-MSM_SENO HuAudFXPlayPan(int seId, s16 pan)
+int HuAudFXPlayPan(int seId, s16 pan)
 {
     MSM_SEPARAM seParam;
     if(omSysExitReq) {
@@ -146,7 +146,7 @@ MSM_SENO HuAudFXPlayPan(int seId, s16 pan)
     return HuSePlay(seId, &seParam);
 }
 
-MSM_SENO HuAudFXPlayVolPan(int seId, s16 vol, s16 pan)
+int HuAudFXPlayVolPan(int seId, s16 vol, s16 pan)
 {
     MSM_SEPARAM seParam;
     if(omSysExitReq) {
@@ -158,7 +158,7 @@ MSM_SENO HuAudFXPlayVolPan(int seId, s16 vol, s16 pan)
     return HuSePlay(seId, &seParam);
 }
 
-void HuAudFXStop(MSM_SENO seNo)
+void HuAudFXStop(int seNo)
 {
     msmSeStop(seNo, 0);
 }
@@ -168,12 +168,12 @@ void HuAudFXAllStop(void)
     msmSeStopAll(FALSE, 0);
 }
 
-void HuAudFXFadeOut(MSM_SENO seNo, s32 speed)
+void HuAudFXFadeOut(int seNo, s32 speed)
 {
     msmSeStop(seNo, speed);
 }
 
-void HuAudFXPanning(MSM_SENO seNo, s16 pan)
+void HuAudFXPanning(int seNo, s16 pan)
 {
     MSM_SEPARAM param;
     if(omSysExitReq) {
@@ -225,7 +225,7 @@ void HuAudFXListnerUpdate(Vec *pos, Vec *heading)
     msmSeUpdataListener(pos, heading);
 }
 
-MSM_SENO HuAudFXEmiterPlay(int seId, Vec *pos)
+int HuAudFXEmiterPlay(int seId, Vec *pos)
 {
     MSM_SEPARAM seParam;
     if(omSysExitReq) {
@@ -238,7 +238,7 @@ MSM_SENO HuAudFXEmiterPlay(int seId, Vec *pos)
     return HuSePlay(seId, &seParam);
 }
 
-void HuAudFXEmiterUpDate(MSM_SENO seNo, Vec *pos)
+void HuAudFXEmiterUpDate(int seNo, Vec *pos)
 {
     MSM_SEPARAM param;
     if(omSysExitReq) {
@@ -261,12 +261,12 @@ void HuAudFXPauseAll(BOOL pauseF)
     msmSePauseAll(pauseF, 100);
 }
 
-s32 HuAudFXStatusGet(MSM_SENO seNo)
+s32 HuAudFXStatusGet(int seNo)
 {
     return msmSeGetStatus(seNo);
 }
 
-s32 HuAudFXPitchSet(MSM_SENO seNo, s16 pitch)
+s32 HuAudFXPitchSet(int seNo, s16 pitch)
 {
     MSM_SEPARAM param;
 
@@ -278,7 +278,7 @@ s32 HuAudFXPitchSet(MSM_SENO seNo, s16 pitch)
     return msmSeSetParam(seNo, &param);
 }
 
-s32 HuAudFXVolSet(MSM_SENO seNo, s16 vol)
+s32 HuAudFXVolSet(int seNo, s16 vol)
 {
     MSM_SEPARAM param;
 
@@ -290,9 +290,9 @@ s32 HuAudFXVolSet(MSM_SENO seNo, s16 vol)
     return msmSeSetParam(seNo, &param);
 }
 
-MSM_MUSNO HuAudSeqPlay(s16 musId)
+int HuAudSeqPlay(s16 musId)
 {
-    MSM_MUSNO musNo;
+    int musNo;
     if(musicOffF || omSysExitReq) {
         return 0;
     }
@@ -300,7 +300,7 @@ MSM_MUSNO HuAudSeqPlay(s16 musId)
     return musNo;
 }
 
-void HuAudSeqStop(MSM_MUSNO musNo)
+void HuAudSeqStop(int musNo)
 {
     if(musicOffF || omSysExitReq) {
         return;
@@ -308,7 +308,7 @@ void HuAudSeqStop(MSM_MUSNO musNo)
     msmMusStop(musNo, 0);
 }
 
-void HuAudSeqFadeOut(MSM_MUSNO musNo, s32 speed)
+void HuAudSeqFadeOut(int musNo, s32 speed)
 {
     if(musicOffF) {
         return;
@@ -336,7 +336,7 @@ void HuAudSeqPauseAll(BOOL pause)
     msmMusPauseAll(pause, 100);
 }
 
-s32 HuAudSeqMidiCtrlGet(MSM_MUSNO musNo, s8 channel, s8 ctrl)
+s32 HuAudSeqMidiCtrlGet(int musNo, s8 channel, s8 ctrl)
 {
     if(musicOffF || omSysExitReq) {
         return 0;
@@ -353,7 +353,7 @@ typedef struct sStreamWork_s {
 
 static u8 streamVol[HUAUD_STREAM_MAX];
 
-MSM_STREAMNO HuAudSStreamChanPlay(s16 streamId, s16 chanNo)
+int HuAudSStreamChanPlay(s16 streamId, s16 chanNo)
 {
     if(musicOffF || omSysExitReq) {
         return MSM_STREAM_NONE;
@@ -369,7 +369,7 @@ MSM_STREAMNO HuAudSStreamChanPlay(s16 streamId, s16 chanNo)
         return chanNo;
     } else {
         MSM_STREAMPARAM param;
-        MSM_STREAMNO streamNo;
+        int streamNo;
         param.flag = MSM_STREAMPARAM_CHAN;
         param.chan = chanNo;
         streamNo = msmStreamPlay(streamId, &param);
@@ -397,22 +397,22 @@ static void SStreamStartProc(void)
     }
 }
 
-MSM_STREAMNO HuAudSStreamPlay(s16 streamId)
+int HuAudSStreamPlay(s16 streamId)
 {
     return HuAudSStreamChanPlay(streamId, 0);
 }
 
-MSM_STREAMNO HuAudSStreamPlayFront(s16 streamId)
+int HuAudSStreamPlayFront(s16 streamId)
 {
     return HuAudSStreamChanPlay(streamId, 0);
 }
 
-MSM_STREAMNO HuAudSStreamPlayBack(s16 streamId)
+int HuAudSStreamPlayBack(s16 streamId)
 {
     return HuAudSStreamChanPlay(streamId, 2);
 }
 
-void HuAudSStreamStop(MSM_STREAMNO streamNo)
+void HuAudSStreamStop(int streamNo)
 {
     if(musicOffF) {
         return;
@@ -420,7 +420,7 @@ void HuAudSStreamStop(MSM_STREAMNO streamNo)
     msmStreamStop(streamNo, 0);
 }
 
-void HuAudSStreamFadeOut(MSM_STREAMNO streamNo, s32 speed)
+void HuAudSStreamFadeOut(int streamNo, s32 speed)
 {
     if(musicOffF) {
         return;
@@ -453,7 +453,7 @@ void HuAudSStreamAllStop(void)
     msmStreamStopAll(0);
 }
 
-s32 HuAudSStreamStatGet(MSM_STREAMNO streamNo)
+s32 HuAudSStreamStatGet(int streamNo)
 {
     return msmStreamGetStatus(streamNo);
 }
@@ -462,12 +462,12 @@ typedef struct sStreamFadeWork_s {
     u8 volStart;
     u8 volEnd;
     u32 speed;
-    MSM_STREAMNO streamNo;
+    int streamNo;
 } SSTREAMFADEWORK;
 
 static void SStreamFade(void);
 
-void HuAudSStreamVolSet(MSM_STREAMNO streamNo, u8 vol, u32 speed)
+void HuAudSStreamVolSet(int streamNo, u8 vol, u32 speed)
 {
     if(musicOffF) {
         return;
@@ -943,7 +943,7 @@ s32 HuAudCharFXPlayPos(s16 charNo, s16 seId, Vec *pos)
 
 void HuAudCharFXStop(s16 charNo, s16 seId)
 {
-    s32 entrySeNo[MSM_ENTRY_SENO_MAX];
+    int entrySeNo[MSM_ENTRY_SENO_MAX];
     u16 entryNum;
     u16 i;
     seId += charSeIdTable[charNo];
@@ -953,9 +953,9 @@ void HuAudCharFXStop(s16 charNo, s16 seId)
     }
 }
 
-static MSM_SENO HuSePlay(int seId, MSM_SEPARAM *param)
+static int HuSePlay(int seId, MSM_SEPARAM *param)
 {
-    MSM_SENO result = msmSePlay(seId, param);
+    int result = msmSePlay(seId, param);
     if(result < 0) {
         OSReport("#########SE Entry Error<SE %d:ErrorNo %d>\n", seId, result);
     }
