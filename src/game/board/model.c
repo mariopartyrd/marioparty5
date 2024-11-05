@@ -3,7 +3,7 @@
 #include "game/memory.h"
 
 //Move to board/audio.h
-MSM_SENO MBAudFXPosPlay(s16 seNo, HuVecF *pos);
+int MBAudFXPosPlay(s16 seNo, HuVecF *pos);
 
 typedef struct ModelManWork_s {
     u8 kill : 1;
@@ -1160,7 +1160,7 @@ void MBModelStub(void)
     
 }
 
-MSM_SENO MBModelSePlay(MBMODELID modelId, s16 seId)
+int MBModelSePlay(MBMODELID modelId, s16 seId)
 {
     MBMODEL *modelP = MBModelGet(modelId);
     return MBAudFXPosPlay(seId, &modelP->pos);
