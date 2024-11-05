@@ -4,6 +4,7 @@
 #include "dolphin.h"
 #include "game/process.h"
 #include "game/hu3d.h"
+#include "game/mgdata.h"
 
 #define DLL(name) DLL_##name,
 
@@ -125,6 +126,8 @@ s16 omCameraViewMoveSimple(OMCAMERAVIEW *cameraView, s32 time);
 BOOL omCameraViewCheck(u32 cameraBit);
 
 s32 omOvlMgNoGet(s16 ovlNo);
+void omGameSysInit(OMOBJMAN *objman);
+void omVibrate(s16 playerNo, s16 duration, s16 off, s16 on);
 
 extern s16 omSysExitReq;
 extern OMOBJ *omDBGSysKeyObj;
@@ -136,8 +139,5 @@ extern s32 omovlevtno;
 extern s32 omovlstat;
 extern u8 omUPauseFlag;
 extern s16 omdispinfo;
-
-extern float sdWorkFloat[16];
-extern int sdWorkInt[16];
 
 #endif

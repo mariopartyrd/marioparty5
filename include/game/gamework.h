@@ -129,7 +129,7 @@ typedef struct GwCommon_s {
     u16 unk4;
     u8 languageNo;
     u8 soundOutputMode;
-    u8 rumbleF;
+    s8 rumbleF;
     u16 totalStar;
     OSTime time;
     char name[17];
@@ -280,10 +280,17 @@ static inline void GWMgCoinBonusSet(s32 playerNo, s16 mgCoin)
 
 static inline void GWMgCoinSet(s32 playerNo, s16 mgCoin)
 {
-    if(_CheckFlag(FLAG_MG_PRACTICE)) {
-        return;
-    }
     GwPlayer[playerNo].mgCoin = mgCoin;
+}
+
+static inline void GWMgScoreSet(s32 playerNo, u32 mgScore)
+{
+    GwPlayer[playerNo].mgScore = mgScore;
+}
+
+static inline u32 GWMgScoreGet(s32 playerNo)
+{
+    return GwPlayer[playerNo].mgScore;
 }
 
 static inline void GWBonusStarFSet(BOOL flag)
