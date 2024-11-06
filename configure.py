@@ -365,7 +365,7 @@ config.libs = [
             Object(Matching, "game/frand.c"),
             Object(Matching, "game/audio.c"),
             Object(Matching, "game/EnvelopeExec.c"),
-            Object(NonMatching, "game/gamemes.c"),
+            Object(Matching, "game/gamemes.c"),
             Object(Matching, "game/ovllist.c"),
             Object(Matching, "game/esprite.c"),
             Object(Matching, "game/ClusterExec.c"),

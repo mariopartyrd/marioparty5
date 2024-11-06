@@ -4,6 +4,10 @@
 #define MSM_SE_CMN_01 0
 #define MSM_SE_CMN_02 1
 #define MSM_SE_CMN_03 2
+#define MSM_SE_CMN_04 3
+#define MSM_SE_CMN_06 5
+#define MSM_SE_CMN_07 6
+#define MSM_SE_CMN_17 16
 #define MSM_SE_CMN_25 24
 
 #define MSM_SE_MARIO 142

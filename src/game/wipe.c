@@ -45,7 +45,7 @@ static FADEFUNC fadeOutFunc[WIPE_TYPE_MAX] = {
     WipeKoopa
 };
 
-void WipeInit(void)
+void WipeInit(GXRenderModeObj *rmode)
 {
     wipeData.color.r = wipeData.color.g = wipeData.color.b = 0;
     wipeData.color.a = 255;

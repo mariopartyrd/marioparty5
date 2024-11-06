@@ -1588,7 +1588,7 @@ MGDATA mgDataTbl[] = {
     },
     {
         DLL_m562dll,
-        MG_TYPE_STORY,
+        MG_TYPE_LAST,
         MG_FLAG_PACKALL,
         MG_RECORD_NONE, 
         MGNAME_M562,

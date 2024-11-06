@@ -9,6 +9,7 @@
 #include "game/window.h"
 #include "game/saveload.h"
 #include "game/charman.h"
+#include "game/gamemes.h"
 
 #include "game/esprite.h"
 #include "game/flag.h"
@@ -17,8 +18,6 @@
 
 //External definitions that should be cleaned up later
 
-extern void GMesPracticeCreate(void);
-extern void GMesClose(void);
 extern void MgActorInit(void);
 extern void MgActorClose(void);
 extern void MgScoreWinKill(void);
@@ -257,7 +256,7 @@ OMOBJMAN *omInitObjMan(s16 objMax, s32 objManPrio)
     omUPauseFlag = FALSE;
     HuPrcAllUPause(0);
     omCameraViewInit();
-    MgScoreWinKill();
+    MgScoreWinInit();
     return objMan;
 }
 

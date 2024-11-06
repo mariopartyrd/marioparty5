@@ -321,7 +321,7 @@ void HuARDirFree(unsigned int dir) {
     }
 }
 
-void *HuAR_ARAMtoMRAMFileRead(unsigned int dir, u32 num, HUHEAPTYPE heap) {
+void *HuAR_ARAMtoMRAMFileRead(unsigned int dataNum, u32 num, HUHEAPTYPE heap) {
     s32 *dirBuf;
     void *dst;
     void *dvdBuf;
@@ -330,19 +330,19 @@ void *HuAR_ARAMtoMRAMFileRead(unsigned int dir, u32 num, HUHEAPTYPE heap) {
     s32 size;
     AMEM_PTR aMemP;
 
-    if((aMemP = HuARDirCheck(dir)) == 0) {
-        OSReport("Error: data none on ARAM %0x\n", dir);
+    if((aMemP = HuARDirCheck(dataNum)) == 0) {
+        OSReport("Error: data none on ARAM %0x\n", dataNum);
         HuAMemDump();
         return 0;
     }
     DCInvalidateRange(&preLoadBuf, sizeof(preLoadBuf));
-    srcAMemP = aMemP + (u32)((u32)(((u16)dir + 1) * 4) & 0xFFFFFFFE0);
+    srcAMemP = aMemP + (u32)((u32)(((u16)dataNum + 1) * 4) & 0xFFFFFFFE0);
     arqCnt++;
     ARQPostRequest(&ARQueBuf[arqIdx].req, 0x1234, 1, 0, srcAMemP, (u32) &preLoadBuf, sizeof(preLoadBuf), ArqCallBackAMFileRead);
     arqIdx++;
     arqIdx &= 0xF;
     while(HuARDMACheck());
-    dirBuf = &preLoadBuf[(dir + 1) & 7];
+    dirBuf = &preLoadBuf[(dataNum + 1) & 7];
     count = dirBuf[0];
     srcAMemP = aMemP + (u32)(count & 0xFFFFFFFE0);
     if(dirBuf[1] - count < 0) {

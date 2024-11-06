@@ -9,11 +9,12 @@
 #define MG_TYPE_2VS2 2
 #define MG_TYPE_BATTLE 3
 #define MG_TYPE_KUPA 4
-#define MG_TYPE_STORY 5
+#define MG_TYPE_LAST 5
 #define MG_TYPE_KETTOU 6
 #define MG_TYPE_SD 7
 #define MG_TYPE_DONKEY 8
 #define MG_TYPE_NONE 9
+#define MG_TYPE_MAX MG_TYPE_NONE
 
 #define MG_FLAG_SPECIAL (1 << 7)
 #define MG_FLAG_NOSTORY (1 << 6)
@@ -55,7 +56,7 @@ extern s16 lbl_80288A30;
 extern int lbl_80288A2C;
 extern int lbl_80288A28;
 extern int mgSubMode;
-extern int mg562CtrlNo;
+extern int m562CtrlNo;
 extern BOOL mgExitStartF;
 extern BOOL mgPauseExitF;
 extern BOOL mgInstExitF;

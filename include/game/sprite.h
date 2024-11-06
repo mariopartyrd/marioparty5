@@ -127,11 +127,11 @@ void HuSprGrpScissorSet(HUSPRGRPID grpId, s16 x, s16 y, s16 w, s16 h);
 void HuSprScissorSet(HUSPRGRPID grpId, s16 memberNo, s16 x, s16 y, s16 w, s16 h);
 ANIMDATA *HuSprAnimMake(s16 sizeX, s16 sizeY, s16 dataFmt);
 void HuSprBGSet(HUSPRGRPID grpId, s16 memberNo,  ANIMDATA *bg, s16 bgBank);
-void HuSprSprBGSet(HUSPRID sprite, ANIMDATA *bg, s16 bgBank);
+void HuSprSprBGSet(HUSPRID sprId, ANIMDATA *bg, s16 bgBank);
 void AnimDebug(ANIMDATA *anim);
 
 void HuSprDispInit(void);
-void HuSprDisp(HUSPRITE *sprite);
+void HuSprDisp(HUSPRITE *sp);
 //WipeImage breaks with this declaration
 //void HuSprTexLoad(ANIMDATA *anim, s16 bmpNo, s16 texMapId, GXTexWrapMode wrapS, GXTexWrapMode wrapT, GXTexFilter filter);
 void HuSprExecLayerInit(void);
