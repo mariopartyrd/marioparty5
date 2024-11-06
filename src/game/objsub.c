@@ -1,12 +1,10 @@
 #include "game/object.h"
+#include "game/gamemes.h"
 #include "humath.h"
 #include "datanum/instpic.h"
 #include "messnum/mgname.h"
 #include "messnum/mginst.h"
 #include "messnum/sdg.h"
-
-//Move to gamemes.h
-void GMesExitCheck(OMOBJ *obj);
 
 #define DECA_SCORE_TIME 0
 #define DECA_SCORE_POINT 1
@@ -24,7 +22,7 @@ s16 lbl_80288A30;
 int lbl_80288A2C;
 int lbl_80288A28;
 int mgSubMode;
-int mg562CtrlNo;
+int m562CtrlNo;
 BOOL mgExitStartF;
 BOOL mgPauseExitF;
 BOOL mgInstExitF;
@@ -376,5 +374,4 @@ void omVibrate(s16 playerNo, s16 duration, s16 off, s16 on)
     if (GWRumbleFGet() != FALSE && GwPlayerConf[playerNo].type == GW_TYPE_MAN) {
         HuPadRumbleSet(GwPlayerConf[playerNo].padNo, duration, off, on);
     }
-
 }

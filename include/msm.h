@@ -75,6 +75,8 @@
 
 #define MSM_MUS_MAX 4
 
+#define MSM_SE_NONE -1
+
 #define MSM_STREAM_NONE -1
 
 #define MSM_AUXA_DEFAULT 0

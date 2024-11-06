@@ -39,7 +39,7 @@ typedef struct WipeWork_s {
 	u8 stat;
 } WIPEWORK;
 
-void WipeInit(void);
+void WipeInit(GXRenderModeObj *rmode);
 void WipeExecAlways(void);
 void WipeCreate(s16 mode, s16 type, s16 maxTime);
 void WipeColorSet(u8 r, u8 g, u8 b);

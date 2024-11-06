@@ -1,5 +1,5 @@
-#ifndef DATANUM_EFFECT_H
-#define DATANUM_EFFECT_H
+#ifndef DATANUM_INSTPIC_H
+#define DATANUM_INSTPIC_H
 
 #include "datadir_enum.h"
 

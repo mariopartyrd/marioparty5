@@ -21,7 +21,7 @@ extern void HuPadRumbleAllStop(void);
 #define GW_SD_BACKUP_MAX 12
 
 #define GW_MGNO_BASE 501
-#define GW_MGNO_NONE -1
+#define GW_MGNO_NONE 65535
 
 #define GW_LANGUAGE_JPN 0
 #define GW_LANGUAGE_ENG 1
