@@ -19,7 +19,7 @@ s32 HuTHPFrameGet(void);
 s32 HuTHPTotalFrameGet(void);
 void HuTHPSetVolume(s32 left, s32 right);
 BOOL HuTHPProcCheck(void);
-s16 HuTHPStartCheck(void);
+BOOL HuTHPStartCheck(void);
 void HuTHPMatHook(HU3DDRAWOBJ *drawObj, HSFMATERIAL *material);
 
 extern HUPROCESS *THPProc;

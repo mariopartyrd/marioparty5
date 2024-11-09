@@ -251,8 +251,12 @@ cflags_musyx = [
 # REL flags
 cflags_rel = [
     *cflags_base,
+    "-O0,p",
+    "-char unsigned",
+    "-fp_contract off",
     "-sdata 0",
     "-sdata2 0",
+    "-pool off",
 ]
 
 # Game flags
@@ -818,7 +822,7 @@ config.libs = [
         "cflags": cflags_rel,
         "host": False,
         "objects": [
-            Object(NonMatching, "REL/nintendo/data.c"),
+            Object(Matching, "REL/nintendo/data.c"),
         ],
     },
     Rel(
@@ -830,7 +834,7 @@ config.libs = [
     Rel(
         "bootDll",
         objects={
-            Object(NonMatching, "REL/bootDll/boot.c"),
+            Object(Matching, "REL/bootDll/boot.c"),
         },
     ),
     Rel(
