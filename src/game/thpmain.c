@@ -134,7 +134,7 @@ BOOL HuTHPProcCheck(void)
     }
 }
 
-s16 HuTHPStartCheck(void)
+BOOL HuTHPStartCheck(void)
 {
     return THPStart;
 }

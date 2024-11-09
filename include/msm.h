@@ -85,6 +85,9 @@
 
 #define MSM_ENTRY_SENO_MAX 32
 
+#define MSM_GROUP_LOAD_MANUAL 0
+#define MSM_GROUP_LOAD_AUTO 1
+
 typedef BOOL (*MSM_OPEN)(s32 entrynum, DVDFileInfo *fileInfo);
 typedef BOOL (*MSM_READ)(DVDFileInfo *fileInfo, void *addr, s32 length, s32 offset, s32 prio);
 typedef BOOL (*MSM_CLOSE)(DVDFileInfo *fileInfo);
@@ -167,6 +170,8 @@ typedef struct msmStreamParam_s {
 
 s32 msmSysInit(MSM_INIT *init, MSM_ARAM *aram);
 void msmSysSetOutputMode(SND_OUTPUTMODE mode);
+void msmSysSetGroupLoadMode(s8 mode);
+
 s32 msmSysDelGroupAll(void);
 s32 msmSysLoadGroup(s32 grp, void *buf, BOOL flag);
 s32 msmSysGetSampSize(BOOL baseGrp);

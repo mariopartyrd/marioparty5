@@ -4,6 +4,7 @@
 #include "msm.h"
 #include "msm_grp.h"
 #include "msm_se.h"
+#include "msm_stream.h"
 
 typedef struct sndGrpTbl_s {
     s16 ovl;
