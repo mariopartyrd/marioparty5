@@ -822,7 +822,7 @@ config.libs = [
         "cflags": cflags_rel,
         "host": False,
         "objects": [
-            Object(NonMatching, "REL/nintendo/data.c"),
+            Object(Matching, "REL/nintendo/data.c"),
         ],
     },
     Rel(

@@ -158,7 +158,7 @@ modules:
   symbols: config/dll/rels/e3bootdll/symbols.txt
   splits: config/dll/rels/e3bootdll/splits.txt
   links: []
-
+  
 - object: orig/GP5E01/files/dll/m505Dll.rel
   hash: cb4c261f005f28a5794dd57b2e3a10128448bc48
   symbols: config/dll/rels/m505Dll/symbols.txt
@@ -446,7 +446,10 @@ modules:
   symbols: config/dll/rels/bootDll/symbols.txt
   splits: config/dll/rels/bootDll/splits.txt
   links: []
-
+  extract:
+  - symbol: nintendoData
+    binary: nintendoData.bin
+    header: nintendoData.inc
 - object: orig/GP5E01/files/dll/m516Dll.rel
   hash: 9a50f7f7dedb385de7fb94127b1abf6afc790389
   symbols: config/dll/rels/m516Dll/symbols.txt
