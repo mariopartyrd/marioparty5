@@ -3,7 +3,7 @@
 
 #include "dolphin.h"
 
-extern BOOL NintendoFirstDispF;
+extern BOOL NintendoDispF;
 extern BOOL HuSRDisableF;
 extern BOOL HuDvdErrWait;
 extern u32 GlobalCounter;

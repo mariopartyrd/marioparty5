@@ -399,7 +399,7 @@ config.libs = [
             Object(NonMatching, "game/board/camera.c"),
             Object(NonMatching, "game/board/player.c"),
             Object(Matching, "game/board/model.c"),
-            Object(NonMatching, "game/board/window.c"),
+            Object(Matching, "game/board/window.c"),
             Object(NonMatching, "game/board/audio.c"),
             Object(NonMatching, "game/board/com.c"),
             Object(NonMatching, "game/board/scroll.c"),

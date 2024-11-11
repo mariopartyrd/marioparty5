@@ -126,7 +126,7 @@ void BootExec(void)
         HuSprAttrSet(gid, 2, HUSPR_ATTR_DISPOFF|HUSPR_ATTR_LINEAR);
         HuWinInit(1);
         BootTitleCreate();
-        NintendoFirstDispF = TRUE;
+        NintendoDispF = TRUE;
         fromTitle = TRUE;
         
     } else {
@@ -137,7 +137,7 @@ void BootExec(void)
         WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 30);
         WipeWait();
         WipeColorSet(255, 255, 255);
-        if(!NintendoFirstDispF) {
+        if(!NintendoDispF) {
             tickPrev = OSGetTick();
             CharInit();
             HuWindowInit();
@@ -156,7 +156,7 @@ void BootExec(void)
         }
         WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 30);
         WipeWait();
-        if(!NintendoFirstDispF) {
+        if(!NintendoDispF) {
             tickPrev = OSGetTick();
             BootTitleCreate();
             anim = HuSprAnimDataRead(TITLE_ANM_hudson);
@@ -178,7 +178,7 @@ void BootExec(void)
         HuSprDispOn(gid, 1);
         WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 30);
         WipeWait();
-        if(!NintendoFirstDispF) {
+        if(!NintendoDispF) {
             HuPrcSleep(90);
         } else {
             for(i=0; i<90; i++) {
@@ -195,7 +195,7 @@ void BootExec(void)
         HuSprDispOn(gid, 2);
         WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 30);
         WipeWait();
-        if(!NintendoFirstDispF) {
+        if(!NintendoDispF) {
             HuPrcSleep(90);
         } else {
             for(i=0; i<90; i++) {
@@ -207,7 +207,7 @@ void BootExec(void)
         }
         WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 30);
         WipeWait();
-        if(!NintendoFirstDispF) {
+        if(!NintendoDispF) {
             void *sampBuf;
             tickPrev = OSGetTick();
             sampBuf = HuMemDirectMalloc(HUHEAPTYPE_MODEL, msmSysGetSampSize(MSM_GRP_INIT));
@@ -216,7 +216,7 @@ void BootExec(void)
             msmSysSetGroupLoadMode(MSM_GROUP_LOAD_AUTO);
             HuAudSndGrpSetSet(MSM_GRP_MENU);
         }
-        NintendoFirstDispF = TRUE;
+        NintendoDispF = TRUE;
         HuSprDispOff(gid, 0);
         HuSprDispOff(gid, 1);
         HuSprDispOff(gid, 2);
@@ -526,7 +526,7 @@ BOOL BootTitleExec(BOOL fromTitle)
             Hu3DMotionStartEndSet(titleMdlId[1], 0, Hu3DMotionMaxTimeGet(titleMdlId[1]));
             Hu3DModelAttrReset(titleMdlId[1], HU3D_MOTATTR_LOOP);
             Hu3DMotionTimeSet(titleMdlId[1], 360);
-            HuAudFXPlay(MSM_SE_DEFAULT_39);
+            HuAudFXPlay(MSM_SE_MENU_39);
             HuPrcSleep(20);
             return TRUE;
         }
