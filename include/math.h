@@ -15,6 +15,8 @@ extern int __double_huge[];
 #define NAN      (*(float*)__float_nan)
 #define HUGE_VAL (*(double*)__double_huge)
 
+#pragma cplusplus on
+
 extern inline float sqrtf(float x)
 {
     static const double _half = .5;
@@ -50,6 +52,8 @@ extern inline double sqrt(double x)
 
     return INFINITY;
 }
+
+#pragma cplusplus reset
 
 double atan(double x);
 double copysign(double x, double y);

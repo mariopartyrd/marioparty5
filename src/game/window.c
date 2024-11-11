@@ -741,7 +741,7 @@ static void HuWinDrawMes(HUWINID winId) {
                     break;
                     
                 case 29:
-                    winP->attr ^= HUWIN_ATTR_SHADOWON;
+                    winP->attr ^= HUWIN_ATTR_OUTLINE;
                     break;
                     
                 case 10:
@@ -875,7 +875,7 @@ static void HuWinDrawMes(HUWINID winId) {
                 winP->messData++;
             }
             color = (winP->attr & HUWIN_ATTR_TEXTDISABLE) ? HUWIN_MESCOL_DARKGRAY : winP->mesCol;
-            if(winP->attr & HUWIN_ATTR_SHADOWON) {
+            if(winP->attr & HUWIN_ATTR_OUTLINE) {
                 shadowColor = HUWIN_MESCOL_BLACK;
                 charEntry(winId, winP->mesRectX+winP->mesX+2, winP->mesRectY+winP->mesY, c, shadowColor);
                 charEntry(winId, winP->mesRectX+winP->mesX-2, winP->mesRectY+winP->mesY, c, shadowColor);
@@ -928,7 +928,7 @@ void HuWinHomeClear(HUWINID winId)
         winP->choiceDisable[i] = FALSE;
     }
     winP->stat = HUWIN_STAT_NONE;
-    winP->attr &= ~(HUWIN_ATTR_SETCOLOR|HUWIN_ATTR_SHADOWON);
+    winP->attr &= ~(HUWIN_ATTR_SETCOLOR|HUWIN_ATTR_OUTLINE);
     winP->messSp = 0;
 }
 
