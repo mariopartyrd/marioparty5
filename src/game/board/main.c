@@ -4,6 +4,7 @@
 #include "game/board/camera.h"
 #include "game/board/masu.h"
 #include "game/board/model.h"
+#include "game/board/player.h"
 
 #include "game/saveload.h"
 #include "game/sprite.h"
@@ -27,9 +28,7 @@ void MBCapsuleHookSet(void *func); //Fix input type as well
 void MBTutorialWatchProcCreate(void);
 s32 MBStarNoRandGet(void);
 void MBStarNoSet(s32 no);
-void MBPlayerCapsuleAdd(s32 playerNo, s32 capsuleNo);
 void MBOpeningProcExec(void);
-void MBPlayerCoinSet(s32 playerNo, s32 coinNum);
 void MBCircuitMgEndExec(s32 playerNo);
 void MBCircuitExec(BOOL turnIntrF);
 void MBCircuitReset(void);
@@ -37,7 +36,6 @@ void MBTelopLast5Create(void);
 void MBMusMainPlay(void);
 void MBTurnExecParty(BOOL turnIntrF);
 void MBMgExec(void);
-s32 MBPlayerFirstGet(void);
 void MBTurnExecStory(BOOL turnIntrF);
 void MBStoryEndProcExec(void);
 void MBMgDataDirClose(void);
@@ -51,7 +49,6 @@ void MBCapMachineInit(void);
 void MBCapsuleObjInit(void);
 void MBCoinInit(void);
 void MBPathInit(void);
-void MBPlayerInit(BOOL noEventF);
 void MBSaiInit(void);
 void MBStarInit(void);
 void MBTauntInit(void);
@@ -64,7 +61,6 @@ void MBCoinClose(void);
 void MBGateClose(void);
 void MBCapMachineClose(void);
 void MBScrollClose(void);
-void MBPlayerClose(void);
 void MBWinClose(void);
 
 static MBTURNHOOK postTurnHook;
@@ -319,7 +315,7 @@ static void MBMainProc(void)
                 HuPrcSleep(-1);
             }
         } else {
-            if(GwSystem.turnPlayerNo == MBPlayerFirstGet() || GwSystem.playerMode != 3) {
+            if(GwSystem.turnPlayerNo == MBPlayerStoryPlayerGet() || GwSystem.playerMode != 3) {
                 MBStatusDispForceSetAll(TRUE);
             }
             MBTurnExecStory(turnIntrF);
