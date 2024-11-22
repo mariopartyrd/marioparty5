@@ -15,6 +15,7 @@
 #define MBNO_WORLD_7 6
 #define MBNO_TUTORIAL 7
 #define MBNO_CIRCUIT 8
+#define MBNO_MAX 9
 
 typedef void (*MBCREATEHOOK)(void);
 typedef void (*MBKILLHOOK)(void);

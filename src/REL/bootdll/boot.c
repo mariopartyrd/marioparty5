@@ -42,18 +42,17 @@ static u8 movieVolTbl[MOVIE_MAX] = {
     106
 };
 
-static OMOBJ *debugOutView;
-static OMOBJMAN *objman;
-static Vec debugCamRot[2];
-static Vec debugCamPos[2];
-static float debugCamZoom[2];
+static OMOBJ *outViewObj;
+OMOBJMAN *objman;
+Vec cameraRot[2];
+Vec cameraCenter[2];
+float cameraZoom[2];
 static Vec lbl_1_bss_24;
 static s16 movieNo;
 static s16 movieOrderTbl[MOVIE_MAX];
 static HU3DMODELID titleMdlId[4];
 static HU3DMOTID titleMotId[2];
 static BOOL lbl_1_bss_4;
-static BOOL debugCamOnF;
 
 void BootExec(void);
 void BootProgExec(void);
@@ -69,13 +68,13 @@ void ObjectSetup(void)
     OMOVLHIS *his;
     OSReport("******* Boot ObjectSetup *********\n");
     objman = omInitObjMan(50, 8192);
-    debugCamRot[0].x = -67;
-    debugCamRot[0].y = 40;
-    debugCamRot[0].z = 0;
-    debugCamPos[0].x = 260;
-    debugCamPos[0].y = -103;
-    debugCamPos[0].z = -18;
-    debugCamZoom[0] = 2885;
+    cameraRot[0].x = -67;
+    cameraRot[0].y = 40;
+    cameraRot[0].z = 0;
+    cameraCenter[0].x = 260;
+    cameraCenter[0].y = -103;
+    cameraCenter[0].z = -18;
+    cameraZoom[0] = 2885;
     Hu3DCameraCreate(HU3D_CAM0);
     Hu3DCameraPerspectiveSet(HU3D_CAM0, 30, 20, 15000, HU_DISP_ASPECT);
     Hu3DCameraViewportSet(HU3D_CAM0, 0, 0, HU_FB_WIDTH, HU_FB_HEIGHT, 0, 1);
@@ -253,13 +252,13 @@ void BootExec(void)
     }
 }
 
-static u16 progPosTbl[] = {
-    221, 311,
-    357, 311
-};
 
 void BootProgExec(void)
 {
+    static u16 posTbl[] = {
+        221, 311,
+        357, 311
+    };
     s16 choice = 0;
     s16 time;
     HUSPRGRPID gid;
@@ -288,23 +287,23 @@ void BootProgExec(void)
     anim = HuSprAnimDataRead(TITLE_ANM_progCursor);
     sprid = HuSprCreate(anim, 0, 0);
     HuSprGrpMemberSet(gid, 1, sprid);
-    HuSprPosSet(gid, 1, progPosTbl[(choice*2)+0], progPosTbl[(choice*2)+1]);
+    HuSprPosSet(gid, 1, posTbl[(choice*2)+0], posTbl[(choice*2)+1]);
     anim = HuSprAnimDataRead(TITLE_ANM_progCursorSel);
     sprid = HuSprCreate(anim, 0, 0);
     HuSprGrpMemberSet(gid, 2, sprid);
-    HuSprPosSet(gid, 2, progPosTbl[(choice*2)+0], progPosTbl[(choice*2)+1]);
+    HuSprPosSet(gid, 2, posTbl[(choice*2)+0], posTbl[(choice*2)+1]);
     HuSprDispOff(gid, 2);
     WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 30);
     WipeWait();
     for(time=0; time<600; time++) {
         if(HU_PAD_DSTK_ALL & (PAD_BUTTON_LEFT | PAD_BUTTON_RIGHT)) {
             choice ^= 1;
-            HuSprPosSet(gid, 1, progPosTbl[(choice*2)+0], progPosTbl[(choice*2)+1]);
+            HuSprPosSet(gid, 1, posTbl[(choice*2)+0], posTbl[(choice*2)+1]);
             time = 0;
         }
         if(HU_PAD_BTNDOWN_ALL & PAD_BUTTON_A) {
             HuSprDispOff(gid, 1);
-            HuSprPosSet(gid, 2, progPosTbl[(choice*2)+0], progPosTbl[(choice*2)+1]);
+            HuSprPosSet(gid, 2, posTbl[(choice*2)+0], posTbl[(choice*2)+1]);
             HuSprDispOn(gid, 2);
             break;
         }
@@ -345,33 +344,33 @@ void BootProgExec(void)
     HuPrcSleep(30);
 }
 
-u16 debugCamTbl[] = { HU3D_CAM0, HU3D_CAM1 };
 
-void DebugCamOutView(OMOBJ *obj)
+void CameraOutView(OMOBJ *obj)
 {
+    static u16 cameraMask[] = { HU3D_CAM0, HU3D_CAM1 };
     s16 i;
     for(i=0; i<1; i++) {
         Vec pos, target, up;
         float x, y, z;
 
-        x = debugCamRot[i].x;
-        y = debugCamRot[i].y;
-        z = debugCamRot[i].z;
+        x = cameraRot[i].x;
+        y = cameraRot[i].y;
+        z = cameraRot[i].z;
 
-        pos.x = (((HuSin(y) * HuCos(x)) * debugCamZoom[i]) + debugCamPos[i].x);
-        pos.y = (-HuSin(x) * debugCamZoom[i]) + debugCamPos[i].y;
-        pos.z = ((HuCos(y) * HuCos(x)) * debugCamZoom[i]) + debugCamPos[i].z;
-        target.x = debugCamPos[i].x;
-        target.y = debugCamPos[i].y;
-        target.z = debugCamPos[i].z;
+        pos.x = (((HuSin(y) * HuCos(x)) * cameraZoom[i]) + cameraCenter[i].x);
+        pos.y = (-HuSin(x) * cameraZoom[i]) + cameraCenter[i].y;
+        pos.z = ((HuCos(y) * HuCos(x)) * cameraZoom[i]) + cameraCenter[i].z;
+        target.x = cameraCenter[i].x;
+        target.y = cameraCenter[i].y;
+        target.z = cameraCenter[i].z;
         up.x = HuSin(y) * HuSin(x);
         up.y = HuCos(x);
         up.z = HuCos(y) * HuSin(x);
-        Hu3DCameraPosSet(debugCamTbl[i], pos.x, pos.y, pos.z, up.x, up.y, up.z, target.x, target.y, target.z);
+        Hu3DCameraPosSet(cameraMask[i], pos.x, pos.y, pos.z, up.x, up.y, up.z, target.x, target.y, target.z);
     }
 }
 
-void DebugCamUpdate(void)
+void CameraMove(void)
 {
     Vec pos;
     Vec offset;
@@ -380,28 +379,29 @@ void DebugCamUpdate(void)
 
     f32 rotZ;
     s8 stick_pos;
-
+    static BOOL moveF = FALSE;
+    
     if ((HuPadBtnDown[0] & PAD_BUTTON_Y)) {
-        debugCamOnF = (debugCamOnF) ? 0 : 1;
+        moveF = (moveF) ? 0 : 1;
     }
-    if(debugCamOnF) {
-        debugCamRot[0].y += 0.1f * HuPadStkX[0];
-        debugCamRot[0].x += 0.1f * HuPadStkY[0];
-        debugCamZoom[0] += HuPadTrigL[0] / 2;
-        debugCamZoom[0] -= HuPadTrigR[0] / 2;
-        if (debugCamZoom[0] < 100.0f) {
-            debugCamZoom[0] = 100.0f;
+    if(moveF) {
+        cameraRot[0].y += 0.1f * HuPadStkX[0];
+        cameraRot[0].x += 0.1f * HuPadStkY[0];
+        cameraZoom[0] += HuPadTrigL[0] / 2;
+        cameraZoom[0] -= HuPadTrigR[0] / 2;
+        if (cameraZoom[0] < 100.0f) {
+            cameraZoom[0] = 100.0f;
         }
-        pos.x = debugCamPos[0].x + (debugCamZoom[0] * (HuSin(debugCamRot[0].y) * HuCos(debugCamRot[0].x)));
-        pos.y = (debugCamPos[0].y + (debugCamZoom[0] * -HuSin(debugCamRot[0].x)));
-        pos.z = (debugCamPos[0].z + (debugCamZoom[0] * (HuCos(debugCamRot[0].y) * HuCos(debugCamRot[0].x))));
-        offset.x = debugCamPos[0].x - pos.x;
-        offset.y = debugCamPos[0].y - pos.y;
-        offset.z = debugCamPos[0].z - pos.z;
-        dir.x = (HuSin(debugCamRot[0].y) * HuSin(debugCamRot[0].x));
-        dir.y = HuCos(debugCamRot[0].x);
-        dir.z = (HuCos(debugCamRot[0].y) * HuSin(debugCamRot[0].x));
-        rotZ = debugCamRot[0].z;
+        pos.x = cameraCenter[0].x + (cameraZoom[0] * (HuSin(cameraRot[0].y) * HuCos(cameraRot[0].x)));
+        pos.y = (cameraCenter[0].y + (cameraZoom[0] * -HuSin(cameraRot[0].x)));
+        pos.z = (cameraCenter[0].z + (cameraZoom[0] * (HuCos(cameraRot[0].y) * HuCos(cameraRot[0].x))));
+        offset.x = cameraCenter[0].x - pos.x;
+        offset.y = cameraCenter[0].y - pos.y;
+        offset.z = cameraCenter[0].z - pos.z;
+        dir.x = (HuSin(cameraRot[0].y) * HuSin(cameraRot[0].x));
+        dir.y = HuCos(cameraRot[0].x);
+        dir.z = (HuCos(cameraRot[0].y) * HuSin(cameraRot[0].x));
+        rotZ = cameraRot[0].z;
         yOfs.x = dir.x * (offset.x * offset.x + (1.0f - offset.x * offset.x) * HuCos(rotZ))
             + dir.y * (offset.x * offset.y * (1.0f - HuCos(rotZ)) - offset.z * HuSin(rotZ))
             + dir.z * (offset.x * offset.z * (1.0f - HuCos(rotZ)) + offset.y * HuSin(rotZ));
@@ -418,16 +418,16 @@ void DebugCamUpdate(void)
         VECNormalize(&offset, &offset);
         stick_pos = (HuPadSubStkX[0] & 0xF8);
         if (stick_pos != 0) {
-            debugCamPos[0].x += 0.05f * (offset.x * stick_pos);
-            debugCamPos[0].y += 0.05f * (offset.y * stick_pos);
-            debugCamPos[0].z += 0.05f * (offset.z * stick_pos);
+            cameraCenter[0].x += 0.05f * (offset.x * stick_pos);
+            cameraCenter[0].y += 0.05f * (offset.y * stick_pos);
+            cameraCenter[0].z += 0.05f * (offset.z * stick_pos);
         }
         VECNormalize(&yOfs, &offset);
         stick_pos = -(HuPadSubStkY[0] & 0xF8);
         if (stick_pos != 0) {
-            debugCamPos[0].x += 0.05f * (offset.x * stick_pos);
-            debugCamPos[0].y += 0.05f * (offset.y * stick_pos);
-            debugCamPos[0].z += 0.05f * (offset.z * stick_pos);
+            cameraCenter[0].x += 0.05f * (offset.x * stick_pos);
+            cameraCenter[0].y += 0.05f * (offset.y * stick_pos);
+            cameraCenter[0].z += 0.05f * (offset.z * stick_pos);
         }
     }
 }

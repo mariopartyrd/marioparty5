@@ -1,5 +1,7 @@
 #include "game/board/window.h"
 #include "game/board/main.h"
+#include "game/board/player.h"
+
 #include "game/disp.h"
 
 #include "game/flag.h"
@@ -8,9 +10,6 @@
 //Move to board/pause.h
 typedef void (*MBPAUSEHOOK)(BOOL dispF);
 void MBPauseHookPush(MBPAUSEHOOK hook);
-
-//Move to board/player.h
-BOOL MBPlayerAllComCheck(void);
 
 static u8 winStack[MBWIN_MAX];
 static s8 winChoice[MBWIN_MAX];
