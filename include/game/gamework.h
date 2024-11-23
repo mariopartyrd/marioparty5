@@ -44,7 +44,7 @@ typedef struct GwPlayer_s {
     u16 charNo : 4;
     u16 field3 : 2;
     u16 dead : 1;
-    u16 rollType : 6;
+    u16 rollMod : 6;
     u16 grp : 1;
     u16 field6 : 1;
     s8 handicap;
@@ -64,7 +64,7 @@ typedef struct GwPlayer_s {
     s16 capsuleUse;
     s8 blueMasuNum;
     s8 redMasuNum;
-    s8 donkeyMasuNum;
+    s8 capsuleMasuNum;
     s8 hatenaMasuNum;
     s8 kupaMasuNum;
     s8 m444MasuNum;
@@ -72,7 +72,7 @@ typedef struct GwPlayer_s {
     s8 kinokoMasuNum;
     s8 warpMasuNum;
     s8 starMasuNum;
-    s8 vsMasuNum;
+    s8 donkeyMasuNum;
     s16 coin;
     s16 coinTotalMg;
     s16 coinTotal;
@@ -106,7 +106,7 @@ typedef struct GwSystem_s {
     s8 last5Effect;
     s8 turnPlayerNo;
     u8 unk[3];
-    s16 saiHiddenPos;
+    s16 saiMasuNo;
     u32 mbSaveWork[8];
     u8 messDelay;
     u8 mgEvent : 4;

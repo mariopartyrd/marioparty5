@@ -39,6 +39,7 @@
 #define CAPSULE_NULL -1
 
 void MBCapsuleOpeningAdd(s32 capsuleNum);
+void MBCapsuleBowserAdd(void);
 void MBKettouMgEndExec(s32 playerNo);
 void MBCircuitKettouMgEndExec(s32 playerNo);
 void MBDonkeyMgEndExec(s32 playerNo);
@@ -46,5 +47,14 @@ void MBKupaMgEndExec(s32 playerNo);
 void MBCircuitKupaMgEndExec(s32 playerNo);
 void MBVsMgEndExec(s32 playerNo);
 void MBLast5Exec(void);
+void MBKupaExec(s32 playerNo);
+void MBDonkeyExec(s32 playerNo);
+
+void MB3MiracleGetExec(s32 playerNo);
+void MBCapMachineCreateAll(void);
+void MBCapMachineExec(int playerNo);
+int MBCapsuleMasuPatNoGet(int capsuleNo);
+BOOL MBCapsuleExec(s32 playerNo, int capsuleNo, BOOL circuitF, BOOL walkF);
+void MBSaiHiddenExec(s32 playerNo);
 
 #endif

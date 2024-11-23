@@ -5,6 +5,7 @@
 #include "game/process.h"
 #include "game/gamework.h"
 #include "game/data.h"
+#include "datanum/board.h"
 
 #define MBNO_WORLD_1 0
 #define MBNO_WORLD_2 1
@@ -16,6 +17,12 @@
 #define MBNO_TUTORIAL 7
 #define MBNO_CIRCUIT 8
 #define MBNO_MAX 9
+
+#define MB_LAST5_EFF_NONE 0
+#define MB_LAST5_EFF_COINMUL 1
+#define MB_LAST5_EFF_RANDCAPSULE 2
+#define MB_LAST5_EFF_REDBOWSER 3
+#define MB_LAST5_EFF_5STAR 4
 
 typedef void (*MBCREATEHOOK)(void);
 typedef void (*MBKILLHOOK)(void);
@@ -34,6 +41,9 @@ static inline s32 MBBoardNoGet(void)
 #define MBDelObj(obj) omDelObj(HuPrcCurrentGet(), obj)
 
 #define MBPrcCreate(func, prio, stackSize) HuPrcChildCreate(func, prio, stackSize, 0, mbMainProcess)
+
+//Translate data numbers in board.bin
+#define MBDATANUM(dataNum) (dataNum)
 
 void MBPauseWatchProcCreate(void);
 void MBPauseWatchProcStop(void);
