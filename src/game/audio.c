@@ -356,7 +356,7 @@ static u8 streamVol[HUAUD_STREAM_MAX];
 int HuAudSStreamChanPlay(s16 streamId, s16 chanNo)
 {
     if(musicOffF || omSysExitReq) {
-        return MSM_STREAM_NONE;
+        return MSM_STREAMNO_NONE;
     }
     if(msmStreamGetStatus(chanNo) != MSM_STREAM_DONE) {
         HUPROCESS *process;

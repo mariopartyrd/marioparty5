@@ -2,6 +2,7 @@
 #define _BOARD_PLAYER_H
 
 #include "game/board/model.h"
+#include "game/board/audio.h"
 #include "game/gamework.h"
 #include "game/charman.h"
 
