@@ -111,7 +111,7 @@ void MBObjectSetup(s32 boardNo, MBCREATEHOOK createHook, MBKILLHOOK killHook)
         MBStarFlagInit();
         MBStarNextNoSet(0);
         GwSystem.starTotal = 0;
-        GwSystem.last5Effect = 0;
+        GwSystem.last5Effect = MB_LAST5_EFF_NONE;
         _ClearFlag(FLAG_BOARD_DEBUG);
         _ClearFlag(FLAGNUM(FLAG_GROUP_BOARD, 3));
         _ClearFlag(FLAG_BOARD_NOMG);
@@ -401,7 +401,7 @@ static void CreateMB(void)
     MBStarInit();
     MBLightSet();
     CharModelDataClose(CHARNO_NONE);
-    if(GwSystem.last5Effect == 3 && MBBoardNoGet() != MBNO_WORLD_7) {
+    if(GwSystem.last5Effect == MB_LAST5_EFF_REDBOWSER && MBBoardNoGet() != MBNO_WORLD_7) {
         MBMasuTypeChange(MASU_TYPE_RED, MASU_TYPE_KUPA);
     }
     MBTauntInit();
@@ -561,7 +561,7 @@ void MBPartySaveInit(s32 boardNo)
     _ClearFlag(FLAG_MG_PRACTICE);
     GwSystem.mgNo = 0;
     GwSystem.subGameNo = 0;
-    GwSystem.saiHiddenPos = 0;
+    GwSystem.saiMasuNo = 0;
     memset(&GwSystem.mbSaveWork[0], 0, sizeof(GwSystem.mbSaveWork));
     GwSystem.turnNo = 1;
     for(i=0; i<GW_PLAYER_MAX; i++) {
@@ -580,8 +580,8 @@ void MBPartySaveInit(s32 boardNo)
         GwPlayer[i].m444MasuNum = 0;
         GwPlayer[i].warpMasuNum = 0;
         GwPlayer[i].starMasuNum = 0;
-        GwPlayer[i].vsMasuNum = 0;
         GwPlayer[i].donkeyMasuNum = 0;
+        GwPlayer[i].capsuleMasuNum = 0;
         GwPlayer[i].coinTotalMg = 0;
         GwPlayer[i].coinTotal = 0;
         GwPlayer[i].coinMax = 0;
