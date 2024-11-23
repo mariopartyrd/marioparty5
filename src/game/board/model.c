@@ -1,9 +1,8 @@
 #include "game/board/main.h"
 #include "game/board/model.h"
-#include "game/memory.h"
+#include "game/board/audio.h"
 
-//Move to board/audio.h
-int MBAudFXPosPlay(s16 seNo, HuVecF *pos);
+#include "game/memory.h"
 
 typedef struct ModelManWork_s {
     u8 kill : 1;

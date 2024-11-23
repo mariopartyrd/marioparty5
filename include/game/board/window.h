@@ -3,6 +3,7 @@
 
 #include "game/window.h"
 #include "game/process.h"
+#include "game/pad.h"
 
 #define MBWIN_MAX 16
 

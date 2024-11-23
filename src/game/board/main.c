@@ -10,6 +10,8 @@
 #include "game/sprite.h"
 #include "game/charman.h"
 #include "game/audio.h"
+#include "game/board/audio.h"
+
 #include "game/disp.h"
 
 #include "humath.h"
@@ -33,14 +35,12 @@ void MBCircuitMgEndExec(s32 playerNo);
 void MBCircuitExec(BOOL turnIntrF);
 void MBCircuitReset(void);
 void MBTelopLast5Create(void);
-void MBMusMainPlay(void);
 void MBTurnExecParty(BOOL turnIntrF);
 void MBMgExec(void);
 void MBTurnExecStory(BOOL turnIntrF);
 void MBStoryEndProcExec(void);
 void MBMgDataDirClose(void);
 
-void MBAudInit(void);
 void MBPauseInit(void);
 void MBWinInit(void);
 void MBGateInit(void);
@@ -54,7 +54,6 @@ void MBStarInit(void);
 void MBTauntInit(void);
 
 void MBTauntKill(void);
-void MBAudKill(void);
 void MBSaiClose(void);
 void MBStarClose(void);
 void MBCoinClose(void);
@@ -415,7 +414,7 @@ static void KillMB(void)
         return;
     }
     MBTauntKill();
-    MBAudKill();
+    MBAudClose();
     HuAudAllStop();
     MBSaiClose();
     MBStatusClose();

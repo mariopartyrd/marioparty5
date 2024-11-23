@@ -4,6 +4,7 @@
 #include "game/board/camera.h"
 #include "game/board/tutorial.h"
 #include "game/board/status.h"
+#include "game/board/audio.h"
 
 #include "game/sprite.h"
 
@@ -27,7 +28,6 @@ void MBMasuStarExec(int playerNo, int masuId);
 s16 MBCoinDispCreate(HuVecF *pos, int coinNum, BOOL playSe);
 s32 MBCoinAddExec(s32 playerNo, int counNum);
 BOOL MBCoinDispCheck(s16 no);
-s32 MBAudFXPlay(int seId);
 
 static u8 masuPathVisitF[MASU_MAX];
 static s16 masuDonkeyTbl[MASU_DONKEY_MAX];
