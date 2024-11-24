@@ -184,31 +184,9 @@ OMOVLHIS *omOvlHisGet(s32 hisOfs)
     return &omovlhis[omovlhisidx-hisOfs];
 }
 
-#define OMOBJGRP_MAX 10
-#define OMOBJ_NONE -1
-
-typedef struct omObjGrp_s {
-    u16 memberNo;
-    u16 objMax;
-    u16 objNum;
-    u16 *memberNext;
-    OMOBJ **memberList;
-} OMOBJGRP;
-
-typedef struct omObjWork_s {
-    s16 objMax;
-    s16 objIdx;
-    s16 objNext;
-    s16 objLast;
-    s16 objFirst;
-    OMOBJ *objData;
-    OMOBJGRP *grpData;
-} OMOBJWORK;
-
 static void omMain(void);
 
 static void omDestroyObjMan(void);
-
 
 OMOBJMAN *omInitObjMan(s16 objMax, s32 objManPrio)
 {
@@ -228,14 +206,14 @@ OMOBJMAN *omInitObjMan(s16 objMax, s32 objManPrio)
     objMan->destructor = omDestroyObjMan;
     objWork->objIdx = 0;
     objWork->objNext = 0;
-    objWork->objLast = OMOBJ_NONE;
-    objWork->objFirst = OMOBJ_NONE;
+    objWork->objLast = OM_OBJ_NONE;
+    objWork->objFirst = OM_OBJ_NONE;
     objWork->objData = objData = HuMemDirectMallocNum(HUHEAPTYPE_HEAP, sizeof(OMOBJ)*objMax, HU_MEMNUM_OVL);
-    objWork->grpData = grpData = HuMemDirectMallocNum(HUHEAPTYPE_HEAP, sizeof(OMOBJGRP)*OMOBJGRP_MAX, HU_MEMNUM_OVL);
+    objWork->grpData = grpData = HuMemDirectMallocNum(HUHEAPTYPE_HEAP, sizeof(OMOBJGRP)*OM_GRP_MAX, HU_MEMNUM_OVL);
     for(i=0; i<objMax; i++) {
         OMOBJ *obj = &objData[i];
         obj->stat = OM_STAT_DELETED;
-        obj->prio = obj->prev = obj->next = OMOBJ_NONE;
+        obj->prio = obj->prev = obj->next = OM_OBJ_NONE;
         obj->mode = 0;
         obj->trans.x = obj->trans.y = obj->trans.z = obj->rot.x = obj->rot.y = obj->rot.z = 0;
         obj->scale.x = obj->scale.y = obj->scale.z = 1;
@@ -245,7 +223,7 @@ OMOBJMAN *omInitObjMan(s16 objMax, s32 objManPrio)
         obj->mtncnt = 0;
         obj->mtnId = NULL;
     }
-    for(i=0; i<OMOBJGRP_MAX; i++) {
+    for(i=0; i<OM_GRP_MAX; i++) {
         grpData[i].objMax = 0;
         grpData[i].objNum = 0;
         grpData[i].memberNo = 0;
@@ -264,7 +242,7 @@ static void omDestroyObjMan(void)
 {
     OMOBJMAN *objMan = HuPrcCurrentGet();
     OMOBJWORK *objWork = objMan->property;
-    objWork->objLast = OMOBJ_NONE;
+    objWork->objLast = OM_OBJ_NONE;
     OSReport("objman>Destory ObjMan\n");
 }
 
@@ -330,31 +308,31 @@ static void omInsertObj(OMOBJMAN *objMan, OMOBJ *obj)
     s16 next;
     s16 prev;
     OMOBJ *objNextP;
-    if(objWork->objFirst == OMOBJ_NONE) {
-        obj->prev = OMOBJ_NONE;
-        obj->next = OMOBJ_NONE;
+    if(objWork->objFirst == OM_OBJ_NONE) {
+        obj->prev = OM_OBJ_NONE;
+        obj->next = OM_OBJ_NONE;
         objWork->objFirst = objNext;
         objWork->objLast = objNext;
         return;
     }
-    for(next=objWork->objFirst; next != OMOBJ_NONE; next = objNextP->next) {
+    for(next=objWork->objFirst; next != OM_OBJ_NONE; next = objNextP->next) {
         objNextP = &objData[next];
         if(objNextP->prio <= prio) {
             break;
         }
         prev = next;
     }
-    if(next != OMOBJ_NONE) {
+    if(next != OM_OBJ_NONE) {
         obj->prev = objNextP->prev;
         obj->next = next;
-        if(objNextP->prev != OMOBJ_NONE) {
+        if(objNextP->prev != OM_OBJ_NONE) {
             objData[objNextP->prev].next = objNext;
         } else {
             objWork->objFirst = objNext;
         }
         objNextP->prev = objNext;
     } else {
-        obj->next = OMOBJ_NONE;
+        obj->next = OM_OBJ_NONE;
         obj->prev = prev;
         objNextP->next = objNext;
         objWork->objLast = objNext;
@@ -413,7 +391,7 @@ void omDelObjEx(OMOBJMAN *objMan, OMOBJ *obj)
             objWork->objLast = objData[obj->prev].objNext;
         }
     } else {
-        objWork->objFirst = objWork->objLast = OMOBJ_NONE;
+        objWork->objFirst = objWork->objLast = OM_OBJ_NONE;
     }
     obj->nextNo = objWork->objNext;
     objWork->objNext = objNext;
@@ -519,14 +497,14 @@ static void omMain(void)
             print8(16, 32+(40*scale), scale, BLACK_SHADOW "D:%08lX(%ld)", HuMemUsedMallocSizeGet(HUHEAPTYPE_DVD), HuMemUsedMallocBlockGet(HUHEAPTYPE_DVD));
         }
         objIdx = objWork->objLast;
-        while(objIdx != OMOBJ_NONE) {
+        while(objIdx != OM_OBJ_NONE) {
             OMOBJ *obj = &objData[objIdx];
             objIdx = obj->prev;
             if((obj->stat & (OM_STAT_DELETED|OM_STAT_DISABLED)) == 0) {
                 if(obj->objFunc != NULL && (obj->stat & (0x40|0x8|OM_STAT_PAUSED)) == 0) {
                     obj->objFunc(obj);
                 }
-                if(omcurovl == DLL_NONE || objWork->objLast == OMOBJ_NONE) {
+                if(omcurovl == DLL_NONE || objWork->objLast == OM_OBJ_NONE) {
                     break;
                 }
                 if((obj->stat & (OM_STAT_DELETED|OM_STAT_DISABLED)) == 0) {

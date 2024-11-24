@@ -5,6 +5,7 @@
 #include "game/board/tutorial.h"
 #include "game/board/status.h"
 #include "game/board/audio.h"
+#include "game/board/pause.h"
 
 #include "game/sprite.h"
 
@@ -23,7 +24,6 @@ void MBPathFlagInit(void);
 u32 MBPathFlagGet(void);
 void MBGateCreate(void);
 void MBStarNumSet(int starNum);
-void MBPauseEnableSet(BOOL flag);
 void MBMasuStarExec(int playerNo, int masuId);
 s16 MBCoinDispCreate(HuVecF *pos, int coinNum, BOOL playSe);
 s32 MBCoinAddExec(s32 playerNo, int counNum);
@@ -514,7 +514,7 @@ static BOOL CheckMasuCapMachine(MASU *masuP);
 BOOL MBMasuWalkExec(int playerNo, int masuId)
 {
     MASU *masuP;
-    MBPauseEnableSet(TRUE);
+    MBPauseDisableSet(TRUE);
     masuP = MBMasuGet(MASU_LAYER_DEFAULT, masuId);
     if(MBMasuStarCheck(masuP)) {
         if(GWPartyFGet() != FALSE) {
@@ -529,7 +529,7 @@ BOOL MBMasuWalkExec(int playerNo, int masuId)
     } else if(masuP->type == MASU_TYPE_DONKEY) {
         MBPlayerVoicePanPlay(playerNo, MSM_SE_GUIDE_31);
     }
-    MBPauseEnableSet(FALSE);
+    MBPauseDisableSet(FALSE);
     return FALSE;
 }
 
@@ -1027,9 +1027,9 @@ int MBMasuWalkPostExec(int playerNo)
 {
     int result = FALSE;
     if(masuWalkPostHook) {
-        MBPauseEnableSet(TRUE);
+        MBPauseDisableSet(TRUE);
         result = masuWalkPostHook(playerNo);
-        MBPauseEnableSet(FALSE);
+        MBPauseDisableSet(FALSE);
     }
     return result;
 }
@@ -1038,9 +1038,9 @@ int MBMasuWalkPreExec(int playerNo)
 {
     int result = -1;
     if(masuWalkPreHook) {
-        MBPauseEnableSet(TRUE);
+        MBPauseDisableSet(TRUE);
         result = masuWalkPreHook(playerNo);
-        MBPauseEnableSet(FALSE);
+        MBPauseDisableSet(FALSE);
     }
     return result;
 }

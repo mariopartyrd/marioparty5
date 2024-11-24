@@ -361,7 +361,7 @@ static inline void GWMessSpeedSet(s32 value)
 
 static inline s32 GWMgPackGet(void)
 {
-    if (GwSystem.mgPack == 5) {
+    if (GwSystem.mgPack >= 5) {
         GwSystem.mgPack = 0;
     }
     return GwSystem.mgPack;

@@ -1,14 +1,10 @@
 #include "game/board/main.h"
+#include "game/board/pause.h"
 #include "game/armem.h"
 #include "game/wipe.h"
 #include "game/flag.h"
 #include "game/sprite.h"
 #include "game/hu3d.h"
-
-//Move to board/pause.h
-s32 MBPauseStartCheck(void);
-void MBPauseProcCreate(s32 playerNo);
-void MBPauseFlagReset(void);
 
 static BOOL killF;
 static BOOL killSendF;

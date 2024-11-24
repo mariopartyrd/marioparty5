@@ -1,15 +1,12 @@
 #include "game/board/window.h"
 #include "game/board/main.h"
 #include "game/board/player.h"
+#include "game/board/pause.h"
 
 #include "game/disp.h"
 
 #include "game/flag.h"
 #include "game/gamework.h"
-
-//Move to board/pause.h
-typedef void (*MBPAUSEHOOK)(BOOL dispF);
-void MBPauseHookPush(MBPAUSEHOOK hook);
 
 static u8 winStack[MBWIN_MAX];
 static s8 winChoice[MBWIN_MAX];

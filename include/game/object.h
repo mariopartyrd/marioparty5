@@ -29,6 +29,27 @@ typedef HUPROCESS OMOBJMAN;
 typedef struct omObj_s OMOBJ;
 typedef void (*OMOBJFUNC)(OMOBJ *obj);
 
+#define OM_GRP_MAX 10
+#define OM_OBJ_NONE -1
+
+typedef struct omObjGrp_s {
+    u16 memberNo;
+    u16 objMax;
+    u16 objNum;
+    u16 *memberNext;
+    OMOBJ **memberList;
+} OMOBJGRP;
+
+typedef struct omObjWork_s {
+    s16 objMax;
+    s16 objIdx;
+    s16 objNext;
+    s16 objLast;
+    s16 objFirst;
+    OMOBJ *objData;
+    OMOBJGRP *grpData;
+} OMOBJWORK;
+
 struct omObj_s {
     u16 stat;
     s16 objNext;
