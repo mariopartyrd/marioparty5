@@ -410,7 +410,7 @@ config.libs = [
             Object(NonMatching, "game/board/sai.c"),
             Object(NonMatching, "game/board/status.c"),
             Object(NonMatching, "game/board/opening.c"),
-            Object(NonMatching, "game/board/pause.c"),
+            Object(Matching, "game/board/pause.c"),
             Object(NonMatching, "game/board/tutorial.c"),
             Object(NonMatching, "game/board/roulette.c"),
             Object(NonMatching, "game/board/capmachine.c"),

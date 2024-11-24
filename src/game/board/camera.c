@@ -737,7 +737,7 @@ void MBCameraModelKeySet(MBMODELID modelId, MBCAMERAVIEWKEY *key1, MBCAMERAVIEWK
 
 void MBCameraMasuViewSet(s16 masuId, HuVecF *rot, HuVecF *offset, float zoom, float fov, s16 maxTime)
 {
-    if(masuId == MASU_NONE) {
+    if(masuId == MASU_NULL) {
         MBCameraPosViewSet(NULL, rot, offset, zoom, fov, maxTime);
     } else {
         HuVecF pos;

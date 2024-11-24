@@ -5,6 +5,7 @@
 #include "game/board/masu.h"
 #include "game/board/model.h"
 #include "game/board/player.h"
+#include "game/board/pause.h"
 
 #include "game/saveload.h"
 #include "game/sprite.h"
@@ -16,11 +17,9 @@
 
 #include "humath.h"
 
-
 #include "game/flag.h"
 
 //Prototypes for board functions
-void MBPauseEnableSet(BOOL flag);
 void MBStarFlagInit(void);
 void MBStarNextNoSet(s8 nextNo);
 void MBMgInit(void);
@@ -41,7 +40,6 @@ void MBTurnExecStory(BOOL turnIntrF);
 void MBStoryEndProcExec(void);
 void MBMgDataDirClose(void);
 
-void MBPauseInit(void);
 void MBWinInit(void);
 void MBGateInit(void);
 void MBGuideInit(void);
@@ -82,7 +80,7 @@ static void DestroyMBMainProc(void);
 void MBObjectSetup(s32 boardNo, MBCREATEHOOK createHook, MBKILLHOOK killHook)
 {
     omSysPauseEnable(FALSE);
-    MBPauseEnableSet(TRUE);
+    MBPauseDisableSet(TRUE);
     if(!_CheckFlag(FLAG_BOARD_SAVEINIT)) {
         if(!_CheckFlag(FLAG_BOARD_TUTORIAL) && !_CheckFlag(FLAG_MG_CIRCUIT)) {
             if(GWPartyFGet() == TRUE) {
@@ -367,9 +365,9 @@ static void CreateMB(void)
         GWSaveModeSet(1);
     }
     if(GWMgInstFGet()) {
-        _SetFlag(FLAG_MGINST_OFF);
+        _SetFlag(FLAG_MGINST_ON);
     } else {
-        _ClearFlag(FLAG_MGINST_OFF);
+        _ClearFlag(FLAG_MGINST_ON);
     }
     if(!MBEventMgCheck()) {
         _ClearFlag(FLAG_BOARD_MG);
@@ -615,7 +613,7 @@ void MBStorySaveInit(s32 mgPack, s32 storyDif)
     _ClearFlag(FLAG_STORY_MAP6_COMPLETE);
     _ClearFlag(FLAG_BOARD_TUTORIAL);
     _ClearFlag(FLAG_MG_CIRCUIT);
-    _SetFlag(FLAG_MGINST_OFF);
+    _SetFlag(FLAG_MGINST_ON);
     _SetFlag(FLAGNUM(FLAG_GROUP_COMMON, 13));
     _ClearFlag(FLAG_DECA_INST);
 }
@@ -634,7 +632,7 @@ void MBPlayerSaveInit(BOOL teamF, BOOL bonusStarF, s32 mgPack, s32 turnMax, s32 
     MBPlayerHandicapSet(3, handicapP4);
     _ClearFlag(FLAG_BOARD_TUTORIAL);
     _ClearFlag(FLAG_MG_CIRCUIT);
-    _SetFlag(FLAG_MGINST_OFF);
+    _SetFlag(FLAG_MGINST_ON);
     _SetFlag(FLAGNUM(FLAG_GROUP_COMMON, 13));
     _ClearFlag(FLAG_DECA_INST);
 }
