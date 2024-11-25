@@ -4,10 +4,6 @@
 
 #define FAKE_RETADDR 0xA5A5A5A5
 
-#define EXEC_NORMAL 0
-#define EXEC_SLEEP 1
-#define EXEC_CHILDWATCH 2
-#define EXEC_KILLED 3
 
 static jmp_buf processjmpbuf;
 static HUPROCESS *processtop;
@@ -73,7 +69,7 @@ HUPROCESS *HuPrcCreate(void (*func)(void), u16 prio, u32 stackSize, s32 heapSize
     HuMemHeapInit(heap, allocSize);
     process = HuMemMemoryAlloc(heap, sizeof(HUPROCESS), FAKE_RETADDR);
     process->heap = heap;
-    process->exec = EXEC_NORMAL;
+    process->exec = HUPRC_EXEC_NORMAL;
     process->stat = 0;
     process->prio = prio;
     process->sleep = 0;
@@ -128,7 +124,7 @@ void HuPrcChildWatch()
 {
     HUPROCESS *curr = HuPrcCurrentGet();
     if(curr->child) {
-        curr->exec = EXEC_CHILDWATCH;
+        curr->exec = HUPRC_EXEC_CHILDWATCH;
         if(!gcsetjmp(&curr->jump)) {
             gclongjmp(&processjmpbuf, 1);
         }
@@ -142,9 +138,9 @@ HUPROCESS *HuPrcCurrentGet()
 
 static s32 SetKillStatusProcess(HUPROCESS *process)
 {
-    if(process->exec != EXEC_KILLED) {
+    if(process->exec != HUPRC_EXEC_KILLED) {
         HuPrcWakeup(process);
-        process->exec = EXEC_KILLED;
+        process->exec = HUPRC_EXEC_KILLED;
         return 0;
     } else {
         return -1;
@@ -195,8 +191,8 @@ void HuPrcEnd()
 void HuPrcSleep(s32 time)
 {
     HUPROCESS *process = HuPrcCurrentGet();
-    if(time != 0 && process->exec != EXEC_KILLED) {
-        process->exec = EXEC_SLEEP;
+    if(time != 0 && process->exec != HUPRC_EXEC_KILLED) {
+        process->exec = HUPRC_EXEC_SLEEP;
         process->sleep = time;
     }
     if(!gcsetjmp(&process->jump)) {
@@ -249,34 +245,34 @@ void HuPrcCall(s32 tick)
             return;
         }
         procfunc = process->jump.lr;
-        if((process->stat & (HU_PRC_STAT_PAUSE|HU_PRC_STAT_UPAUSE)) && process->exec != EXEC_KILLED) {
+        if((process->stat & (HU_PRC_STAT_PAUSE|HU_PRC_STAT_UPAUSE)) && process->exec != HUPRC_EXEC_KILLED) {
             ret = 1;
             continue;
         }
         switch(process->exec) {
-            case EXEC_SLEEP:
+            case HUPRC_EXEC_SLEEP:
                 if(process->sleep > 0) {
                     process->sleep -= tick;
                     if(process->sleep <= 0) {
                         process->sleep = 0;
-                        process->exec = EXEC_NORMAL;
+                        process->exec = HUPRC_EXEC_NORMAL;
                     }
                 }
                 ret = 1;
                 break;
                 
-            case EXEC_CHILDWATCH:
+            case HUPRC_EXEC_CHILDWATCH:
                 if(process->child) {
                     ret = 1;
                 } else {
-                    process->exec = EXEC_NORMAL;
+                    process->exec = HUPRC_EXEC_NORMAL;
                     ret = 0;
                 }
                 break;
                 
-            case EXEC_KILLED:
+            case HUPRC_EXEC_KILLED:
                 process->jump.lr = (u32)HuPrcEnd;
-            case EXEC_NORMAL:
+            case HUPRC_EXEC_NORMAL:
                 gclongjmp(&process->jump, 1);
                 break;
         }

@@ -27,10 +27,10 @@ void MBStarNoInit(void);
 void MBBankCoinReset(void);
 void MBCapsuleHookSet(void *func); //Fix input type as well
 void MBTutorialWatchProcCreate(void);
-s32 MBStarNoRandGet(void);
-void MBStarNoSet(s32 no);
+int MBStarNoRandGet(void);
+void MBStarNoSet(int no);
 void MBOpeningProcExec(void);
-void MBCircuitMgEndExec(s32 playerNo);
+void MBCircuitMgEndExec(int playerNo);
 void MBCircuitExec(BOOL turnIntrF);
 void MBCircuitReset(void);
 void MBTelopLast5Create(void);
@@ -77,7 +77,7 @@ static void DestroyMBObject(void);
 static void MBMainProc(void);
 static void DestroyMBMainProc(void);
 
-void MBObjectSetup(s32 boardNo, MBCREATEHOOK createHook, MBKILLHOOK killHook)
+void MBObjectSetup(int boardNo, MBCREATEHOOK createHook, MBKILLHOOK killHook)
 {
     omSysPauseEnable(FALSE);
     MBPauseDisableSet(TRUE);
@@ -179,7 +179,7 @@ static void DestroyMBObject(void)
 static void MBMainProc(void)
 {
     BOOL turnIntrF = FALSE;
-    s32 i;
+    int i;
     if(GwSystem.turnNo > GwSystem.turnMax && !_CheckFlag(FLAG_BOARD_TUTORIAL) && !_CheckFlag(FLAG_MG_CIRCUIT)) {
         MBPauseWatchProcStop();
         HuPrcSleep(-1);
@@ -192,7 +192,7 @@ static void MBMainProc(void)
     if(!_CheckFlag(FLAG_BOARD_OPENING)) {
         if(_CheckFlag(FLAG_BOARD_DEBUG) && !_CheckFlag(FLAG_BOARD_TUTORIAL)) {
             if(GWPartyFGet() == TRUE && !_CheckFlag(FLAG_MG_CIRCUIT)) {
-                s32 starNo = MBStarNoRandGet();
+                int starNo = MBStarNoRandGet();
                 if(starNo >= 0) {
                     MBStarNoSet(starNo);
                 }
@@ -222,7 +222,7 @@ static void MBMainProc(void)
                     }
                 } else {
                     for(i=0; i<2; i++) {
-                        MBPlayerTeamCoinSet(i, 20);
+                        MBPlayerGrpCoinSet(i, 20);
                     }
                 }
             } else {
@@ -312,7 +312,7 @@ static void MBMainProc(void)
                 HuPrcSleep(-1);
             }
         } else {
-            if(GwSystem.turnPlayerNo == MBPlayerStoryPlayerGet() || GwSystem.playerMode != 3) {
+            if(GwSystem.turnPlayerNo == MBPlayerStoryPlayerGet() || GwSystem.playerMode != MB_PLAYER_MODE_WALK) {
                 MBStatusDispForceSetAll(TRUE);
             }
             MBTurnExecStory(turnIntrF);
@@ -538,27 +538,15 @@ int fn_8008D460(void)
     return lbl_80288248;
 }
 
-//Move to more appropriate place
-static inline s32 MBPlayerHandicapGet(s32 playerNo)
+void MBPartySaveInit(int boardNo)
 {
-    return GwPlayer[playerNo].handicap;
-}
-
-//Move to more appropriate place
-static inline void MBPlayerHandicapSet(s32 playerNo, s32 handicap)
-{
-    GwPlayer[playerNo].handicap = handicap;
-}
-
-void MBPartySaveInit(s32 boardNo)
-{
-    s32 i, j;
+    int i, j;
     GwSystem.boardNo = boardNo;
     _ClearFlag(FLAG_BOARD_SAVEINIT);
     _ClearFlag(FLAG_MG_PRACTICE);
     GwSystem.mgNo = 0;
     GwSystem.subGameNo = 0;
-    GwSystem.saiMasuNo = 0;
+    GwSystem.saiMasuId = 0;
     memset(&GwSystem.mbSaveWork[0], 0, sizeof(GwSystem.mbSaveWork));
     GwSystem.turnNo = 1;
     for(i=0; i<GW_PLAYER_MAX; i++) {
@@ -592,7 +580,7 @@ void MBPartySaveInit(s32 boardNo)
     }
 }
 
-void MBStorySaveInit(s32 mgPack, s32 storyDif)
+void MBStorySaveInit(int mgPack, int storyDif)
 {
     GWPartyFSet(FALSE);
     GWTeamFSet(FALSE);
@@ -618,7 +606,7 @@ void MBStorySaveInit(s32 mgPack, s32 storyDif)
     _ClearFlag(FLAG_DECA_INST);
 }
 
-void MBPlayerSaveInit(BOOL teamF, BOOL bonusStarF, s32 mgPack, s32 turnMax, s32 handicapP1, s32 handicapP2, s32 handicapP3, s32 handicapP4)
+void MBPlayerSaveInit(BOOL teamF, BOOL bonusStarF, int mgPack, int turnMax, int handicapP1, int handicapP2, int handicapP3, int handicapP4)
 {
     GWPartyFSet(TRUE);
     GWTeamFSet(teamF);

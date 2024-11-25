@@ -577,7 +577,7 @@ BOOL MBMasuWalkEndExec(int playerNo, int masuId)
             }
             break;
     }
-    if(masuId == GwSystem.saiMasuNo) {
+    if(masuId == GwSystem.saiMasuId) {
         MBSaiHiddenExec(playerNo);
         MBMasuSaiHiddenSet();
     } else {
@@ -663,11 +663,11 @@ static void MasuCoinMain(int playerNo, int coinNum)
     dispId = MBCoinDispCreate(&pos, coinNum, FALSE);
     MBCameraMotionWait();
     if(coinNum >= 0) {
-        MBPlayerWinLoseVoicePlay(playerNo, 12, CHARVOICEID(5));
-        MBPlayerMotionNoShiftSet(playerNo, 12, 0, 4, HU3D_ATTR_NONE);
+        MBPlayerWinLoseVoicePlay(playerNo, MB_PLAYER_MOT_COINWIN, CHARVOICEID(5));
+        MBPlayerMotionNoShiftSet(playerNo, MB_PLAYER_MOT_COINWIN, 0, 4, HU3D_ATTR_NONE);
     } else {
-        MBPlayerWinLoseVoicePlay(playerNo, 13, CHARVOICEID(10));
-        MBPlayerMotionNoShiftSet(playerNo, 13, 0, 4, HU3D_ATTR_NONE);
+        MBPlayerWinLoseVoicePlay(playerNo, MB_PLAYER_MOT_COINLOSE, CHARVOICEID(10));
+        MBPlayerMotionNoShiftSet(playerNo, MB_PLAYER_MOT_COINLOSE, 0, 4, HU3D_ATTR_NONE);
     }
     MBCoinAddExec(playerNo, coinNum);
     for(doneF=FALSE; MBCoinDispCheck(dispId) == FALSE || doneF == FALSE;) {
@@ -689,7 +689,7 @@ static void MasuBlueMain(int playerNo)
 
 void MBMasuColorSet(int playerNo)
 {
-    MASU *masuP = MBMasuGet(MASU_LAYER_DEFAULT, GwPlayer[playerNo].masuNo);
+    MASU *masuP = MBMasuGet(MASU_LAYER_DEFAULT, GwPlayer[playerNo].masuId);
     int colorTbl[][2] = {
         MASU_TYPE_BLUE, STATUS_COLOR_BLUE,
         MASU_TYPE_RED, STATUS_COLOR_RED,
@@ -782,7 +782,7 @@ void MBMasuCapsuleSet(int layer, int id, int capsuleNo)
     if(id <= 0 || id > masuNum[layer]) {
         return;
     }
-    if(id == GwSystem.saiMasuNo) {
+    if(id == GwSystem.saiMasuId) {
         MBMasuSaiHiddenSet();
     }
     GwSystem.masuCapsule[id-1] = capsuleNo;
@@ -927,14 +927,14 @@ int MBMasuFlagMatchFind(int layer, u32 flag)
 
 int MBMasuFlagPosGet(int layer, u32 flag, HuVecF *pos)
 {
-    int masuNo = MBMasuFlagMatchFind(layer, flag);
-    if(masuNo == MASU_NULL) {
+    int masuId = MBMasuFlagMatchFind(layer, flag);
+    if(masuId == MASU_NULL) {
         return MASU_NULL;
     }
     if(pos) {
-        MBMasuPosGet(layer, masuNo, pos);
+        MBMasuPosGet(layer, masuId, pos);
     }
-    return masuNo;
+    return masuId;
 }
 
 int MBMasuFlagFindLink(int layer, int masuId, u32 flag, u32 mask)
@@ -1089,7 +1089,7 @@ void MBMasuSaiHiddenSet(void)
 {
     int no;
     int masuNum;
-    int *saiMasuNoTbl;
+    int *saiMasuIdTbl;
     int i;
     int saiMasuNum;
     
@@ -1097,26 +1097,26 @@ void MBMasuSaiHiddenSet(void)
         return;
     }
     if(GWPartyFGet() == FALSE || !GWBonusStarFGet()) {
-        GwSystem.saiMasuNo = MASU_NULL;
+        GwSystem.saiMasuId = MASU_NULL;
         return;
     }
     masuNum = MBMasuNumGet(MASU_LAYER_DEFAULT);
-    saiMasuNoTbl = HuMemDirectMallocNum(HUHEAPTYPE_HEAP, sizeof(int)*masuNum, HU_MEMNUM_OVL);
+    saiMasuIdTbl = HuMemDirectMallocNum(HUHEAPTYPE_HEAP, sizeof(int)*masuNum, HU_MEMNUM_OVL);
     saiMasuNum = 0;
     for(i=0; i<masuNum; i++) {
         MASU *masuP;
         no = i+1;
         masuP = MBMasuGet(MASU_LAYER_DEFAULT, no);
-        if(no != GwSystem.saiMasuNo && masuP->type == MASU_TYPE_BLUE && masuP->capsuleNo < 0) {
-            saiMasuNoTbl[saiMasuNum++] = no;
+        if(no != GwSystem.saiMasuId && masuP->type == MASU_TYPE_BLUE && masuP->capsuleNo < 0) {
+            saiMasuIdTbl[saiMasuNum++] = no;
         }
     }
     if(saiMasuNum == 0) {
-        GwSystem.saiMasuNo = MASU_NULL;
+        GwSystem.saiMasuId = MASU_NULL;
     } else {
-        GwSystem.saiMasuNo = saiMasuNoTbl[frandmod(saiMasuNum)];
+        GwSystem.saiMasuId = saiMasuIdTbl[frandmod(saiMasuNum)];
     }
-    HuMemDirectFree(saiMasuNoTbl);
+    HuMemDirectFree(saiMasuIdTbl);
 }
 
 void MBMasuEffSet(int masuId, int effNo)
@@ -1383,14 +1383,14 @@ BOOL MBMasuDispGet(void)
     return masuDispF;
 }
 
-s16 MBMasuCarTargetGet(s16 masuId, s16 linkNum)
+s16 MBMasuCarTargetGet(s16 masuId, s16 playerNo)
 {
     int i, j;
-    for(i=0; i<linkNum; i++) {
+    for(i=0; i<playerNo; i++) {
         MASU *masuP = MBMasuGet(MASU_LAYER_DEFAULT, masuId);
         for(j=0; j<masuP->linkNum; j++) {
             MASU *linkMasuP = MBMasuGet(MASU_LAYER_DEFAULT, masuP->linkTbl[j]);
-            if((linkMasuP->flag & MASU_FLAG_CARNEXT) == 0 && (linkMasuP->flag & MASU_FLAG_PATHBLOCK) == 0) {
+            if((linkMasuP->flag & MASU_FLAG_JUMPFROM) == 0 && (linkMasuP->flag & MASU_FLAG_PATHBLOCK) == 0) {
                 masuId = masuP->linkTbl[j];
                 break;
             }
@@ -1402,11 +1402,11 @@ s16 MBMasuCarTargetGet(s16 masuId, s16 linkNum)
 s16 MBMasuTargetGet(s16 masuId)
 {
     int i;
-    for(i=0; i<4; i++) {
+    for(i=0; i<GW_PLAYER_MAX; i++) {
         MASU *masuP = MBMasuGet(MASU_LAYER_DEFAULT, masuId);
         s16 linkTbl[MASU_LINK_MAX];
         int linkNum;
-        if(masuP->flag & MASU_FLAG_CARNEXT) {
+        if(masuP->flag & MASU_FLAG_JUMPFROM) {
             return masuId;
         }
         linkNum = MBMasuLinkTblGet(MASU_LAYER_DEFAULT, masuId, linkTbl);
@@ -1423,7 +1423,7 @@ s16 MBMasuCarNextGet(s16 masuId)
     int i;
     for(i=0; i<masuP->linkNum; i++) {
         MASU *linkMasuP = MBMasuGet(MASU_LAYER_DEFAULT, masuP->linkTbl[i]);
-        if(linkMasuP->flag & MASU_FLAG_CARNEXT) {
+        if(linkMasuP->flag & MASU_FLAG_JUMPFROM) {
             masuNext = masuP->linkTbl[i];
             break;
         }
@@ -1438,7 +1438,7 @@ s16 MBMasuCarPrevGet(s16 masuId)
     int i, j;
     for(i=0; i<masuNum[MASU_LAYER_DEFAULT]; i++, masuP++) {
         for(j=0; j<masuP->linkNum; j++) {
-            if(masuP->linkTbl[j] == masuTarget && (masuP->flag & MASU_FLAG_CARNEXT)) {
+            if(masuP->linkTbl[j] == masuTarget && (masuP->flag & MASU_FLAG_JUMPFROM)) {
                 return (masuP-&masuData[MASU_LAYER_DEFAULT][0])+1;
             }
         }
@@ -1448,14 +1448,14 @@ s16 MBMasuCarPrevGet(s16 masuId)
 
 s16 MBMasuDonkeySet(s16 no)
 {
-    s16 masuNo;
+    s16 masuId;
     if(no < 0) {
         return;
     }
-    masuNo = masuDonkeyTbl[no];
-    MBMasuTypeSet(MASU_LAYER_DEFAULT, masuNo, MASU_TYPE_DONKEY);
-    MBMasuCapsuleSet(MASU_LAYER_DEFAULT, masuNo, CAPSULE_DONKEY);
-    return masuNo;
+    masuId = masuDonkeyTbl[no];
+    MBMasuTypeSet(MASU_LAYER_DEFAULT, masuId, MASU_TYPE_DONKEY);
+    MBMasuCapsuleSet(MASU_LAYER_DEFAULT, masuId, CAPSULE_DONKEY);
+    return masuId;
 }
 
 s16 MBMasuDonkeyGet(s16 no)

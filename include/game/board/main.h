@@ -32,7 +32,7 @@ typedef void (*MBTURNHOOK)(void);
 extern OMOBJMAN *mbObjMan;
 extern HUPROCESS *mbMainProcess;
 
-static inline s32 MBBoardNoGet(void)
+static inline int MBBoardNoGet(void)
 {
 	return GwSystem.boardNo;
 }
@@ -49,7 +49,7 @@ void MBPauseWatchProcCreate(void);
 void MBPauseWatchProcStop(void);
 BOOL MBKillCheck(void);
 HUPROCESS *MBPauseWatchProcGet(void);
-void MBObjectSetup(s32 boardNo, MBCREATEHOOK createHook, MBKILLHOOK killHook);
+void MBObjectSetup(int boardNo, MBCREATEHOOK createHook, MBKILLHOOK killHook);
 void MBOvlGoto(OMOVL ovl);
 BOOL MBEventMgCheck(void);
 void MBDataClose(void);
@@ -67,9 +67,9 @@ void fn_8008D448(int value);
 void fn_8008D450(int value);
 int fn_8008D458(void);
 int fn_8008D460(void);
-void MBPartySaveInit(s32 boardNo);
-void MBStorySaveInit(s32 mgPack, s32 storyDif);
-void MBPlayerSaveInit(BOOL teamF, BOOL bonusStarF, s32 mgPack, s32 turnMax, s32 handicapP1, s32 handicapP2, s32 handicapP3, s32 handicapP4);
+void MBPartySaveInit(int boardNo);
+void MBStorySaveInit(int mgPack, int storyDif);
+void MBPlayerSaveInit(BOOL teamF, BOOL bonusStarF, int mgPack, int turnMax, int handicapP1, int handicapP2, int handicapP3, int handicapP4);
 float MBVecDistXZ(HuVecF *a, HuVecF *b);
 BOOL MBVecDistXZCheck(HuVecF *a, HuVecF *b, float maxDist);
 float MBAngleWrap(float angle);

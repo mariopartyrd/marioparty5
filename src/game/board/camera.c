@@ -542,7 +542,7 @@ int MBCameraViewNoGet(void)
     return motP->viewNo;
 }
 
-void MBCameraViewNoSet(s32 playerNo, int viewNo)
+void MBCameraViewNoSet(int playerNo, int viewNo)
 {
     MBCAMERA *cameraP = MBCameraGet();
     MBCAMERAMOTION *motP = &cameraP->motion;
@@ -575,13 +575,13 @@ void MBCameraSpeedSet(float speed)
     }
 }
 
-void MBCameraFocusPlayerAdd(s32 playerNo)
+void MBCameraFocusPlayerAdd(int playerNo)
 {
     MBCameraFocusAdd(MBPlayerModelGet(playerNo));
     MBCameraOffsetSet(0, 100, 0);
 }
 
-void MBCameraFocusPlayerSet(s32 playerNo)
+void MBCameraFocusPlayerSet(int playerNo)
 {
     MBCAMERA *cameraP = MBCameraGet();
     cameraP->focusNum = 0;
@@ -608,7 +608,7 @@ void MBCameraFocusSet(MBMODELID modelId)
     }
 }
 
-void MBCameraFocusMasuAdd(s32 masuId)
+void MBCameraFocusMasuAdd(int masuId)
 {
     MBCAMERA *cameraP = MBCameraGet();
     cameraP->focus[cameraP->focusNum].type = MB_CAMERA_FOCUS_MASU;
@@ -617,7 +617,7 @@ void MBCameraFocusMasuAdd(s32 masuId)
     cameraP->offset.x = cameraP->offset.y = cameraP->offset.z = 0;
 }
 
-void MBCameraFocusMasuSet(s32 masuId)
+void MBCameraFocusMasuSet(int masuId)
 {
     MBCAMERA *cameraP = MBCameraGet();
     cameraP->focusNum = 0;
@@ -747,7 +747,7 @@ void MBCameraMasuViewSet(s16 masuId, HuVecF *rot, HuVecF *offset, float zoom, fl
     }
 }
 
-void MBCameraQuakeSet(s32 maxTime, float power)
+void MBCameraQuakeSet(int maxTime, float power)
 {
     MBCAMERA *cameraP = MBCameraGet();
     cameraP->quake = TRUE;
@@ -828,10 +828,10 @@ void MBCameraLookAtGetInv(Mtx lookAtInv)
 void MBCameraFocusPlayerAddAll(void)
 {
     MBCAMERA *cameraP = MBCameraGet();
-    s32 comNum;
+    int comNum;
     MBCAMERAMOTION *motP;
-    s32 comPlayer[GW_PLAYER_MAX];
-    s32 i;
+    int comPlayer[GW_PLAYER_MAX];
+    int i;
     motP = &cameraP->motion;
     comNum = MBPlayerAliveComGet(comPlayer);
     if(comNum == 0) {
@@ -855,11 +855,11 @@ void MBCameraFocusPlayerAddAll(void)
 void MBCameraPointFocusSet(HuVecF *rot, HuVecF *offset, float fov, s16 maxTime)
 {
     MBCAMERA *cameraP = MBCameraGet();
-    s32 comNum;
+    int comNum;
     MBCAMERAMOTION *motP;
-    s32 comPlayer[GW_PLAYER_MAX];
+    int comPlayer[GW_PLAYER_MAX];
     HuVecF pos;
-    s32 i;
+    int i;
     float zoom;
     motP = &cameraP->motion;
     comNum = MBPlayerAliveComGet(comPlayer);

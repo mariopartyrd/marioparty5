@@ -244,7 +244,7 @@ void GWCharPlayNumSet(s32 charNo, s32 boardNo, s32 value)
     GwCommon.charPlayNum[boardNo][charNo] = value;
 }
 
-s32 GWMgUnlockGet(s32 mgNo)
+BOOL GWMgUnlockGet(s32 mgNo)
 {
     s32 word;
     s32 bit;
@@ -252,9 +252,9 @@ s32 GWMgUnlockGet(s32 mgNo)
     word = mgNo >> 5;
     bit = mgNo % 32;
     if(GwCommon.mgUnlock[word] & (1 << bit)) {
-        return 1;
+        return TRUE;
     } else {
-        return 0;
+        return FALSE;
     }
 }
 
@@ -268,7 +268,7 @@ void GWMgUnlockSet(s32 mgNo)
     GwCommon.mgUnlock[word] |= (1 << bit);
 }
 
-s32 GWMgCustomGet(s32 mgNo)
+BOOL GWMgCustomGet(s32 mgNo)
 {
     
 }
@@ -283,12 +283,12 @@ void GWMgCustomReset(s32 mgNo)
     
 }
 
-s16 GWPlayerCoinGet(s32 playerNo)
+s16 GWPlayerCoinGet(int playerNo)
 {
     return GwPlayer[playerNo].coin;
 }
 
-void GWPlayerCoinSet(s32 playerNo, s16 coin)
+void GWPlayerCoinSet(int playerNo, s16 coin)
 {
     if(_CheckFlag(FLAG_MG_PRACTICE)) {
         return;
@@ -305,12 +305,12 @@ void GWPlayerCoinSet(s32 playerNo, s16 coin)
     GwPlayer[playerNo].coin = coin;
 }
 
-void GWPlayerCoinAdd(s32 playerNo, s16 coin)
+void GWPlayerCoinAdd(int playerNo, s16 coin)
 {
     GWPlayerCoinSet(playerNo, coin+GwPlayer[playerNo].coin);
 }
 
-void GWPlayerStarSet(s32 playerNo, s16 star)
+void GWPlayerStarSet(int playerNo, s16 star)
 {
     if(star < 0) {
         star = 0;
@@ -324,12 +324,12 @@ void GWPlayerStarSet(s32 playerNo, s16 star)
     GwPlayer[playerNo].star = star;
 }
 
-void GWPlayerStarAdd(s32 playerNo, s16 star)
+void GWPlayerStarAdd(int playerNo, s16 star)
 {
     GWPlayerStarSet(playerNo, star+GwPlayer[playerNo].star);
 }
 
-s16 GWPlayerStarGet(s32 playerNo)
+s16 GWPlayerStarGet(int playerNo)
 {
     return GwPlayer[playerNo].star;
 }

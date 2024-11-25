@@ -9,6 +9,12 @@
 #define HU_PRC_STAT_PAUSE_ON 0x4
 #define HU_PRC_STAT_UPAUSE_ON 0x8
 
+
+#define HUPRC_EXEC_NORMAL 0
+#define HUPRC_EXEC_SLEEP 1
+#define HUPRC_EXEC_CHILDWATCH 2
+#define HUPRC_EXEC_KILLED 3
+
 typedef struct Process_s HUPROCESS;
 
 struct Process_s {

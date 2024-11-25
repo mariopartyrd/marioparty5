@@ -10,6 +10,7 @@
 #define MB_MODEL_MAX 512
 #define MB_MODEL_NONE -1
 #define MB_MOT_NONE -1
+#define MB_MOT_DEFAULT 0
 
 typedef s16 MBMODELID;
 
@@ -59,7 +60,7 @@ void MBModelAmbSetAll(float r, float g, float b);
 void MBModelCameraSetAll(u16 cameraBit);
 
 MBMODELID MBModelCreate(int dataNum, int *motDataNum, BOOL link);
-MBMODELID MBModelCreateChar(s32 charNo, int dataNum, int *motDataNum, BOOL link);
+MBMODELID MBModelCreateChar(int charNo, int dataNum, int *motDataNum, BOOL link);
 MBMODELID MBModelCreateParam(MBMODELPARAM *param, HuVecF *pos, HuVecF *rot);
 
 void MBModelKill(MBMODELID modelId);
@@ -73,25 +74,26 @@ BOOL MBModelStubValSet(MBMODELID modelId, int value);
 BOOL MBModelStubVal2Set(MBMODELID modelId, int value);
 BOOL MBModelUnkSpeedSet(MBMODELID modelId, float speed);
 
-s32 MBMotionCreate(MBMODELID modelId, int dataNum);
-BOOL MBMotionKill(MBMODELID modelId, s32 motNo);
+int MBMotionCreate(MBMODELID modelId, int dataNum);
+BOOL MBMotionKill(MBMODELID modelId, int motNo);
 BOOL MBMotionStartEndSet(MBMODELID modelId, s16 start, s16 end);
 BOOL MBMotionLoopSet(MBMODELID modelId, BOOL loopF);
-BOOL MBMotionVoiceOnSet(MBMODELID modelId, s32 motNo, BOOL voiceOn);
+BOOL MBMotionVoiceOnSet(MBMODELID modelId, int motNo, BOOL voiceOn);
 
-BOOL MBMotionNoSet(MBMODELID modelId, s32 motNo, u32 attr);
+BOOL MBMotionNoSet(MBMODELID modelId, int motNo, u32 attr);
 int MBMotionShiftIDGet(MBMODELID modelId);
-BOOL MBMotionShiftSet(MBMODELID modelId, s32 motNo, float start, float end, u32 attr);
+BOOL MBMotionShiftSet(MBMODELID modelId, int motNo, float start, float end, u32 attr);
 
 BOOL MBModelAttrSet(MBMODELID modelId, u32 attr);
 BOOL MBModelAttrReset(MBMODELID modelId, u32 attr);
 
 BOOL MBMotionTimeSet(MBMODELID modelId, float time);
 float MBMotionTimeGet(MBMODELID modelId);
+float MBMotionMaxTimeGet(MBMODELID modelId);
 float MBMotionSpeedGet(MBMODELID modelId);
 BOOL MBMotionSpeedSet(MBMODELID modelId, float speed);
 BOOL MBMotionEndCheck(MBMODELID modelId);
-BOOL MBMotionShapeSet(MBMODELID modelId, s32 motNo, u32 attr);
+BOOL MBMotionShapeSet(MBMODELID modelId, int motNo, u32 attr);
 BOOL MBMotionShapeTimeSet(MBMODELID modelId, float time);
 float MBMotionShapeTimeGet(MBMODELID modelId);
 float MBMotionShapeMaxTimeGet(MBMODELID modelId);

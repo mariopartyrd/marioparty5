@@ -7,6 +7,7 @@
 #define MSM_SE_CMN_04 3
 #define MSM_SE_CMN_06 5
 #define MSM_SE_CMN_07 6
+#define MSM_SE_CMN_09 8
 #define MSM_SE_CMN_17 16
 #define MSM_SE_CMN_25 24
 
@@ -39,6 +40,8 @@
 #define MSM_SE_VOICE_MINIKOOPAB 522
 
 #define MSM_SE_GUIDE_31 732
+
+#define MSM_SE_BOARD_02 760
 #define MSM_SE_BOARD_97 855
 #define MSM_SE_BOARD_98 856
 #define MSM_SE_BOARD_100 858

@@ -43,10 +43,11 @@ typedef struct GwPlayer_s {
     u16 comF : 1;
     u16 charNo : 4;
     u16 field3 : 2;
-    u16 dead : 1;
-    u16 rollMod : 6;
+    u16 deadF : 1;
+    u16 saiMode : 6;
     u16 grp : 1;
-    u16 field6 : 1;
+    u16 storySkipEventF : 1;
+    u16 playerNo : 2;
     s8 handicap;
     s8 padNo;
     s8 capsule[3];
@@ -54,13 +55,13 @@ typedef struct GwPlayer_s {
     u16 moveF : 1;
     u16 jumpF : 1;
     u16 dispLightF : 1;
-    u16 size : 2;
+    u16 orderNo : 2;
     u16 diceCnt : 2;
     u16 rank : 2;
     s8 walkNum;
-    s16 masuNo;
-    s16 masuNoPrev;
-    s16 masuNoNext;
+    s16 masuId;
+    s16 masuIdPrev;
+    s16 masuIdNext;
     s16 capsuleUse;
     s8 blueMasuNum;
     s8 redMasuNum;
@@ -106,7 +107,7 @@ typedef struct GwSystem_s {
     s8 last5Effect;
     s8 turnPlayerNo;
     u8 unk[3];
-    s16 saiMasuNo;
+    s16 saiMasuId;
     u32 mbSaveWork[8];
     u8 messDelay;
     u8 mgEvent : 4;
@@ -409,7 +410,45 @@ static inline void GWRumbleFSet(s32 value)
 	}
 }
 
+static inline GWPLAYER *GWPlayerGet(int playerNo)
+{
+    return &GwPlayer[playerNo];
+}
+
 #define GWMgCoinBonusAdd(player, value) GWMgCoinBonusSet((player), GWMgCoinBonusGet((player))+(value))
 #define GWMgCoinAdd(player, value) GWMgCoinSet((player), GWMgCoinGet((player))+(value))
+
+void GWInit(void);
+void GWCommonInit(void);
+s32 GWComKeyDelayGet(void);
+void GWMgRecordSet(s32 id, u32 value);
+u32 GWMgRecordGet(s32 id);
+void GWCharColorGet(s32 charNo, GXColor *colorP);
+void GWPlayNumSet(s32 boardNo, u8 num);
+void GWPlayNumAdd(s32 boardNo, u8 num);
+u16 GWPlayNumGet(s32 boardNo);
+void GWBoardMaxStarSet(s32 boardNo, s32 value, u8 charNo);
+u16 GWBoardMaxStarGet(s32 boardNo, u8 charNo);
+void GWBoardMaxCoinSet(s32 boardNo, s32 value, u8 charNo);
+u16 GWBoardMaxCoinGet(s32 boardNo, u8 charNo);
+s32 GWCharPlayNumInc(s32 charNo, s32 boardNo);
+s32 GWCharPlayNumGet(s32 charNo, s32 boardNo);
+void GWCharPlayNumSet(s32 charNo, s32 boardNo, s32 value);
+BOOL GWMgUnlockGet(s32 mgNo);
+void GWMgUnlockSet(s32 mgNo);
+BOOL GWMgCustomGet(s32 mgNo);
+void GWMgCustomSet(s32 mgNo);
+void GWMgCustomReset(s32 mgNo);
+s16 GWPlayerCoinGet(int playerNo);
+void GWPlayerCoinSet(int playerNo, s16 coin);
+void GWPlayerCoinAdd(int playerNo, s16 coin);
+void GWPlayerStarSet(int playerNo, s16 star);
+void GWPlayerStarAdd(int playerNo, s16 star);
+//s16 GWPlayerStarGet(int playerNo); //Causes issues with MBPlayerStarGet
+void GWTotalStarSet(s16 totalStar);
+void GWTotalStarAdd(s16 totalStar);
+u16 GWTotalStarGet(void);
+void GWSdCommonInit(void);
+void GWSaveCompleteSet(void);
 
 #endif

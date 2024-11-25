@@ -10,6 +10,10 @@
 #define STATUS_COLOR_NULL -1
 
 void MBStatusInit(void);
+void MBStatusDispSet(int playerNo, BOOL dispF);
+void MBStatusDispSetAll(BOOL dispF);
+BOOL MBStatusOffCheckAll(void);
+
 void MBStatusDispForceSetAll(BOOL dispF);
 void MBStatusColorSet(int playerNo, s32 color);
 void MBStatusColorAllSet(s32 color);
