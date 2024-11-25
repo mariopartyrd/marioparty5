@@ -26,12 +26,16 @@
 
 #define MASU_LINK_MAX 5
 
-#define MASU_FLAG_BIT(bit) (1 << (bit))
+#define MASU_FLAG_BIT(bit) (1U << (bit))
 
 #define MASU_FLAG_NONE 0
-#define MASU_FLAG_CARNEXT MASU_FLAG_BIT(17)
+#define MASU_FLAG_JUMPTO MASU_FLAG_BIT(16)
+#define MASU_FLAG_JUMPFROM MASU_FLAG_BIT(17)
+#define MASU_FLAG_CLIMBTO MASU_FLAG_BIT(18)
+#define MASU_FLAG_CLIMBFROM MASU_FLAG_BIT(19)
 #define MASU_FLAG_CAPMACHINE MASU_FLAG_BIT(24)
 #define MASU_FLAG_PATHBLOCK MASU_FLAG_BIT(26)
+#define MASU_FLAG_START MASU_FLAG_BIT(31)
 
 #define MASU_EFF_NONE 0
 #define MASU_EFF_WALK 1
@@ -116,8 +120,8 @@ int MBMasuPathLenGet(s16 masuId, s16 masuIdEnd);
 u32 MBMasuEventFlagGet(u32 flag, u32 mask);
 u32 MBMasuDispMaskGet(void);
 BOOL MBMasuDispGet(void);
-s16 MBMasuCarTargetGet(s16 masuNo, s16 linkNum);
-s16 MBMasuTargetGet(s16 masuNo);
+s16 MBMasuCarTargetGet(s16 masuId, s16 playerNo);
+s16 MBMasuTargetGet(s16 masuId);
 s16 MBMasuCarNextGet(s16 masuId);
 s16 MBMasuCarPrevGet(s16 masuId);
 s16 MBMasuDonkeySet(s16 no);

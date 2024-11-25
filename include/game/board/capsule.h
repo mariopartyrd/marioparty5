@@ -38,23 +38,30 @@
 #define CAPSULE_DEBUGSETPOS 42
 #define CAPSULE_NULL -1
 
-void MBCapsuleOpeningAdd(s32 capsuleNum);
+void MBCapsuleOpeningAdd(int capsuleNum);
 void MBCapsuleBowserAdd(void);
-void MBKettouMgEndExec(s32 playerNo);
-void MBCircuitKettouMgEndExec(s32 playerNo);
-void MBDonkeyMgEndExec(s32 playerNo);
-void MBKupaMgEndExec(s32 playerNo);
-void MBCircuitKupaMgEndExec(s32 playerNo);
-void MBVsMgEndExec(s32 playerNo);
+void MBKettouMgEndExec(int playerNo);
+void MBCircuitKettouMgEndExec(int playerNo);
+void MBDonkeyMgEndExec(int playerNo);
+void MBKupaMgEndExec(int playerNo);
+void MBCircuitKupaMgEndExec(int playerNo);
+void MBVsMgEndExec(int playerNo);
 void MBLast5Exec(void);
-void MBKupaExec(s32 playerNo);
-void MBDonkeyExec(s32 playerNo);
+void MBKupaExec(int playerNo);
+void MBDonkeyExec(int playerNo);
 
-void MB3MiracleGetExec(s32 playerNo);
+void MB3MiracleGetExec(int playerNo);
 void MBCapMachineCreateAll(void);
 void MBCapMachineExec(int playerNo);
 int MBCapsuleMasuPatNoGet(int capsuleNo);
-BOOL MBCapsuleExec(s32 playerNo, int capsuleNo, BOOL circuitF, BOOL walkF);
-void MBSaiHiddenExec(s32 playerNo);
+BOOL MBCapsuleExec(int playerNo, int capsuleNo, BOOL circuitF, BOOL walkF);
+void MBSaiHiddenExec(int playerNo);
+void MBKillerExec(int playerNo);
+void MBKettouExec(int playerNo);
+
+int MBCapsuleSelExec(void);
+
+void MBCapsuleSelStoryExec(void);
+void MBCapsuleAddStory(void);
 
 #endif

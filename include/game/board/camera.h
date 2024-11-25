@@ -13,7 +13,7 @@
 #define MB_CAMERA_FOCUS_MASU 1
 
 #define MB_CAMERA_VIEW_ZOOMIN 0
-#define MB_CAMERA_VIEW_ZOOMOUT 0
+#define MB_CAMERA_VIEW_ZOOMOUT 1
 #define MB_CAMERA_VIEW_WALK 2
 #define MB_CAMERA_VIEW_FOCUSALL 3
 
@@ -30,16 +30,16 @@ typedef struct mbCameraViewKey_s {
 } MBCAMERAVIEWKEY;
 
 typedef struct mbCameraMotion_s {
-	s32 viewNo;
-	s32 curveType;
+	int viewNo;
+	int curveType;
 	s16 time;
 	s16 maxTime;
 	MBCAMERAVIEWKEY viewKey[3];
 } MBCAMERAMOTION;
 
 typedef struct mbCameraFocus_s {
-	s32 type;
-	s32 targetId;
+	int type;
+	int targetId;
 } MBCAMERAFOCUS;
 
 struct mbCamera_s {
@@ -69,11 +69,11 @@ struct mbCamera_s {
 	HuVecF rot;
 	float zoom;
 	float speed;
-	s32 quakeTime;
+	int quakeTime;
 	float quakePower;
 	MBCAMERAPOSHOOK posHook;
 	MBCAMERAMOTION motion;
-	s32 focusNum;
+	int focusNum;
 	MBCAMERAFOCUS focus[MB_CAMERA_FOCUS_MAX];
 };
 
@@ -113,15 +113,15 @@ void MBCameraPush(void);
 void MBCameraPop(void);
 void MBCameraMaxTimeSet(s16 maxTime);
 int MBCameraViewNoGet(void);
-void MBCameraViewNoSet(s32 playerNo, int viewNo);
+void MBCameraViewNoSet(int playerNo, int viewNo);
 void MBCameraSkipSet(BOOL skipF);
 void MBCameraSpeedSet(float speed);
-void MBCameraFocusPlayerAdd(s32 playerNo);
+void MBCameraFocusPlayerAdd(int playerNo);
 void MBCameraFocusAdd(MBMODELID modelId);
-void MBCameraFocusPlayerSet(s32 playerNo);
+void MBCameraFocusPlayerSet(int playerNo);
 void MBCameraFocusSet(MBMODELID modelId);
-void MBCameraFocusMasuAdd(s32 masuId);
-void MBCameraFocusMasuSet(s32 masuId);
+void MBCameraFocusMasuAdd(int masuId);
+void MBCameraFocusMasuSet(int masuId);
 void MBCameraPosViewSet(HuVecF *pos, HuVecF *rot, HuVecF *offset, float zoom, float fov, s16 maxTime);
 
 void MBCameraPlayerViewSet(s16 playerNo, HuVecF *rot, HuVecF *offset, float zoom, float fov, s16 maxTime);
@@ -129,7 +129,7 @@ void MBCameraModelViewSet(MBMODELID modelId, HuVecF *rot, HuVecF *offset, float 
 
 void MBCameraModelKeySet(MBMODELID modelId, MBCAMERAVIEWKEY *key1, MBCAMERAVIEWKEY *key2, s16 maxTime);
 void MBCameraMasuViewSet(s16 masuId, HuVecF *rot, HuVecF *offset, float zoom, float fov, s16 maxTime);
-void MBCameraQuakeSet(s32 maxTime, float power);
+void MBCameraQuakeSet(int maxTime, float power);
 void MBCameraQuakeReset(void);
 BOOL MBCameraCullCheck(HuVecF *pos, float radius);
 BOOL MBCameraMotionCheck(void);
@@ -138,5 +138,6 @@ void MBCameraViewGet(int viewNo, MBVIEW *viewP);
 void MBCameraLookAtGet(Mtx lookAt);
 void MBCameraLookAtGetInv(Mtx lookAtInv);
 void MBCameraFocusPlayerAddAll(void);
+void MBCameraPointFocusSet(HuVecF *rot, HuVecF *offset, float fov, s16 maxTime);
 
 #endif

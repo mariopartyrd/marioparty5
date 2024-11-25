@@ -19,7 +19,7 @@ static BOOL InitMotionData(MBMODEL *modelP, int motNum, int *motDataNum);
 void MBModelInit(void)
 {
     MBMODEL *modelP = HuMemDirectMallocNum(HUHEAPTYPE_HEAP, sizeof(MBMODEL)*MB_MODEL_MAX, HU_MEMNUM_OVL);
-    s32 i;
+    int i;
     MODELMANWORK *work;
     
     modelMb = modelP;
@@ -37,7 +37,7 @@ void MBModelInit(void)
 
 void MBModelClose(void)
 {
-    s32 i;
+    int i;
     if(modelManObj) {
         MODELMANWORK *work = omObjGetWork(modelManObj, MODELMANWORK);
         work->kill = TRUE;
@@ -60,7 +60,7 @@ static void ModelManExec(OMOBJ *obj)
         return;
     } else {
         MBMODEL *modelP;
-        s32 i;
+        int i;
         MBModelManDummy();
         for(modelP=&modelMb[0], i=0; i<MB_MODEL_MAX; i++, modelP++) {
             if(modelP->mbId != MB_MODEL_NONE) {
@@ -87,7 +87,7 @@ void MBModelManDummy(void)
 void MBModelDispOffAll(BOOL dispOff)
 {
     MBMODEL *modelP;
-    s32 i;
+    int i;
     if(!modelMb) {
         return;
     }
@@ -106,7 +106,7 @@ void MBModelDispOffAll(BOOL dispOff)
 void MBModelDispOffCamera(u16 cameraBit, BOOL dispOff)
 {
     MBMODEL *modelP;
-    s32 i;
+    int i;
     if(!modelMb) {
         return;
     }
@@ -143,7 +143,7 @@ void MBModelCameraSetAll(u16 cameraBit)
     }
 }
 
-static MBMODELID CreateMBModel(s32 charNo, int dataNum, int *motDataNum, BOOL linkF)
+static MBMODELID CreateMBModel(int charNo, int dataNum, int *motDataNum, BOOL linkF)
 {
     int i;
     for(i=0; i<MB_MODEL_MAX; i++) {
@@ -160,7 +160,7 @@ static MBMODELID CreateMBModel(s32 charNo, int dataNum, int *motDataNum, BOOL li
         modelP->charNo = charNo;
         modelCnt++;
         if(InitData(modelP, dataNum, linkF)) {
-            s32 motNum = 0;
+            int motNum = 0;
             if(motDataNum != NULL) {
                 while(motDataNum[motNum] >= 0) {
                     motNum++;
@@ -203,7 +203,7 @@ MBMODELID MBModelCreate(int dataNum, int *motDataNum, BOOL linkF)
     return CreateMBModel(CHARNO_NONE, dataNum, motDataNum, linkF);
 }
 
-MBMODELID MBModelCreateChar(s32 charNo, int dataNum, int *motDataNum, BOOL linkF)
+MBMODELID MBModelCreateChar(int charNo, int dataNum, int *motDataNum, BOOL linkF)
 {
     return CreateMBModel(charNo, dataNum, motDataNum, linkF);
 }
@@ -238,7 +238,7 @@ void MBModelKill(MBMODELID modelId)
         return;
     } else {
         MBMODEL *modelP = MBModelGet(modelId);
-        s32 i;
+        int i;
         if(!modelP) {
             return;
         }
@@ -358,13 +358,13 @@ BOOL MBModelUnkSpeedSet(MBMODELID modelId, float speed)
     }
 }
 
-s32 MBMotionCreate(MBMODELID modelId, int dataNum)
+int MBMotionCreate(MBMODELID modelId, int dataNum)
 {
     MBMODEL *modelP = MBModelGet(modelId);
     if(!modelP) {
         return MB_MOT_NONE;
     } else {
-        s32 motNo;
+        int motNo;
         if(modelP->motNum >= MB_MOT_MAX) {
             return MB_MOT_NONE;
         }
@@ -392,7 +392,7 @@ s32 MBMotionCreate(MBMODELID modelId, int dataNum)
     }
 }
 
-BOOL MBMotionKill(MBMODELID modelId, s32 motNo)
+BOOL MBMotionKill(MBMODELID modelId, int motNo)
 {
     MBMODEL *modelP = MBModelGet(modelId);
     if(!modelP) {
@@ -450,7 +450,7 @@ BOOL MBMotionLoopSet(MBMODELID modelId, BOOL loopF)
     }
 }
 
-BOOL MBMotionVoiceOnSet(MBMODELID modelId, s32 motNo, BOOL voiceOn)
+BOOL MBMotionVoiceOnSet(MBMODELID modelId, int motNo, BOOL voiceOn)
 {
     MBMODEL *modelP = MBModelGet(modelId);
     if(!modelP) {
@@ -467,7 +467,7 @@ BOOL MBMotionVoiceOnSet(MBMODELID modelId, s32 motNo, BOOL voiceOn)
     }
 }
 
-BOOL MBMotionNoSet(MBMODELID modelId, s32 motNo, u32 attr)
+BOOL MBMotionNoSet(MBMODELID modelId, int motNo, u32 attr)
 {
     MBMODEL *modelP = MBModelGet(modelId);
     if(!modelP) {
@@ -513,7 +513,7 @@ int MBMotionShiftIDGet(MBMODELID modelId)
     }
 }
 
-BOOL MBMotionShiftSet(MBMODELID modelId, s32 motNo, float start, float end, u32 attr)
+BOOL MBMotionShiftSet(MBMODELID modelId, int motNo, float start, float end, u32 attr)
 {
     MBMODEL *modelP = MBModelGet(modelId);
     if(!modelP) {
@@ -635,7 +635,7 @@ BOOL MBMotionEndCheck(MBMODELID modelId)
     }
 }
 
-BOOL MBMotionShapeSet(MBMODELID modelId, s32 motNo, u32 attr)
+BOOL MBMotionShapeSet(MBMODELID modelId, int motNo, u32 attr)
 {
     MBMODEL *modelP = MBModelGet(modelId);
     if(!modelP) {
@@ -1131,7 +1131,7 @@ static BOOL InitMotionData(MBMODEL *modelP, int motNum, int *motDataNum)
         return TRUE;
     } else {
         void *dataP = NULL;
-        s32 i;
+        int i;
         HU3DMOTID motId;
         for(i=0; i<motNum; i++) {
             if(modelP->charNo == CHARNO_NONE) {

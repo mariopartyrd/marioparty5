@@ -397,7 +397,7 @@ config.libs = [
             Object(Matching, "game/board/pausewatch.c"),
             Object(Matching, "game/board/main.c"),
             Object(NonMatching, "game/board/camera.c"),
-            Object(NonMatching, "game/board/player.c"),
+            Object(Matching, "game/board/player.c"),
             Object(Matching, "game/board/model.c"),
             Object(Matching, "game/board/window.c"),
             Object(Matching, "game/board/audio.c"),

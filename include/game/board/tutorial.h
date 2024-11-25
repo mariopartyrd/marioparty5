@@ -2,6 +2,7 @@
 #define _BOARD_TUTORIAL_H
 
 #define TUTORIAL_INST_TURN 0
+#define TUTORIAL_INST_TURNEND 1
 #define TUTORIAL_INST_SAI 2
 #define TUTORIAL_INST_WALK_START 3
 #define TUTORIAL_INST_CAPSULE 4
@@ -16,5 +17,6 @@
 #define TUTORIAL_INST_MAX 13
 
 BOOL MBTutorialExec(int instNo);
+BOOL MBTutorialExitFlagGet(void);
 
 #endif

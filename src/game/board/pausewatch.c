@@ -25,7 +25,7 @@ void MBPauseWatchProcCreate(void)
 static void PauseWatchProc(void)
 {
     while(!killSendF && !omSysExitReq) {
-        s32 playerNo = MBPauseStartCheck();
+        int playerNo = MBPauseStartCheck();
         if(playerNo >= 0) {
             MBPauseProcCreate(playerNo);
         }
