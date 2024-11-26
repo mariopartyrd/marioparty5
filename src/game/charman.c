@@ -64,14 +64,14 @@ static EFFECTDATA effectDataTbl[] = {
     {
         EFFECT_ANM_danger,
         10,
-        HU3D_PARTICLE_BLENDMODE_NORMAL,
+        HU3D_PARTICLE_BLEND_NORMAL,
         2,
         {CHARMOT_HSF_c000m1_326, CHARMOT_HSF_c000m1_327}
     },
     {
         EFFECT_ANM_dust,
         150,
-        HU3D_PARTICLE_BLENDMODE_ADDCOL,
+        HU3D_PARTICLE_BLEND_ADDCOL,
         0,
         { 
             CHARMOT_HSF_c000m1_301,
@@ -85,7 +85,7 @@ static EFFECTDATA effectDataTbl[] = {
     {
         EFFECT_ANM_smoke,
         70,
-        HU3D_PARTICLE_BLENDMODE_NORMAL,
+        HU3D_PARTICLE_BLEND_NORMAL,
         0,
         { 
             CHARMOT_HSF_c000m1_321
@@ -94,7 +94,7 @@ static EFFECTDATA effectDataTbl[] = {
     {
         EFFECT_ANM_star,
         300,
-        HU3D_PARTICLE_BLENDMODE_ADDCOL,
+        HU3D_PARTICLE_BLEND_ADDCOL,
         0,
         { 
             CHARMOT_HSF_c000m1_310
@@ -103,14 +103,14 @@ static EFFECTDATA effectDataTbl[] = {
     {
         EFFECT_ANM_glow,
         300,
-        HU3D_PARTICLE_BLENDMODE_ADDCOL,
+        HU3D_PARTICLE_BLEND_ADDCOL,
         0,
         {}
     },
     {
         EFFECT_ANM_circle,
         200,
-        HU3D_PARTICLE_BLENDMODE_ADDCOL,
+        HU3D_PARTICLE_BLEND_ADDCOL,
         0,
         { 
             CHARMOT_HSF_c000m1_305
@@ -119,7 +119,7 @@ static EFFECTDATA effectDataTbl[] = {
     {
         EFFECT_ANM_bird,
         12,
-        HU3D_PARTICLE_BLENDMODE_NORMAL,
+        HU3D_PARTICLE_BLEND_NORMAL,
         2,
         { 
             CHARMOT_HSF_c000m1_322,
@@ -130,7 +130,7 @@ static EFFECTDATA effectDataTbl[] = {
     {
         EFFECT_ANM_cry,
         100,
-        HU3D_PARTICLE_BLENDMODE_ADDCOL,
+        HU3D_PARTICLE_BLEND_ADDCOL,
         0,
         { 
             CHARMOT_HSF_c000m1_354,
@@ -140,7 +140,7 @@ static EFFECTDATA effectDataTbl[] = {
     {
         EFFECT_ANM_landDust,
         100,
-        HU3D_PARTICLE_BLENDMODE_NORMAL,
+        HU3D_PARTICLE_BLEND_NORMAL,
         0,
         { 
             CHARMOT_HSF_c000m1_310,

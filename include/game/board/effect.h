@@ -4,6 +4,16 @@
 #include "game/hu3d.h"
 #include "game/sprite.h"
 
+//Particle Blend Modes
+#define MB_EFFECT_BLEND_NORMAL 0
+#define MB_EFFECT_BLEND_ADDCOL 1
+#define MB_EFFECT_BLEND_INVCOL 2
+
+#define MB_EFFECT_ATTR_LOOP (1 << 0)
+#define MB_EFFECT_ATTR_STOPCNT (1 << 1)
+#define MB_EFFECT_ATTR_UPAUSE (1 << 3)
+#define MB_EFFECT_ATTR_3D (1 << 4)
+
 typedef struct MBEffect_s MBEFFECT;
 typedef void (*MBEFFHOOK)(HU3DMODEL *modelP, MBEFFECT *effP, Mtx matrix);
 
@@ -25,7 +35,7 @@ typedef struct MBEffectData_s {
     s16 animNo;
     float animSpeed;
     float animTime;
-    u8 hideF : 1;
+    u8 dispF : 1;
     u8 pauseF : 1;
 } MBEFFECTDATA;
 
@@ -45,13 +55,24 @@ struct MBEffect_s {
     ANIMDATA *anim;
     MBEFFECTDATA *data;
     HuVecF *vertex;
-    HuVecF *st;
+    HuVec2F *st;
     void *dl;
     MBEFFHOOK hook;
 };
 
-void MBEffKill(HU3DMODELID modelId);
+void MBEffFadeOutSet(s16 maxTime);
+void MBEffFadeCreate(s16 maxTime, u8 alpha);
+BOOL MBEffFadeDoneCheck(void);
+void MBEffFadeCameraSet(u16 bit);
+void MBEffConfettiCreate(HuVecF *pos, s16 maxCnt, float width);
+void MBEffConfettiKill(void);
+void MBEffConfettiReset(void);
 HU3DMODELID MBEffCreate(ANIMDATA *anim, s16 maxCnt);
+void MBEffKill(HU3DMODELID modelId);
 void MBEffHookSet(HU3DMODELID modelId, MBEFFHOOK hook);
+void MBEffAttrSet(HU3DMODELID modelId, u8 attr);
+void MBEffAttrReset(HU3DMODELID modelId, u8 attr);
+MBEFFECTDATA *MBEffDataCreate(MBEFFECT *effP);
+int MBEffUnkTotalGet(void *ptr, int no);
 
 #endif

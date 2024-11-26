@@ -397,7 +397,7 @@ static void CreateMB(void)
     MBStarInit();
     MBLightSet();
     CharModelDataClose(CHARNO_NONE);
-    if(GwSystem.last5Effect == MB_LAST5_EFF_REDBOWSER && MBBoardNoGet() != MBNO_WORLD_7) {
+    if(GwSystem.last5Effect == MB_LAST5_EFF_REDKUPA && MBBoardNoGet() != MBNO_WORLD_7) {
         MBMasuTypeChange(MASU_TYPE_RED, MASU_TYPE_KUPA);
     }
     MBTauntInit();

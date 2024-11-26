@@ -266,7 +266,6 @@ void MBCoinParManKill(HU3DPARMANID parManId)
     Hu3DParManKill(parManId);
 }
 
-
 typedef struct coinDispWork_s {
     u8 killF : 1;
     u8 sign : 1;
@@ -313,7 +312,7 @@ s16 MBCoinDispCreate(HuVecF *pos, int coinNum, BOOL playSe)
     }
     obj = MBAddObj(261, 5, 0, CoinDispExec);
     obj->data = HuMemDirectMallocNum(HUHEAPTYPE_HEAP, COINDISP_MODEL_MAX*sizeof(COINDISPMODEL), HU_MEMNUM_OVL);
-    omSetStatBit(obj, OM_STAT_MODEL_PAUSED);
+    omSetStatBit(obj, OM_STAT_MODELPAUSE);
     coinDispObj[i] = obj;
     work = omObjGetWork(obj, COINDISPWORK);
     work->killF = FALSE;

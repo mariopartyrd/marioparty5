@@ -1469,7 +1469,7 @@ void MBWalkNumCreateColor(int playerNo, BOOL carF, int color)
         return;
     }
     playerWork[playerNo].walkNumObj = obj = MBAddObj(32258, 20, 0, UpdateWalkNum);
-    omSetStatBit(obj, OM_STAT_MODEL_PAUSED);
+    omSetStatBit(obj, OM_STAT_MODELPAUSE);
     work = omObjGetWork(obj, WALKNUMWORK);
     work->dispF = TRUE;
     work->killF = FALSE;

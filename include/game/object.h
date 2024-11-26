@@ -16,12 +16,13 @@ typedef enum omOvl_e {
 
 #undef DLL
 
-#define OM_STAT_DELETED 0x1
-#define OM_STAT_DISABLED 0x2
-#define OM_STAT_ACTIVE 0x4
-#define OM_STAT_PAUSED 0x10
-#define OM_STAT_NOPAUSE 0x20
-#define OM_STAT_MODEL_PAUSED 0x100
+#define OM_STAT_DELETED (1 << 0)
+#define OM_STAT_DISABLED (1 << 1)
+#define OM_STAT_ACTIVE (1 << 2)
+#define OM_STAT_PAUSED (1 << 4)
+#define OM_STAT_NOPAUSE (1 << 5)
+#define OM_STAT_SPRPAUSE (1 << 7)
+#define OM_STAT_MODELPAUSE (1 << 8)
 
 #define OM_GRP_NONE -1
 
