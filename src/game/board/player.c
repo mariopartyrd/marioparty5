@@ -941,7 +941,7 @@ static void PlayerWalkMain(int playerNo)
     MBPlayerPosFixFlagSet(TRUE);
     workP->walkProc = MBPrcCreate(PlayerWalkProc, 8205, 24576);
     workP->walkProc->property = workP;
-    HuPrcDestructorSet2(workP->walkProc, DestroyWalkProc);
+    MBPrcDestructorSet(workP->walkProc, DestroyWalkProc);
     while(workP->walkProc) {
         HuPrcVSleep();
     }
@@ -965,7 +965,7 @@ static void ExecStoryComWalk(void)
             workP = &playerWork[i];
             workP->walkProc = MBPrcCreate(PlayerWalkProc, 8205, 24576);
             workP->walkProc->property = workP;
-            HuPrcDestructorSet2(workP->walkProc, DestroyWalkProc);
+            MBPrcDestructorSet(workP->walkProc, DestroyWalkProc);
         }
     }
     while(1) {

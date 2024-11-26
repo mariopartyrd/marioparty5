@@ -6,6 +6,8 @@
 #include "game/board/model.h"
 #include "game/board/player.h"
 #include "game/board/pause.h"
+#include "game/board/guide.h"
+#include "game/board/coin.h"
 
 #include "game/saveload.h"
 #include "game/sprite.h"
@@ -42,10 +44,8 @@ void MBMgDataDirClose(void);
 
 void MBWinInit(void);
 void MBGateInit(void);
-void MBGuideInit(void);
 void MBCapMachineInit(void);
 void MBCapsuleObjInit(void);
-void MBCoinInit(void);
 void MBPathInit(void);
 void MBSaiInit(void);
 void MBStarInit(void);
@@ -54,7 +54,6 @@ void MBTauntInit(void);
 void MBTauntKill(void);
 void MBSaiClose(void);
 void MBStarClose(void);
-void MBCoinClose(void);
 void MBGateClose(void);
 void MBCapMachineClose(void);
 void MBScrollClose(void);
@@ -143,10 +142,10 @@ void MBObjectSetup(int boardNo, MBCREATEHOOK createHook, MBKILLHOOK killHook)
     preTurnHook =  postTurnHook = NULL;
     MBPauseWatchProcCreate();
     mbObjMan = omInitObjMan(64, 8194);
-    HuPrcDestructorSet2(mbObjMan, DestroyMBObject);
+    MBPrcDestructorSet(mbObjMan, DestroyMBObject);
     omSystemKeyCheckSetup(mbObjMan);
     mbMainProcess = HuPrcChildCreate(MBMainProc, 8207, 32768, 0, mbObjMan);
-    HuPrcDestructorSet2(mbMainProcess, DestroyMBMainProc);
+    MBPrcDestructorSet(mbMainProcess, DestroyMBMainProc);
     GwSystem.boardNo = boardNo;
 }
 

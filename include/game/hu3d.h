@@ -428,6 +428,7 @@ typedef struct Hu3DParticle_s {
 
 typedef struct Hu3DParmanParam_s {
     s16 maxTime;
+    s16 unk2;
     float accelRange;
     float scaleRange;
     float angleRange;
