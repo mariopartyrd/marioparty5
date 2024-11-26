@@ -364,7 +364,7 @@ void omGameSysInit(OMOBJMAN *objman)
 
     if(mgPauseExitF) {
         obj = omAddObjEx(objman, 0x7FDC, 0, 0, -1, GMesExitCheck);
-        omSetStatBit(obj, OM_STAT_NOPAUSE|0x80);
+        omSetStatBit(obj, OM_STAT_NOPAUSE|OM_STAT_SPRPAUSE);
     }
     HuWinInit(0);
 }

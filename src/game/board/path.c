@@ -147,7 +147,7 @@ static void PathYajiCreate(int playerNo, int masuId, s16 *linkTbl, int linkNum, 
         return;
     }
     pathYajiObj[playerNo] = obj = MBAddObj(256, 0, 0, PathYajiUpdate);
-    omSetStatBit(obj, OM_STAT_MODEL_PAUSED);
+    omSetStatBit(obj, OM_STAT_MODELPAUSE);
     obj->scale.x = obj->scale.y = obj->scale.z = 3;
     work = omObjGetWork(obj, PATHYAJIWORK);
     work->linkNum = linkNum;

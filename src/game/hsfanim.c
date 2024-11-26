@@ -482,7 +482,7 @@ HU3DMODELID Hu3DParticleCreate(ANIMDATA *anim, s16 maxCnt)
     particleP->anim = anim;
     anim->useNum++;
     particleP->maxCnt = maxCnt;
-    particleP->blendMode = HU3D_PARTICLE_BLENDMODE_NORMAL;
+    particleP->blendMode = HU3D_PARTICLE_BLEND_NORMAL;
     particleP->hook = NULL;
     particleP->count = 0;
     particleP->attr = HU3D_PARTICLE_ATTR_NONE;
@@ -628,9 +628,11 @@ static Vec basePos[] = {
     { -0.5f, -0.5f, 0.0f }
 };
 
-static float baseST[] = {
-    0.0f, 0.0f, 1.0f, 0.0f,
-    1.0f, 1.0f, 0.0f, 1.0f
+static HuVec2F baseST[] = {
+    { 0.0f, 0.0f },
+    { 1.0f, 0.0f },
+    { 1.0f, 1.0f },
+    { 0.0f, 1.0f },
 };
 
 static void particleFunc(HU3DMODEL *modelP, Mtx *mtx)
@@ -790,13 +792,13 @@ static void particleFunc(HU3DMODEL *modelP, Mtx *mtx)
         GXSetAlphaCompare(GX_GEQUAL, 1, GX_AOP_AND, GX_GEQUAL, 1);
         GXSetZCompLoc(0);
         switch (particleP->blendMode) {
-            case HU3D_PARTICLE_BLENDMODE_NORMAL:
+            case HU3D_PARTICLE_BLEND_NORMAL:
                 GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_NOOP);
                 break;
-            case HU3D_PARTICLE_BLENDMODE_ADDCOL:
+            case HU3D_PARTICLE_BLEND_ADDCOL:
                 GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_ONE, GX_LO_NOOP);
                 break;
-            case HU3D_PARTICLE_BLENDMODE_INVCOL:
+            case HU3D_PARTICLE_BLEND_INVCOL:
                 GXSetBlendMode(GX_BM_BLEND, GX_BL_ZERO, GX_BL_INVDSTCLR, GX_LO_NOOP);
                 break;
         }
@@ -809,7 +811,7 @@ static void particleFunc(HU3DMODEL *modelP, Mtx *mtx)
         GXSetArray(GX_VA_CLR0, &particleP->data->color, sizeof(HU3DPARTICLEDATA));
         GXSetVtxDesc(GX_VA_TEX0, GX_INDEX16);
         GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX0, GX_TEX_ST, GX_F32, 0);
-        GXSetArray(GX_VA_TEX0, baseST, 8);
+        GXSetArray(GX_VA_TEX0, baseST, sizeof(HuVec2F));
         GXCallDisplayList(particleP->dlBuf, particleP->dlSize);
         totalPolyCnt += particleP->maxCnt;
     }

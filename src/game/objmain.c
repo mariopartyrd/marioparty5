@@ -511,7 +511,7 @@ static void omMain(void)
                     if((objData[objIdx].stat & (OM_STAT_DELETED|OM_STAT_DISABLED)) != 0) {
                         objIdx = obj->prev;
                     }
-                    if(obj->mdlId != NULL && obj->mdlId[0] != HU3D_MODELID_NONE && !(obj->stat & OM_STAT_MODEL_PAUSED)) {
+                    if(obj->mdlId != NULL && obj->mdlId[0] != HU3D_MODELID_NONE && !(obj->stat & OM_STAT_MODELPAUSE)) {
                         Hu3DModelPosSet(obj->mdlId[0], obj->trans.x, obj->trans.y, obj->trans.z);
                         Hu3DModelRotSet(obj->mdlId[0], obj->rot.x, obj->rot.y, obj->rot.z);
                         Hu3DModelScaleSet(obj->mdlId[0], obj->scale.x, obj->scale.y, obj->scale.z);

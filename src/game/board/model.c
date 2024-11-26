@@ -5,7 +5,7 @@
 #include "game/memory.h"
 
 typedef struct ModelManWork_s {
-    u8 kill : 1;
+    u8 killF : 1;
 } MODELMANWORK;
 
 static s16 modelCnt;
@@ -31,8 +31,8 @@ void MBModelInit(void)
     }
     modelManObj = MBAddObj(32259, 0, 0, ModelManExec);
     work = omObjGetWork(modelManObj, MODELMANWORK);
-    work->kill = FALSE;
-    omSetStatBit(modelManObj, OM_STAT_NOPAUSE|0x80);
+    work->killF = FALSE;
+    omSetStatBit(modelManObj, OM_STAT_NOPAUSE|OM_STAT_SPRPAUSE);
 }
 
 void MBModelClose(void)
@@ -40,7 +40,7 @@ void MBModelClose(void)
     int i;
     if(modelManObj) {
         MODELMANWORK *work = omObjGetWork(modelManObj, MODELMANWORK);
-        work->kill = TRUE;
+        work->killF = TRUE;
     }
     for(i=1; i<MB_MODEL_MAX; i++) {
         MBModelKill(i);
@@ -54,7 +54,7 @@ void MBModelClose(void)
 static void ModelManExec(OMOBJ *obj)
 {
     MODELMANWORK *work = omObjGetWork(modelManObj, MODELMANWORK);
-    if(work->kill || MBKillCheck()) {
+    if(work->killF || MBKillCheck()) {
         modelManObj = NULL;
         MBDelObj(obj);
         return;

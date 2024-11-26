@@ -81,7 +81,7 @@ MBMODELID MBGuideCreate(int guideNo, HuVecF *pos, HuVecF *rot, u32 attr)
     MBModelRotSetV(guideWorkP->modelId, &guideWorkP->rot);
     if(attr & MB_GUIDE_ATTR_SCREEN) {
         guideWorkP->screenObj = MBAddObj(32257, 0, 0, GuideExecScreen);
-        omSetStatBit(guideWorkP->screenObj, OM_STAT_MODEL_PAUSED);
+        omSetStatBit(guideWorkP->screenObj, OM_STAT_MODELPAUSE);
         guideWorkP->screenObj->trans.x = pos->x;
         guideWorkP->screenObj->trans.y = pos->y;
         guideWorkP->screenObj->trans.z = pos->z;
@@ -106,7 +106,7 @@ MBMODELID MBGuideCreate(int guideNo, HuVecF *pos, HuVecF *rot, u32 attr)
         }
         MBModelScaleSet(guideWorkP->modelId, 0, guideWorkP->scale.y, 0);
         guideWorkP->inObj = MBAddObj(32257, 0, 0, GuideInObjExec);
-        omSetStatBit(guideWorkP->inObj, OM_STAT_MODEL_PAUSED);
+        omSetStatBit(guideWorkP->inObj, OM_STAT_MODELPAUSE);
         MBAudFXPlay(MSM_SE_BOARD_116);
         MBModelRotGet(guideWorkP->modelId, &guideWorkP->inObj->rot);
         while(!GuideInObjCheck()) {
@@ -167,7 +167,7 @@ void MBGuideEnd(MBMODELID modelId)
             MTXCopy(lookAt, modelP->mtx);
         }
         guideWorkP->outObj = MBAddObj(32257, 0, 0, GuideOutObjExec);
-        omSetStatBit(guideWorkP->outObj, OM_STAT_MODEL_PAUSED);
+        omSetStatBit(guideWorkP->outObj, OM_STAT_MODELPAUSE);
         MBAudFXPlay(MSM_SE_BOARD_117);
         MBModelRotGet(guideWorkP->modelId, &guideWorkP->outObj->rot);
         while(!GuideOutObjCheck()) {

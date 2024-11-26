@@ -105,7 +105,7 @@ void omSystemKeyCheckSetup(OMOBJMAN *objman)
 {
     OMOBJ *sysKeyObj = omAddObj(objman, 32731, 0, 0, omSystemKeyCheck);
     omDBGSysKeyObj = sysKeyObj;
-    omSetStatBit(sysKeyObj, OM_STAT_NOPAUSE|0x80);
+    omSetStatBit(sysKeyObj, OM_STAT_NOPAUSE|OM_STAT_SPRPAUSE);
     sysKeyObj->work[0] = 0;
     sysKeyObj->work[1] = 0;
     sysKeyObj->work[2] = 0;

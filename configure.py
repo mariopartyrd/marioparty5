@@ -419,7 +419,7 @@ config.libs = [
             Object(Matching, "game/board/guide.c"),
             Object(Matching, "game/board/path.c"),
             Object(NonMatching, "game/board/mg.c"),
-            Object(NonMatching, "game/board/effect.c"),
+            Object(Matching, "game/board/effect.c"),
             Object(NonMatching, "game/board/pauseoption.c"),
             Object(NonMatching, "game/board/gate.c"),
             Object(NonMatching, "game/board/story.c"),

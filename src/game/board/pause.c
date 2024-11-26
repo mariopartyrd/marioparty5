@@ -23,9 +23,6 @@
 
 #define PAUSE_HOOK_MAX 32
 
-void MBEffFadeCreate(s16 time, u8 dist);
-void MBEffFadeOutSet(s16 time);
-BOOL MBEffFadeDoneCheck(void);
 
 static MBPAUSEHOOK pauseHook[PAUSE_HOOK_MAX];
 static HUPROCESS *pauseProc;
