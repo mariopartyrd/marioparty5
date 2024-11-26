@@ -52,7 +52,7 @@ void MBPauseInit(void)
 void MBPauseProcCreate(int playerNo)
 {
     pauseProc = MBPrcCreate(PauseProcExec, 8209, 14336);
-    HuPrcDestructorSet2(pauseProc, PauseProcKill);
+    MBPrcDestructorSet(pauseProc, PauseProcKill);
     pausePlayer = playerNo;
     HuPrcSetStat(pauseProc, HU_PRC_STAT_PAUSE_ON|HU_PRC_STAT_UPAUSE_ON);
     MBPauseSet(TRUE);

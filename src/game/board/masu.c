@@ -6,6 +6,7 @@
 #include "game/board/status.h"
 #include "game/board/audio.h"
 #include "game/board/pause.h"
+#include "game/board/coin.h"
 
 #include "game/sprite.h"
 
@@ -25,9 +26,6 @@ u32 MBPathFlagGet(void);
 void MBGateCreate(void);
 void MBStarNumSet(int starNum);
 void MBMasuStarExec(int playerNo, int masuId);
-s16 MBCoinDispCreate(HuVecF *pos, int coinNum, BOOL playSe);
-s32 MBCoinAddExec(s32 playerNo, int counNum);
-BOOL MBCoinDispCheck(s16 no);
 
 static u8 masuPathVisitF[MASU_MAX];
 static s16 masuDonkeyTbl[MASU_DONKEY_MAX];
@@ -670,7 +668,7 @@ static void MasuCoinMain(int playerNo, int coinNum)
         MBPlayerMotionNoShiftSet(playerNo, MB_PLAYER_MOT_COINLOSE, 0, 4, HU3D_ATTR_NONE);
     }
     MBCoinAddExec(playerNo, coinNum);
-    for(doneF=FALSE; MBCoinDispCheck(dispId) == FALSE || doneF == FALSE;) {
+    for(doneF=FALSE; MBCoinDispKillCheck(dispId) == FALSE || doneF == FALSE;) {
         if(MBPlayerMotionEndCheck(playerNo) && !doneF) {
             MBPlayerMotIdleSet(playerNo);
             doneF = TRUE;

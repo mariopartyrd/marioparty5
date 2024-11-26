@@ -226,7 +226,7 @@ int MBWinCreate(int type, u32 mess, int speakerNo)
     }
     no = mbWinNo;
     winP->proc = MBPrcCreate(MBWinProc, 8206, 16384);
-    HuPrcDestructorSet2(winP->proc, DestroyWin);
+    MBPrcDestructorSet(winP->proc, DestroyWin);
     winP->winId = HUWIN_NONE;
     winP->mess = mess;
     winP->no = no;

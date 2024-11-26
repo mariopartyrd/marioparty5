@@ -58,7 +58,7 @@ void MBAudInit(void)
         audFx->seNo = MSM_SENO_NONE;
     }
     audFxProc = MBPrcCreate(AudFXMainProc, 8193, 8192);
-    HuPrcDestructorSet2(audFxProc, AudFXMainProcKill);
+    MBPrcDestructorSet(audFxProc, AudFXMainProcKill);
     if(_CheckFlag(FLAG_BOARD_TURN_NOSTART)) {
         audFxOnF = TRUE;
     } else {
@@ -127,7 +127,7 @@ void MBMusPlay(int chan, int id, s8 vol, u16 fadeSpeed)
         musP->proc = MBPrcCreate(MusMainProc, 8193, 8192);
         musP->proc->property = chanP = HuMemDirectMallocNum(HUHEAPTYPE_HEAP, sizeof(int), HU_MEMNUM_OVL);
         *chanP = chan;
-        HuPrcDestructorSet2(musP->proc, MusMainProcKill);
+        MBPrcDestructorSet(musP->proc, MusMainProcKill);
     }
 }
 

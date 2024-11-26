@@ -7,7 +7,10 @@
 #define MSM_SE_CMN_04 3
 #define MSM_SE_CMN_06 5
 #define MSM_SE_CMN_07 6
+#define MSM_SE_CMN_08 7
 #define MSM_SE_CMN_09 8
+#define MSM_SE_CMN_15 14
+#define MSM_SE_CMN_16 15
 #define MSM_SE_CMN_17 16
 #define MSM_SE_CMN_25 24
 
@@ -45,6 +48,10 @@
 #define MSM_SE_BOARD_97 855
 #define MSM_SE_BOARD_98 856
 #define MSM_SE_BOARD_100 858
+#define MSM_SE_BOARD_116 874
+#define MSM_SE_BOARD_117 875
+#define MSM_SE_BOARD_123 881
+#define MSM_SE_BOARD_124 882
 
 #define MSM_SE_MENU_39 1006
 
