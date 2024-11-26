@@ -417,7 +417,7 @@ config.libs = [
             Object(NonMatching, "game/board/capsule.c"),
             Object(NonMatching, "game/board/capmain.c"),
             Object(Matching, "game/board/guide.c"),
-            Object(NonMatching, "game/board/path.c"),
+            Object(Matching, "game/board/path.c"),
             Object(NonMatching, "game/board/mg.c"),
             Object(NonMatching, "game/board/effect.c"),
             Object(NonMatching, "game/board/pauseoption.c"),
