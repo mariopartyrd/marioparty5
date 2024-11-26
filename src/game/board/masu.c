@@ -7,6 +7,7 @@
 #include "game/board/audio.h"
 #include "game/board/pause.h"
 #include "game/board/coin.h"
+#include "game/board/path.h"
 
 #include "game/sprite.h"
 
@@ -21,8 +22,7 @@ typedef struct MasuLight_s {
 } MASULIGHT;
 
 //Functions in headers that don't exist
-void MBPathFlagInit(void);
-u32 MBPathFlagGet(void);
+
 void MBGateCreate(void);
 void MBStarNumSet(int starNum);
 void MBMasuStarExec(int playerNo, int masuId);
@@ -1211,7 +1211,7 @@ int MBMasuPathCheck(s16 masuId, s16 *linkTbl, BOOL endF)
     linkNum = 0;
     for(i=0; i<masuP->linkNum; i++) {
         masuLinkP = MBMasuGet(MASU_LAYER_DEFAULT, masuP->linkTbl[i]);
-        if((masuLinkP->flag & MASU_FLAG_BIT(25)) == 0 && (masuLinkP->flag & MASU_FLAG_PATHBLOCK) == 0&& (masuLinkP->flag & MBPathFlagGet()) == 0) {
+        if((masuLinkP->flag & MASU_FLAG_PATHBLOCKL) == 0 && (masuLinkP->flag & MASU_FLAG_PATHBLOCKR) == 0&& (masuLinkP->flag & MBPathFlagGet()) == 0) {
             linkTbl[linkNum++] = masuP->linkTbl[i];
         }
     }
@@ -1388,7 +1388,7 @@ s16 MBMasuCarTargetGet(s16 masuId, s16 playerNo)
         MASU *masuP = MBMasuGet(MASU_LAYER_DEFAULT, masuId);
         for(j=0; j<masuP->linkNum; j++) {
             MASU *linkMasuP = MBMasuGet(MASU_LAYER_DEFAULT, masuP->linkTbl[j]);
-            if((linkMasuP->flag & MASU_FLAG_JUMPFROM) == 0 && (linkMasuP->flag & MASU_FLAG_PATHBLOCK) == 0) {
+            if((linkMasuP->flag & MASU_FLAG_JUMPFROM) == 0 && (linkMasuP->flag & MASU_FLAG_PATHBLOCKR) == 0) {
                 masuId = masuP->linkTbl[j];
                 break;
             }

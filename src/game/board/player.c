@@ -7,6 +7,7 @@
 #include "game/board/telop.h"
 #include "game/board/pause.h"
 #include "game/board/window.h"
+#include "game/board/path.h"
 
 #include "game/flag.h"
 #include "game/wipe.h"
@@ -17,8 +18,7 @@
 void MBStarDispSetAll(BOOL dispF);
 void MBStarMasuDispSet(int masuId, BOOL dispF);
 void MBScrollExec(int playerNo);
-BOOL MBPathExec(int playerNo, s16 *masuId);
-BOOL MBPathExecDebug(int playerNo, s16 *masuId);
+
 s16 MBGateMasuExec(int playerNo, s16 masuId, s16 masuNext);
 
 static MBPLAYERWORK playerWork[GW_PLAYER_MAX];

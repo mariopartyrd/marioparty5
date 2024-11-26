@@ -8,6 +8,7 @@
 #include "game/gamework.h"
 #include "game/charman.h"
 #include "game/object.h"
+#include "game/pad.h"
 
 #define MB_PLAYER_MOT_IDLE 1
 #define MB_PLAYER_MOT_WALK 2
