@@ -6,6 +6,7 @@
 #include "game/thpmain.h"
 #include "game/init.h"
 #include "game/main.h"
+#include "game/sreset.h"
 
 #define SR_DVD_LOADING 0
 #define SR_DVD_COVER_OPEN 1
@@ -30,26 +31,22 @@ static s8 SR_ResetPad = -1;
 
 static s16 XfbW;
 static s16 XfbH;
-static s32 XfbProg;
+static BOOL XfbProg;
 static void *Xfb[2] = {};
 static BOOL trychkBusyWait;
-s32 SR_ExecReset;
-s32 ResetDelay;
-static s32 SR_RestartChk;
+BOOL SR_ExecReset;
+BOOL SR_ExecResetMenu;
+static BOOL SR_RestartChk;
 static BOOL H_ResetReady;
 
-void HuRestartSystem(void);
-
-s32 HuSoftResetCheck(void);
-s32 HuSoftResetCountCheck(void);
 static void HuSoftResetPostProc(void);
 
-s32 HuSoftResetButtonCheck(void)
+BOOL HuSoftResetButtonCheck(void)
 {
 	if(SR_ExecReset) {
 		HuRestartSystem();
 	}
-	return (SR_ExecReset) ? 1 : 0;
+	return (SR_ExecReset) ? TRUE : FALSE;
 }
 
 static OSMessageQueue ToeMessageQueue;
@@ -107,9 +104,9 @@ void HuDvdErrDispInit(GXRenderModeObj *rmode, void *xfb1, void *xfb2)
 		XfbH = 480;
 	}
 	if((u16)rmode->xFBmode == VI_XFBMODE_SF) {
-		XfbProg = 0;
+		XfbProg = FALSE;
 	} else {
-		XfbProg = 1;
+		XfbProg = TRUE;
 	}
 	trychkBusyWait = FALSE;
 	OSInitMessageQueue(&ToeMessageQueue, ToeMessageArray, 16);
@@ -140,7 +137,7 @@ static void *ToeThreadFunc(void *param)
                     reset = FALSE;
                 }
             }
-            if(reset || ResetDelay) {
+            if(reset || SR_ExecResetMenu) {
                 proc_reset:
                 execPost = TRUE;
             }
@@ -399,7 +396,7 @@ void HuRestartSystem(void)
 	}
 	OSReport("Timeout Count=%d\n", retrace[0]);
 	GXAbortFrame();
-    if(ResetDelay != 0) {
+    if(SR_ExecResetMenu != 0) {
         OSResetSystem(TRUE, 0, TRUE);
     } else if(DVDGetDriveStatus() == DVD_STATE_WRONG_DISK) {
         OSResetSystem(TRUE, 0, FALSE);
@@ -409,35 +406,35 @@ void HuRestartSystem(void)
 	
 }
 
-s32 HuSoftResetCheck(void)
+BOOL HuSoftResetCheck(void)
 {
 	int i;
 	if(VCounter == 0) {
-		return 0;
+		return FALSE;
 	}
 	if(SR_ExecReset) {
-		return 1;
+		return TRUE;
 	}
 	if(SR_ResetPad != -1) {
 		if(_PadBtn[SR_ResetPad] != PAD_BTN_SRESET) {
-			return 1;
+			return TRUE;
 		}
 	} else {
 		for(i=0; i<4; i++) {
 			if(SR_PreRstChk[i] && _PadBtn[i] != PAD_BTN_SRESET) {
-				SR_PreRstChk[i] = 0;
+				SR_PreRstChk[i] = FALSE;
 			}
 		}
 	}
 	
 	if(HuSoftResetCountCheck()) {
-		return 1;
+		return TRUE;
 	} else {
-		return 0;
+		return FALSE;
 	}
 }
 
-s32 HuSoftResetCountCheck(void)
+BOOL HuSoftResetCountCheck(void)
 {
 	int i;
 	for(i=0; i<4; i++) {
@@ -448,7 +445,7 @@ s32 HuSoftResetCountCheck(void)
 				if(_PadBtn[i] & PAD_BUTTON_START) {
 					if(SR_PushTime[i]++ >= 30) {
 						SR_ResetPad = i;
-						return 1;
+						return TRUE;
 					}
 				} else {
 					SR_PushTime[i] = 0;
@@ -456,7 +453,7 @@ s32 HuSoftResetCountCheck(void)
 			}
 		}
 	}
-	return 0;
+	return FALSE;
 }
 
 static void HuSoftResetPostProc(void)
