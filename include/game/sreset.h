@@ -9,4 +9,7 @@ void HuRestartSystem(void);
 BOOL HuSoftResetCountCheck(void);
 BOOL HuSoftResetCheck(void);
 
+extern BOOL SR_ExecReset;
+extern BOOL SR_ExecResetMenu;
+
 #endif

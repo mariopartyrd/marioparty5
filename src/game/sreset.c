@@ -35,7 +35,7 @@ static BOOL XfbProg;
 static void *Xfb[2] = {};
 static BOOL trychkBusyWait;
 BOOL SR_ExecReset;
-BOOL ResetDelay;
+BOOL SR_ExecResetMenu;
 static BOOL SR_RestartChk;
 static BOOL H_ResetReady;
 
@@ -137,7 +137,7 @@ static void *ToeThreadFunc(void *param)
                     reset = FALSE;
                 }
             }
-            if(reset || ResetDelay) {
+            if(reset || SR_ExecResetMenu) {
                 proc_reset:
                 execPost = TRUE;
             }
@@ -396,7 +396,7 @@ void HuRestartSystem(void)
 	}
 	OSReport("Timeout Count=%d\n", retrace[0]);
 	GXAbortFrame();
-    if(ResetDelay != 0) {
+    if(SR_ExecResetMenu != 0) {
         OSResetSystem(TRUE, 0, TRUE);
     } else if(DVDGetDriveStatus() == DVD_STATE_WRONG_DISK) {
         OSResetSystem(TRUE, 0, FALSE);
