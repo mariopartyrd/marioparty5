@@ -5,7 +5,7 @@
 #include "game/memory.h"
 
 typedef struct ModelManWork_s {
-    u8 killF : 1;
+    unsigned killF : 1;
 } MODELMANWORK;
 
 static s16 modelCnt;

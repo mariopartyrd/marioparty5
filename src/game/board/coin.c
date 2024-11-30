@@ -75,7 +75,7 @@ s16 MBCoinEffCreate(int count, MBCOINEFFHOOK hook)
     memset(effData, 0, eff->count*sizeof(MBCOINEFFDATA));
     for(i=0; i<count; i++, effData++) {
         effData->dispF = TRUE;
-        effData->modelId = MBModelCreate(BOARD_HSF_coin, NULL, TRUE);
+        effData->modelId = MBModelCreate(MBDATANUM(BOARD_HSF_coin), NULL, TRUE);
         effData->scale.x = effData->scale.y = effData->scale.z = 0.5f;
         effData->no = i;
     }
@@ -267,9 +267,9 @@ void MBCoinParManKill(HU3DPARMANID parManId)
 }
 
 typedef struct coinDispWork_s {
-    u8 killF : 1;
-    u8 sign : 1;
-    u8 mode : 3;
+    unsigned killF : 1;
+    unsigned sign : 1;
+    unsigned mode : 3;
     u8 modelNum;
     s16 no;
     u16 delay;
@@ -372,13 +372,13 @@ static void CoinDispInit(OMOBJ *obj, int coinNum)
     int i;
     int modelNum;
     
-    obj->mdlId[0] = MBModelCreate(BOARD_HSF_coin, NULL, FALSE);
+    obj->mdlId[0] = MBModelCreate(MBDATANUM(BOARD_HSF_coin), NULL, FALSE);
     if(work->sign) {
         motTime = 2.5f;
     } else {
         motTime = 1.5f;
     }
-    obj->mdlId[1] = MBModelCreate(signMdlTbl[work->sign], NULL, FALSE);
+    obj->mdlId[1] = MBModelCreate(MBDATANUM(signMdlTbl[work->sign]), NULL, FALSE);
     MBMotionNoSet(obj->mdlId[1], MB_MOT_DEFAULT, HU3D_MOTATTR_NONE);
     MBMotionTimeSet(obj->mdlId[1], motTime);
     MBMotionSpeedSet(obj->mdlId[1], 0);
@@ -393,7 +393,7 @@ static void CoinDispInit(OMOBJ *obj, int coinNum)
         }
         if(dispF || digit != 0) {
             dispF = TRUE;
-            obj->mdlId[modelNum] = MBModelCreate(numberFileTbl[digit], NULL, FALSE);
+            obj->mdlId[modelNum] = MBModelCreate(MBDATANUM(numberFileTbl[digit]), NULL, FALSE);
             MBMotionTimeSet(obj->mdlId[modelNum], motTime);
             MBMotionSpeedSet(obj->mdlId[modelNum], 0);
             MBModelDispSet(obj->mdlId[modelNum], dispF);

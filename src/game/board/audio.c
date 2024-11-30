@@ -4,7 +4,6 @@
 #include "game/hsfex.h"
 #include "game/disp.h"
 
-
 typedef struct MBAudFx_s {
     int seId;
     int seNo;

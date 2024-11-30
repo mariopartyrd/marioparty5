@@ -61,9 +61,9 @@ typedef struct MBPlayerWork_s {
     s8 unk4;
     s8 masuCorner;
     s16 masuNext;
-    u8 moveF : 1;
-    u8 playerNo : 2;
-    u8 moveEndF : 1;
+    unsigned moveF : 1;
+    unsigned playerNo : 2;
+    unsigned moveEndF : 1;
     OMOBJ *rotateObj;
     OMOBJ *walkObj;
     OMOBJ *posFixObj;

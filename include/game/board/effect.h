@@ -35,8 +35,8 @@ typedef struct MBEffectData_s {
     s16 animNo;
     float animSpeed;
     float animTime;
-    u8 dispF : 1;
-    u8 pauseF : 1;
+    unsigned dispF : 1;
+    unsigned pauseF : 1;
 } MBEFFECTDATA;
 
 struct MBEffect_s {

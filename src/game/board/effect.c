@@ -11,8 +11,8 @@ static OMOBJ *confettiEffObj;
 static OMOBJ *fadeEffObj;
 
 typedef struct fadeEffWork_s {
-    u8 killF : 1;
-    u8 pauseF : 1;
+    unsigned killF : 1;
+    unsigned pauseF : 1;
     u8 alpha;
     s16 time;
     s16 maxTime;
@@ -185,8 +185,8 @@ typedef struct confettiEffData_s {
 } CONFETTIEFFDATA;
 
 typedef struct confettiEffWork_s {
-    u8 killF : 1;
-    u8 pauseF : 1;
+    unsigned killF : 1;
+    unsigned pauseF : 1;
     s8 addNum;
     s8 time;
     s8 delay;
@@ -226,7 +226,7 @@ void MBEffConfettiCreate(HuVecF *pos, s16 maxCnt, float width)
     obj->trans.y = pos->y;
     obj->trans.z = pos->z;
     obj->rot.x = width;
-    work->modelId = MBModelCreate(BOARD_HSF_confetti, NULL, FALSE);
+    work->modelId = MBModelCreate(MBDATANUM(BOARD_HSF_confetti), NULL, FALSE);
     MBModelLayerSet(work->modelId, 2);
     MBModelDispSet(work->modelId, FALSE);
     for(data=work->data, i=0; i<work->maxCnt; i++, data++) {

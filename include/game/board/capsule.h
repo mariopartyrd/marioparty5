@@ -60,6 +60,7 @@ void MBKillerExec(int playerNo);
 void MBKettouExec(int playerNo);
 
 int MBCapsuleSelExec(void);
+int MBCapsuleColorNoGet(int capsuleNo);
 
 void MBCapsuleSelStoryExec(void);
 void MBCapsuleAddStory(void);

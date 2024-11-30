@@ -59,7 +59,7 @@ enum {
     BOARD_ANM_statusTeamBack = DATANUM(DATA_board, 52),
     BOARD_ANM_statusTeamBorder = DATANUM(DATA_board, 53),
     BOARD_ANM_statusCapsule = DATANUM(DATA_board, 54),
-    BOARD_ANM_statusRollMod = DATANUM(DATA_board, 55),
+    BOARD_ANM_statusSaiMode = DATANUM(DATA_board, 55),
     BOARD_ANM_statusKaoMario = DATANUM(DATA_board, 56),
     BOARD_ANM_statusKaoLuigi = DATANUM(DATA_board, 57),
     BOARD_ANM_statusKaoPeach = DATANUM(DATA_board, 58),

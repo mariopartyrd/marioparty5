@@ -14,9 +14,9 @@ typedef struct mbCoinEff_s MBCOINEFF;
 typedef void (*MBCOINEFFHOOK)(MBCOINEFF *eff);
 
 typedef struct mbCoinEffData_s {
-    u8 dispF : 1;
-    u8 hitF : 1;
-    u8 timeEndF : 1;
+    unsigned dispF : 1;
+    unsigned hitF : 1;
+    unsigned timeEndF : 1;
     MBMODELID modelId;
     int no;
     HuVecF pos;
