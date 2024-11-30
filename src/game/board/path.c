@@ -122,10 +122,10 @@ static s16 PathGetDefaultStory(int masuId)
 }
 
 typedef struct PathYajiWork_s {
-    u8 killF : 1;
-    u8 playerNo : 2;
-    u8 linkNum : 2;
-    u8 flag : 1;
+    unsigned killF : 1;
+    unsigned playerNo : 2;
+    unsigned linkNum : 2;
+    unsigned flag : 1;
     s8 choice;
     s16 angle;
     s16 mdlTemp;
@@ -164,7 +164,7 @@ static void PathYajiCreate(int playerNo, int masuId, s16 *linkTbl, int linkNum, 
     MBMasuPosGet(MASU_LAYER_DEFAULT, masuId, &pos);
     pos.y += 300;
     for(i=0; i<linkNum; i++) {
-        work->modelId[i] = MBModelCreate(BOARD_HSF_yaji, NULL, TRUE);
+        work->modelId[i] = MBModelCreate(MBDATANUM(BOARD_HSF_yaji), NULL, TRUE);
         MBMasuPosGet(MASU_LAYER_DEFAULT, linkTbl[i], &posLink);
         VECSubtract(&posLink, &pos, &dirLink);
         angle = fmod(HuAtan(dirLink.x, dirLink.z), 360);

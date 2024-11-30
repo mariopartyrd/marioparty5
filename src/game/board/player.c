@@ -1186,9 +1186,9 @@ void MBPlayerWalkExec(int playerNo, HuVecF *srcPos, HuVecF *dstPos, s16 maxTime,
 #define PLAYER_WALK_MODE_CLIMB 2
 
 typedef struct PlayerWalkWork_s {
-    u8 killF : 1;
-    u8 mode : 2;
-    u8 playerNo : 2;
+    unsigned killF : 1;
+    unsigned mode : 2;
+    unsigned playerNo : 2;
     s16 time;
     s16 maxTime;
 } PLAYERWALKWORK;
@@ -1334,7 +1334,7 @@ static void UpdatePlayerWalk(OMOBJ *obj)
 
 
 typedef struct PlayerRotateWork_s {
-    u8 killF : 1;
+    unsigned killF : 1;
     s8 playerNo;
     s16 maxTime;
     s16 time;
@@ -1436,10 +1436,10 @@ void MBPlayerSaiMotExec(int playerNo)
 }
 
 typedef struct WalkNumWork_s {
-    u8 killF : 1;
-    u8 dispF : 1;
-    u8 playerNo : 2;
-    u8 carF : 1;
+    unsigned killF : 1;
+    unsigned dispF : 1;
+    unsigned playerNo : 2;
+    unsigned carF : 1;
 } WALKNUMWORK;
 
 static void UpdateWalkNum(OMOBJ *obj);
@@ -1477,7 +1477,7 @@ void MBWalkNumCreateColor(int playerNo, BOOL carF, int color)
     work->carF = carF;
     for(i=0; i<20; i++) {
         HU3DMODELID rawMdlId;
-        modelId = MBModelCreate(numberFileTbl[i%10], NULL, FALSE);
+        modelId = MBModelCreate(MBDATANUM(numberFileTbl[i%10]), NULL, FALSE);
         MBModelDispSet(modelId, FALSE);
         MBMotionNoSet(modelId, MB_MOT_DEFAULT, HU3D_MOTATTR_NONE);
         MBMotionSpeedSet(modelId, 0.0f);
@@ -1595,11 +1595,11 @@ void MBWalkNumDispSet(int playerNo, BOOL dispF)
 #define POS_FIX_MODE_ROTATE 1
 
 typedef struct PosFixWork_s {
-    u8 motStartF : 1;
-    u8 killF : 1;
-    u8 playerNo : 2;
-    u8 mode : 2;
-    u8 cornerNo : 2;
+    unsigned motStartF : 1;
+    unsigned killF : 1;
+    unsigned playerNo : 2;
+    unsigned mode : 2;
+    unsigned cornerNo : 2;
     u8 masuId;
     s8 time;
     s8 maxTime;
