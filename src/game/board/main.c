@@ -8,7 +8,7 @@
 #include "game/board/pause.h"
 #include "game/board/guide.h"
 #include "game/board/coin.h"
-#include "game/board/path.h"
+#include "game/board/branch.h"
 
 #include "game/saveload.h"
 #include "game/sprite.h"
@@ -389,7 +389,7 @@ static void CreateMB(void)
     MBCapMachineInit();
     MBCapsuleObjInit();
     MBCoinInit();
-    MBPathInit();
+    MBBranchInit();
     createMbHook();
     MBPlayerInit(MBEventMgCheck() == FALSE);
     MBStatusInit();

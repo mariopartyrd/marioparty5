@@ -3,7 +3,8 @@ object: orig/GP5E01/sys/main.dol
 hash: ba946b5ba8d6c9e6e6c378f8e3215cbb8ae5ffc9
 symbols: config/GP5E01/symbols.txt
 splits: config/GP5E01/splits.txt
-  
+quick_analysis: true
+
 # Change this to match the linker verison.
 # See config.example.yml for a list.
 mw_comment_version: 11

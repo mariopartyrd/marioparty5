@@ -522,7 +522,7 @@ game/board/guide.c:
 	.sdata      start:0x80288388 end:0x80288398
 	.sdata2     start:0x8028B050 end:0x8028B0C0
 
-game/board/path.c:
+game/board/branch.c:
 	.text       start:0x8011A6DC end:0x8011B71C
 	.bss        start:0x802589C0 end:0x802589D0
 	.sbss       start:0x80288CC8 end:0x80288CD0

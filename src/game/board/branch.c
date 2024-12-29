@@ -1,4 +1,4 @@
-#include "game/board/path.h"
+#include "game/board/branch.h"
 #include "game/board/model.h"
 #include "game/board/player.h"
 #include "game/board/tutorial.h"
@@ -15,33 +15,33 @@ s8 MBPadStkXGet(int padNo);
 s8 MBPadStkYGet(int padNo);
 void MBScrollExec(int playerNo);
 
-static OMOBJ *pathYajiObj[GW_PLAYER_MAX];
+static OMOBJ *branchGuideObj[GW_PLAYER_MAX];
 
-static u32 pathFlag;
+static u32 branchFlag;
 
-void MBPathInit(void)
+void MBBranchInit(void)
 {
     int i;
     for(i=0; i<GW_PLAYER_MAX; i++) {
-        pathYajiObj[i] = NULL;
+        branchGuideObj[i] = NULL;
     }
 }
 
-static int MasuGetPathLink(int masuId, s16 *linkTbl)
+static int MasuGetBranchLink(int masuId, s16 *linkTbl)
 {
     int linkNum = 0;
     MASU *masuP = MBMasuGet(MASU_LAYER_DEFAULT, masuId);
     int i;
     for(i=0; i<masuP->linkNum; i++) {
         MASU *masuLinkP = MBMasuGet(MASU_LAYER_DEFAULT, masuP->linkTbl[i]);
-        if((masuLinkP->flag & MASU_FLAG_PATHBLOCKL) == 0 && (masuLinkP->flag & MASU_FLAG_PATHBLOCKR) == 0 && (masuLinkP->flag & MBPathFlagGet()) == 0) {
+        if((masuLinkP->flag & MASU_FLAG_BLOCKL) == 0 && (masuLinkP->flag & MASU_FLAG_BLOCKR) == 0 && (masuLinkP->flag & MBBranchFlagGet()) == 0) {
             linkTbl[linkNum++] = masuP->linkTbl[i];
         }
     }
     return linkNum;
 }
 
-static s16 PathGetDefaultParty(int masuId)
+static s16 BranchGetDefaultParty(int masuId)
 {
     int choice;
     int len;
@@ -66,7 +66,7 @@ static s16 PathGetDefaultParty(int masuId)
     }
 }
 
-static s16 PathGetDefaultStoryCom(int masuId)
+static s16 BranchGetDefaultStoryCom(int masuId)
 {
     int choice;
     int len;
@@ -91,7 +91,7 @@ static s16 PathGetDefaultStoryCom(int masuId)
     }
 }
 
-static s16 PathGetDefaultStory(int masuId)
+static s16 BranchGetDefaultStory(int masuId)
 {
     int choice;
     int len;
@@ -121,7 +121,7 @@ static s16 PathGetDefaultStory(int masuId)
     }
 }
 
-typedef struct PathYajiWork_s {
+typedef struct BranchGuideWork_s {
     unsigned killF : 1;
     unsigned playerNo : 2;
     unsigned linkNum : 2;
@@ -130,26 +130,26 @@ typedef struct PathYajiWork_s {
     s16 angle;
     s16 mdlTemp;
     MBMODELID modelId[4];
-} PATHYAJIWORK;
+} BRANCHGUIDEWORK;
 
-static void PathYajiUpdate(OMOBJ *obj);
+static void BranchGuideUpdate(OMOBJ *obj);
 
-static void PathYajiCreate(int playerNo, int masuId, s16 *linkTbl, int linkNum, s16 choiceStart)
+static void BranchGuideCreate(int playerNo, int masuId, s16 *linkTbl, int linkNum, s16 choiceStart)
 {
-    PATHYAJIWORK *work;
+    BRANCHGUIDEWORK *work;
     OMOBJ *obj;
     HuVecF pos;
     HuVecF posLink;
     HuVecF dirLink;
     float angle;
     int i;
-    if(pathYajiObj[playerNo] || linkNum == 1) {
+    if(branchGuideObj[playerNo] || linkNum == 1) {
         return;
     }
-    pathYajiObj[playerNo] = obj = MBAddObj(256, 0, 0, PathYajiUpdate);
+    branchGuideObj[playerNo] = obj = MBAddObj(256, 0, 0, BranchGuideUpdate);
     omSetStatBit(obj, OM_STAT_MODELPAUSE);
     obj->scale.x = obj->scale.y = obj->scale.z = 3;
-    work = omObjGetWork(obj, PATHYAJIWORK);
+    work = omObjGetWork(obj, BRANCHGUIDEWORK);
     work->linkNum = linkNum;
     work->killF = FALSE;
     work->flag = FALSE;
@@ -178,9 +178,9 @@ static void PathYajiCreate(int playerNo, int masuId, s16 *linkTbl, int linkNum, 
     }
 }
 
-static void PathYajiUpdate(OMOBJ *obj)
+static void BranchGuideUpdate(OMOBJ *obj)
 {
-    PATHYAJIWORK *work = omObjGetWork(obj, PATHYAJIWORK);
+    BRANCHGUIDEWORK *work = omObjGetWork(obj, BRANCHGUIDEWORK);
     if(work->killF || MBKillCheck()) {
         int i;
         for(i=0; i<work->linkNum; i++) {
@@ -191,7 +191,7 @@ static void PathYajiUpdate(OMOBJ *obj)
                 MBTopWinKill();
             }
         }
-        pathYajiObj[work->playerNo] = NULL;
+        branchGuideObj[work->playerNo] = NULL;
         MBDelObj(obj);
         return;
     }
@@ -204,27 +204,27 @@ static void PathYajiUpdate(OMOBJ *obj)
     MBModelScaleSet(work->modelId[work->choice], obj->scale.x, obj->scale.y, obj->scale.z);
 }
 
-static void PathYajiChoiceSet(int playerNo, int choice)
+static void BranchGuideChoiceSet(int playerNo, int choice)
 {
-    if(pathYajiObj[playerNo]) {
-        PATHYAJIWORK *work = omObjGetWork(pathYajiObj[playerNo], PATHYAJIWORK);
+    if(branchGuideObj[playerNo]) {
+        BRANCHGUIDEWORK *work = omObjGetWork(branchGuideObj[playerNo], BRANCHGUIDEWORK);
         work->choice = choice;
     }
 }
 
-static void PathYajiKill(int playerNo)
+static void BranchGuideKill(int playerNo)
 {
-    if(pathYajiObj[playerNo]) {
-        PATHYAJIWORK *work = omObjGetWork(pathYajiObj[playerNo], PATHYAJIWORK);
+    if(branchGuideObj[playerNo]) {
+        BRANCHGUIDEWORK *work = omObjGetWork(branchGuideObj[playerNo], BRANCHGUIDEWORK);
         work->killF = TRUE;
         HuPrcSleep(10);
     }
 }
 
-static BOOL PathExec(int playerNo, s16 *masuId, BOOL debugF)
+static BOOL BranchExec(int playerNo, s16 *masuId, BOOL debugF)
 {
     float anglePath[MASU_LINK_MAX*2];
-    s16 pathLinkTbl[MASU_LINK_MAX*2];
+    s16 branchLinkTbl[MASU_LINK_MAX*2];
     HuVecF dir;
     HuVecF dir2D;
     HuVecF pos;
@@ -244,26 +244,26 @@ static BOOL PathExec(int playerNo, s16 *masuId, BOOL debugF)
     
     choiceTime = -1;
     masuPlayer = GwPlayer[playerNo].masuId;
-    linkNum = MasuGetPathLink(masuPlayer, pathLinkTbl);
+    linkNum = MasuGetBranchLink(masuPlayer, branchLinkTbl);
     if(!debugF && linkNum <= 1) {
-        *masuId = pathLinkTbl[0];
+        *masuId = branchLinkTbl[0];
         return FALSE;
     }
     if(GWPartyFGet() != FALSE) {
-        choice = PathGetDefaultParty(masuPlayer);
+        choice = BranchGetDefaultParty(masuPlayer);
     } else if(MBPlayerStoryComCheck(playerNo)) {
-        choice = PathGetDefaultStoryCom(masuPlayer);
+        choice = BranchGetDefaultStoryCom(masuPlayer);
     } else {
-        choice = PathGetDefaultStory(masuPlayer);
+        choice = BranchGetDefaultStory(masuPlayer);
     }
-    PathYajiCreate(playerNo, masuPlayer, pathLinkTbl, linkNum, choice);
+    BranchGuideCreate(playerNo, masuPlayer, branchLinkTbl, linkNum, choice);
     if(debugF) {
-        linkNum += MBMasuLinkTblGet(MASU_LAYER_DEFAULT, masuPlayer, &pathLinkTbl[linkNum]);
+        linkNum += MBMasuLinkTblGet(MASU_LAYER_DEFAULT, masuPlayer, &branchLinkTbl[linkNum]);
     }
     MBMasuPosGet(MASU_LAYER_DEFAULT, masuPlayer, &pos);
     MB3Dto2D(&pos, &pos2D);
     for(i=0; i<linkNum; i++) {
-        MBMasuPosGet(MASU_LAYER_DEFAULT, pathLinkTbl[i], &posLink);
+        MBMasuPosGet(MASU_LAYER_DEFAULT, branchLinkTbl[i], &posLink);
         MB3Dto2D(&posLink, &posLink2D);
         VECSubtract(&posLink2D, &pos2D, &dir2D);
         anglePath[i] = fmod(HuAtan(-dir2D.y, dir2D.x), 360);
@@ -290,10 +290,10 @@ static BOOL PathExec(int playerNo, s16 *masuId, BOOL debugF)
         } else if(GwPlayer[playerNo].comF && !debugF) {
             if(choiceTime < 0) {
                 if(GWPartyFGet() != FALSE) {
-                    choiceAuto = MBComMasuPathNoGet(playerNo, linkNum, pathLinkTbl); 
+                    choiceAuto = MBComMasuPathNoGet(playerNo, linkNum, branchLinkTbl); 
                 } else {
                     if(frandmod(100) < chanceTbl[GwPlayer[playerNo].dif]) {
-                        choiceAuto = pathLinkTbl[frandmod(linkNum)];
+                        choiceAuto = branchLinkTbl[frandmod(linkNum)];
                     } else {
                         choiceAuto = choice;
                     }
@@ -314,15 +314,15 @@ static BOOL PathExec(int playerNo, s16 *masuId, BOOL debugF)
             btnDown = HuPadBtnDown[padNo];
         }
         if(btnDown == PAD_BUTTON_A) {
-            *masuId = pathLinkTbl[choice];
+            *masuId = branchLinkTbl[choice];
             MBAudFXPlay(MSM_SE_CMN_03);
-            PathYajiKill(playerNo);
+            BranchGuideKill(playerNo);
             break;
         }
         if(btnDown == PAD_BUTTON_Y) {
             MBAudFXPlay(MSM_SE_CMN_02);
             MBWalkNumDispSet(playerNo, FALSE);
-            PathYajiKill(playerNo);
+            BranchGuideKill(playerNo);
             MBPlayerMotIdleSet(playerNo);
             MBScrollExec(playerNo);
             MBStatusDispSetAll(TRUE);
@@ -330,11 +330,11 @@ static BOOL PathExec(int playerNo, s16 *masuId, BOOL debugF)
                 HuPrcVSleep();
             }
             MBWalkNumDispSet(playerNo, TRUE);
-            PathYajiCreate(playerNo, masuPlayer, pathLinkTbl, linkNum, choice);
+            BranchGuideCreate(playerNo, masuPlayer, branchLinkTbl, linkNum, choice);
             continue;
         }
         if(debugF && (HuPadBtnDown[padNo] == PAD_BUTTON_X)) {
-            PathYajiKill(playerNo);
+            BranchGuideKill(playerNo);
             return TRUE;
         }
         if(dir.x != 0.0f || dir.y != 0.0f) {
@@ -357,11 +357,11 @@ static BOOL PathExec(int playerNo, s16 *masuId, BOOL debugF)
                 if(choice != dir) {
                     MBAudFXPlay(MSM_SE_CMN_01);
                     choice = dir;
-                    PathYajiChoiceSet(playerNo, choice);
+                    BranchGuideChoiceSet(playerNo, choice);
                 }
                 if(debugF) {
-                    *masuId = pathLinkTbl[choice];
-                    PathYajiKill(playerNo);
+                    *masuId = branchLinkTbl[choice];
+                    BranchGuideKill(playerNo);
                     break;
                 }
             }
@@ -374,33 +374,33 @@ static BOOL PathExec(int playerNo, s16 *masuId, BOOL debugF)
 }
 
 
-BOOL MBPathExec(int playerNo, s16 *masuId)
+BOOL MBBranchExec(int playerNo, s16 *masuId)
 {
-    return PathExec(playerNo, masuId, FALSE);
+    return BranchExec(playerNo, masuId, FALSE);
 }
 
-BOOL MBPathExecDebug(int playerNo, s16 *masuId)
+BOOL MBBranchExecDebug(int playerNo, s16 *masuId)
 {
-    return PathExec(playerNo, masuId, TRUE);
+    return BranchExec(playerNo, masuId, TRUE);
 }
 
-void MBPathFlagSet(u32 flag)
+void MBBranchFlagSet(u32 flag)
 {
-    pathFlag |= flag;
+    branchFlag |= flag;
 }
 
-void MBPathFlagReset(u32 flag)
+void MBBranchFlagReset(u32 flag)
 {
-    pathFlag &= ~flag;
+    branchFlag &= ~flag;
 }
 
 
-void MBPathFlagInit(void)
+void MBBranchFlagInit(void)
 {
-    pathFlag = MASU_FLAG_NONE;
+    branchFlag = MASU_FLAG_NONE;
 }
 
-u32 MBPathFlagGet(void)
+u32 MBBranchFlagGet(void)
 {
-    return pathFlag;
+    return branchFlag;
 }

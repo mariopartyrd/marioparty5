@@ -7,7 +7,7 @@
 #include "game/board/audio.h"
 #include "game/board/pause.h"
 #include "game/board/coin.h"
-#include "game/board/path.h"
+#include "game/board/branch.h"
 
 #include "game/sprite.h"
 
@@ -69,9 +69,8 @@ void MBMasuCreate(int dataNum)
     BOOL dispF;
     int koopaNum;
     int donkeyNum;
-    
-    
-    MBPathFlagInit();
+
+    MBBranchFlagInit();
     memset(&masuData[0][0], 0, sizeof(masuData));
     for(i=0; i<MASU_LAYER_MAX; i++) {
         masuDispMask[i] = MASU_FLAG_NONE;
@@ -1211,7 +1210,7 @@ int MBMasuPathCheck(s16 masuId, s16 *linkTbl, BOOL endF)
     linkNum = 0;
     for(i=0; i<masuP->linkNum; i++) {
         masuLinkP = MBMasuGet(MASU_LAYER_DEFAULT, masuP->linkTbl[i]);
-        if((masuLinkP->flag & MASU_FLAG_PATHBLOCKL) == 0 && (masuLinkP->flag & MASU_FLAG_PATHBLOCKR) == 0&& (masuLinkP->flag & MBPathFlagGet()) == 0) {
+        if((masuLinkP->flag & MASU_FLAG_BLOCKL) == 0 && (masuLinkP->flag & MASU_FLAG_BLOCKR) == 0&& (masuLinkP->flag & MBBranchFlagGet()) == 0) {
             linkTbl[linkNum++] = masuP->linkTbl[i];
         }
     }
@@ -1388,7 +1387,7 @@ s16 MBMasuCarTargetGet(s16 masuId, s16 playerNo)
         MASU *masuP = MBMasuGet(MASU_LAYER_DEFAULT, masuId);
         for(j=0; j<masuP->linkNum; j++) {
             MASU *linkMasuP = MBMasuGet(MASU_LAYER_DEFAULT, masuP->linkTbl[j]);
-            if((linkMasuP->flag & MASU_FLAG_JUMPFROM) == 0 && (linkMasuP->flag & MASU_FLAG_PATHBLOCKR) == 0) {
+            if((linkMasuP->flag & MASU_FLAG_JUMPFROM) == 0 && (linkMasuP->flag & MASU_FLAG_BLOCKR) == 0) {
                 masuId = masuP->linkTbl[j];
                 break;
             }
