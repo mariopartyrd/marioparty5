@@ -7,7 +7,7 @@
 #include "game/board/telop.h"
 #include "game/board/pause.h"
 #include "game/board/window.h"
-#include "game/board/path.h"
+#include "game/board/branch.h"
 
 #include "game/flag.h"
 #include "game/wipe.h"
@@ -1068,10 +1068,10 @@ static void PlayerWalkProc(void)
     do {
         GwPlayer[playerNo].masuIdPrev = GwPlayer[playerNo].masuId;
         if(!_CheckFlag(FLAG_BOARD_DEBUG) || (GWPartyFGet() == FALSE && workP->moveF) || _CheckFlag(FLAG_BOARD_TUTORIAL)) {
-            if(MBPathExec(playerNo, &masuNext)) {
+            if(MBBranchExec(playerNo, &masuNext)) {
                 break;
             }
-        } else if(MBPathExecDebug(playerNo, &masuNext)) {
+        } else if(MBBranchExecDebug(playerNo, &masuNext)) {
             break;
         } else if(masuNext < 0) {
             break;
