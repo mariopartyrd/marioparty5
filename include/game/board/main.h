@@ -4,6 +4,8 @@
 #include "game/object.h"
 #include "game/process.h"
 #include "game/gamework.h"
+#include "game/frand.h"
+
 #include "game/data.h"
 #include "datanum/board.h"
 

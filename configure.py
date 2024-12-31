@@ -407,7 +407,7 @@ config.libs = [
             Object(Matching, "game/board/coin.c"),
             Object(NonMatching, "game/board/star.c"),
             Object(NonMatching, "game/board/padall.c"),
-            Object(NonMatching, "game/board/sai.c"),
+            Object(Matching, "game/board/sai.c"),
             Object(Matching, "game/board/status.c"),
             Object(NonMatching, "game/board/opening.c"),
             Object(Matching, "game/board/pause.c"),
@@ -425,7 +425,6 @@ config.libs = [
             Object(NonMatching, "game/board/story.c"),
             Object(NonMatching, "game/board/telop.c"),
             Object(NonMatching, "game/board/mgcircuit.c"),
-            
             Object(NonMatching, "game/code_801A7E90.c"),
         ],
     },
