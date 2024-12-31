@@ -798,7 +798,7 @@ static void ExecPause(void)
         charNo[GwPlayerConf[i].grp][charNum[GwPlayerConf[i].grp]] = GwPlayerConf[i].charNo;
 		charNum[GwPlayerConf[i].grp]++;
     }
-    mgNo = omOvlMgNoGet(omcurovl);
+    mgNo = MgNoGet(omcurovl);
     if(_CheckFlag(FLAG_DECA_INST)) {
         instMes = &mgDataTbl[mgNo].instMes[1][0];
     } else {
@@ -1066,7 +1066,7 @@ static void ExecPractice(void)
         }
     }
     practiceP = &practiceTbl[id];
-    id = omOvlMgNoGet(omcurovl);
+    id = MgNoGet(omcurovl);
     if(id != -1) {
         mgP = &mgDataTbl[id];
     } else {
@@ -1237,7 +1237,7 @@ void GMesExitCheck(OMOBJ *obj)
 {
     mgExitStartF = FALSE;
     if(obj->work[0] == 0) {
-        if(omOvlMgNoGet(omcurovl) == -1) {
+        if(MgNoGet(omcurovl) == -1) {
             omDelObjEx(HuPrcCurrentGet(), obj);
             return;
         } else {

@@ -62,6 +62,8 @@ extern BOOL mgPauseExitF;
 extern BOOL mgInstExitF;
 extern BOOL mgBoard2Force;
 
+s32 MgNoGet(s16 ovlNo);
+
 int MgSubModeGet(void);
 int MgDecaScoreCalc(int gameNo, int mgScore);
 
