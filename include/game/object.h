@@ -147,7 +147,6 @@ s16 omCameraViewMoveSimpleMulti(u32 camera, OMCAMERAVIEW *cameraView, s32 time);
 s16 omCameraViewMoveSimple(OMCAMERAVIEW *cameraView, s32 time);
 BOOL omCameraViewCheck(u32 cameraBit);
 
-s32 omOvlMgNoGet(s16 ovlNo);
 void omGameSysInit(OMOBJMAN *objman);
 void omVibrate(s16 playerNo, s16 duration, s16 off, s16 on);
 

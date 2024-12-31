@@ -384,6 +384,7 @@ config.libs = [
             Object(Matching, "game/THPSimple.c"),
             Object(Matching, "game/THPDraw.c"),
             Object(Matching, "game/thpmain.c"),
+            Object(Matching, "game/mgdata.c"),
             Object(Matching, "game/objsub.c"),
             Object(Matching, "game/flag.c"),
             Object(NonMatching, "game/saveload.c"),

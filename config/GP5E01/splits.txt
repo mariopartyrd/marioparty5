@@ -284,13 +284,16 @@ game/thpmain.c:
 	.sbss       start:0x802889E8 end:0x80288A10
 	.sdata2     start:0x80289D18 end:0x80289D40
 
-game/objsub.c:
-	.text       start:0x80062038 end:0x800626A4
+game/mgdata.c:
+	.text       start:0x80062038 end:0x800624F4
 	.data       start:0x801BF638 end:0x801C1960
 	.bss        start:0x802349E0 end:0x802350B8
 	.sdata      start:0x80288130 end:0x80288148
 	.sbss       start:0x80288A10 end:0x80288A40
 	.sdata2     start:0x80289D40 end:0x80289D58
+
+game/objsub.c:
+	.text       start:0x800624F4 end:0x800626A4
 
 game/flag.c:
 	.text       start:0x800626A4 end:0x800628BC

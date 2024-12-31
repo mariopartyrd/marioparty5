@@ -2,10 +2,8 @@
 #include "game/pad.h"
 #include "game/audio.h"
 #include "game/sprite.h"
-
-//FIXME: Move prototype to proper file
-void GMesPauseCreate(void);
-void GMesPauseCancel(void);
+#include "game/mgdata.h"
+#include "game/gamemes.h"
 
 float CZoomM[HU3D_CAM_MAX];
 HuVecF CenterM[HU3D_CAM_MAX];
@@ -124,7 +122,7 @@ void omSystemKeyCheck(OMOBJ *obj)
             }
         }
         if(obj->work[0] & SYSKEY_ATTR_PAUSEKEY) {
-            if(omOvlMgNoGet(omcurovl) != DLL_NONE) {
+            if(MgNoGet(omcurovl) != DLL_NONE) {
                 GMesPauseCancel();
             } else {
                 obj->work[0] |= SYSKEY_ATTR_UPAUSE;
@@ -169,7 +167,7 @@ void omSystemKeyCheck(OMOBJ *obj)
             HuAudFXPauseAll(TRUE);
             HuAudSeqPauseAll(TRUE);
             HuAudSStreamPauseAll(TRUE);
-            if(omOvlMgNoGet(omcurovl) != DLL_NONE) {
+            if(MgNoGet(omcurovl) != DLL_NONE) {
                 GMesPauseCreate();
             }
             HuPadRumbleAllStop();
