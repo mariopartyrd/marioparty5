@@ -6,6 +6,8 @@
 
 #include "dolphin.h"
 
+#define MESSNUM_PTR(ptr) ((u32)ptr)
+
 #define HUWIN_NONE -1
 #define HUWIN_MAX 32
 

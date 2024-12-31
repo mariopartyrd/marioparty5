@@ -283,7 +283,7 @@ void MBPlayerClose(void)
             HuMemDirectFree(workP->matCopy);
             workP->matCopy = NULL;
         }
-        MBSaiKillSet(i);
+        MBSaiNumKill(i);
     }
 }
 
@@ -645,7 +645,7 @@ static void StoryPlayerMoveExec(void)
                 }
                 for(i=0; i<aliveNum; i++) {
                     if(GwPlayer[alivePlayer[i]].walkNum != 0) {
-                        MBWalkNumCreateColor(alivePlayer[i], FALSE, MB_SAI_COLOR_RED);
+                        MBWalkNumCreateColor(alivePlayer[i], FALSE, SAI_COLOR_RED);
                     }
                 }
                 MBCameraSkipSet(TRUE);
@@ -798,11 +798,11 @@ static void StoryPlayerMoveExec(void)
 int MBPlayerSaiTypeGet(int saiMode)
 {
     int saiTbl[5][2] = {
-        MB_SAIMODE_NORMAL, MB_SAI_NORMAL,
-        MB_SAIMODE_KINOKO, MB_SAI_KINOKO,
-        MB_SAIMODE_SKINOKO, MB_SAI_SKINOKO,
-        MB_SAIMODE_NKINOKO, MB_SAI_NKINOKO,
-        MB_SAIMODE_KILLER, MB_SAI_KILLER,
+        MB_SAIMODE_NORMAL, SAITYPE_NORMAL,
+        MB_SAIMODE_KINOKO, SAITYPE_KINOKO,
+        MB_SAIMODE_SKINOKO, SAITYPE_SKINOKO,
+        MB_SAIMODE_NKINOKO, SAITYPE_NKINOKO,
+        MB_SAIMODE_KILLER, SAITYPE_KILLER,
     };
     int i;
     for(i=0; i<5; i++) {
@@ -810,7 +810,7 @@ int MBPlayerSaiTypeGet(int saiMode)
             return saiTbl[i][1];
         }
     }
-    return MB_SAI_NORMAL;
+    return SAITYPE_NORMAL;
 }
 
 static int SaiExec(int playerNo)
@@ -819,7 +819,7 @@ static int SaiExec(int playerNo)
     int tutorialVal[2] = { 2, 4 };
     BOOL capsuleSkip = FALSE;
     int result;
-    GwPlayer[playerNo].diceCnt = 1;
+    GwPlayer[playerNo].saiNum = 1;
     repeatFunc:
     if(GwPlayer[playerNo].capsuleUse == CAPSULE_NULL && capsuleSkip == FALSE && MBPlayerCapsuleNumGet(playerNo) != 0) {
         GwSystem.playerMode = MB_PLAYER_MODE_DEFAULT;
@@ -838,11 +838,11 @@ static int SaiExec(int playerNo)
         MBPauseDisableSet(FALSE);
         GwSystem.playerMode = MB_PLAYER_MODE_SAIEXEC;
         if(_CheckFlag(FLAG_BOARD_TUTORIAL)) {
-            int diceNum = MBTutorialExec(TUTORIAL_INST_SAI);
-            if(diceNum >= 0) {
-                result = MBSaiExec(playerNo, MBPlayerSaiTypeGet(GwPlayer[playerNo].saiMode), NULL, diceNum, FALSE, TRUE, NULL, MB_SAI_COLOR_GREEN);
+            int saiVal = MBTutorialExec(TUTORIAL_INST_SAI);
+            if(saiVal >= 0) {
+                result = MBSaiExec(playerNo, MBPlayerSaiTypeGet(GwPlayer[playerNo].saiMode), NULL, saiVal, FALSE, TRUE, NULL, SAI_COLOR_GREEN);
             } else {
-                result = MBSaiTutorialExec(playerNo, MBPlayerSaiTypeGet(GwPlayer[playerNo].saiMode), NULL, tutorialVal, FALSE, TRUE, NULL, MB_SAI_COLOR_GREEN);
+                result = MBSaiTutorialExec(playerNo, MBPlayerSaiTypeGet(GwPlayer[playerNo].saiMode), NULL, tutorialVal, FALSE, TRUE, NULL, SAI_COLOR_GREEN);
             }
             MBTutorialExec(TUTORIAL_INST_WALK_START);
         } else {
@@ -851,17 +851,17 @@ static int SaiExec(int playerNo)
     }
     
     switch(result) {
-        case MB_SAI_RESULT_SCROLL:
+        case SAI_RESULT_SCROLL:
             MBSaiKill(playerNo);
             MBScrollExec(playerNo);
             break;
         
-        case MB_SAI_RESULT_CAPSULESEL:
+        case SAI_RESULT_CAPSULESEL:
             capsuleSkip = FALSE;
             MBSaiKill(playerNo);
             break;
        
-        case MB_SAI_RESULT_CAPSULESKIP:
+        case SAI_RESULT_CAPSULESKIP:
             capsuleSkip = TRUE;
             MBSaiKill(playerNo);
             break;
@@ -875,7 +875,7 @@ static int SaiExec(int playerNo)
     GwPlayer[playerNo].saiMode = MB_SAIMODE_NORMAL;
     GwPlayer[playerNo].walkNum = result;
     MBWalkNumCreate(playerNo, TRUE);
-    MBSaiKillSet(playerNo);
+    MBSaiNumKill(playerNo);
     MBPauseDisableSet(TRUE);
     return killerF;
 }
@@ -886,7 +886,7 @@ static void StoryComSaiExec(void)
     int i;
     for(i=0; i<GW_PLAYER_MAX; i++) {
         if(MBPlayerStoryComCheck(i) && MBPlayerAliveCheck(i)) {
-            GwPlayer[i].diceCnt = 1;
+            GwPlayer[i].saiNum = 1;
         }
     }
     switch(GwSystem.playerMode) {
@@ -911,7 +911,7 @@ static void StoryComSaiExec(void)
             GwSystem.playerMode = MB_PLAYER_MODE_SAIEXEC;
             for(i=0; i<GW_PLAYER_MAX; i++) {
                 if(MBPlayerStoryComCheck(i) && MBPlayerAliveCheck(i)) {
-                    MBSaiExec(i, MBPlayerSaiTypeGet(GwPlayer[i].saiMode), NULL, MB_SAI_VALUE_ANY, FALSE, FALSE, NULL, MB_SAI_COLOR_RED);
+                    MBSaiExec(i, MBPlayerSaiTypeGet(GwPlayer[i].saiMode), NULL, SAI_VALUE_ANY, FALSE, FALSE, NULL, SAI_COLOR_RED);
                 }
                 
             }
@@ -922,7 +922,7 @@ static void StoryComSaiExec(void)
                 if(MBPlayerStoryComCheck(i) && MBPlayerAliveCheck(i)) {
                     GwPlayer[i].saiMode = MB_SAIMODE_NORMAL;
                     GwPlayer[i].walkNum = MBSaiResultGet(i);
-                    MBSaiKillSet(i);
+                    MBSaiNumKill(i);
                 }
             }
         default:
@@ -1428,7 +1428,7 @@ void MBPlayerSaiMotExec(int playerNo)
     time = 0;
     do {
         if(time++ == 27) {
-            MBSaiObjKill(playerNo);
+            MBSaiObjHit(playerNo);
         }
         HuPrcVSleep();
     } while(MBPlayerMotionEndCheck(playerNo) == FALSE);
@@ -1507,7 +1507,7 @@ void MBWalkNumCreateColor(int playerNo, BOOL carF, int color)
 
 void MBWalkNumCreate(int playerNo, BOOL carF)
 {
-    MBWalkNumCreateColor(playerNo, carF, MB_SAI_COLOR_GREEN);
+    MBWalkNumCreateColor(playerNo, carF, SAI_COLOR_GREEN);
 }
 
 static void UpdateWalkNum(OMOBJ *obj)

@@ -56,7 +56,7 @@ typedef struct GwPlayer_s {
     u16 jumpF : 1;
     u16 dispLightF : 1;
     u16 orderNo : 2;
-    u16 diceCnt : 2;
+    u16 saiNum : 2;
     u16 rank : 2;
     s8 walkNum;
     s16 masuId;

@@ -9,6 +9,7 @@
 #include "game/board/guide.h"
 #include "game/board/coin.h"
 #include "game/board/branch.h"
+#include "game/board/sai.h"
 
 #include "game/saveload.h"
 #include "game/sprite.h"
@@ -47,12 +48,10 @@ void MBWinInit(void);
 void MBGateInit(void);
 void MBCapMachineInit(void);
 void MBCapsuleObjInit(void);
-void MBSaiInit(void);
 void MBStarInit(void);
 void MBTauntInit(void);
 
 void MBTauntKill(void);
-void MBSaiClose(void);
 void MBStarClose(void);
 void MBGateClose(void);
 void MBCapMachineClose(void);
