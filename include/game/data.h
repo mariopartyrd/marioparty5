@@ -47,15 +47,15 @@ s32 HuDataDirReadNumAsync(int dataNum, s32 num);
 BOOL HuDataGetAsyncStat(s32 statId);
 void *HuDataRead(int dataNum);
 void *HuDataReadNum(int dataNum, s32 num);
-void *HuDataSelHeapRead(int dataNum, HUHEAPTYPE heap);
-void *HuDataSelHeapReadNum(int dataNum, s32 num, HUHEAPTYPE heap);
+void *HuDataSelHeapRead(int dataNum, HEAPID heap);
+void *HuDataSelHeapReadNum(int dataNum, s32 num, HEAPID heap);
 void **HuDataReadMulti(int *dataNum);
 s32 HuDataGetSize(int dataNum);
 void HuDataClose(void *ptr);
 void HuDataCloseMulti(void **ptrTbl);
 void HuDataDirClose(int dataNum);
 void HuDataDirCloseNum(s32 num);
-void *HuDataReadNumHeapShortForce(int dataNum, s32 num, HUHEAPTYPE heap);
+void *HuDataReadNumHeapShortForce(int dataNum, s32 num, HEAPID heap);
 
 void HuDecodeData(void *src, void *dst, u32 size, s32 decode_type);
 

@@ -23,12 +23,12 @@ extern void HuPadRumbleAllStop(void);
 #define GW_MGNO_BASE 501
 #define GW_MGNO_NONE 65535
 
-#define GW_LANGUAGE_JPN 0
-#define GW_LANGUAGE_ENG 1
-#define GW_LANGUAGE_GER 2
-#define GW_LANGUAGE_FRA 3
-#define GW_LANGUAGE_ITA 4
-#define GW_LANGUAGE_SPA 5
+#define HUWIN_LANG_JAPAN 0
+#define HUWIN_LANG_ENGLISH 1
+#define HUWIN_LANG_GERMANY 2
+#define HUWIN_LANG_FRANCE 3
+#define HUWIN_LANG_ITALY 4
+#define HUWIN_LANG_SPAIN 5
 
 typedef struct GwPlayerConf_s {
     s16 charNo;

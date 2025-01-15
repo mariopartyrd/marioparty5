@@ -31,11 +31,11 @@ static void *HuDvdDataReadWait(DVDFileInfo *file, int mode, int param, BOOL asyn
     DirDataSize = len;
     switch(mode) {
         case 0:
-            buf = HuMemDirectMalloc(HUHEAPTYPE_DVD, OSRoundUp32B(len));
+            buf = HuMemDirectMalloc(HEAP_DVD, OSRoundUp32B(len));
             break;
             
         case 1:
-            buf = HuMemDirectMallocNum(HUHEAPTYPE_DVD, OSRoundUp32B(len), param);
+            buf = HuMemDirectMallocNum(HEAP_DVD, OSRoundUp32B(len), param);
             break;
             
         case 2:
@@ -52,11 +52,11 @@ static void *HuDvdDataReadWait(DVDFileInfo *file, int mode, int param, BOOL asyn
     }
     if(!buf) {
         OSReport("dvd.c: Memory Allocation Error (Length %x) (mode %d)\n", len, mode);
-        OSReport("Rest Memory %x\n", HuRestMemGet(HUHEAPTYPE_DVD));
+        OSReport("Rest Memory %x\n", HuRestMemGet(HEAP_DVD));
         OSPanic("dvd.c", 75, "\n");
         return NULL;
     }
-    OSReport("Rest Memory %x\n", HuRestMemGet(HUHEAPTYPE_DVD));
+    OSReport("Rest Memory %x\n", HuRestMemGet(HEAP_DVD));
     if(async) {
         if(len > HU_DVD_BLOCKSIZE) {
             len = HU_DVD_BLOCKSIZE;
@@ -120,7 +120,7 @@ void **HuDvdDataReadMulti(char **paths)
     return file_ptrs;
 }
 
-void *HuDvdDataReadDirect(char *path, HUHEAPTYPE heap)
+void *HuDvdDataReadDirect(char *path, HEAPID heap)
 {
     DVDFileInfo file;
     void *data = NULL;

@@ -45,7 +45,7 @@ HU3DANIMID Hu3DAnimCreate(void *dataP, HU3DMODELID modelId, char *bmpName)
         if(strcmp(bmpName, attrP->bitmap->name) == 0) {
             HU3DATTRANIM *attrAnimP;
             if(!attrP->animWorkP) {
-                attrAnimP = HuMemDirectMallocNum(HUHEAPTYPE_MODEL, sizeof(HU3DATTRANIM), Hu3DData[modelId].mallocNo);
+                attrAnimP = HuMemDirectMallocNum(HEAP_MODEL, sizeof(HU3DATTRANIM), Hu3DData[modelId].mallocNo);
                 attrP->animWorkP = attrAnimP;
                 attrAnimP->attr = HU3D_ATTRANIM_ATTR_NONE;
             } else {
@@ -106,7 +106,7 @@ HU3DANIMID Hu3DAnimLink(HU3DANIMID linkAnimId, HU3DMODELID modelId, char *bmpNam
         if(strcmp(bmpName, attrP->bitmap->name) == 0) {
             HU3DATTRANIM *attrAnimP;
             if(!attrP->animWorkP) {
-                attrAnimP = HuMemDirectMallocNum(HUHEAPTYPE_MODEL, sizeof(HU3DATTRANIM), Hu3DData[modelId].mallocNo);
+                attrAnimP = HuMemDirectMallocNum(HEAP_MODEL, sizeof(HU3DATTRANIM), Hu3DData[modelId].mallocNo);
                 attrP->animWorkP = attrAnimP;
                 attrAnimP->attr = HU3D_ATTRANIM_ATTR_NONE;
             } else {
@@ -365,7 +365,7 @@ HU3DTEXSCRID Hu3DTexScrollCreate(HU3DMODELID modelId, char *bmpName)
         if(strcmp(bmpName, attrP->bitmap->name) == 0) {
             HU3DATTRANIM *attrAnimP;
             if(!attrP->animWorkP) {
-                attrAnimP = HuMemDirectMallocNum(HUHEAPTYPE_MODEL, sizeof(HU3DATTRANIM), Hu3DData[modelId].mallocNo);
+                attrAnimP = HuMemDirectMallocNum(HEAP_MODEL, sizeof(HU3DATTRANIM), Hu3DData[modelId].mallocNo);
                 attrP->animWorkP = attrAnimP;
                 attrAnimP->attr = HU3D_ATTRANIM_ATTR_NONE;
             } else {
@@ -478,7 +478,7 @@ HU3DMODELID Hu3DParticleCreate(ANIMDATA *anim, s16 maxCnt)
     HuVecF *vtxBuf;
     void *dlBuf;
     Hu3DModelAttrSet(modelId, HU3D_ATTR_PARTICLE);
-    modelP->hookData = particleP = HuMemDirectMallocNum(HUHEAPTYPE_MODEL, sizeof(HU3DPARTICLE), modelP->mallocNo);
+    modelP->hookData = particleP = HuMemDirectMallocNum(HEAP_MODEL, sizeof(HU3DPARTICLE), modelP->mallocNo);
     particleP->anim = anim;
     anim->useNum++;
     particleP->maxCnt = maxCnt;
@@ -488,7 +488,7 @@ HU3DMODELID Hu3DParticleCreate(ANIMDATA *anim, s16 maxCnt)
     particleP->attr = HU3D_PARTICLE_ATTR_NONE;
     particleP->prevCount = 0;
     particleP->dataCnt = particleP->emitCnt = 0;
-    particleP->data = particleDataP = HuMemDirectMallocNum(HUHEAPTYPE_MODEL, maxCnt*sizeof(HU3DPARTICLEDATA), modelP->mallocNo);
+    particleP->data = particleDataP = HuMemDirectMallocNum(HEAP_MODEL, maxCnt*sizeof(HU3DPARTICLEDATA), modelP->mallocNo);
     particleP->prevCounter = -1;
     for(i=0; i<maxCnt; i++, particleDataP++) {
         particleDataP->scale = 0.0f;
@@ -500,11 +500,11 @@ HU3DMODELID Hu3DParticleCreate(ANIMDATA *anim, s16 maxCnt)
         particleDataP->pos.z = ((frand()&0x7F)-64)*20;
         particleDataP->color.r = particleDataP->color.g = particleDataP->color.b = particleDataP->color.a = 255;
     }
-    particleP->vtxBuf = vtxBuf = HuMemDirectMallocNum(HUHEAPTYPE_MODEL, maxCnt*sizeof(HuVecF)*4, modelP->mallocNo);
+    particleP->vtxBuf = vtxBuf = HuMemDirectMallocNum(HEAP_MODEL, maxCnt*sizeof(HuVecF)*4, modelP->mallocNo);
     for(i=0; i<maxCnt*4; i++, vtxBuf++) {
         vtxBuf->x = vtxBuf->y = vtxBuf->z = 0;
     }
-    particleP->dlBuf = dlBuf =  HuMemDirectMallocNum(HUHEAPTYPE_MODEL, (maxCnt*96)+128, modelP->mallocNo);
+    particleP->dlBuf = dlBuf =  HuMemDirectMallocNum(HEAP_MODEL, (maxCnt*96)+128, modelP->mallocNo);
     DCInvalidateRange(dlBuf, (maxCnt*96)+128);
     GXBeginDisplayList(dlBuf, 0x20000);
     GXBegin(GX_QUADS, GX_VTXFMT0, maxCnt*4);
@@ -882,7 +882,7 @@ HU3DPARMANID Hu3DParManCreate(ANIMDATA *anim, s16 maxCnt, HU3DPARMANPARAM *param
     
     Hu3DParManParticleInit(modelId, parManId, 0.0f);
     parManProc[parManId] = HuPrcCreate(ParManFunc, 0, 4096, 0);
-    parManProc[parManId]->property = parManP = HuMemDirectMallocNum(HUHEAPTYPE_HEAP, sizeof(HU3DPARMAN), HU_MEMNUM_OVL);
+    parManProc[parManId]->property = parManP = HuMemDirectMallocNum(HEAP_HEAP, sizeof(HU3DPARMAN), HU_MEMNUM_OVL);
     parManP->modelId = modelId;
     parManP->param = param;
     parManP->attr = HU3D_PARMAN_ATTR_NONE;
@@ -915,7 +915,7 @@ HU3DPARMANID Hu3DParManLink(HU3DPARMANID linkParManId, HU3DPARMANPARAM *param)
     }
     linkParManP = parManProc[linkParManId]->property;
     parManProc[parManId] = HuPrcCreate(ParManFunc, 100, 4096, 0);
-    parManProc[parManId]->property = parManP = HuMemDirectMallocNum(HUHEAPTYPE_HEAP, sizeof(HU3DPARMAN), HU_MEMNUM_OVL);
+    parManProc[parManId]->property = parManP = HuMemDirectMallocNum(HEAP_HEAP, sizeof(HU3DPARMAN), HU_MEMNUM_OVL);
     parManP->modelId = linkParManP->modelId;
     parManP->param = param;
     parManP->attr = HU3D_PARMAN_ATTR_NONE;
@@ -1314,8 +1314,8 @@ void Hu3DWaterCreate(s16 layerNo, void *animBump, void *animSurface, void *animS
         fbWaterW = HU_FB_WIDTH;
         fbWaterH = HU_FB_HEIGHT;
     }
-    waterP->fbWater = HuMemDirectMallocNum(HUHEAPTYPE_MODEL, GXGetTexBufferSize(fbWaterW, fbWaterH, GX_TF_RGB565, GX_FALSE, 0), HU_MEMNUM_OVL);
-    waterP->fbDisp = HuMemDirectMallocNum(HUHEAPTYPE_MODEL, GXGetTexBufferSize(HU_FB_WIDTH, HU_FB_HEIGHT, GX_TF_RGB565, GX_FALSE, 0), HU_MEMNUM_OVL);
+    waterP->fbWater = HuMemDirectMallocNum(HEAP_MODEL, GXGetTexBufferSize(fbWaterW, fbWaterH, GX_TF_RGB565, GX_FALSE, 0), HU_MEMNUM_OVL);
+    waterP->fbDisp = HuMemDirectMallocNum(HEAP_MODEL, GXGetTexBufferSize(HU_FB_WIDTH, HU_FB_HEIGHT, GX_TF_RGB565, GX_FALSE, 0), HU_MEMNUM_OVL);
     if(layerNo >= HU3D_LAYER_HOOK_POST) {
         layerNo -= HU3D_LAYER_HOOK_POST;
     }

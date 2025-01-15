@@ -7,29 +7,29 @@
 
 #define HU_MEMNUM_OVL 0x10000000
 
-typedef enum HuHeapType_e {
-    HUHEAPTYPE_HEAP,
-    HUHEAPTYPE_SOUND,
-    HUHEAPTYPE_MODEL,
-    HUHEAPTYPE_DVD,
-    HUHEAPTYPE_SPACE,
-    HUHEAPTYPE_MAX
-} HUHEAPTYPE;
+typedef enum HeapID_s {
+    HEAP_HEAP,
+    HEAP_SOUND,
+    HEAP_MODEL,
+    HEAP_DVD,
+    HEAP_SPACE,
+    HEAP_MAX
+} HEAPID;
 
 
 void HuMemInitAll(void);
 void *HuMemInit(void *ptr, s32 size);
 void HuMemDCFlushAll();
-void HuMemDCFlush(HUHEAPTYPE heap);
-void *HuMemDirectMalloc(HUHEAPTYPE heap, s32 size);
-void *HuMemDirectMallocNum(HUHEAPTYPE heap, s32 size, u32 num);
-void *HuMemDirectTailMalloc(HUHEAPTYPE heap, s32 size);
+void HuMemDCFlush(HEAPID heap);
+void *HuMemDirectMalloc(HEAPID heap, s32 size);
+void *HuMemDirectMallocNum(HEAPID heap, s32 size, u32 num);
+void *HuMemDirectTailMalloc(HEAPID heap, s32 size);
 void HuMemDirectFree(void *ptr);
-void HuMemDirectFreeNum(HUHEAPTYPE heap, u32 num);
-s32 HuMemUsedMallocSizeGet(HUHEAPTYPE heap);
-s32 HuMemUsedMallocBlockGet(HUHEAPTYPE heap);
-u32 HuMemHeapSizeGet(HUHEAPTYPE heap);
-void *HuMemHeapPtrGet(HUHEAPTYPE heap);
+void HuMemDirectFreeNum(HEAPID heap, u32 num);
+s32 HuMemUsedMallocSizeGet(HEAPID heap);
+s32 HuMemUsedMallocBlockGet(HEAPID heap);
+u32 HuMemHeapSizeGet(HEAPID heap);
+void *HuMemHeapPtrGet(HEAPID heap);
 
 void *HuMemHeapInit(void *heap, s32 size);
 void *HuMemMemoryAlloc(void *heap, s32 size, u32 retAddr);

@@ -217,7 +217,7 @@ void HuDecodeData(void *src, void *dst, u32 size, s32 decodeType)
 static void *ZlibCalloc(voidpf opaque, uInt items, uInt size)
 {
     s32 allocSize = items*size;
-    void *buf = HuMemDirectMallocNum(HUHEAPTYPE_MODEL, allocSize, HU_MEMNUM_OVL);
+    void *buf = HuMemDirectMallocNum(HEAP_MODEL, allocSize, HU_MEMNUM_OVL);
     memset(buf, 0, allocSize);
     return buf;
 }

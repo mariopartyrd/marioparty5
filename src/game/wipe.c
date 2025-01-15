@@ -191,7 +191,7 @@ static BOOL WipeCrossFade(void)
     GXColor color;
     if(wipeData.mode == WIPE_MODE_OUT) {
         if(!wipeData.image[0]) {
-            wipeData.image[0] = HuMemDirectMalloc(HUHEAPTYPE_HEAP, GXGetTexBufferSize(HU_FB_WIDTH/2, HU_FB_HEIGHT/2, GX_TF_RGB565, GX_FALSE, 0));
+            wipeData.image[0] = HuMemDirectMalloc(HEAP_HEAP, GXGetTexBufferSize(HU_FB_WIDTH/2, HU_FB_HEIGHT/2, GX_TF_RGB565, GX_FALSE, 0));
             DCFlushRange(wipeData.image[0], GXGetTexBufferSize(HU_FB_WIDTH/2, HU_FB_HEIGHT/2, GX_TF_RGB565, GX_FALSE, 0));
         }
         Hu3DFbCopyExec(0, 0, HU_FB_WIDTH, HU_FB_HEIGHT, GX_TF_RGB565, TRUE, wipeData.image[0]);
@@ -263,7 +263,7 @@ static BOOL WipeDissolve(void)
         Mtx rot;
         Mtx modelview;
         if(!wipeData.image[0]) {
-            wipeData.image[0] = HuMemDirectMalloc(HUHEAPTYPE_HEAP, GXGetTexBufferSize(HU_FB_WIDTH/2, HU_FB_HEIGHT/2, GX_TF_RGB565, GX_FALSE, 0));
+            wipeData.image[0] = HuMemDirectMalloc(HEAP_HEAP, GXGetTexBufferSize(HU_FB_WIDTH/2, HU_FB_HEIGHT/2, GX_TF_RGB565, GX_FALSE, 0));
         }
         if(wipeData.time == 1.0) {
             Hu3DFbCopyExec(0, 0, HU_FB_WIDTH, HU_FB_HEIGHT, GX_TF_RGB565, TRUE, wipeData.image[0]);
@@ -329,7 +329,7 @@ static BOOL WipeViewShift(void)
 {
     if(wipeData.mode == WIPE_MODE_OUT) {
         if(!wipeData.image[0]) {
-            wipeData.image[0] = HuMemDirectMalloc(HUHEAPTYPE_HEAP, GXGetTexBufferSize(HU_FB_WIDTH/2, HU_FB_HEIGHT/2, GX_TF_RGB565, GX_FALSE, 0));
+            wipeData.image[0] = HuMemDirectMalloc(HEAP_HEAP, GXGetTexBufferSize(HU_FB_WIDTH/2, HU_FB_HEIGHT/2, GX_TF_RGB565, GX_FALSE, 0));
         }
         Hu3DFbCopyExec(0, 0, HU_FB_WIDTH, HU_FB_HEIGHT, GX_TF_RGB565, TRUE, wipeData.image[0]);
         wipeData.time = wipeData.maxTime;
@@ -571,7 +571,7 @@ static BOOL WipeWave(void)
     }
     if(wipeData.mode == WIPE_MODE_OUT) {
         if(!wipeData.image[0]) {
-            wipeData.image[0] = HuMemDirectMalloc(HUHEAPTYPE_HEAP, GXGetTexBufferSize(HU_FB_WIDTH/2, HU_FB_HEIGHT/2, GX_TF_RGB565, GX_FALSE, 0));
+            wipeData.image[0] = HuMemDirectMalloc(HEAP_HEAP, GXGetTexBufferSize(HU_FB_WIDTH/2, HU_FB_HEIGHT/2, GX_TF_RGB565, GX_FALSE, 0));
             DCFlushRange(wipeData.image[0], GXGetTexBufferSize(HU_FB_WIDTH/2, HU_FB_HEIGHT/2, GX_TF_RGB565, GX_FALSE, 0));
             wipeData.image[1] = HuSprAnimRead(HuDataRead(WIN_ANM_wipeWave+waveSprIdx));
             waveSprIdx++;

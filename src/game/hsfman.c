@@ -533,7 +533,7 @@ HU3DMODELID Hu3DModelLink(HU3DMODELID linkMdlId)
         return HU3D_MODELID_NONE;
     }
     modelP->hsfLink = linkModelP->hsf;
-    modelP->hsf = HuMemDirectMalloc(HUHEAPTYPE_MODEL, sizeof(HSFDATA));
+    modelP->hsf = HuMemDirectMalloc(HEAP_MODEL, sizeof(HSFDATA));
     modelP->mallocNoLink = (u32)modelP->hsf;
     *modelP->hsf = *linkModelP->hsf;
     objtop = Hu3DObjDuplicate(modelP->hsf, modelP->mallocNoLink);
@@ -651,7 +651,7 @@ void Hu3DModelKill(HU3DMODELID modelId)
     }
     layerNum[modelP->layerNo]--;
     if(modelP->attr & HU3D_ATTR_HOOKFUNC) {
-        HuMemDirectFreeNum(HUHEAPTYPE_MODEL, modelP->mallocNo);
+        HuMemDirectFreeNum(HEAP_MODEL, modelP->mallocNo);
         if(modelP->attr & HU3D_ATTR_PARTICLE) {
             HU3DPARTICLE *particleP = modelP->hookData;
             HuSprAnimKill(particleP->anim);
@@ -666,7 +666,7 @@ void Hu3DModelKill(HU3DMODELID modelId)
         if(modelP->motId != HU3D_MOTID_NONE) {
             Hu3DMotionKill(modelP->motId);
         }
-        HuMemDirectFreeNum(HUHEAPTYPE_MODEL, modelP->mallocNo);
+        HuMemDirectFreeNum(HEAP_MODEL, modelP->mallocNo);
         if(modelP->attr & HU3D_ATTR_SHADOW) {
             shadowNum--;
         }
@@ -676,7 +676,7 @@ void Hu3DModelKill(HU3DMODELID modelId)
     Hu3DAnimModelKill(modelId);
     if(modelP->linkMdlId != HU3D_MODELID_NONE) {
         HuMemDirectFree(modelP->hsf);
-        HuMemDirectFreeNum(HUHEAPTYPE_MODEL, modelP->mallocNoLink);
+        HuMemDirectFreeNum(HEAP_MODEL, modelP->mallocNoLink);
         hsf = modelP->hsfLink;
         modelP->hsf = hsf;
     }
@@ -707,7 +707,7 @@ void Hu3DModelKill(HU3DMODELID modelId)
     }
     if(modelP->motIdSrc != HU3D_MOTID_NONE && Hu3DMotionKill(modelP->motIdSrc) == FALSE) {
         Hu3DMotion[modelP->motIdSrc].modelId = HU3D_MOTID_NONE;
-        HuMemDirectFreeNum(HUHEAPTYPE_MODEL, modelP->mallocNo);
+        HuMemDirectFreeNum(HEAP_MODEL, modelP->mallocNo);
         if(modelP->attr & HU3D_ATTR_SHADOW) {
             shadowNum--;
         }
@@ -715,7 +715,7 @@ void Hu3DModelKill(HU3DMODELID modelId)
         return;
     }
     HuMemDirectFree(modelP->hsf);
-    HuMemDirectFreeNum(HUHEAPTYPE_MODEL, modelP->mallocNo);
+    HuMemDirectFreeNum(HEAP_MODEL, modelP->mallocNo);
     for(i=0; i<modelP->lightNum; i++) {
         Hu3DGLightKill(modelP->lightId[i]);
     }
@@ -749,7 +749,7 @@ void Hu3DModelAllKill(void)
         layerHook[i] = NULL;
     }
     Hu3DParManAllKill();
-    HuMemDCFlush(HUHEAPTYPE_MODEL);
+    HuMemDCFlush(HEAP_MODEL);
     Hu3DReflectModelId = HU3D_MODELID_NONE;
 }
 
@@ -1122,7 +1122,7 @@ void Hu3DReflectModelSet(HU3DMODELID modelId)
     modelP = &Hu3DData[modelId];
     modelP->attr |= HU3D_ATTR_REFLECT_MODEL;
     Hu3DReflectModelAnim = HuSprAnimMake(REFLECT_TEX_W, REFLECT_TEX_H, ANIM_BMP_RGB5A3);
-    Hu3DReflectModelAnim->bmp->data = HuMemDirectMalloc(HUHEAPTYPE_MODEL, REFLECT_TEX_W*REFLECT_TEX_H*2);
+    Hu3DReflectModelAnim->bmp->data = HuMemDirectMalloc(HEAP_MODEL, REFLECT_TEX_W*REFLECT_TEX_H*2);
     Hu3DReflectMapSet(Hu3DReflectModelAnim);
 }
 
@@ -1944,7 +1944,7 @@ void Hu3DShadowMultiCreate(float fov, float near, float far, s16 cameraBit)
             HU3DSHADOW *shadowP = &Hu3DShadowBuf[i];
             shadowP->size = SHADOW_DEFAULT_SIZE;
             if(!shadowP->buf) {
-                shadowP->buf = HuMemDirectMalloc(HUHEAPTYPE_MODEL, SHADOW_DEFAULT_SIZE*SHADOW_DEFAULT_SIZE);
+                shadowP->buf = HuMemDirectMalloc(HEAP_MODEL, SHADOW_DEFAULT_SIZE*SHADOW_DEFAULT_SIZE);
             }
             shadowP->fov = fov;
             shadowP->near = near;
@@ -2014,7 +2014,7 @@ void Hu3DShadowMultiSizeSet(u16 size, s16 cameraBit)
             if(shadowP->buf) {
                 HuMemDirectFree(shadowP->buf);
             }
-            shadowP->buf = HuMemDirectMalloc(HUHEAPTYPE_MODEL, size*size);
+            shadowP->buf = HuMemDirectMalloc(HEAP_MODEL, size*size);
         }
     }
 }
@@ -2328,7 +2328,7 @@ void Hu3DMipMapSet(void *animData, HU3DMODELID modelId, char *bmpName)
     for(dataSize=i=0; i<anim->bmpNum; i++, animBmp++) {
         dataSize += animBmp->dataSize;
     }
-    data = HuMemDirectMallocNum(HUHEAPTYPE_MODEL, dataSize, modelP->mallocNo);
+    data = HuMemDirectMallocNum(HEAP_MODEL, dataSize, modelP->mallocNo);
     dataPtr = data;
     animBmp = anim->bmp;
     bmp->data = dataPtr;

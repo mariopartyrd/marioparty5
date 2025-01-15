@@ -167,7 +167,7 @@ static void SaiProcExec(int playerNo, int saiType, s8 *valueTbl, int *tutorialVa
     }
     saiProc[playerNo] = MBPrcCreate(SaiProcMain, 8203, 24576);
     MBPrcDestructorSet(saiProc[playerNo], SaiProcDestroy);
-    work = HuMemDirectMallocNum(HUHEAPTYPE_HEAP, sizeof(SAIWORK), HU_MEMNUM_OVL);
+    work = HuMemDirectMallocNum(HEAP_HEAP, sizeof(SAIWORK), HU_MEMNUM_OVL);
     saiProc[playerNo]->property = work;
     memset(work, 0, sizeof(SAIWORK));
     work->playerNo = playerNo;
@@ -851,7 +851,7 @@ OMOBJ *MBSaiNumObjCreate(int playerNo, HuVecF *pos1, HuVecF *pos2, int value, in
     }
     obj = MBAddObj(258, 2, 0, SaiNumObjExec);
     omSetStatBit(obj, OM_STAT_MODELPAUSE);
-    obj->data = vtx = HuMemDirectMallocNum(HUHEAPTYPE_HEAP, sizeof(SAINUMVTX *)*2, HU_MEMNUM_OVL);
+    obj->data = vtx = HuMemDirectMallocNum(HEAP_HEAP, sizeof(SAINUMVTX *)*2, HU_MEMNUM_OVL);
     memset(obj->data, 0, sizeof(SAINUMVTX *)*2);
     objWork = omObjGetWork(obj, SAINUMWORK);
     objWork->killF = FALSE;
@@ -1296,7 +1296,7 @@ static void SaiObjEffectCreate(SAIWORK *work)
     
     void *dlBuf;
     int i;
-    work->eff = eff = HuMemDirectMallocNum(HUHEAPTYPE_HEAP, (SAIEFF_PUFF_MAX+SAIEFF_TRI_MAX)*sizeof(SAIEFF), HU_MEMNUM_OVL);
+    work->eff = eff = HuMemDirectMallocNum(HEAP_HEAP, (SAIEFF_PUFF_MAX+SAIEFF_TRI_MAX)*sizeof(SAIEFF), HU_MEMNUM_OVL);
     memset(eff, 0, (SAIEFF_PUFF_MAX+SAIEFF_TRI_MAX)*sizeof(SAIEFF));
     for(i=0; i<50; i++, eff++) {
         eff->rot.x = (frandf()*15)+30;
@@ -1322,7 +1322,7 @@ static void SaiObjEffectCreate(SAIWORK *work)
         eff->scale.z = 1+(2*frandf());
         posY += (360*eff->scale.x)/12;
     }
-    dlBuf = HuMemDirectMallocNum(HUHEAPTYPE_HEAP, 4096, HU_MEMNUM_OVL);
+    dlBuf = HuMemDirectMallocNum(HEAP_HEAP, 4096, HU_MEMNUM_OVL);
     DCInvalidateRange(dlBuf, 4096);
     GXBeginDisplayList(dlBuf, 4096);
     GXBegin(GX_QUADS, GX_VTXFMT0, 4);
@@ -1336,7 +1336,7 @@ static void SaiObjEffectCreate(SAIWORK *work)
     GXTexCoord2f32(0, 1);
     GXEnd();
     work->dlSize = GXEndDisplayList();
-    work->dlBuf = HuMemDirectMallocNum(HUHEAPTYPE_HEAP, work->dlSize, HU_MEMNUM_OVL);
+    work->dlBuf = HuMemDirectMallocNum(HEAP_HEAP, work->dlSize, HU_MEMNUM_OVL);
     memcpy(work->dlBuf, dlBuf, work->dlSize);
     HuMemDirectFree(dlBuf);
     DCFlushRangeNoSync(work->dlBuf, work->dlSize);
@@ -1525,7 +1525,7 @@ static SAINUMVTX *SaiNumObjMdlCopy(int modelId)
                 }
             }
             sizeY = posMax-posMin;
-            vtxBuf = vtx = HuMemDirectMallocNum(HUHEAPTYPE_MODEL, size, modelP->mallocNo);
+            vtxBuf = vtx = HuMemDirectMallocNum(HEAP_MODEL, size, modelP->mallocNo);
             pos = obj->mesh.vertex->data;
             for(j=0; j<obj->mesh.vertex->count; j++, pos++, vtx++) {
                 vtx->pos = *pos;

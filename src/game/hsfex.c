@@ -58,7 +58,7 @@ void CamMotionEx(HU3DMODELID modelId, s16 cameraBit, HuVecF *pos, HuVecF *up, Hu
     motMaxTime = hsfMotP->maxTime;
     stepNum = 1+(motMaxTime/6.0)+1;
     
-    work = workBegin = HuMemDirectMallocNum(HUHEAPTYPE_HEAP, (stepNum+1)*sizeof(CAMMOTIONWORK), HU_MEMNUM_OVL);
+    work = workBegin = HuMemDirectMallocNum(HEAP_HEAP, (stepNum+1)*sizeof(CAMMOTIONWORK), HU_MEMNUM_OVL);
     work->time = 0;
     work->pos = *pos;
     work->target = *target;
@@ -410,7 +410,7 @@ int CamMotionExPathGet(HU3DMODELID modelId, s16 stepSpeed, float maxTime, s16 mo
     motMaxTime = hsfMotP->maxTime;
     stepNum = 1+(motMaxTime/stepSpeed)+1;
     if(!workBuf) {
-        *workBuf = HuMemDirectMallocNum(HUHEAPTYPE_HEAP, (stepNum+1)*sizeof(CAMMOTIONWORK), HU_MEMNUM_OVL);
+        *workBuf = HuMemDirectMallocNum(HEAP_HEAP, (stepNum+1)*sizeof(CAMMOTIONWORK), HU_MEMNUM_OVL);
         *stepMax = stepNum+1;
     } else {
         if(*stepMax < stepNum+1) {
@@ -464,7 +464,7 @@ int CamMotionExPathGet(HU3DMODELID modelId, s16 stepSpeed, float maxTime, s16 mo
         }
         num++;
     }
-    distBufBegin = HuMemDirectMallocNum(HUHEAPTYPE_HEAP, num*4, HU_MEMNUM_OVL);
+    distBufBegin = HuMemDirectMallocNum(HEAP_HEAP, num*4, HU_MEMNUM_OVL);
     work = *workBuf;
     distBuf = distBufBegin;
     distBuf[0] = 0;

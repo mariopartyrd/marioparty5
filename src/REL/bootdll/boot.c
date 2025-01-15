@@ -209,7 +209,7 @@ void BootExec(void)
         if(!NintendoDispF) {
             void *sampBuf;
             tickPrev = OSGetTick();
-            sampBuf = HuMemDirectMalloc(HUHEAPTYPE_MODEL, msmSysGetSampSize(MSM_GRP_INIT));
+            sampBuf = HuMemDirectMalloc(HEAP_MODEL, msmSysGetSampSize(MSM_GRP_INIT));
             msmSysLoadGroup(MSM_GRP_INIT, sampBuf, FALSE);
             HuMemDirectFree(sampBuf);
             msmSysSetGroupLoadMode(MSM_GROUP_LOAD_AUTO);
@@ -546,7 +546,7 @@ void *NintendoDataDecode(void)
 {
     u32 *src = nintendoData;
     u32 size = *src++;
-    void *dst = HuMemDirectMalloc(HUHEAPTYPE_MODEL, size);
+    void *dst = HuMemDirectMalloc(HEAP_MODEL, size);
     u32 type = *src++;
     if(dst) {
         HuDecodeData(src, dst, size, type);

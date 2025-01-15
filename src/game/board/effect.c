@@ -221,7 +221,7 @@ void MBEffConfettiCreate(HuVecF *pos, s16 maxCnt, float width)
     work->delay = 10;
     work->hookMdlId = Hu3DHookFuncCreate(ConfettiDraw);
     Hu3DModelCameraSet(work->hookMdlId, HU3D_CAM0);
-    work->data = HuMemDirectMallocNum(HUHEAPTYPE_HEAP, work->maxCnt*sizeof(CONFETTIEFFDATA), HU_MEMNUM_OVL);
+    work->data = HuMemDirectMallocNum(HEAP_HEAP, work->maxCnt*sizeof(CONFETTIEFFDATA), HU_MEMNUM_OVL);
     obj->trans.x = pos->x;
     obj->trans.y = pos->y;
     obj->trans.z = pos->z;
@@ -415,7 +415,7 @@ HU3DMODELID MBEffCreate(ANIMDATA *anim, s16 maxCnt)
     
     Hu3DModelCameraSet(modelId, HU3D_CAM0);
     modelP = &Hu3DData[modelId];
-    modelP->hookData = effP = HuMemDirectMallocNum(HUHEAPTYPE_MODEL, sizeof(MBEFFECT), modelP->mallocNo);
+    modelP->hookData = effP = HuMemDirectMallocNum(HEAP_MODEL, sizeof(MBEFFECT), modelP->mallocNo);
     memset(effP, 0, sizeof(MBEFFECT));
     effP->anim = anim;
     anim->useNum++;
@@ -423,7 +423,7 @@ HU3DMODELID MBEffCreate(ANIMDATA *anim, s16 maxCnt)
     effP->blendMode = MB_EFFECT_BLEND_NORMAL;
     effP->prevCounter = -1;
     effP->modelId = modelId;
-    effP->data = effData = HuMemDirectMallocNum(HUHEAPTYPE_MODEL, maxCnt*sizeof(MBEFFECTDATA), modelP->mallocNo);
+    effP->data = effData = HuMemDirectMallocNum(HEAP_MODEL, maxCnt*sizeof(MBEFFECTDATA), modelP->mallocNo);
     memset(effData, 0, maxCnt*sizeof(MBEFFECTDATA));
     for(i=0; i<maxCnt; i++, effData++) {
         effData->cameraBit = HU3D_CAM_ALL;
@@ -436,15 +436,15 @@ HU3DMODELID MBEffCreate(ANIMDATA *anim, s16 maxCnt)
         effData->animSpeed = 0;
         effData->dispF = TRUE;
     }
-    effP->vertex = vertex = HuMemDirectMallocNum(HUHEAPTYPE_MODEL, maxCnt*sizeof(HuVecF)*4, modelP->mallocNo);
+    effP->vertex = vertex = HuMemDirectMallocNum(HEAP_MODEL, maxCnt*sizeof(HuVecF)*4, modelP->mallocNo);
     for(i=0; i<maxCnt*4; i++, vertex++) {
         vertex->x = vertex->y = vertex->z = 0;
     }
-    effP->st = st = HuMemDirectMallocNum(HUHEAPTYPE_MODEL, maxCnt*sizeof(HuVec2F)*4, modelP->mallocNo);
+    effP->st = st = HuMemDirectMallocNum(HEAP_MODEL, maxCnt*sizeof(HuVec2F)*4, modelP->mallocNo);
     for(i=0; i<maxCnt*4; i++, st++) {
         st->x = st->y = 0;
     }
-    effP->dl = dl = HuMemDirectMallocNum(HUHEAPTYPE_MODEL, (maxCnt*96)+128, modelP->mallocNo);
+    effP->dl = dl = HuMemDirectMallocNum(HEAP_MODEL, (maxCnt*96)+128, modelP->mallocNo);
     DCInvalidateRange(dl, (maxCnt*96)+128);
     GXBeginDisplayList(dl, 0x20000);
     GXBegin(GX_QUADS, GX_VTXFMT0, maxCnt*4);
@@ -470,7 +470,7 @@ void MBEffKill(HU3DMODELID modelId)
 {
     HU3DMODEL *modelP = &Hu3DData[modelId];
     MBEFFECT *effP = modelP->hookData;
-    HuMemDirectFreeNum(HUHEAPTYPE_MODEL, modelP->mallocNo);
+    HuMemDirectFreeNum(HEAP_MODEL, modelP->mallocNo);
     HuSprAnimKill(effP->anim);
     modelP->hsf = NULL;
 }

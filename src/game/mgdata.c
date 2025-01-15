@@ -288,7 +288,7 @@ int MgDecaScoreCalc(int gameNo, int mgScore)
        
        case 9:
             value = mgScore/100.0f;
-            if(GWLanguageGet() != GW_LANGUAGE_ENG) {
+            if(GWLanguageGet() != HUWIN_LANG_ENGLISH) {
                 mgNo = 514;
             } else {
                 mgNo = 5141;

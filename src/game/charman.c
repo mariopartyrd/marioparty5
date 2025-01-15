@@ -628,10 +628,10 @@ HU3DMODELID CharModelCreate(s16 charNo, s16 model)
     } else {
         dataNum = charDataDirTbl[charNo][3];
     }
-    dataP = HuDataSelHeapReadNum(dataNum, HU_MEMNUM_OVL, HUHEAPTYPE_MODEL);
+    dataP = HuDataSelHeapReadNum(dataNum, HU_MEMNUM_OVL, HEAP_MODEL);
     workP->modelId = modelId = Hu3DModelCreate(dataP);
     workP->process = HuPrcCreate(UpdateChar, 99, 16384, 0);
-    workP->process->property = property = HuMemDirectMalloc(HUHEAPTYPE_HEAP, sizeof(s16));
+    workP->process->property = property = HuMemDirectMalloc(HEAP_HEAP, sizeof(s16));
     workP->model = model;
     workP->attr = 0;
     *property = charNo;
@@ -1310,7 +1310,7 @@ static void EffectInit(void)
                 continue;
             }
             if(!anim[i]) {
-                void *data = HuDataSelHeapReadNum(effectDataTbl[i].dataNum, HU_MEMNUM_OVL, HUHEAPTYPE_MODEL);
+                void *data = HuDataSelHeapReadNum(effectDataTbl[i].dataNum, HU_MEMNUM_OVL, HEAP_MODEL);
                 anim[i] = HuSprAnimRead(data);
             }
             effModelId[i][cameraNo] = Hu3DParticleCreate(anim[i], effectDataTbl[i].maxCnt);
@@ -1320,7 +1320,7 @@ static void EffectInit(void)
             Hu3DParticleHookSet(effModelId[i][cameraNo], EffectParticleHook);
             Hu3DModelCameraSet(effModelId[i][cameraNo], (1 << cameraNo));
             if(!effParamAll[i]) {
-                effParamAll[i] = HuMemDirectMalloc(HUHEAPTYPE_HEAP, effectDataTbl[i].maxCnt*sizeof(EFFECTPARAM));
+                effParamAll[i] = HuMemDirectMalloc(HEAP_HEAP, effectDataTbl[i].maxCnt*sizeof(EFFECTPARAM));
             }
             Hu3DParticleBlendModeSet(effModelId[i][cameraNo], effectDataTbl[i].blendMode);
             {
@@ -1360,7 +1360,7 @@ static void EffectParticleCreate(u8 type)
             }
         } else {
             if(!anim) {
-                void *data = HuDataSelHeapReadNum(effectDataTbl[type].dataNum, HU_MEMNUM_OVL, HUHEAPTYPE_MODEL);
+                void *data = HuDataSelHeapReadNum(effectDataTbl[type].dataNum, HU_MEMNUM_OVL, HEAP_MODEL);
                 anim = HuSprAnimRead(data);
             }
             effModelId[type][cameraNo] = Hu3DParticleCreate(anim, effectDataTbl[type].maxCnt);
@@ -1371,7 +1371,7 @@ static void EffectParticleCreate(u8 type)
             Hu3DParticleHookSet(effModelId[type][cameraNo], EffectParticleHook);
             Hu3DModelCameraSet(effModelId[type][cameraNo], (1 << cameraNo));
             if(!effParamAll[type]) {
-                effParamAll[type] = HuMemDirectMalloc(HUHEAPTYPE_HEAP, effectDataTbl[type].maxCnt*sizeof(EFFECTPARAM));
+                effParamAll[type] = HuMemDirectMalloc(HEAP_HEAP, effectDataTbl[type].maxCnt*sizeof(EFFECTPARAM));
             }
             Hu3DParticleBlendModeSet(effModelId[type][cameraNo], effectDataTbl[type].blendMode);
             {
@@ -1896,9 +1896,9 @@ HU3DMOTID CharMotionCreate(s16 charNo, unsigned int dataNum)
     }
     if(i != CHARNO_MAX || dir == 0) {
         dataNum = FILENUM(dataNum);
-        data = HuAR_ARAMtoMRAMFileRead(DATANUM(charDataDirTbl[charNo][4], dataNum), HU_MEMNUM_OVL, HUHEAPTYPE_MODEL);
+        data = HuAR_ARAMtoMRAMFileRead(DATANUM(charDataDirTbl[charNo][4], dataNum), HU_MEMNUM_OVL, HEAP_MODEL);
         if(!data) {
-            data = HuDataSelHeapReadNum(DATANUM(charDataDirTbl[charNo][4], dataNum), HU_MEMNUM_OVL, HUHEAPTYPE_MODEL);
+            data = HuDataSelHeapReadNum(DATANUM(charDataDirTbl[charNo][4], dataNum), HU_MEMNUM_OVL, HEAP_MODEL);
         }
         workP->motNoTbl[motNo] = dataNum;
     } else {
@@ -1909,9 +1909,9 @@ HU3DMOTID CharMotionCreate(s16 charNo, unsigned int dataNum)
         }
         if(i != CHARNO_MAX) {
             dataNum = DATANUM(charDataDirTbl[charNo][5], dataNum & 0xFFFF);
-            data = HuDataReadNumHeapShortForce(dataNum, HU_MEMNUM_OVL, HUHEAPTYPE_MODEL);
+            data = HuDataReadNumHeapShortForce(dataNum, HU_MEMNUM_OVL, HEAP_MODEL);
         } else {
-            data = HuDataSelHeapReadNum(dataNum, HU_MEMNUM_OVL, HUHEAPTYPE_MODEL);
+            data = HuDataSelHeapReadNum(dataNum, HU_MEMNUM_OVL, HEAP_MODEL);
         }
         workP->motNoTbl[motNo] = HU3D_MOTID_NONE;
     }
@@ -2474,7 +2474,7 @@ void CharModelHookDustCreate(s16 charNo, char *objName)
         Hu3DModelDispOff(hookMdlId);
         return;
     }
-    process->property = hookDustWork = HuMemDirectMallocNum(HUHEAPTYPE_HEAP, sizeof(HOOKDUSTWORK), HU_MEMNUM_OVL);
+    process->property = hookDustWork = HuMemDirectMallocNum(HEAP_HEAP, sizeof(HOOKDUSTWORK), HU_MEMNUM_OVL);
     modelP = &Hu3DData[hookMdlId];
     Hu3DMtxTransGet(hookMtx, &temp);
     Hu3DModelPosSetV(hookMdlId, &temp);
@@ -2935,7 +2935,7 @@ s32 CharNpcDustSet(HU3DMODELID modelId, HU3DMOTID motId, s16 type, s16 npcNo)
     if(!process) {
         return;
     } else {
-        NPCDUSTWORK *work = HuMemDirectMallocNum(HUHEAPTYPE_HEAP, sizeof(NPCDUSTWORK), HU_MEMNUM_OVL);
+        NPCDUSTWORK *work = HuMemDirectMallocNum(HEAP_HEAP, sizeof(NPCDUSTWORK), HU_MEMNUM_OVL);
         process->property = work;
         work->modelId = modelId;
         work->motId = motId;
@@ -3382,7 +3382,7 @@ void CharWinLoseVoicePlay(s16 charNo, unsigned int motId, s16 seId)
         OSReport("Error: CharWinLoseVoicePlay Failure.\n");
         return;
     } else {
-        WINLOSEVOICEPLAY *winLose = HuMemDirectMallocNum(HUHEAPTYPE_HEAP, sizeof(WINLOSEVOICEPLAY), HU_MEMNUM_OVL);
+        WINLOSEVOICEPLAY *winLose = HuMemDirectMallocNum(HEAP_HEAP, sizeof(WINLOSEVOICEPLAY), HU_MEMNUM_OVL);
         process->property = winLose;
         winLose->charNo = charNo;
         winLose->seId = seId;

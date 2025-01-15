@@ -267,7 +267,7 @@ void *HuAR_ARAMtoMRAMNum(AMEM_PTR aMemP, s32 num) {
         return;
     }
     size = HuARSizeGet(aMemP);
-    dst = HuMemDirectMallocNum(HUHEAPTYPE_DVD, size, num);
+    dst = HuMemDirectMallocNum(HEAP_DVD, size, num);
     if(!dst) {
         return 0;
     }
@@ -321,7 +321,7 @@ void HuARDirFree(unsigned int dir) {
     }
 }
 
-void *HuAR_ARAMtoMRAMFileRead(unsigned int dataNum, u32 num, HUHEAPTYPE heap) {
+void *HuAR_ARAMtoMRAMFileRead(unsigned int dataNum, u32 num, HEAPID heap) {
     s32 *dirBuf;
     void *dst;
     void *dvdBuf;
@@ -350,7 +350,7 @@ void *HuAR_ARAMtoMRAMFileRead(unsigned int dataNum, u32 num, HUHEAPTYPE heap) {
     } else {
         size = (dirBuf[1] - count + 0x3F) & 0xFFFFFFFE0;
     }
-    dvdBuf = HuMemDirectMalloc(HUHEAPTYPE_DVD, size);
+    dvdBuf = HuMemDirectMalloc(HEAP_DVD, size);
     if(!dvdBuf) {
         return 0;
     }
