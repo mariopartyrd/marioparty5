@@ -23,6 +23,7 @@ extern void HuPadRumbleAllStop(void);
 #define GW_MGNO_BASE 501
 #define GW_MGNO_NONE 65535
 
+//Try moving to window.h later
 #define HUWIN_LANG_JAPAN 0
 #define HUWIN_LANG_ENGLISH 1
 #define HUWIN_LANG_GERMANY 2
