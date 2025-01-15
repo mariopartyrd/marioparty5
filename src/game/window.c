@@ -210,7 +210,7 @@ void HuWinInit(s32 _messDataNo)
     HuPrcSetStat(winProc, HU_PRC_STAT_PAUSE_ON|HU_PRC_STAT_UPAUSE_ON);
     LanguageNo = GWLanguageGet();
     messDataNo = _messDataNo;
-    fontWidthP = (LanguageNo == GW_LANGUAGE_JPN) ? charWJTbl : charWETbl;
+    fontWidthP = (LanguageNo == HUWIN_LANG_JAPAN) ? charWJTbl : charWETbl;
     HuWinMesRead();
     for(i=0; i<HUWIN_MAX; i++) {
         winData[i].grpId = HUSPR_GRP_NONE;
@@ -281,7 +281,7 @@ HUWINID HuWinCreate(float posX, float posY, s16 winW, s16 winH, s16 frame)
     }
     HuSprGrpCenterSet(grpId, winW/2, winH/2);
     HuSprGrpPosSet(grpId, winP->pos.x, winP->pos.y);
-    data = HuAR_ARAMtoMRAMFileRead(frameFileTbl[(frame*2)+0], HU_MEMNUM_OVL, HUHEAPTYPE_MODEL);
+    data = HuAR_ARAMtoMRAMFileRead(frameFileTbl[(frame*2)+0], HU_MEMNUM_OVL, HEAP_MODEL);
     winP->animFrame[0] = HuSprAnimRead(data);
     sprId = winP->sprId[0] = HuSprCreate(winP->animFrame[0], winPrio, 0);
     HuSprGrpMemberSet(grpId, 0, sprId);
@@ -290,7 +290,7 @@ HUWINID HuWinCreate(float posX, float posY, s16 winW, s16 winH, s16 frame)
     HuSprBGSet(grpId, 0, bgAnim, 0);
     winP->bgPalNum = winBGMake(bgAnim, winP->animFrame[0]);
     if(frameFileTbl[(frame*2)+1] != HU_DATANUM_NONE) {
-        data = HuAR_ARAMtoMRAMFileRead(frameFileTbl[(frame*2)+1], HU_MEMNUM_OVL, HUHEAPTYPE_MODEL);
+        data = HuAR_ARAMtoMRAMFileRead(frameFileTbl[(frame*2)+1], HU_MEMNUM_OVL, HEAP_MODEL);
         winP->animFrame[1] = HuSprAnimRead(data);
         sprId = winP->sprId[1] = HuSprCreate(winP->animFrame[1], winPrio, 0);
         HuSprGrpMemberSet(grpId, 1, sprId);
@@ -307,7 +307,7 @@ HUWINID HuWinCreate(float posX, float posY, s16 winW, s16 winH, s16 frame)
     HuSprGrpMemberSet(grpId, 2, sprId);
     winP->charEntryNum = 0;
     winP->charEntryMax = (winW/20)*(winH/24)*5;
-    winP->charEntry = HuMemDirectMalloc(HUHEAPTYPE_HEAP, sizeof(WINCHARENTRY)*winP->charEntryMax);
+    winP->charEntry = HuMemDirectMalloc(HEAP_HEAP, sizeof(WINCHARENTRY)*winP->charEntryMax);
     winP->attr = HUWIN_ATTR_NONE;
     winP->stat = HUWIN_STAT_NONE;
     winP->unk94 = 0;
@@ -520,7 +520,7 @@ static void MesDispFunc(HUSPRITE *sprP)
         GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR0A0);
         HuSprTexLoad(fontAnim, 0, 0, GX_CLAMP, GX_CLAMP, GX_LINEAR);
         GXBegin(GX_QUADS, GX_VTXFMT0, winP->charEntryNum*4);
-        charUvH = (LanguageNo == GW_LANGUAGE_JPN) ? (24.0f/408.0f) : (24.0f/312.0f);
+        charUvH = (LanguageNo == HUWIN_LANG_JAPAN) ? (24.0f/408.0f) : (24.0f/312.0f);
         for(i=0; i<winP->charEntryNum; i++) {
             charW = fontWidthP[winP->charEntry[i].charNo+48];
             uvMinX = (20.0f/320.0f) * (winP->charEntry[i].charNo%16);
@@ -573,7 +573,7 @@ static u8 winBGMake(ANIMDATA *bgAnim, ANIMDATA *frameAnim)
     h = bgAnim->bmp->sizeY;
     blockW = (w+7) & 0xF8;
     blockH = (h+3) & 0xFC;
-    bmpData = bgAnim->bmp->data = HuMemDirectMallocNum(HUHEAPTYPE_HEAP, blockW*blockH, HU_MEMNUM_OVL);
+    bmpData = bgAnim->bmp->data = HuMemDirectMallocNum(HEAP_HEAP, blockW*blockH, HU_MEMNUM_OVL);
     for(i=0; i<h; i++) {
         if(i == 0) {
             for(j=0; j<w; j++) {
@@ -1357,13 +1357,13 @@ void HuWinMesRead(void)
     if(messDataPtr) {
         HuMemDirectFree(messDataPtr);
     }
-    if(LanguageNo == GW_LANGUAGE_JPN) {
+    if(LanguageNo == HUWIN_LANG_JAPAN) {
         path = mesDataTbl[dataNo];
     } else {
         path = mesDataTbl[dataNo+2];
     }
     buf = HuDvdDataRead(path);
-    messDataPtr = HuMemDirectMalloc(HUHEAPTYPE_HEAP, DirDataSize);
+    messDataPtr = HuMemDirectMalloc(HEAP_HEAP, DirDataSize);
     memcpy(messDataPtr, buf, DirDataSize);
     HuMemDirectFree(buf);
 }
@@ -1954,7 +1954,7 @@ HUWINID HuWinExCreateFrame(float x, float y, s16 w, s16 h, s16 speakerNo, s16 fr
         winP->mesColShadow = HUWIN_MESCOL_LIGHTGRAY;
     }
     if(speakerNo >= 0) {
-        void *data = HuAR_ARAMtoMRAMFileRead(speakerFileTbl[speakerNo], HU_MEMNUM_OVL, HUHEAPTYPE_MODEL);
+        void *data = HuAR_ARAMtoMRAMFileRead(speakerFileTbl[speakerNo], HU_MEMNUM_OVL, HEAP_MODEL);
         ANIMDATA *anim = HuSprAnimRead(data);
         HuWinAnimSet(winId, anim, 0, 48, 48);
     }
@@ -2046,7 +2046,7 @@ void HuWinExSpeakerSet(HUWINID winId, s16 speakerNo)
     }
     HuWinSprKill(winId, HUWIN_SPR_BEGIN);
     {
-        void *data = HuAR_ARAMtoMRAMFileRead(speakerFileTbl[speakerNo], HU_MEMNUM_OVL, HUHEAPTYPE_MODEL);
+        void *data = HuAR_ARAMtoMRAMFileRead(speakerFileTbl[speakerNo], HU_MEMNUM_OVL, HEAP_MODEL);
         ANIMDATA *anim = HuSprAnimRead(data);
         HuWinAnimSet(winId, anim, 0, 48, 48);
     }

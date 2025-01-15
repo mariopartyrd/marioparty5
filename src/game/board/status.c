@@ -815,7 +815,7 @@ void MBSpriteCreate(int dataNum, int prio, ANIMDATA **animP, HUSPRID *sprIdP)
     HUSPRID sprId;
     void *data;
     ANIMDATA *anim;
-    data = HuDataSelHeapReadNum(dataNum, HU_MEMNUM_OVL, HUHEAPTYPE_MODEL);
+    data = HuDataSelHeapReadNum(dataNum, HU_MEMNUM_OVL, HEAP_MODEL);
     anim = HuSprAnimRead(data);
     sprId = HuSprCreate(anim, prio, 0);
     if(animP) {

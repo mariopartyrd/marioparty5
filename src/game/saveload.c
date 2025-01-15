@@ -167,7 +167,7 @@ s32 SLFileCreate(char *fileName, u32 size, void *addr)
         SLMessOut(SL_MESS_FATAL_ERROR);
         return CARD_RESULT_FATAL_ERROR;
     }
-    eraseBuf = HuMemDirectMalloc(HUHEAPTYPE_HEAP, size);
+    eraseBuf = HuMemDirectMalloc(HEAP_HEAP, size);
     memset(eraseBuf, size, 0);
     memcpy(eraseBuf, SLEraseStr, sizeof(SLEraseStr));
     result = HuCardWrite(&curFileInfo, eraseBuf, size, 0);
@@ -523,7 +523,7 @@ void SLBoardLoad(void)
 void SLBoardLoadStory(void)
 {
     u32 boxOfs = boxDataOfs[curBoxNo];
-    GWCOMMON *commonP = HuMemDirectMalloc(HUHEAPTYPE_HEAP, sizeof(GWCOMMON));
+    GWCOMMON *commonP = HuMemDirectMalloc(HEAP_HEAP, sizeof(GWCOMMON));
     s16 i;
     memcpy(commonP, &saveBuf[curSlotNo][boxOfs+SAVE_BOX_COMMON_OFS], sizeof(GWCOMMON));
     for(i=0; i<5; i++) {

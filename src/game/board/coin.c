@@ -70,7 +70,7 @@ s16 MBCoinEffCreate(int count, MBCOINEFFHOOK hook)
     effNo = i;
     eff->effNo = effNo;
     eff->count = count;
-    eff->data = effData = HuMemDirectMallocNum(HUHEAPTYPE_HEAP, eff->count*sizeof(MBCOINEFFDATA), HU_MEMNUM_OVL);
+    eff->data = effData = HuMemDirectMallocNum(HEAP_HEAP, eff->count*sizeof(MBCOINEFFDATA), HU_MEMNUM_OVL);
     eff->attr = MBCOIN_ATTR_NONE;
     memset(effData, 0, eff->count*sizeof(MBCOINEFFDATA));
     for(i=0; i<count; i++, effData++) {
@@ -311,7 +311,7 @@ s16 MBCoinDispCreate(HuVecF *pos, int coinNum, BOOL playSe)
         coinNum = -999;
     }
     obj = MBAddObj(261, 5, 0, CoinDispExec);
-    obj->data = HuMemDirectMallocNum(HUHEAPTYPE_HEAP, COINDISP_MODEL_MAX*sizeof(COINDISPMODEL), HU_MEMNUM_OVL);
+    obj->data = HuMemDirectMallocNum(HEAP_HEAP, COINDISP_MODEL_MAX*sizeof(COINDISPMODEL), HU_MEMNUM_OVL);
     omSetStatBit(obj, OM_STAT_MODELPAUSE);
     coinDispObj[i] = obj;
     work = omObjGetWork(obj, COINDISPWORK);

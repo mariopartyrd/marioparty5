@@ -124,7 +124,7 @@ void MBMusPlay(int chan, int id, s8 vol, u16 fadeSpeed)
         musP->stopTime = 60;
         musP->stopF = FALSE;
         musP->proc = MBPrcCreate(MusMainProc, 8193, 8192);
-        musP->proc->property = chanP = HuMemDirectMallocNum(HUHEAPTYPE_HEAP, sizeof(int), HU_MEMNUM_OVL);
+        musP->proc->property = chanP = HuMemDirectMallocNum(HEAP_HEAP, sizeof(int), HU_MEMNUM_OVL);
         *chanP = chan;
         MBPrcDestructorSet(musP->proc, MusMainProcKill);
     }

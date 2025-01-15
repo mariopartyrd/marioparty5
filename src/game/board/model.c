@@ -18,7 +18,7 @@ static BOOL InitMotionData(MBMODEL *modelP, int motNum, int *motDataNum);
 
 void MBModelInit(void)
 {
-    MBMODEL *modelP = HuMemDirectMallocNum(HUHEAPTYPE_HEAP, sizeof(MBMODEL)*MB_MODEL_MAX, HU_MEMNUM_OVL);
+    MBMODEL *modelP = HuMemDirectMallocNum(HEAP_HEAP, sizeof(MBMODEL)*MB_MODEL_MAX, HU_MEMNUM_OVL);
     int i;
     MODELMANWORK *work;
     
@@ -377,7 +377,7 @@ int MBMotionCreate(MBMODELID modelId, int dataNum)
             return MB_MOT_NONE; 
         }
         if(modelP->charNo == CHARNO_NONE) {
-            modelP->motData[motNo] = HuDataSelHeapReadNum(dataNum, HU_MEMNUM_OVL, HUHEAPTYPE_MODEL);
+            modelP->motData[motNo] = HuDataSelHeapReadNum(dataNum, HU_MEMNUM_OVL, HEAP_MODEL);
             if(!modelP->motData[motNo]) {
                 return MB_MOT_NONE; 
             }
@@ -1099,10 +1099,10 @@ static BOOL InitData(MBMODEL *modelP, int dataNum, BOOL linkF)
         }
     }
     if(modelP->charNo == CHARNO_NONE) {
-        modelP->data = HuDataSelHeapReadNum(dataNum, HU_MEMNUM_OVL, HUHEAPTYPE_MODEL);
+        modelP->data = HuDataSelHeapReadNum(dataNum, HU_MEMNUM_OVL, HEAP_MODEL);
         if(!modelP->data) {
-            s32 modelRestMem = HuRestMemGet(HUHEAPTYPE_MODEL);
-            s32 dvdRestMem = HuRestMemGet(HUHEAPTYPE_DVD);
+            s32 modelRestMem = HuRestMemGet(HEAP_MODEL);
+            s32 dvdRestMem = HuRestMemGet(HEAP_DVD);
             return FALSE;
         }
     } else {
@@ -1135,7 +1135,7 @@ static BOOL InitMotionData(MBMODEL *modelP, int motNum, int *motDataNum)
         HU3DMOTID motId;
         for(i=0; i<motNum; i++) {
             if(modelP->charNo == CHARNO_NONE) {
-                dataP = HuDataSelHeapReadNum(motDataNum[i], HU_MEMNUM_OVL, HUHEAPTYPE_MODEL);
+                dataP = HuDataSelHeapReadNum(motDataNum[i], HU_MEMNUM_OVL, HEAP_MODEL);
                 if(dataP == NULL) {
                     return -1;
                 }

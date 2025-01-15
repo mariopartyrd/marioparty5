@@ -1965,7 +1965,7 @@ void MBPlayerMatClone(int playerNo)
     HU3DMODELID modelId = MBModelIdGet(MBPlayerModelGet(playerNo));
     HU3DMODEL *modelP = &Hu3DData[modelId];
     HSFDATA *hsf = modelP->hsf;
-    HSFMATERIAL *matP = HuMemDirectMallocNum(HUHEAPTYPE_HEAP, hsf->materialNum*sizeof(HSFMATERIAL), HU_MEMNUM_OVL);
+    HSFMATERIAL *matP = HuMemDirectMallocNum(HEAP_HEAP, hsf->materialNum*sizeof(HSFMATERIAL), HU_MEMNUM_OVL);
     memcpy(matP, hsf->material, hsf->materialNum*sizeof(HSFMATERIAL));
     playerWork[playerNo].matCopy = matP;
 }

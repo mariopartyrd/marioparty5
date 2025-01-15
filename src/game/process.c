@@ -62,7 +62,7 @@ HUPROCESS *HuPrcCreate(void (*func)(void), u16 prio, u32 stackSize, s32 heapSize
     allocSize = HuMemMemoryAllocSizeGet(sizeof(HUPROCESS))
                     +HuMemMemoryAllocSizeGet(stackSize)
                     +HuMemMemoryAllocSizeGet(heapSize);
-    if(!(heap = HuMemDirectMalloc(HUHEAPTYPE_HEAP, allocSize))) {
+    if(!(heap = HuMemDirectMalloc(HEAP_HEAP, allocSize))) {
         OSReport("process> malloc error size %d\n", allocSize);
         return NULL;
     }

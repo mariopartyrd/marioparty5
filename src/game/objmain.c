@@ -66,11 +66,11 @@ static void omWatchOverlayProc(void)
             if(omnextovl >= 0 && fadeStat == FALSE) {
                 HuPrcSleep(0);
                 OSReport("++++++++++++++++++++ Start New OVL %d (EVT:%d STAT:0x%08x) ++++++++++++++++++\n", omnextovl, omnextovlevtno, omnextovlstat);
-                HuMemHeapDump(HuMemHeapPtrGet(HUHEAPTYPE_HEAP), -1);
-                HuMemHeapDump(HuMemHeapPtrGet(HUHEAPTYPE_MODEL), -1);
-                HuMemHeapDump(HuMemHeapPtrGet(HUHEAPTYPE_DVD), -1);
-                OSReport("objman>Used Memory Size:%08x\n", HuMemUsedMallocSizeGet(HUHEAPTYPE_HEAP));
-                OSReport("objman>Used Memory Cnt:%d\n", HuMemUsedMallocBlockGet(HUHEAPTYPE_HEAP));
+                HuMemHeapDump(HuMemHeapPtrGet(HEAP_HEAP), -1);
+                HuMemHeapDump(HuMemHeapPtrGet(HEAP_MODEL), -1);
+                HuMemHeapDump(HuMemHeapPtrGet(HEAP_DVD), -1);
+                OSReport("objman>Used Memory Size:%08x\n", HuMemUsedMallocSizeGet(HEAP_HEAP));
+                OSReport("objman>Used Memory Cnt:%d\n", HuMemUsedMallocBlockGet(HEAP_HEAP));
                 OSReport("objman>Init esp\n");
                 espInit();
                 OSReport("objman>Call objectsetup\n");
@@ -148,10 +148,10 @@ void omOvlKill(s16 unlinkF)
     HuWinAllKill();
     HuSprClose();
     HuPrcChildKill(omwatchproc);
-    HuMemDirectFreeNum(HUHEAPTYPE_HEAP, HU_MEMNUM_OVL);
+    HuMemDirectFreeNum(HEAP_HEAP, HU_MEMNUM_OVL);
     HuDataDirCloseNum(HU_MEMNUM_OVL);
-    HuMemDirectFreeNum(HUHEAPTYPE_DVD, HU_MEMNUM_OVL);
-    HuMemDirectFreeNum(HUHEAPTYPE_MODEL, HU_MEMNUM_OVL);
+    HuMemDirectFreeNum(HEAP_DVD, HU_MEMNUM_OVL);
+    HuMemDirectFreeNum(HEAP_MODEL, HU_MEMNUM_OVL);
     SLWinClose();
     HuPadRumbleAllStop();
     HuAudFXListnerKill();
@@ -200,7 +200,7 @@ OMOBJMAN *omInitObjMan(s16 objMax, s32 objManPrio)
     omSysExitReq = FALSE;
     objMan = HuPrcChildCreate(omMain, objManPrio, 24576, 0, omwatchproc);
     HuPrcSetStat(objMan, HU_PRC_STAT_PAUSE_ON|HU_PRC_STAT_UPAUSE_ON);
-    objWork = HuMemDirectMallocNum(HUHEAPTYPE_HEAP, sizeof(OMOBJWORK), HU_MEMNUM_OVL);
+    objWork = HuMemDirectMallocNum(HEAP_HEAP, sizeof(OMOBJWORK), HU_MEMNUM_OVL);
     objWork->objMax = objMax;
     objMan->property = objWork;
     objMan->destructor = omDestroyObjMan;
@@ -208,8 +208,8 @@ OMOBJMAN *omInitObjMan(s16 objMax, s32 objManPrio)
     objWork->objNext = 0;
     objWork->objLast = OM_OBJ_NONE;
     objWork->objFirst = OM_OBJ_NONE;
-    objWork->objData = objData = HuMemDirectMallocNum(HUHEAPTYPE_HEAP, sizeof(OMOBJ)*objMax, HU_MEMNUM_OVL);
-    objWork->grpData = grpData = HuMemDirectMallocNum(HUHEAPTYPE_HEAP, sizeof(OMOBJGRP)*OM_GRP_MAX, HU_MEMNUM_OVL);
+    objWork->objData = objData = HuMemDirectMallocNum(HEAP_HEAP, sizeof(OMOBJ)*objMax, HU_MEMNUM_OVL);
+    objWork->grpData = grpData = HuMemDirectMallocNum(HEAP_HEAP, sizeof(OMOBJGRP)*OM_GRP_MAX, HU_MEMNUM_OVL);
     for(i=0; i<objMax; i++) {
         OMOBJ *obj = &objData[i];
         obj->stat = OM_STAT_DELETED;
@@ -265,7 +265,7 @@ OMOBJ *omAddObjEx(OMOBJMAN *objMan, s16 prio, u16 mdlcnt, u16 mtncnt, s16 grpNo,
     obj->prio = prio;
     omInsertObj(objMan, obj);
     if(mdlcnt) {
-        obj->mdlId = HuMemDirectMallocNum(HUHEAPTYPE_HEAP, sizeof(HU3DMODELID)*mdlcnt, HU_MEMNUM_OVL);
+        obj->mdlId = HuMemDirectMallocNum(HEAP_HEAP, sizeof(HU3DMODELID)*mdlcnt, HU_MEMNUM_OVL);
         obj->mdlcnt = mdlcnt;
         for(i=0; i<mdlcnt; i++) {
             obj->mdlId[i] = HU3D_MODELID_NONE;
@@ -275,7 +275,7 @@ OMOBJ *omAddObjEx(OMOBJMAN *objMan, s16 prio, u16 mdlcnt, u16 mtncnt, s16 grpNo,
         obj->mdlcnt = 0;
     }
     if(mtncnt) {
-        obj->mtnId = HuMemDirectMallocNum(HUHEAPTYPE_HEAP, sizeof(HU3DMODELID)*mtncnt, HU_MEMNUM_OVL);
+        obj->mtnId = HuMemDirectMallocNum(HEAP_HEAP, sizeof(HU3DMODELID)*mtncnt, HU_MEMNUM_OVL);
         obj->mtncnt = mtncnt;
     } else {
         obj->mtnId = NULL;
@@ -425,8 +425,8 @@ void omMakeGroupEx(OMOBJMAN *objMan, u16 grpNo, u16 objMax)
     grpP->memberNo = 0;
     grpP->objMax = objMax;
     grpP->objNum = 0;
-    grpP->memberList = HuMemDirectMallocNum(HUHEAPTYPE_HEAP, objMax*sizeof(OMOBJ *), HU_MEMNUM_OVL);
-    grpP->memberNext = HuMemDirectMallocNum(HUHEAPTYPE_HEAP, objMax*sizeof(u16), HU_MEMNUM_OVL);
+    grpP->memberList = HuMemDirectMallocNum(HEAP_HEAP, objMax*sizeof(OMOBJ *), HU_MEMNUM_OVL);
+    grpP->memberNext = HuMemDirectMallocNum(HEAP_HEAP, objMax*sizeof(u16), HU_MEMNUM_OVL);
     for(i=0; i<objMax; i++) {
         grpP->memberList[i] = NULL;
         grpP->memberNext[i] = i+1;
@@ -489,12 +489,12 @@ static void omMain(void)
             color.b = 255;
             printWin(15, 31, 128*scale, 48*scale, &color);
             fontcolor = FONT_COLOR_YELLOW;
-            print8(16, 32, scale, BLACK_SHADOW "H:%08lX(%ld)", HuMemUsedMallocSizeGet(HUHEAPTYPE_HEAP), HuMemUsedMallocBlockGet(HUHEAPTYPE_HEAP));
-            print8(16, 32+(8*scale), scale, BLACK_SHADOW "M:%08lX(%ld)", HuMemUsedMallocSizeGet(HUHEAPTYPE_MODEL), HuMemUsedMallocBlockGet(HUHEAPTYPE_MODEL));
+            print8(16, 32, scale, BLACK_SHADOW "H:%08lX(%ld)", HuMemUsedMallocSizeGet(HEAP_HEAP), HuMemUsedMallocBlockGet(HEAP_HEAP));
+            print8(16, 32+(8*scale), scale, BLACK_SHADOW "M:%08lX(%ld)", HuMemUsedMallocSizeGet(HEAP_MODEL), HuMemUsedMallocBlockGet(HEAP_MODEL));
             print8(16, 32+(16*scale), scale, BLACK_SHADOW "OBJ:%d/%d", objWork->objIdx, objWork->objMax);
             print8(16, 32+(24*scale), scale, BLACK_SHADOW "OVL:%ld(%ld<%ld)", omovlhisidx, omcurovl, omprevovl);
             print8(16, 32+(32*scale), scale, BLACK_SHADOW "POL:%ld", totalPolyCnted);
-            print8(16, 32+(40*scale), scale, BLACK_SHADOW "D:%08lX(%ld)", HuMemUsedMallocSizeGet(HUHEAPTYPE_DVD), HuMemUsedMallocBlockGet(HUHEAPTYPE_DVD));
+            print8(16, 32+(40*scale), scale, BLACK_SHADOW "D:%08lX(%ld)", HuMemUsedMallocSizeGet(HEAP_DVD), HuMemUsedMallocBlockGet(HEAP_DVD));
         }
         objIdx = objWork->objLast;
         while(objIdx != OM_OBJ_NONE) {

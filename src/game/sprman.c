@@ -308,7 +308,7 @@ HUSPRGRPID HuSprGrpCreate(s16 sprNum)
     if(i == HUSPR_GRP_MAX) {
         return HUSPR_GRP_NONE;
     }
-    gp->sprId = HuMemDirectMalloc(HUHEAPTYPE_HEAP, sizeof(HUSPRID)*sprNum);
+    gp->sprId = HuMemDirectMalloc(HEAP_HEAP, sizeof(HUSPRID)*sprNum);
     for(j=0; j<sprNum; j++) {
         gp->sprId[j] = HUSPR_NONE;
     }
@@ -646,7 +646,7 @@ ANIMDATA *HuSprAnimMake(s16 sizeX, s16 sizeY, s16 dataFmt)
     ANIMBANK *bank;
     ANIMDATA *newAnim;
 
-    anim = newAnim = HuMemDirectMalloc(HUHEAPTYPE_MODEL, sizeof(ANIMDATA)+sizeof(ANIMBANK)+sizeof(ANIMFRAME)
+    anim = newAnim = HuMemDirectMalloc(HEAP_MODEL, sizeof(ANIMDATA)+sizeof(ANIMBANK)+sizeof(ANIMFRAME)
                                             +sizeof(ANIMPAT)+sizeof(ANIMLAYER)+sizeof(ANIMBMP));
 
     bank = temp = &newAnim[1];

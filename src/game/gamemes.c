@@ -193,7 +193,7 @@ void GMesInit(void)
 
 void *GMesDataRead(unsigned int dataNum)
 {
-    return HuAR_ARAMtoMRAMFileRead(dataNum, HU_MEMNUM_OVL, HUHEAPTYPE_MODEL);
+    return HuAR_ARAMtoMRAMFileRead(dataNum, HU_MEMNUM_OVL, HEAP_MODEL);
 }
 
 void GMesExec(void)
@@ -617,23 +617,23 @@ BOOL GMesTimerExec(GAMEMES *gMes)
 static void CreateFontBuf(void)
 {
     if(!fontBufs[0]) {
-        fontBufs[0] = HuMemDirectMalloc(HUHEAPTYPE_HEAP, strlen(asciiTbl)*sizeof(int));
+        fontBufs[0] = HuMemDirectMalloc(HEAP_HEAP, strlen(asciiTbl)*sizeof(int));
         memset(fontBufs[0], 0, strlen(asciiTbl)*sizeof(int));
     }
     if(!fontBufs[1]) {
-        fontBufs[1] = HuMemDirectMalloc(HUHEAPTYPE_HEAP, strlen(kanaTbl)*sizeof(int));
+        fontBufs[1] = HuMemDirectMalloc(HEAP_HEAP, strlen(kanaTbl)*sizeof(int));
         memset(fontBufs[1], 0, strlen(kanaTbl)*sizeof(int));
     }
     if(!fontBufs[2]) {
-        fontBufs[2] = HuMemDirectMalloc(HUHEAPTYPE_HEAP, strlen(kanaTbl)*sizeof(int));
+        fontBufs[2] = HuMemDirectMalloc(HEAP_HEAP, strlen(kanaTbl)*sizeof(int));
         memset(fontBufs[2], 0, strlen(kanaTbl)*sizeof(int));
     }
     if(!fontBufs[3]) {
-        fontBufs[3] = HuMemDirectMalloc(HUHEAPTYPE_HEAP, strlen(numberTbl)*sizeof(int));
+        fontBufs[3] = HuMemDirectMalloc(HEAP_HEAP, strlen(numberTbl)*sizeof(int));
         memset(fontBufs[3], 0, strlen(numberTbl)*sizeof(int));
     }
     if(!fontBufs[4]) {
-        fontBufs[4] = HuMemDirectMalloc(HUHEAPTYPE_HEAP, strlen(punctTbl)*sizeof(int));
+        fontBufs[4] = HuMemDirectMalloc(HEAP_HEAP, strlen(punctTbl)*sizeof(int));
         memset(fontBufs[4], 0, strlen(punctTbl)*sizeof(int));
     }
 }
@@ -662,8 +662,8 @@ int GMesStrCreate(GAMEMES *gMes, char *str, s16 flag)
     if(strId == GMES_STRMAX) {
         return GMES_STR_NONE;
     }
-    charAnimTbl = HuMemDirectMalloc(HUHEAPTYPE_HEAP, STR_CHAR_MAX*sizeof(ANIMDATA *));
-    charX = HuMemDirectMalloc(HUHEAPTYPE_HEAP, STR_CHAR_MAX*sizeof(s16));
+    charAnimTbl = HuMemDirectMalloc(HEAP_HEAP, STR_CHAR_MAX*sizeof(ANIMDATA *));
+    charX = HuMemDirectMalloc(HEAP_HEAP, STR_CHAR_MAX*sizeof(s16));
 
     for(s=str, x=0, charNum=spaceNum=0; *s; s++) {
         if(*s == ' ') {
@@ -787,7 +787,7 @@ static void ExecPause(void)
     for(i=0; i<GMES_STRMAX; i++) {
         gMes.strSprId[i] = gMes.strGId[i] = HUSPR_NONE;
     }
-    GMesStrCreate(&gMes, pauseStr[(gMesLanguageNo == GW_LANGUAGE_JPN) ? 0 : 1], FALSE);
+    GMesStrCreate(&gMes, pauseStr[(gMesLanguageNo == HUWIN_LANG_JAPAN) ? 0 : 1], FALSE);
     for(i=0; i<gMes.charNum; i++) {
         HuSprPriSet(gMes.strGId[0], i, 0);
     }
@@ -1342,7 +1342,7 @@ static void ScoreWinBGMake(ANIMDATA *anim)
     h = anim->bmp->sizeY;
     blockW = (w+7) & 0xF8;
     blockH = (h+3) & 0xFC;
-    bmpData = anim->bmp->data = HuMemDirectMallocNum(HUHEAPTYPE_HEAP, blockW*blockH, HU_MEMNUM_OVL);
+    bmpData = anim->bmp->data = HuMemDirectMallocNum(HEAP_HEAP, blockW*blockH, HU_MEMNUM_OVL);
     for(i=0; i<h; i++) {
         if(i == 0) {
            for(j=0; j<w; j++) {
@@ -1658,9 +1658,9 @@ GMESID GMesStrWinCreate(GAMEMES *gMes, u32 winMessId)
         return GMES_STR_NONE;
     }
     fileTbl = fontFileTbl;
-    charAnimTbl = HuMemDirectMalloc(HUHEAPTYPE_HEAP, STR_CHAR_MAX*sizeof(ANIMDATA *));
-    charX = HuMemDirectMalloc(HUHEAPTYPE_HEAP, STR_CHAR_MAX*sizeof(s16));
-    charY = HuMemDirectMalloc(HUHEAPTYPE_HEAP, STR_CHAR_MAX*sizeof(s16));
+    charAnimTbl = HuMemDirectMalloc(HEAP_HEAP, STR_CHAR_MAX*sizeof(ANIMDATA *));
+    charX = HuMemDirectMalloc(HEAP_HEAP, STR_CHAR_MAX*sizeof(s16));
+    charY = HuMemDirectMalloc(HEAP_HEAP, STR_CHAR_MAX*sizeof(s16));
     for(mesPtr=HuWinMesPtrGet(winMessId), x=0, charNum=0; *mesPtr; mesPtr++) {
         if(mesPtr[0] == ' ' || mesPtr[0] == 16) {
             x += 56;

@@ -188,7 +188,7 @@ BOOL MBMasuDataRead(int layer, int dataNum)
     int *dataPtr;
     
     starNum = 0;
-    dataPtr = HuDataSelHeapReadNum(dataNum, HU_MEMNUM_OVL, HUHEAPTYPE_MODEL);
+    dataPtr = HuDataSelHeapReadNum(dataNum, HU_MEMNUM_OVL, HEAP_MODEL);
     DATA_READCOUNT(dataPtr, ptr, masuNum[layer]);
     masuDonkeyNum = 0;
     for(masuP = &masuData[layer][0], i=0; i<masuNum[layer]; i++, masuP++) {
@@ -227,7 +227,7 @@ BOOL MBMasuDataRead(int layer, int dataNum)
 
 static void MakeMasuDisplayList(void)
 {
-    void *dlBuf = HuMemDirectMallocNum(HUHEAPTYPE_HEAP, DLBUF_SIZE, HU_MEMNUM_OVL);
+    void *dlBuf = HuMemDirectMallocNum(HEAP_HEAP, DLBUF_SIZE, HU_MEMNUM_OVL);
     DCInvalidateRange(dlBuf, DLBUF_SIZE);
     GXBeginDisplayList(dlBuf, DLBUF_SIZE);
     GXBegin(GX_QUADS, GX_VTXFMT0, 4);
@@ -241,7 +241,7 @@ static void MakeMasuDisplayList(void)
     GXTexCoord2f32(0, 1);
     GXEnd();
     masuDlBufLen = GXEndDisplayList();
-    masuDlBuf = HuMemDirectMallocNum(HUHEAPTYPE_HEAP, masuDlBufLen, HU_MEMNUM_OVL);
+    masuDlBuf = HuMemDirectMallocNum(HEAP_HEAP, masuDlBufLen, HU_MEMNUM_OVL);
     memcpy(masuDlBuf, dlBuf, masuDlBufLen);
     DCFlushRangeNoSync(masuDlBuf, masuDlBufLen);
     HuMemDirectFree(dlBuf);
@@ -1098,7 +1098,7 @@ void MBMasuSaiHiddenSet(void)
         return;
     }
     masuNum = MBMasuNumGet(MASU_LAYER_DEFAULT);
-    saiMasuIdTbl = HuMemDirectMallocNum(HUHEAPTYPE_HEAP, sizeof(int)*masuNum, HU_MEMNUM_OVL);
+    saiMasuIdTbl = HuMemDirectMallocNum(HEAP_HEAP, sizeof(int)*masuNum, HU_MEMNUM_OVL);
     saiMasuNum = 0;
     for(i=0; i<masuNum; i++) {
         MASU *masuP;

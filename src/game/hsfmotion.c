@@ -1118,7 +1118,7 @@ void SetObjAttrMotion(HU3DMODELID modelId, HSFTRACK *trackP, float value)
         case HSF_CHANNEL_SCALEZ:
         case HSF_CHANNEL_BITMAP:
             if(!attrP->animWorkP) {
-                attrAnimP = HuMemDirectMallocNum(HUHEAPTYPE_MODEL, sizeof(HU3DATTRANIM), Hu3DData[modelId].mallocNo);
+                attrAnimP = HuMemDirectMallocNum(HEAP_MODEL, sizeof(HU3DATTRANIM), Hu3DData[modelId].mallocNo);
                 attrP->animWorkP = attrAnimP;
                 attrAnimP->attr = 0;
                 attrAnimP->trans3D.x = attrAnimP->trans3D.y = attrAnimP->trans3D.z = 0;

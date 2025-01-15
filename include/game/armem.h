@@ -21,7 +21,7 @@ void *HuAR_ARAMtoMRAMNum(AMEM_PTR aMemP, s32 num);
 s32 HuARDMACheck(void);
 AMEM_PTR HuARDirCheck(unsigned int dir);
 void HuARDirFree(unsigned int dir);
-void *HuAR_ARAMtoMRAMFileRead(unsigned int dataNum, u32 num, HUHEAPTYPE heap);
+void *HuAR_ARAMtoMRAMFileRead(unsigned int dataNum, u32 num, HEAPID heap);
 
 
 #endif

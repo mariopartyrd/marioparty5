@@ -39,7 +39,7 @@ void HuAudInit(void)
     MSM_ARAM msmAram;
     s32 result;
     s16 i;
-    msmInit.heap = HuMemDirectMalloc(HUHEAPTYPE_SOUND, HUMSMHEAP_SIZE);
+    msmInit.heap = HuMemDirectMalloc(HEAP_SOUND, HUMSMHEAP_SIZE);
     msmInit.heapSize = HUMSMHEAP_SIZE;
     msmInit.msmPath = MSM_FILE_PATH;
     msmInit.pdtPath = PDT_FILE_PATH;
@@ -363,7 +363,7 @@ int HuAudSStreamChanPlay(s16 streamId, s16 chanNo)
         SSTREAMWORK *work;
         msmStreamStop(chanNo, 0);
         process = HuPrcCreate(SStreamStartProc, MSM_AUXB_DEFAULT, 2304, 0);
-        process->property = work = HuMemDirectMalloc(HUHEAPTYPE_HEAP, sizeof(SSTREAMWORK));
+        process->property = work = HuMemDirectMalloc(HEAP_HEAP, sizeof(SSTREAMWORK));
         work->chanNo = chanNo;
         work->streamId = streamId;
         return chanNo;
@@ -480,7 +480,7 @@ void HuAudSStreamVolSet(int streamNo, u8 vol, u32 speed)
         streamVol[streamNo] = vol;
     } else {
         HUPROCESS *process = HuPrcCreate(SStreamFade, MSM_AUXB_DEFAULT, 2304, 0);
-        SSTREAMFADEWORK *work = HuMemDirectMalloc(HUHEAPTYPE_HEAP, sizeof(SSTREAMFADEWORK));
+        SSTREAMFADEWORK *work = HuMemDirectMalloc(HEAP_HEAP, sizeof(SSTREAMFADEWORK));
         process->property = work;
         work->speed =  speed;
         work->streamNo = streamNo;
@@ -692,7 +692,7 @@ void HuAudSndGrpSetSet(s16 grpSet)
         OSReport("GroupSet %d\n", grpSet);
         sndGroupBak = grpSet;
         result = msmSysDelGroupAll();
-        buf = HuMemDirectMalloc(HUHEAPTYPE_MODEL, msmSysGetSampSize(TRUE));
+        buf = HuMemDirectMalloc(HEAP_MODEL, msmSysGetSampSize(TRUE));
         result = msmSysLoadGroup(grpSet, buf, FALSE);
         if(result) {
             OSReport("***********GroupSet Error %d\n", result);
@@ -703,7 +703,7 @@ void HuAudSndGrpSetSet(s16 grpSet)
 
 void HuAudSndGrpSet(s16 grp)
 {
-    void *buf = HuMemDirectMalloc(HUHEAPTYPE_MODEL, msmSysGetSampSize(grp));
+    void *buf = HuMemDirectMalloc(HEAP_MODEL, msmSysGetSampSize(grp));
     msmSysLoadGroup(grp, buf, FALSE);
     HuMemDirectFree(buf);
 }
@@ -729,7 +729,7 @@ void HuAudSndCommonGrpSet(s16 grp, BOOL delGrpF)
             OSReport("Del Group Error %d\n", result);
         }
     }
-    buf = HuMemDirectMalloc(HUHEAPTYPE_MODEL, msmSysGetSampSize(grp));
+    buf = HuMemDirectMalloc(HEAP_MODEL, msmSysGetSampSize(grp));
     msmSysLoadGroupBase(grp, buf);
     HuMemDirectFree(buf);
     sndGroupBak = MSM_GRP_NONE;
@@ -817,7 +817,7 @@ void HuAudCharGrpSet(s16 ovl)
             if(charNo >= 0 && charNo < 8 && charNo != 0xFF) {
                 charFxLoadF[charNo] = TRUE;
                 grpSet = charSndGrpTable[charNo];
-                buf = HuMemDirectMalloc(HUHEAPTYPE_MODEL, msmSysGetSampSize(grpSet));
+                buf = HuMemDirectMalloc(HEAP_MODEL, msmSysGetSampSize(grpSet));
                 msmSysLoadGroupBase(grpSet, buf);
                 HuMemDirectFree(buf);
             }

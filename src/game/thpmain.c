@@ -151,7 +151,7 @@ static void THPTestProc(void) {
     THPSimpleGetVideoInfo(&videoInfo);
     temp_r29 = THPSimpleCalcNeedMemory();
     OSReport("Size %x\n", temp_r29);
-    temp_r30 = HuMemDirectMalloc(HUHEAPTYPE_MODEL, temp_r29);
+    temp_r30 = HuMemDirectMalloc(HEAP_MODEL, temp_r29);
     memset(temp_r30, 0, temp_r29);
     DCFlushRange(temp_r30, temp_r29);
     if(temp_r30 == 0) {
@@ -166,7 +166,7 @@ static void THPTestProc(void) {
     if(VIGetNextField() == 1) {
         HuPrcVSleep();
     }
-    decodeStackP = HuMemDirectMalloc(HUHEAPTYPE_HEAP, 0x2000);
+    decodeStackP = HuMemDirectMalloc(HEAP_HEAP, 0x2000);
     decodeThread = OSSetIdleFunction(THPDecodeFunc, NULL, decodeStackP + 0x2000, 0x2000);
     decodeRate = 0;
     THPStart = 1;

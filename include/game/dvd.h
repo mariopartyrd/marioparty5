@@ -9,7 +9,7 @@
 
 void *HuDvdDataRead(char *path);
 void **HuDvdDataReadMulti(char **paths);
-void *HuDvdDataReadDirect(char *path, HUHEAPTYPE heap);
+void *HuDvdDataReadDirect(char *path, HEAPID heap);
 void *HuDvdDataFastRead(s32 entrynum);
 void *HuDvdDataFastReadNum(s32 entrynum, s32 num);
 void *HuDvdDataFastReadAsync(s32 entrynum, HUDATASTAT *stat);
