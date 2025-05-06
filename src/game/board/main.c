@@ -10,6 +10,7 @@
 #include "game/board/coin.h"
 #include "game/board/branch.h"
 #include "game/board/sai.h"
+#include "game/board/star.h"
 
 #include "game/saveload.h"
 #include "game/sprite.h"
@@ -24,15 +25,10 @@
 #include "game/flag.h"
 
 //Prototypes for board functions
-void MBStarFlagInit(void);
-void MBStarNextNoSet(s8 nextNo);
 void MBMgInit(void);
-void MBStarNoInit(void);
 void MBBankCoinReset(void);
 void MBCapsuleHookSet(void *func); //Fix input type as well
 void MBTutorialWatchProcCreate(void);
-int MBStarNoRandGet(void);
-void MBStarNoSet(int no);
 void MBOpeningProcExec(void);
 void MBCircuitMgEndExec(int playerNo);
 void MBCircuitExec(BOOL turnIntrF);
@@ -48,11 +44,9 @@ void MBWinInit(void);
 void MBGateInit(void);
 void MBCapMachineInit(void);
 void MBCapsuleObjInit(void);
-void MBStarInit(void);
 void MBTauntInit(void);
 
 void MBTauntKill(void);
-void MBStarClose(void);
 void MBGateClose(void);
 void MBCapMachineClose(void);
 void MBScrollClose(void);

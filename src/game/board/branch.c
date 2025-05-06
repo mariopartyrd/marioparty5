@@ -158,7 +158,7 @@ static void BranchGuideCreate(int playerNo, int masuId, s16 *linkTbl, int linkNu
     work->choice = choiceStart;
     if(!_CheckFlag(FLAG_BOARD_TUTORIAL)) {
         if(GWPartyFGet() == TRUE || (GWPartyFGet() == FALSE && playerNo == MBPlayerStoryPlayerGet())) {
-            MBWinCreateHelp(BOARDOPE_PAD_ENTER_NOEXIT);
+            MBWinCreateHelp(MESS_BOARDOPE_PAD_ENTER_NOEXIT);
         }
     }
     MBMasuPosGet(MASU_LAYER_DEFAULT, masuId, &pos);

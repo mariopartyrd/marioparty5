@@ -753,16 +753,16 @@ void GMesPauseCreate(void)
 
 static u32 m562CtrlMesTbl[] = {
     0,
-    MGINST_M562_2,
+    MESS_MGINST_M562_2,
     0,
     0,
-    MGINST_M562_CTRL2,
+    MESS_MGINST_M562_CTRL2,
     0,
     0,
-    MGINST_M562_CTRL2,
+    MESS_MGINST_M562_CTRL2,
     0,
     0,
-    MGINST_M562_2,
+    MESS_MGINST_M562_2,
     0,
 };
 
@@ -820,7 +820,7 @@ static void ExecPause(void)
             HuWinDispOn(winId[2]);
             HuWinMesSpeedSet(winId[2], 0);
             HuWinAttrSet(winId[2], HUWIN_ATTR_ALIGN_CENTER);
-            HuWinMesSet(winId[2], MGINSTSYS_BTN_EXIT);
+            HuWinMesSet(winId[2], MESS_MGINSTSYS_BTN_EXIT);
         }
         if(instMes[2]) {
             s16 insertMesNo;
