@@ -28,7 +28,7 @@ static MBPAUSEHOOK pauseHook[PAUSE_HOOK_MAX];
 static HUPROCESS *pauseProc;
 static int pauseHookNum;
 static int pausePlayer = -1;
-static const padWinMesTbl[2] = { BOARDOPE_PAD_PAUSE, BOARD_PAUSE_PAD_MGCIRCUIT };
+static const padWinMesTbl[2] = { MESS_BOARDOPE_PAD_PAUSE, MESS_BOARD_PAUSE_PAD_MGCIRCUIT };
 
 static void PauseProcExec(void);
 static void PauseProcKill(void);

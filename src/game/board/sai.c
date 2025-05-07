@@ -399,17 +399,17 @@ static void SaiPadWinCreate(SAIWORK *work)
         work->saiType == SAITYPE_CHANCE_TRADE ||
         work->saiType == SAITYPE_CHANCE_CHAR ||
         work->saiType == SAITYPE_BLOCK) {
-            mess = BOARDOPE_PAD_SAI;
+            mess = MESS_BOARDOPE_PAD_SAI;
         } else if(work->no == 0) {
             if(MBPlayerCapsuleUseGet() != CAPSULE_NULL ||
                 MBPlayerCapsuleNumGet(work->playerNo) == 0 ||
                 _CheckFlag(FLAG_MG_CIRCUIT)) {
-                mess = BOARDOPE_PAD_SAI_MAP;
+                mess = MESS_BOARDOPE_PAD_SAI_MAP;
             } else {
-                mess = BOARDOPE_PAD_SAI_CAPSULE;
+                mess = MESS_BOARDOPE_PAD_SAI_CAPSULE;
             }
         } else {
-            mess = BOARDOPE_PAD_SAI;
+            mess = MESS_BOARDOPE_PAD_SAI;
         }
     MBWinCreateHelp(mess);
 }
@@ -1234,7 +1234,7 @@ static void SaiMatchBonusExec(SAIWORK *work)
         HuPrcVSleep();
     }
     MBMusPauseFadeOut(MB_MUS_CHAN_BG, FALSE, 1000);
-    MBWinCreate(MBWIN_TYPE_RESULT, BOARDOPE_MES_SAI_MATCH, HUWIN_SPEAKER_NONE);
+    MBWinCreate(MBWIN_TYPE_RESULT, MESS_BOARDOPE_MES_SAI_MATCH, HUWIN_SPEAKER_NONE);
     MBTopWinInsertMesSet(MESSNUM_PTR(matchCoinStr), 0);
     MBTopWinWait();
     MBTopWinKill();

@@ -5,24 +5,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_4P,
         MG_FLAG_4P|MG_FLAG_EASY|MG_FLAG_GOOFY|MG_FLAG_SKILL,
         MG_RECORD_NONE, 
-        MGNAME_M501,
+        MESS_MGNAME_M501,
         DATA_m501,
         { INSTPIC_ANM_m501 },
         { "movie/ys501_0.thp", "", "" },
         {
             {
-                MGINST_M501_1,
-                MGINST_M501_2,
+                MESS_MGINST_M501_1,
+                MESS_MGINST_M501_2,
                 0,
-                MGINST_M501_4,
+                MESS_MGINST_M501_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -31,24 +31,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_4P,
         MG_FLAG_4P|MG_FLAG_EASY|MG_FLAG_GOOFY|MG_FLAG_ACTION,
         MG_RECORD_NONE, 
-        MGNAME_M502,
+        MESS_MGNAME_M502,
         DATA_m502,
         { INSTPIC_ANM_m502 },
         { "movie/ys502_0.thp", "", "" },
         {
             {
-                MGINST_M502_1,
-                MGINST_M502_2,
+                MESS_MGINST_M502_1,
+                MESS_MGINST_M502_2,
                 0,
-                MGINST_M502_4,
-                MGINST_M502_5
+                MESS_MGINST_M502_4,
+                MESS_MGINST_M502_5
             },
             {
-                MGINST_DECA_M502_1,
-                MGINST_DECA_M502_2,
+                MESS_MGINST_DECA_M502_1,
+                MESS_MGINST_DECA_M502_2,
                 0,
-                MGINST_DECA_M502_4,
-                MGINST_DECA_M502_5
+                MESS_MGINST_DECA_M502_4,
+                MESS_MGINST_DECA_M502_5
             }
         }
     },
@@ -57,24 +57,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_4P,
         MG_FLAG_4P|MG_FLAG_EASY|MG_FLAG_ACTION,
         MG_RECORD_NONE, 
-        MGNAME_M503,
+        MESS_MGNAME_M503,
         DATA_m503,
         { INSTPIC_ANM_m503 },
         { "movie/ys503_0.thp", "", "" },
         {
             {
-                MGINST_M503_1,
-                MGINST_M503_2,
+                MESS_MGINST_M503_1,
+                MESS_MGINST_M503_2,
                 0,
-                MGINST_M503_4,
-                MGINST_M503_5
+                MESS_MGINST_M503_4,
+                MESS_MGINST_M503_5
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -83,23 +83,23 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_4P,
         MG_FLAG_4P|MG_FLAG_SKILL,
         MG_RECORD_NONE, 
-        MGNAME_M504,
+        MESS_MGNAME_M504,
         DATA_m504,
         { INSTPIC_ANM_m504 },
         { "movie/ys504_0.thp", "", "" },
         {
             {
-                MGINST_M504_1,
-                MGINST_M504_2,
+                MESS_MGINST_M504_1,
+                MESS_MGINST_M504_2,
                 0,
-                MGINST_M504_4,
+                MESS_MGINST_M504_4,
                 0
             },
             {
-                MGINST_DECA_M504_1,
-                MGINST_DECA_M504_2,
+                MESS_MGINST_DECA_M504_1,
+                MESS_MGINST_DECA_M504_2,
                 0,
-                MGINST_DECA_M504_4,
+                MESS_MGINST_DECA_M504_4,
                 0
             }
         }
@@ -109,24 +109,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_4P,
         MG_FLAG_4P|MG_FLAG_SKILL|MG_FLAG_EASY,
         MG_RECORD_NONE, 
-        MGNAME_M505,
+        MESS_MGNAME_M505,
         DATA_m505,
         { INSTPIC_ANM_m505 },
         { "movie/ys505_0.thp", "", "" },
         {
             {
-                MGINST_M505_1,
-                MGINST_M505_2,
+                MESS_MGINST_M505_1,
+                MESS_MGINST_M505_2,
                 0,
-                MGINST_M505_4,
+                MESS_MGINST_M505_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -135,23 +135,23 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_4P,
         MG_FLAG_4P|MG_FLAG_SKILL|MG_FLAG_EASY,
         MG_RECORD_NONE, 
-        MGNAME_M506,
+        MESS_MGNAME_M506,
         DATA_m506,
         { INSTPIC_ANM_m506 },
         { "movie/eys506_0.thp", "", "" },
         {
             {
-                MGINST_M506_1,
-                MGINST_M506_2,
+                MESS_MGINST_M506_1,
+                MESS_MGINST_M506_2,
                 0,
-                MGINST_M506_4,
+                MESS_MGINST_M506_4,
                 0
             },
             {
-                MGINST_DECA_M506_1,
-                MGINST_DECA_M506_2,
+                MESS_MGINST_DECA_M506_1,
+                MESS_MGINST_DECA_M506_2,
                 0,
-                MGINST_DECA_M506_4,
+                MESS_MGINST_DECA_M506_4,
                 0
             }
         }
@@ -161,23 +161,23 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_4P,
         MG_FLAG_4P|MG_FLAG_SKILL|MG_FLAG_EASY,
         MG_RECORD_NONE, 
-        MGNAME_M507,
+        MESS_MGNAME_M507,
         DATA_m507,
         { INSTPIC_ANM_m507 },
         { "movie/eys507_0.thp", "", "" },
         {
             {
-                MGINST_M507_1,
-                MGINST_M507_2,
+                MESS_MGINST_M507_1,
+                MESS_MGINST_M507_2,
                 0,
-                MGINST_M507_4,
+                MESS_MGINST_M507_4,
                 0
             },
             {
-                MGINST_DECA_M507_1,
-                MGINST_DECA_M507_2,
+                MESS_MGINST_DECA_M507_1,
+                MESS_MGINST_DECA_M507_2,
                 0,
-                MGINST_DECA_M507_4,
+                MESS_MGINST_DECA_M507_4,
                 0
             }
         }
@@ -187,24 +187,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_4P,
         MG_FLAG_4P|MG_FLAG_GOOFY|MG_FLAG_EASY,
         MG_RECORD_NONE, 
-        MGNAME_M508,
+        MESS_MGNAME_M508,
         DATA_m508,
         { INSTPIC_ANM_m508 },
         { "movie/ys508_0.thp", "", "" },
         {
             {
-                MGINST_M508_1,
-                MGINST_M508_2,
+                MESS_MGINST_M508_1,
+                MESS_MGINST_M508_2,
                 0,
-                MGINST_M508_4,
+                MESS_MGINST_M508_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -213,24 +213,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_4P,
         MG_FLAG_4P|MG_FLAG_SKILL|MG_FLAG_EASY,
         MG_RECORD_NONE, 
-        MGNAME_M509,
+        MESS_MGNAME_M509,
         DATA_m509,
         { INSTPIC_ANM_m509 },
         { "movie/ys509_0.thp", "", "" },
         {
             {
-                MGINST_M509_1,
-                MGINST_M509_2,
+                MESS_MGINST_M509_1,
+                MESS_MGINST_M509_2,
                 0,
-                MGINST_M509_4,
+                MESS_MGINST_M509_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -239,23 +239,23 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_4P,
         MG_FLAG_4P|MG_FLAG_SKILL|MG_FLAG_EASY,
         MG_RECORD_NONE, 
-        MGNAME_M510,
+        MESS_MGNAME_M510,
         DATA_m510,
         { INSTPIC_ANM_m510 },
         { "movie/ys510_0.thp", "", "" },
         {
             {
-                MGINST_M510_1,
-                MGINST_M510_2,
+                MESS_MGINST_M510_1,
+                MESS_MGINST_M510_2,
                 0,
-                MGINST_M510_4,
+                MESS_MGINST_M510_4,
                 0
             },
             {
-                MGINST_DECA_M510_1,
-                MGINST_DECA_M510_2,
+                MESS_MGINST_DECA_M510_1,
+                MESS_MGINST_DECA_M510_2,
                 0,
-                MGINST_DECA_M510_4,
+                MESS_MGINST_DECA_M510_4,
                 0
             }
         }
@@ -265,23 +265,23 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_4P,
         MG_FLAG_4P|MG_FLAG_ACTION,
         MG_RECORD_NONE, 
-        MGNAME_M511,
+        MESS_MGNAME_M511,
         DATA_m511,
         { INSTPIC_ANM_m511 },
         { "movie/ys511_0.thp", "", "" },
         {
             {
-                MGINST_M511_1,
-                MGINST_M511_2,
+                MESS_MGINST_M511_1,
+                MESS_MGINST_M511_2,
                 0,
-                MGINST_M511_4,
+                MESS_MGINST_M511_4,
                 0
             },
             {
-                MGINST_DECA_M511_1,
-                MGINST_DECA_M511_2,
+                MESS_MGINST_DECA_M511_1,
+                MESS_MGINST_DECA_M511_2,
                 0,
-                MGINST_DECA_M511_4,
+                MESS_MGINST_DECA_M511_4,
                 0
             }
         }
@@ -291,23 +291,23 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_4P,
         MG_FLAG_4P|MG_FLAG_ACTION,
         MG_RECORD_NONE, 
-        MGNAME_M512,
+        MESS_MGNAME_M512,
         DATA_m512,
         { INSTPIC_ANM_m512 },
         { "movie/ys512_0.thp", "", "" },
         {
             {
-                MGINST_M512_1,
-                MGINST_M512_2,
+                MESS_MGINST_M512_1,
+                MESS_MGINST_M512_2,
                 0,
-                MGINST_M512_4,
+                MESS_MGINST_M512_4,
                 0
             },
             {
-                MGINST_DECA_M512_1,
-                MGINST_DECA_M512_2,
+                MESS_MGINST_DECA_M512_1,
+                MESS_MGINST_DECA_M512_2,
                 0,
-                MGINST_DECA_M512_4,
+                MESS_MGINST_DECA_M512_4,
                 0
             }
         }
@@ -317,23 +317,23 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_4P,
         MG_FLAG_4P|MG_FLAG_GOOFY|MG_FLAG_EASY,
         MG_RECORD_NONE, 
-        MGNAME_M513,
+        MESS_MGNAME_M513,
         DATA_m513,
         { INSTPIC_ANM_m513 },
         { "movie/ys513_0.thp", "", "" },
         {
             {
-                MGINST_M513_1,
-                MGINST_M513_2,
+                MESS_MGINST_M513_1,
+                MESS_MGINST_M513_2,
                 0,
-                MGINST_M513_4,
+                MESS_MGINST_M513_4,
                 0
             },
             {
-                MGINST_DECA_M513_1,
-                MGINST_DECA_M513_2,
+                MESS_MGINST_DECA_M513_1,
+                MESS_MGINST_DECA_M513_2,
                 0,
-                MGINST_DECA_M513_4,
+                MESS_MGINST_DECA_M513_4,
                 0
             }
         }
@@ -343,23 +343,23 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_4P,
         MG_FLAG_4P|MG_FLAG_GOOFY,
         MG_RECORD_NONE, 
-        MGNAME_M514,
+        MESS_MGNAME_M514,
         DATA_m514,
         { INSTPIC_ANM_m514 },
         { "movie/eys514_0.thp", "", "" },
         {
             {
-                MGINST_M514_1,
-                MGINST_M514_2,
+                MESS_MGINST_M514_1,
+                MESS_MGINST_M514_2,
                 0,
-                MGINST_M514_4,
+                MESS_MGINST_M514_4,
                 0
             },
             {
-                MGINST_DECA_M514_1,
-                MGINST_DECA_M514_2,
+                MESS_MGINST_DECA_M514_1,
+                MESS_MGINST_DECA_M514_2,
                 0,
-                MGINST_DECA_M514_4,
+                MESS_MGINST_DECA_M514_4,
                 0
             }
         }
@@ -369,24 +369,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_4P,
         MG_FLAG_4P|MG_FLAG_GOOFY|MG_FLAG_SKILL,
         MG_RECORD_NONE, 
-        MGNAME_M515,
+        MESS_MGNAME_M515,
         DATA_m515,
         { INSTPIC_ANM_m515 },
         { "movie/ys515_0.thp", "", "" },
         {
             {
-                MGINST_M515_1,
-                MGINST_M515_2,
+                MESS_MGINST_M515_1,
+                MESS_MGINST_M515_2,
                 0,
-                MGINST_M515_4,
+                MESS_MGINST_M515_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -395,24 +395,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_4P,
         MG_FLAG_NOSTORY|MG_FLAG_PACKALL|MG_FLAG_4P,
         MG_RECORD_NONE, 
-        MGNAME_M516,
+        MESS_MGNAME_M516,
         DATA_m516,
         { INSTPIC_ANM_m516 },
         { "movie/ys516_0.thp", "", "" },
         {
             {
-                MGINST_M516_1,
-                MGINST_M516_2,
+                MESS_MGINST_M516_1,
+                MESS_MGINST_M516_2,
                 0,
-                MGINST_M516_4,
+                MESS_MGINST_M516_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -421,24 +421,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_1VS3,
         MG_FLAG_EASY|MG_FLAG_ACTION,
         MG_RECORD_NONE, 
-        MGNAME_M517,
+        MESS_MGNAME_M517,
         DATA_m517,
         { INSTPIC_ANM_m517 },
         { "movie/ys517_0.thp", "", "" },
         {
             {
-                MGINST_M517_1,
-                MGINST_M517_2,
-                MGINST_M517_3,
-                MGINST_M517_4,
+                MESS_MGINST_M517_1,
+                MESS_MGINST_M517_2,
+                MESS_MGINST_M517_3,
+                MESS_MGINST_M517_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -447,24 +447,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_1VS3,
         MG_FLAG_EASY|MG_FLAG_GOOFY|MG_FLAG_ACTION,
         MG_RECORD_NONE, 
-        MGNAME_M518,
+        MESS_MGNAME_M518,
         DATA_m518,
         { INSTPIC_ANM_m518 },
         { "movie/ys518_0.thp", "", "" },
         {
             {
-                MGINST_M518_1,
-                MGINST_M518_2,
-                MGINST_M518_3,
-                MGINST_M518_4,
-                MGINST_M518_5
+                MESS_MGINST_M518_1,
+                MESS_MGINST_M518_2,
+                MESS_MGINST_M518_3,
+                MESS_MGINST_M518_4,
+                MESS_MGINST_M518_5
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -473,24 +473,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_1VS3,
         MG_FLAG_ACTION,
         MG_RECORD_NONE, 
-        MGNAME_M519,
+        MESS_MGNAME_M519,
         DATA_m519,
         { INSTPIC_ANM_m519_1, INSTPIC_ANM_m519_0, INSTPIC_ANM_m519_2 },
         { "movie/ys519_1.thp", "movie/ys519_0.thp", "movie/ys519_2.thp" },
         {
             {
-                MGINST_M519_1,
-                MGINST_M519_2,
-                MGINST_M519_3,
-                MGINST_M519_4,
-                MGINST_M519_5
+                MESS_MGINST_M519_1,
+                MESS_MGINST_M519_2,
+                MESS_MGINST_M519_3,
+                MESS_MGINST_M519_4,
+                MESS_MGINST_M519_5
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -499,24 +499,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_1VS3,
         MG_FLAG_EASY|MG_FLAG_ACTION,
         MG_RECORD_NONE, 
-        MGNAME_M520,
+        MESS_MGNAME_M520,
         DATA_m520,
         { INSTPIC_ANM_m520 },
         { "movie/ys520_0.thp", "", "" },
         {
             {
-                MGINST_M520_1,
-                MGINST_M520_2,
-                MGINST_M520_3,
-                MGINST_M520_4,
-                MGINST_M520_5
+                MESS_MGINST_M520_1,
+                MESS_MGINST_M520_2,
+                MESS_MGINST_M520_3,
+                MESS_MGINST_M520_4,
+                MESS_MGINST_M520_5
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -525,24 +525,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_2VS2,
         MG_FLAG_4P|MG_FLAG_EASY|MG_FLAG_ACTION,
         MG_RECORD_NONE, 
-        MGNAME_M521,
+        MESS_MGNAME_M521,
         DATA_m521,
         { INSTPIC_ANM_m521 },
         { "movie/ys521_0.thp", "", "" },
         {
             {
-                MGINST_M521_1,
-                MGINST_M521_2,
+                MESS_MGINST_M521_1,
+                MESS_MGINST_M521_2,
                 0,
-                MGINST_M521_4,
+                MESS_MGINST_M521_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -551,24 +551,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_1VS3,
         MG_FLAG_EASY|MG_FLAG_GOOFY|MG_FLAG_SKILL,
         MG_RECORD_NONE, 
-        MGNAME_M522,
+        MESS_MGNAME_M522,
         DATA_m522,
         { INSTPIC_ANM_m522 },
         { "movie/ys522_0.thp", "", "" },
         {
             {
-                MGINST_M522_1,
-                MGINST_M522_2,
-                MGINST_M522_3,
-                MGINST_M522_4,
-                MGINST_M522_5
+                MESS_MGINST_M522_1,
+                MESS_MGINST_M522_2,
+                MESS_MGINST_M522_3,
+                MESS_MGINST_M522_4,
+                MESS_MGINST_M522_5
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -577,24 +577,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_1VS3,
         MG_FLAG_EASY|MG_FLAG_GOOFY|MG_FLAG_SKILL,
         MG_RECORD_NONE, 
-        MGNAME_M523,
+        MESS_MGNAME_M523,
         DATA_m523,
         { INSTPIC_ANM_m523 },
         { "movie/ys523_0.thp", "", "" },
         {
             {
-                MGINST_M523_1,
-                MGINST_M523_2,
-                MGINST_M523_3,
-                MGINST_M523_4,
+                MESS_MGINST_M523_1,
+                MESS_MGINST_M523_2,
+                MESS_MGINST_M523_3,
+                MESS_MGINST_M523_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -603,24 +603,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_4P,
         MG_FLAG_4P|MG_FLAG_NOSTORY|MG_FLAG_PACKALL,
         MG_RECORD_NONE, 
-        MGNAME_M524,
+        MESS_MGNAME_M524,
         DATA_m524,
         { INSTPIC_ANM_m524 },
         { "movie/ys524_0.thp", "", "" },
         {
             {
-                MGINST_M524_1,
-                MGINST_M524_2,
+                MESS_MGINST_M524_1,
+                MESS_MGINST_M524_2,
                 0,
-                MGINST_M524_4,
+                MESS_MGINST_M524_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -629,24 +629,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_1VS3,
         MG_FLAG_SKILL,
         MG_RECORD_NONE, 
-        MGNAME_M525,
+        MESS_MGNAME_M525,
         DATA_m525,
         { INSTPIC_ANM_m525 },
         { "movie/ys525_0.thp", "", "" },
         {
             {
-                MGINST_M525_1,
-                MGINST_M525_2,
-                MGINST_M525_3,
-                MGINST_M525_4,
-                MGINST_M525_5
+                MESS_MGINST_M525_1,
+                MESS_MGINST_M525_2,
+                MESS_MGINST_M525_3,
+                MESS_MGINST_M525_4,
+                MESS_MGINST_M525_5
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -655,24 +655,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_2VS2,
         MG_FLAG_4P|MG_FLAG_EASY|MG_FLAG_SKILL|MG_FLAG_ACTION,
         MG_RECORD_NONE, 
-        MGNAME_M526,
+        MESS_MGNAME_M526,
         DATA_m526,
         { INSTPIC_ANM_m526 },
         { "movie/ys526_0.thp", "", "" },
         {
             {
-                MGINST_M526_1,
-                MGINST_M526_2,
+                MESS_MGINST_M526_1,
+                MESS_MGINST_M526_2,
                 0,
-                MGINST_M526_4,
+                MESS_MGINST_M526_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -681,24 +681,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_2VS2,
         MG_FLAG_4P|MG_FLAG_GOOFY|MG_FLAG_ACTION,
         MG_RECORD_NONE, 
-        MGNAME_M527,
+        MESS_MGNAME_M527,
         DATA_m527,
         { INSTPIC_ANM_m527 },
         { "movie/ys527_0.thp", "", "" },
         {
             {
-                MGINST_M527_1,
-                MGINST_M527_2,
+                MESS_MGINST_M527_1,
+                MESS_MGINST_M527_2,
                 0,
-                MGINST_M527_4,
-                MGINST_M527_5
+                MESS_MGINST_M527_4,
+                MESS_MGINST_M527_5
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -707,24 +707,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_2VS2,
         MG_FLAG_4P|MG_FLAG_EASY|MG_FLAG_SKILL,
         MG_RECORD_NONE, 
-        MGNAME_M528,
+        MESS_MGNAME_M528,
         DATA_m528,
         { INSTPIC_ANM_m528 },
         { "movie/ys528_0.thp", "", "" },
         {
             {
-                MGINST_M528_1,
-                MGINST_M528_2,
+                MESS_MGINST_M528_1,
+                MESS_MGINST_M528_2,
                 0,
-                MGINST_M528_4,
+                MESS_MGINST_M528_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -733,24 +733,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_2VS2,
         MG_FLAG_4P|MG_FLAG_GRPORDER|MG_FLAG_EASY|MG_FLAG_GOOFY|MG_FLAG_SKILL,
         MG_RECORD_NONE, 
-        MGNAME_M529,
+        MESS_MGNAME_M529,
         DATA_m529,
         { INSTPIC_ANM_m529 },
         { "movie/ys529_0.thp", "", "" },
         {
             {
-                MGINST_M529_1,
-                MGINST_M529_2,
-                MGINST_M529_3,
-                MGINST_M529_4,
-                MGINST_M529_5
+                MESS_MGINST_M529_1,
+                MESS_MGINST_M529_2,
+                MESS_MGINST_M529_3,
+                MESS_MGINST_M529_4,
+                MESS_MGINST_M529_5
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -759,24 +759,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_2VS2,
         MG_FLAG_4P|MG_FLAG_GRPORDER|MG_FLAG_SKILL,
         MG_RECORD_NONE, 
-        MGNAME_M530,
+        MESS_MGNAME_M530,
         DATA_m530,
         { INSTPIC_ANM_m530 },
         { "movie/ys530_0.thp", "", "" },
         {
             {
-                MGINST_M530_1,
-                MGINST_M530_2,
-                MGINST_M530_3,
-                MGINST_M530_4,
-                MGINST_M530_5
+                MESS_MGINST_M530_1,
+                MESS_MGINST_M530_2,
+                MESS_MGINST_M530_3,
+                MESS_MGINST_M530_4,
+                MESS_MGINST_M530_5
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -785,24 +785,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_2VS2,
         MG_FLAG_4P|MG_FLAG_ACTION,
         MG_RECORD_NONE, 
-        MGNAME_M531,
+        MESS_MGNAME_M531,
         DATA_m531,
         { INSTPIC_ANM_m531 },
         { "movie/ys531_0.thp", "", "" },
         {
             {
-                MGINST_M531_1,
-                MGINST_M531_2,
+                MESS_MGINST_M531_1,
+                MESS_MGINST_M531_2,
                 0,
-                MGINST_M531_4,
+                MESS_MGINST_M531_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -811,24 +811,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_2VS2,
         MG_FLAG_4P|MG_FLAG_EASY|MG_FLAG_SKILL,
         MG_RECORD_NONE, 
-        MGNAME_M532,
+        MESS_MGNAME_M532,
         DATA_m532,
         { INSTPIC_ANM_m532 },
         { "movie/ys532_0.thp", "", "" },
         {
             {
-                MGINST_M532_1,
-                MGINST_M532_2,
+                MESS_MGINST_M532_1,
+                MESS_MGINST_M532_2,
                 0,
-                MGINST_M532_4,
-                MGINST_M532_5
+                MESS_MGINST_M532_4,
+                MESS_MGINST_M532_5
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -837,24 +837,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_2VS2,
         MG_FLAG_4P|MG_FLAG_EASY|MG_FLAG_GOOFY,
         MG_RECORD_NONE, 
-        MGNAME_M533,
+        MESS_MGNAME_M533,
         DATA_m533,
         { INSTPIC_ANM_m533 },
         { "movie/ys533_0.thp", "", "" },
         {
             {
-                MGINST_M533_1,
-                MGINST_M533_2,
-                MGINST_M533_3,
-                MGINST_M533_4,
+                MESS_MGINST_M533_1,
+                MESS_MGINST_M533_2,
+                MESS_MGINST_M533_3,
+                MESS_MGINST_M533_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -863,24 +863,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_2VS2,
         MG_FLAG_4P|MG_FLAG_EASY|MG_FLAG_GOOFY|MG_FLAG_ACTION,
         MG_RECORD_NONE, 
-        MGNAME_M534,
+        MESS_MGNAME_M534,
         DATA_m534,
         { INSTPIC_ANM_m534 },
         { "movie/ys534_0.thp", "", "" },
         {
             {
-                MGINST_M534_1,
-                MGINST_M534_2,
+                MESS_MGINST_M534_1,
+                MESS_MGINST_M534_2,
                 0,
-                MGINST_M534_4,
+                MESS_MGINST_M534_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -889,24 +889,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_BATTLE,
         MG_FLAG_4P|MG_FLAG_EASY|MG_FLAG_SKILL,
         MG_RECORD_NONE, 
-        MGNAME_M535,
+        MESS_MGNAME_M535,
         DATA_m535,
         { INSTPIC_ANM_m535 },
         { "movie/ys535_0.thp", "", "" },
         {
             {
-                MGINST_M535_1,
-                MGINST_M535_2,
+                MESS_MGINST_M535_1,
+                MESS_MGINST_M535_2,
                 0,
-                MGINST_M535_4,
+                MESS_MGINST_M535_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -915,24 +915,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_BATTLE,
         MG_FLAG_4P|MG_FLAG_GOOFY|MG_FLAG_ACTION,
         MG_RECORD_NONE, 
-        MGNAME_M536,
+        MESS_MGNAME_M536,
         DATA_m536,
         { INSTPIC_ANM_m536 },
         { "movie/ys536_0.thp", "", "" },
         {
             {
-                MGINST_M536_1,
-                MGINST_M536_2,
+                MESS_MGINST_M536_1,
+                MESS_MGINST_M536_2,
                 0,
-                MGINST_M536_4,
+                MESS_MGINST_M536_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -941,24 +941,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_BATTLE,
         MG_FLAG_4P|MG_FLAG_GOOFY|MG_FLAG_ACTION,
         MG_RECORD_NONE, 
-        MGNAME_M537,
+        MESS_MGNAME_M537,
         DATA_m537,
         { INSTPIC_ANM_m537 },
         { "movie/ys537_0.thp", "", "" },
         {
             {
-                MGINST_M537_1,
-                MGINST_M537_2,
+                MESS_MGINST_M537_1,
+                MESS_MGINST_M537_2,
                 0,
-                MGINST_M537_4,
+                MESS_MGINST_M537_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -967,24 +967,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_BATTLE,
         MG_FLAG_4P|MG_FLAG_EASY|MG_FLAG_ACTION,
         MG_RECORD_NONE, 
-        MGNAME_M538,
+        MESS_MGNAME_M538,
         DATA_m538,
         { INSTPIC_ANM_m538 },
         { "movie/ys538_0.thp", "", "" },
         {
             {
-                MGINST_M538_1,
-                MGINST_M538_2,
+                MESS_MGINST_M538_1,
+                MESS_MGINST_M538_2,
                 0,
-                MGINST_M538_4,
+                MESS_MGINST_M538_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -993,24 +993,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_BATTLE,
         MG_FLAG_4P|MG_FLAG_EASY|MG_FLAG_SKILL,
         MG_RECORD_NONE, 
-        MGNAME_M539,
+        MESS_MGNAME_M539,
         DATA_m539,
         { INSTPIC_ANM_m539 },
         { "movie/ys539_0.thp", "", "" },
         {
             {
-                MGINST_M539_1,
-                MGINST_M539_2,
+                MESS_MGINST_M539_1,
+                MESS_MGINST_M539_2,
                 0,
-                MGINST_M539_4,
-                MGINST_M539_5
+                MESS_MGINST_M539_4,
+                MESS_MGINST_M539_5
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -1019,24 +1019,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_BATTLE,
         MG_FLAG_4P|MG_FLAG_EASY|MG_FLAG_GOOFY|MG_FLAG_SKILL,
         MG_RECORD_NONE, 
-        MGNAME_M540,
+        MESS_MGNAME_M540,
         DATA_m540,
         { INSTPIC_ANM_m540 },
         { "movie/ys540_0.thp", "", "" },
         {
             {
-                MGINST_M540_1,
-                MGINST_M540_2,
+                MESS_MGINST_M540_1,
+                MESS_MGINST_M540_2,
                 0,
-                MGINST_M540_4,
+                MESS_MGINST_M540_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -1045,24 +1045,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_KETTOU,
         MG_FLAG_4P|MG_FLAG_EASY|MG_FLAG_ACTION,
         MG_RECORD_NONE, 
-        MGNAME_M541,
+        MESS_MGNAME_M541,
         DATA_m541,
         { INSTPIC_ANM_m541 },
         { "movie/ys541_0.thp", "", "" },
         {
             {
-                MGINST_M541_1,
-                MGINST_M541_2,
+                MESS_MGINST_M541_1,
+                MESS_MGINST_M541_2,
                 0,
-                MGINST_M541_4,
-                MGINST_M541_5
+                MESS_MGINST_M541_4,
+                MESS_MGINST_M541_5
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -1071,24 +1071,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_KETTOU,
         MG_FLAG_4P|MG_FLAG_EASY|MG_FLAG_SKILL,
         MG_RECORD_NONE, 
-        MGNAME_M542,
+        MESS_MGNAME_M542,
         DATA_m542,
         { INSTPIC_ANM_m542 },
         { "movie/ys542_0.thp", "", "" },
         {
             {
-                MGINST_M542_1,
-                MGINST_M542_2,
+                MESS_MGINST_M542_1,
+                MESS_MGINST_M542_2,
                 0,
-                MGINST_M542_4,
+                MESS_MGINST_M542_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -1097,24 +1097,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_KETTOU,
         MG_FLAG_4P|MG_FLAG_ACTION,
         MG_RECORD_NONE, 
-        MGNAME_M543,
+        MESS_MGNAME_M543,
         DATA_m543,
         { INSTPIC_ANM_m543 },
         { "movie/ys543_0.thp", "", "" },
         {
             {
-                MGINST_M543_1,
-                MGINST_M543_2,
+                MESS_MGINST_M543_1,
+                MESS_MGINST_M543_2,
                 0,
-                MGINST_M543_4,
+                MESS_MGINST_M543_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -1123,24 +1123,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_KETTOU,
         MG_FLAG_4P|MG_FLAG_SKILL|MG_FLAG_EASY,
         MG_RECORD_NONE, 
-        MGNAME_M544,
+        MESS_MGNAME_M544,
         DATA_m544,
         { INSTPIC_ANM_m544 },
         { "movie/ys544_0.thp", "", "" },
         {
             {
-                MGINST_M544_1,
-                MGINST_M544_2,
+                MESS_MGINST_M544_1,
+                MESS_MGINST_M544_2,
                 0,
-                MGINST_M544_4,
+                MESS_MGINST_M544_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -1149,24 +1149,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_KETTOU,
         MG_FLAG_4P|MG_FLAG_GOOFY,
         MG_RECORD_NONE, 
-        MGNAME_M545,
+        MESS_MGNAME_M545,
         DATA_m545,
         { INSTPIC_ANM_m545 },
         { "movie/ys545_0.thp", "", "" },
         {
             {
-                MGINST_M545_1,
-                MGINST_M545_2,
+                MESS_MGINST_M545_1,
+                MESS_MGINST_M545_2,
                 0,
-                MGINST_M545_4,
+                MESS_MGINST_M545_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -1175,24 +1175,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_KETTOU,
         MG_FLAG_4P|MG_FLAG_GOOFY|MG_FLAG_EASY,
         MG_RECORD_NONE, 
-        MGNAME_M546,
+        MESS_MGNAME_M546,
         DATA_m546,
         { INSTPIC_ANM_m546 },
         { "movie/ys546_0.thp", "", "" },
         {
             {
-                MGINST_M546_1,
-                MGINST_M546_2,
+                MESS_MGINST_M546_1,
+                MESS_MGINST_M546_2,
                 0,
-                MGINST_M546_4,
+                MESS_MGINST_M546_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -1201,24 +1201,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_KETTOU,
         MG_FLAG_4P|MG_FLAG_GOOFY|MG_FLAG_EASY,
         MG_RECORD_NONE, 
-        MGNAME_M547,
+        MESS_MGNAME_M547,
         DATA_m547,
         { INSTPIC_ANM_m547 },
         { "movie/eys547_0.thp", "", "" },
         {
             {
-                MGINST_M547_1,
-                MGINST_M547_2,
+                MESS_MGINST_M547_1,
+                MESS_MGINST_M547_2,
                 0,
-                MGINST_M547_4,
+                MESS_MGINST_M547_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -1227,24 +1227,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_KETTOU,
         MG_FLAG_4P|MG_FLAG_SKILL|MG_FLAG_EASY,
         MG_RECORD_NONE, 
-        MGNAME_M548,
+        MESS_MGNAME_M548,
         DATA_m548,
         { INSTPIC_ANM_m548 },
         { "movie/ys548_0.thp", "", "" },
         {
             {
-                MGINST_M548_1,
-                MGINST_M548_2,
+                MESS_MGINST_M548_1,
+                MESS_MGINST_M548_2,
                 0,
-                MGINST_M548_4,
+                MESS_MGINST_M548_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -1253,24 +1253,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_KETTOU,
         MG_FLAG_4P|MG_FLAG_ACTION,
         MG_RECORD_NONE, 
-        MGNAME_M549,
+        MESS_MGNAME_M549,
         DATA_m549,
         { INSTPIC_ANM_m549 },
         { "movie/ys549_0.thp", "", "" },
         {
             {
-                MGINST_M549_1,
-                MGINST_M549_2,
+                MESS_MGINST_M549_1,
+                MESS_MGINST_M549_2,
                 0,
-                MGINST_M549_4,
-                MGINST_M549_5
+                MESS_MGINST_M549_4,
+                MESS_MGINST_M549_5
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -1279,24 +1279,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_KETTOU,
         MG_FLAG_4P|MG_FLAG_GOOFY|MG_FLAG_EASY,
         MG_RECORD_NONE, 
-        MGNAME_M550,
+        MESS_MGNAME_M550,
         DATA_m550,
         { INSTPIC_ANM_m550 },
         { "movie/ys550_0.thp", "", "" },
         {
             {
-                MGINST_M550_1,
-                MGINST_M550_2,
+                MESS_MGINST_M550_1,
+                MESS_MGINST_M550_2,
                 0,
-                MGINST_M550_4,
+                MESS_MGINST_M550_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -1305,24 +1305,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_KETTOU,
         MG_FLAG_4P|MG_FLAG_ACTION|MG_FLAG_EASY,
         MG_RECORD_NONE, 
-        MGNAME_M551,
+        MESS_MGNAME_M551,
         DATA_m551,
         { INSTPIC_ANM_m551 },
         { "movie/ys551_0.thp", "", "" },
         {
             {
-                MGINST_M551_1,
-                MGINST_M551_2,
+                MESS_MGINST_M551_1,
+                MESS_MGINST_M551_2,
                 0,
-                MGINST_M551_4,
+                MESS_MGINST_M551_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -1331,24 +1331,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_KETTOU,
         MG_FLAG_4P|MG_FLAG_SKILL,
         MG_RECORD_NONE, 
-        MGNAME_M552,
+        MESS_MGNAME_M552,
         DATA_m552,
         { INSTPIC_ANM_m552 },
         { "movie/ys552_0.thp", "", "" },
         {
             {
-                MGINST_M552_1,
-                MGINST_M552_2,
+                MESS_MGINST_M552_1,
+                MESS_MGINST_M552_2,
                 0,
-                MGINST_M552_4,
-                MGINST_M552_5
+                MESS_MGINST_M552_4,
+                MESS_MGINST_M552_5
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -1357,24 +1357,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_KETTOU,
         MG_FLAG_4P|MG_FLAG_ACTION|MG_FLAG_EASY,
         MG_RECORD_NONE, 
-        MGNAME_M553,
+        MESS_MGNAME_M553,
         DATA_m553,
         { INSTPIC_ANM_m553 },
         { "movie/ys553_0.thp", "", "" },
         {
             {
-                MGINST_M553_1,
-                MGINST_M553_2,
+                MESS_MGINST_M553_1,
+                MESS_MGINST_M553_2,
                 0,
-                MGINST_M553_4,
+                MESS_MGINST_M553_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -1383,24 +1383,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_KETTOU,
         MG_FLAG_4P|MG_FLAG_GOOFY|MG_FLAG_EASY,
         MG_RECORD_NONE, 
-        MGNAME_M554,
+        MESS_MGNAME_M554,
         DATA_m554,
         { INSTPIC_ANM_m554 },
         { "movie/ys554_0.thp", "", "" },
         {
             {
-                MGINST_M554_1,
-                MGINST_M554_2,
+                MESS_MGINST_M554_1,
+                MESS_MGINST_M554_2,
                 0,
-                MGINST_M554_4,
+                MESS_MGINST_M554_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -1409,24 +1409,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_KETTOU,
         MG_FLAG_4P|MG_FLAG_SKILL,
         MG_RECORD_NONE, 
-        MGNAME_M555,
+        MESS_MGNAME_M555,
         DATA_m555,
         { INSTPIC_ANM_m555 },
         { "movie/ys555_0.thp", "", "" },
         {
             {
-                MGINST_M555_1,
-                MGINST_M555_2,
+                MESS_MGINST_M555_1,
+                MESS_MGINST_M555_2,
                 0,
-                MGINST_M555_4,
+                MESS_MGINST_M555_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -1448,11 +1448,11 @@ MGDATA mgDataTbl[] = {
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -1474,11 +1474,11 @@ MGDATA mgDataTbl[] = {
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -1500,11 +1500,11 @@ MGDATA mgDataTbl[] = {
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -1513,24 +1513,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_KUPA,
         MG_FLAG_4P|MG_FLAG_PACKALL,
         MG_RECORD_NONE, 
-        MGNAME_M559,
+        MESS_MGNAME_M559,
         DATA_m559,
         { INSTPIC_ANM_m559 },
         { "movie/ys559_0.thp", "", "" },
         {
             {
-                MGINST_M559_1,
-                MGINST_M559_2,
+                MESS_MGINST_M559_1,
+                MESS_MGINST_M559_2,
                 0,
-                MGINST_M559_4,
+                MESS_MGINST_M559_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -1539,24 +1539,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_KUPA,
         MG_FLAG_4P|MG_FLAG_PACKALL,
         MG_RECORD_NONE, 
-        MGNAME_M560,
+        MESS_MGNAME_M560,
         DATA_m560,
         { INSTPIC_ANM_m560 },
         { "movie/ys560_0.thp", "", "" },
         {
             {
-                MGINST_M560_1,
-                MGINST_M560_2,
+                MESS_MGINST_M560_1,
+                MESS_MGINST_M560_2,
                 0,
-                MGINST_M560_4,
+                MESS_MGINST_M560_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -1565,24 +1565,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_KUPA,
         MG_FLAG_4P|MG_FLAG_PACKALL,
         MG_RECORD_NONE, 
-        MGNAME_M561,
+        MESS_MGNAME_M561,
         DATA_m561,
         { INSTPIC_ANM_m561 },
         { "movie/ys561_0.thp", "", "" },
         {
             {
-                MGINST_M561_1,
-                MGINST_M561_2,
+                MESS_MGINST_M561_1,
+                MESS_MGINST_M561_2,
                 0,
-                MGINST_M561_4,
+                MESS_MGINST_M561_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -1591,24 +1591,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_LAST,
         MG_FLAG_PACKALL,
         MG_RECORD_NONE, 
-        MGNAME_M562,
+        MESS_MGNAME_M562,
         DATA_m562,
         { INSTPIC_ANM_m562 },
         { "movie/ys562_0.thp", "", "" },
         {
             {
-                MGINST_M562_1,
-                MGINST_M562_2,
+                MESS_MGINST_M562_1,
+                MESS_MGINST_M562_2,
                 0,
-                MGINST_M562_4,
+                MESS_MGINST_M562_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -1617,24 +1617,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_4P,
         MG_FLAG_4P|MG_FLAG_EASY|MG_FLAG_ACTION,
         MG_RECORD_NONE, 
-        MGNAME_M563,
+        MESS_MGNAME_M563,
         DATA_m563,
         { INSTPIC_ANM_m563 },
         { "movie/ys563_0.thp", "", "" },
         {
             {
-                MGINST_M563_1,
-                MGINST_M563_2,
+                MESS_MGINST_M563_1,
+                MESS_MGINST_M563_2,
                 0,
-                MGINST_M563_4,
-                MGINST_M563_5
+                MESS_MGINST_M563_4,
+                MESS_MGINST_M563_5
             },
             {
-                MGINST_DECA_M563_1,
-                MGINST_DECA_M563_2,
+                MESS_MGINST_DECA_M563_1,
+                MESS_MGINST_DECA_M563_2,
                 0,
-                MGINST_DECA_M563_4,
-                MGINST_DECA_M563_5
+                MESS_MGINST_DECA_M563_4,
+                MESS_MGINST_DECA_M563_5
             }
         }
     },
@@ -1643,24 +1643,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_4P,
         MG_FLAG_4P|MG_FLAG_EASY|MG_FLAG_ACTION,
         MG_RECORD_NONE, 
-        MGNAME_M564,
+        MESS_MGNAME_M564,
         DATA_m564,
         { INSTPIC_ANM_m564 },
         { "movie/ys564_0.thp", "", "" },
         {
             {
-                MGINST_M564_1,
-                MGINST_M564_2,
+                MESS_MGINST_M564_1,
+                MESS_MGINST_M564_2,
                 0,
-                MGINST_M564_4,
+                MESS_MGINST_M564_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -1669,24 +1669,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_4P,
         MG_FLAG_4P|MG_FLAG_EASY|MG_FLAG_ACTION,
         MG_RECORD_NONE, 
-        MGNAME_M565,
+        MESS_MGNAME_M565,
         DATA_m565,
         { INSTPIC_ANM_m565 },
         { "movie/ys565_0.thp", "", "" },
         {
             {
-                MGINST_M565_1,
-                MGINST_M565_2,
+                MESS_MGINST_M565_1,
+                MESS_MGINST_M565_2,
                 0,
-                MGINST_M565_4,
+                MESS_MGINST_M565_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -1695,24 +1695,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_4P,
         MG_FLAG_4P|MG_FLAG_EASY|MG_FLAG_GOOFY,
         MG_RECORD_NONE, 
-        MGNAME_M566,
+        MESS_MGNAME_M566,
         DATA_m566,
         { INSTPIC_ANM_m566 },
         { "movie/ys566_0.thp", "", "" },
         {
             {
-                MGINST_M566_1,
-                MGINST_M566_2,
+                MESS_MGINST_M566_1,
+                MESS_MGINST_M566_2,
                 0,
-                MGINST_M566_4,
-                MGINST_M566_5
+                MESS_MGINST_M566_4,
+                MESS_MGINST_M566_5
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -1721,24 +1721,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_1VS3,
         MG_FLAG_GOOFY|MG_FLAG_SKILL,
         MG_RECORD_NONE, 
-        MGNAME_M567,
+        MESS_MGNAME_M567,
         DATA_m567,
         { INSTPIC_ANM_m567 },
         { "movie/ys567_0.thp", "", "" },
         {
             {
-                MGINST_M567_1,
-                MGINST_M567_2,
-                MGINST_M567_3,
-                MGINST_M567_4,
-                MGINST_M567_5
+                MESS_MGINST_M567_1,
+                MESS_MGINST_M567_2,
+                MESS_MGINST_M567_3,
+                MESS_MGINST_M567_4,
+                MESS_MGINST_M567_5
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -1747,24 +1747,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_1VS3,
         MG_FLAG_EASY|MG_FLAG_ACTION,
         MG_RECORD_NONE, 
-        MGNAME_M568,
+        MESS_MGNAME_M568,
         DATA_m568,
         { INSTPIC_ANM_m568 },
         { "movie/ys568_0.thp", "", "" },
         {
             {
-                MGINST_M568_1,
-                MGINST_M568_2,
-                MGINST_M568_3,
-                MGINST_M568_4,
+                MESS_MGINST_M568_1,
+                MESS_MGINST_M568_2,
+                MESS_MGINST_M568_3,
+                MESS_MGINST_M568_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -1773,24 +1773,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_1VS3,
         MG_FLAG_NOSTORY|MG_FLAG_PACKALL,
         MG_RECORD_NONE, 
-        MGNAME_M569,
+        MESS_MGNAME_M569,
         DATA_m569,
         { INSTPIC_ANM_m569 },
         { "movie/ys569_0.thp", "", "" },
         {
             {
-                MGINST_M569_1,
-                MGINST_M569_2,
-                MGINST_M569_3,
-                MGINST_M569_4,
+                MESS_MGINST_M569_1,
+                MESS_MGINST_M569_2,
+                MESS_MGINST_M569_3,
+                MESS_MGINST_M569_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -1799,24 +1799,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_1VS3,
         MG_FLAG_EASY|MG_FLAG_GOOFY,
         MG_RECORD_NONE, 
-        MGNAME_M570,
+        MESS_MGNAME_M570,
         DATA_m570,
         { INSTPIC_ANM_m570 },
         { "movie/ys570_0.thp", "", "" },
         {
             {
-                MGINST_M570_1,
-                MGINST_M570_2,
-                MGINST_M570_3,
-                MGINST_M570_4,
+                MESS_MGINST_M570_1,
+                MESS_MGINST_M570_2,
+                MESS_MGINST_M570_3,
+                MESS_MGINST_M570_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -1825,24 +1825,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_DONKEY,
         MG_FLAG_4P|MG_FLAG_PACKALL,
         MG_RECORD_NONE, 
-        MGNAME_M571,
+        MESS_MGNAME_M571,
         DATA_m571,
         { INSTPIC_ANM_m571 },
         { "movie/ys571_0.thp", "", "" },
         {
             {
-                MGINST_M571_1,
-                MGINST_M571_2,
+                MESS_MGINST_M571_1,
+                MESS_MGINST_M571_2,
                 0,
-                MGINST_M571_4,
+                MESS_MGINST_M571_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -1851,24 +1851,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_DONKEY,
         MG_FLAG_4P|MG_FLAG_PACKALL,
         MG_RECORD_NONE, 
-        MGNAME_M572,
+        MESS_MGNAME_M572,
         DATA_m572,
         { INSTPIC_ANM_m572 },
         { "movie/ys572_0.thp", "", "" },
         {
             {
-                MGINST_M572_1,
-                MGINST_M572_2,
+                MESS_MGINST_M572_1,
+                MESS_MGINST_M572_2,
                 0,
-                MGINST_M572_4,
-                MGINST_M572_5
+                MESS_MGINST_M572_4,
+                MESS_MGINST_M572_5
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -1877,24 +1877,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_DONKEY,
         MG_FLAG_4P|MG_FLAG_PACKALL,
         MG_RECORD_NONE, 
-        MGNAME_M573,
+        MESS_MGNAME_M573,
         DATA_m573,
         { INSTPIC_ANM_m573 },
         { "movie/ys573_0.thp", "", "" },
         {
             {
-                MGINST_M573_1,
-                MGINST_M573_2,
+                MESS_MGINST_M573_1,
+                MESS_MGINST_M573_2,
                 0,
-                MGINST_M573_4,
-                MGINST_M573_5
+                MESS_MGINST_M573_4,
+                MESS_MGINST_M573_5
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -1903,24 +1903,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_2VS2,
         MG_FLAG_4P|MG_FLAG_EASY|MG_FLAG_GOOFY,
         MG_RECORD_NONE, 
-        MGNAME_M574,
+        MESS_MGNAME_M574,
         DATA_m574,
         { INSTPIC_ANM_m574 },
         { "movie/ys574_0.thp", "", "" },
         {
             {
-                MGINST_M574_1,
-                MGINST_M574_2,
+                MESS_MGINST_M574_1,
+                MESS_MGINST_M574_2,
                 0,
-                MGINST_M574_4,
-                MGINST_M574_5
+                MESS_MGINST_M574_4,
+                MESS_MGINST_M574_5
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -1929,24 +1929,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_2VS2,
         MG_FLAG_4P|MG_FLAG_NOSTORY|MG_FLAG_PACKALL,
         MG_RECORD_NONE, 
-        MGNAME_M575,
+        MESS_MGNAME_M575,
         DATA_m575,
         { INSTPIC_ANM_m575 },
         { "movie/ys575_0.thp", "", "" },
         {
             {
-                MGINST_M575_1,
-                MGINST_M575_2,
+                MESS_MGINST_M575_1,
+                MESS_MGINST_M575_2,
                 0,
-                MGINST_M575_4,
+                MESS_MGINST_M575_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -1955,24 +1955,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_4P,
         MG_FLAG_4P|MG_FLAG_EASY|MG_FLAG_ACTION,
         MG_RECORD_NONE, 
-        MGNAME_M576,
+        MESS_MGNAME_M576,
         DATA_m576,
         { INSTPIC_ANM_m576 },
         { "movie/ys576_0.thp", "", "" },
         {
             {
-                MGINST_M576_1,
-                MGINST_M576_2,
-                MGINST_M576_3,
-                MGINST_M576_4,
+                MESS_MGINST_M576_1,
+                MESS_MGINST_M576_2,
+                MESS_MGINST_M576_3,
+                MESS_MGINST_M576_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -1981,24 +1981,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_1VS3,
         MG_FLAG_EASY|MG_FLAG_SKILL,
         MG_RECORD_NONE, 
-        MGNAME_M577,
+        MESS_MGNAME_M577,
         DATA_m577,
         { INSTPIC_ANM_m577 },
         { "movie/ys577_0.thp", "", "" },
         {
             {
-                MGINST_M577_1,
-                MGINST_M577_2,
-                MGINST_M577_3,
-                MGINST_M577_4,
-                MGINST_M577_5
+                MESS_MGINST_M577_1,
+                MESS_MGINST_M577_2,
+                MESS_MGINST_M577_3,
+                MESS_MGINST_M577_4,
+                MESS_MGINST_M577_5
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -2007,24 +2007,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_4P,
         MG_FLAG_SPECIAL|MG_FLAG_PACKALL,
         MG_RECORD_NONE, 
-        MGNAME_M576,
+        MESS_MGNAME_M576,
         DATA_m576,
         { INSTPIC_ANM_m578 },
         { "movie/ys578_0.thp", "", "" },
         {
             {
-                MGINST_M578_1,
-                MGINST_M578_2,
+                MESS_MGINST_M578_1,
+                MESS_MGINST_M578_2,
                 0,
-                MGINST_M578_4,
+                MESS_MGINST_M578_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -2033,24 +2033,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_4P,
         MG_FLAG_4P|MG_FLAG_EASY|MG_FLAG_GOOFY,
         MG_RECORD_NONE, 
-        MGNAME_M579,
+        MESS_MGNAME_M579,
         DATA_m579,
         { INSTPIC_ANM_m579 },
         { "movie/ys579_0.thp", "", "" },
         {
             {
-                MGINST_M579_1,
-                MGINST_M579_2,
+                MESS_MGINST_M579_1,
+                MESS_MGINST_M579_2,
                 0,
-                MGINST_M579_4,
+                MESS_MGINST_M579_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -2059,24 +2059,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_2VS2,
         MG_FLAG_SPECIAL|MG_FLAG_PACKALL,
         MG_RECORD_NONE, 
-        MGNAME_M580,
+        MESS_MGNAME_M580,
         DATA_m580,
         { INSTPIC_ANM_m580 },
         { "movie/ys580_0.thp", "", "" },
         {
             {
-                MGINST_M580_1,
-                MGINST_M580_2,
+                MESS_MGINST_M580_1,
+                MESS_MGINST_M580_2,
                 0,
-                MGINST_M580_4,
+                MESS_MGINST_M580_4,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },
@@ -2085,24 +2085,24 @@ MGDATA mgDataTbl[] = {
         MG_TYPE_SD,
         MG_FLAG_SPECIAL|MG_FLAG_4P|MG_FLAG_EASY,
         MG_RECORD_NONE, 
-        MGNAME_M501,
+        MESS_MGNAME_M501,
         DATA_sd00,
         { INSTPIC_ANM_m501 },
         { "movie/ys501_0.thp", "", "" },
         {
             {
                 0,
-                SDG_SD_CTRL,
+                MESS_SDG_SD_CTRL,
                 0,
                 0,
                 0
             },
             {
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE,
-                MGINST_DECA_NONE
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE,
+                MESS_MGINST_DECA_NONE
             }
         }
     },

@@ -406,7 +406,7 @@ config.libs = [
             Object(NonMatching, "game/board/scroll.c"),
             Object(Matching, "game/board/masu.c"),
             Object(Matching, "game/board/coin.c"),
-            Object(NonMatching, "game/board/star.c"),
+            Object(Matching, "game/board/star.c"),
             Object(NonMatching, "game/board/padall.c"),
             Object(Matching, "game/board/sai.c"),
             Object(Matching, "game/board/status.c"),
