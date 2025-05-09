@@ -11,6 +11,7 @@
 #include "game/board/branch.h"
 #include "game/board/sai.h"
 #include "game/board/star.h"
+#include "game/board/scroll.h"
 
 #include "game/saveload.h"
 #include "game/sprite.h"
@@ -49,7 +50,6 @@ void MBTauntInit(void);
 void MBTauntKill(void);
 void MBGateClose(void);
 void MBCapMachineClose(void);
-void MBScrollClose(void);
 void MBWinClose(void);
 
 static MBTURNHOOK postTurnHook;

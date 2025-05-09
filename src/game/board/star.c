@@ -10,6 +10,7 @@
 #include "game/board/coin.h"
 #include "game/board/audio.h"
 #include "game/board/tutorial.h"
+#include "game/board/scroll.h"
 
 #include "game/sprite.h"
 #include "game/wipe.h"
@@ -22,11 +23,6 @@
 
 #define STAROBJ_MAX 1000
 #define STAR_MAX 8
-
-extern void MBStarScrollCreate(HuVecF *startPos, HuVecF *endPos, int speed);
-extern void MBStarScrollStart(void);
-extern BOOL MBStarScrollDoneCheck(void);
-extern void MBStarScrollKill(void);
 
 static OMOBJ *starObj[1000];
 static u8 starNoTbl[1000];

@@ -2663,11 +2663,11 @@ static void MDFaceDraw(HSFOBJECT *objPtr, HSFFACE *face)
             Hu3DObjInfoP->attr |= HU3D_CONST_REFLECTMODEL;
         }
         faceCnt = 0;
-        switch (face->type & 7) {
+        switch (face->type & HSF_FACE_MASK) {
             case 0:
             case 1:
                 break;
-            case 2:
+            case HSF_FACE_TRI:
                 GXBegin(GX_TRIANGLES, GX_VTXFMT0, faceNumBuf[drawCnt]);
                 for(i = 0; i < faceNumBuf[drawCnt] / 3; i++, face++) {
                     GXPosition1x16(face->indices[0][0]);
@@ -2721,7 +2721,7 @@ static void MDFaceDraw(HSFOBJECT *objPtr, HSFFACE *face)
                 }
                 faceCnt = faceNumBuf[drawCnt] / 3;
                 break;
-            case 3:
+            case HSF_FACE_QUAD:
                 GXBegin(GX_QUADS, GX_VTXFMT0, faceNumBuf[drawCnt]);
                 for(i = 0; i < faceNumBuf[drawCnt] / 4; i++, face++) {
                     GXPosition1x16(face->indices[0][0]);
@@ -2791,7 +2791,7 @@ static void MDFaceDraw(HSFOBJECT *objPtr, HSFFACE *face)
                 }
                 faceCnt = faceNumBuf[drawCnt] / 4;
                 break;
-            case 4:
+            case HSF_FACE_TRISTRIP:
                 GXBegin(GX_TRIANGLESTRIP, GX_VTXFMT0, faceNumBuf[drawCnt]);
                 GXPosition1x16(face->indices[0][0]);
                 if(nbtAttrIdx == -1) {

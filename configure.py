@@ -403,7 +403,7 @@ config.libs = [
             Object(Matching, "game/board/window.c"),
             Object(Matching, "game/board/audio.c"),
             Object(Matching, "game/board/com.c"),
-            Object(NonMatching, "game/board/scroll.c"),
+            Object(Matching, "game/board/scroll.c"),
             Object(Matching, "game/board/masu.c"),
             Object(Matching, "game/board/coin.c"),
             Object(Matching, "game/board/star.c"),
