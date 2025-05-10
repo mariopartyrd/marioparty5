@@ -6,14 +6,13 @@
 #include "game/board/audio.h"
 #include "game/board/status.h"
 #include "game/board/window.h"
-
+#include "game/board/scroll.h"
 #include "messnum/boardope.h"
 
 #include "game/frand.h"
 
 s8 MBPadStkXGet(int padNo);
 s8 MBPadStkYGet(int padNo);
-void MBScrollExec(int playerNo);
 
 static OMOBJ *branchGuideObj[GW_PLAYER_MAX];
 

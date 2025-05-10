@@ -5,6 +5,12 @@
 #include "humath.h"
 #include "game/animdata.h"
 
+//HSF Face Types
+#define HSF_FACE_TRI 2
+#define HSF_FACE_QUAD 3
+#define HSF_FACE_TRISTRIP 4
+#define HSF_FACE_MASK 0x7
+
 //HSF Object types
 #define HSF_OBJ_NULL1 0
 #define HSF_OBJ_REPLICA 1
