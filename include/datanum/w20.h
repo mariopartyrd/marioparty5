@@ -16,7 +16,7 @@
 enum {
     W20_BIN_masuData = DATANUM(DATA_w20, 0),
     W20_HSF_map,
-    W20_HSF_mapCol,
+    W20_HSF_scrollCol,
     W20_HSF_hikosen,
     W20_HSF_fusen1,
     W20_HSF_fusen2,

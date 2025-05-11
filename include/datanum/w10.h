@@ -6,7 +6,7 @@
 enum {
     W10_BIN_masuData = DATANUM(DATA_w10, 0),
     W10_HSF_map,
-    W10_HSF_mapCol,
+    W10_HSF_scrollCol,
     W10_HSF_miniStar,
     W10_HSF_coinStar,
     W10_HSF_hatenaStar,

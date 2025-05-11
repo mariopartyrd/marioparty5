@@ -45,6 +45,8 @@ static inline int MBBoardNoGet(void)
 #define MBPrcCreate(func, prio, stackSize) HuPrcChildCreate(func, prio, stackSize, 0, mbMainProcess)
 #define MBPrcDestructorSet(proc, func) HuPrcDestructorSet2(proc, func)
 
+#define MBSaveWorkPGet() ((void *)&GwSystem.mbSaveWork[0])
+
 //Translate data numbers in board.bin
 #define MBDATANUM(dataNum) (dataNum)
 

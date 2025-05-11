@@ -65,4 +65,6 @@ int MBCapsuleColorNoGet(int capsuleNo);
 void MBCapsuleSelStoryExec(void);
 void MBCapsuleAddStory(void);
 
+void MBCapsuleColCreate(unsigned int dataNum);
+
 #endif

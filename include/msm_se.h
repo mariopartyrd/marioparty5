@@ -67,4 +67,9 @@
 
 #define MSM_SE_MENU_39 1006
 
+#define MSM_SE_BD6_03 1546
+#define MSM_SE_BD6_04 1547
+#define MSM_SE_BD6_05 1548
+#define MSM_SE_BD6_07 1550
+
 #endif
