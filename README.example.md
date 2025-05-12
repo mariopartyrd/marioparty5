@@ -37,7 +37,7 @@ This repository does **not** contain any game assets or assembly whatsoever. An 
 
 Supported versions:
 
-- `GP5E01`: Rev 0 (USA)
+- `GP5E01_00`: Rev 0 (USA)
 
 Dependencies
 ============
@@ -90,7 +90,7 @@ Building
   git clone https://github.com/my/repo.git
   ```
 
-- Using [Dolphin Emulator](https://dolphin-emu.org/), extract your game to `orig/GP5E01`.
+- Using [Dolphin Emulator](https://dolphin-emu.org/), extract your game to `orig/GP5E01_00`.
 ![](assets/dolphin-extract.png)
   - To save space, the only necessary files are the following. Any others can be deleted.
     - `sys/main.dol`
@@ -101,7 +101,7 @@ Building
   python configure.py
   ```
 
-  To use a version other than `GP5E01` (USA), specify it with `--version`.
+  To use a version other than `GP5E01_00` (USA), specify it with `--version`.
 - Build:
 
   ```sh
