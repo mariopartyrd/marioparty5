@@ -1051,7 +1051,7 @@ Runtime.PPCEABI.H/NewMore.cp:
 	.data       start:0x801D1AE0 end:0x801D1AF0
 	.sdata      start:0x80288540 end:0x80288548
 
-Runtime.PPCEABI.H/NMWException.cp:
+Runtime.PPCEABI.H/NMWException.cpp:
 	extab       start:0x800056F0 end:0x80005738
 	extabindex  start:0x800057D8 end:0x8000582C
 	.text       start:0x8016B344 end:0x8016B830
@@ -1067,7 +1067,7 @@ Runtime.PPCEABI.H/__init_cpp_exceptions.cpp:
 	.dtors      start:0x801A9B80 end:0x801A9B88
 	.sdata      start:0x80288550 end:0x80288558
 
-Runtime.PPCEABI.H/Gecko_ExceptionPPC.cp:
+Runtime.PPCEABI.H/Gecko_ExceptionPPC.cpp:
 	extab       start:0x80005738 end:0x800057AC
 	extabindex  start:0x8000582C end:0x80005880
 	.text       start:0x8016BF88 end:0x8016D3C0
@@ -1282,7 +1282,7 @@ TRK_MINNOW_DOLPHIN/serpoll.c:
 	.text       start:0x80176A50 end:0x80176E1C
 	.bss        start:0x8025D0D0 end:0x8025D0E8
 
-TRK_MINNOW_DOLPHIN/usrput.c:
+TRK_MINNOW_DOLPHIN/usr_put.c:
 	.text       start:0x80176E1C end:0x80176EA8
 
 TRK_MINNOW_DOLPHIN/dispatch.c:
@@ -1320,10 +1320,10 @@ TRK_MINNOW_DOLPHIN/targimpl.c:
 	.data       start:0x801D2330 end:0x801D2360
 	.bss        start:0x8025D0F8 end:0x8025D678
 
-TRK_MINNOW_DOLPHIN/targsupp.c:
+TRK_MINNOW_DOLPHIN/targsupp.s:
 	.text       start:0x8017BAE0 end:0x8017BB00
 
-TRK_MINNOW_DOLPHIN/__exception.c:
+TRK_MINNOW_DOLPHIN/__exception.s:
 	.init       start:0x800035E4 end:0x80005518
 
 TRK_MINNOW_DOLPHIN/dolphin_trk.c:
