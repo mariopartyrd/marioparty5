@@ -12,6 +12,9 @@
 #include "game/board/sai.h"
 #include "game/board/star.h"
 #include "game/board/scroll.h"
+#include "game/board/tutorial.h"
+#include "game/board/opening.h"
+#include "game/board/story.h"
 
 #include "game/saveload.h"
 #include "game/sprite.h"
@@ -29,8 +32,6 @@
 void MBMgInit(void);
 void MBBankCoinReset(void);
 void MBCapsuleHookSet(void *func); //Fix input type as well
-void MBTutorialWatchProcCreate(void);
-void MBOpeningProcExec(void);
 void MBCircuitMgEndExec(int playerNo);
 void MBCircuitExec(BOOL turnIntrF);
 void MBCircuitReset(void);
@@ -38,7 +39,6 @@ void MBTelopLast5Create(void);
 void MBTurnExecParty(BOOL turnIntrF);
 void MBMgExec(void);
 void MBTurnExecStory(BOOL turnIntrF);
-void MBStoryEndProcExec(void);
 void MBMgDataDirClose(void);
 
 void MBWinInit(void);

@@ -1,5 +1,5 @@
-#ifndef MESSNUM_BOARDPAUSE_H
-#define MESSNUM_BOARDPAUSE_H
+#ifndef MESSNUM_BOARDSTAR_H
+#define MESSNUM_BOARDSTAR_H
 
 #include "messdir_enum.h"
 

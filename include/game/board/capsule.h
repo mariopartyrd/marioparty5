@@ -67,4 +67,10 @@ void MBCapsuleAddStory(void);
 
 void MBCapsuleColCreate(unsigned int dataNum);
 
+void MBCapMachineTutorialExec(void);
+
+void MBDonkeyOpeningExec(void);
+
+unsigned int MBCapsuleMdlGet(int capsuleNo);
+
 #endif
