@@ -1,73 +1,100 @@
-# decomp-toolkit Project Template
+Mario Party 5  
+[![Build Status]][actions] [![Progress]][progress site] [![DOL Progress]][progress site] [![RELs Progress]][progress site] [![Discord Badge]][discord]
+=============
 
-If starting a new GameCube / Wii decompilation project, this repository can be used as a scaffold.
+[Build Status]: https://github.com/mariopartyrd/marioparty5/actions/workflows/build.yml/badge.svg
+[actions]: https://github.com/mariopartyrd/marioparty5/actions/workflows/build.yml
+[Progress]: https://decomp.dev/mariopartyrd/marioparty5.svg?mode=shield&measure=code&label=Code&category=all
+[DOL Progress]: https://decomp.dev/mariopartyrd/marioparty5.svg?mode=shield&measure=code&label=DOL&category=dol
+[RELs Progress]: https://decomp.dev/mariopartyrd/marioparty5.svg?mode=shield&measure=code&label=RELs&category=modules
+[progress site]: https://decomp.dev/mariopartyrd/marioparty5
+[Discord Badge]: https://img.shields.io/discord/994839212618690590?color=%237289DA&logo=discord&logoColor=%23FFFFFF
+[discord]: https://discord.gg/T4faGveujK
 
-See [decomp-toolkit](https://github.com/encounter/decomp-toolkit) for background on the concept and more information on the tooling used.
+A work-in-progress decompilation of Mario Party 5.
 
-## Documentation
+This repository does **not** contain any game assets or assembly whatsoever. An existing copy of the game is required.
 
-- [Dependencies](docs/dependencies.md)
-- [Getting Started](docs/getting_started.md)
-- [`symbols.txt`](docs/symbols.md)
-- [`splits.txt`](docs/splits.md)
-- [GitHub Actions](docs/github_actions.md) (new!)
+Supported versions:
 
-General:
+- `GP5E01_00`: Rev 0 (USA)
 
-- [Common BSS](docs/common_bss.md)
-- [`.comment` section](docs/comment_section.md)
+Dependencies
+============
 
-## References
+Windows
+--------
 
-- [Discord: GC/Wii Decompilation](https://discord.gg/hKx3FJJgrV) (Come to `#dtk` for help!)
-- [objdiff](https://github.com/encounter/objdiff) (Local diffing tool)
-- [decomp.me](https://decomp.me) (Collaborate on matches)
-- [frogress](https://github.com/decompals/frogress) (Decompilation progress API)
-- [wibo](https://github.com/decompals/wibo) (Minimal Win32 wrapper for Linux)
-- [sjiswrap](https://github.com/encounter/sjiswrap) (UTF-8 to Shift JIS wrapper)
+On Windows, it's **highly recommended** to use native tooling. WSL or msys2 are **not** required.  
+When running under WSL, [objdiff](#diffing) is unable to get filesystem notifications for automatic rebuilds.
 
-Projects using this structure:
+- Install [Python](https://www.python.org/downloads/) and add it to `%PATH%`.
+  - Also available from the [Windows Store](https://apps.microsoft.com/store/detail/python-311/9NRWMJP3717K).
+- Download [ninja](https://github.com/ninja-build/ninja/releases) and add it to `%PATH%`.
+  - Quick install via pip: `pip install ninja`
 
-- [zeldaret/tww](https://github.com/zeldaret/tww)
-- [PrimeDecomp/prime](https://github.com/PrimeDecomp/prime)
-- [PrimeDecomp/echoes](https://github.com/PrimeDecomp/echoes)
-- [DarkRTA/rb3](https://github.com/DarkRTA/rb3)
-- [doldecomp/melee](https://github.com/doldecomp/melee)
-- [doldecomp/sadx](https://github.com/doldecomp/sadx)
-- [InputEvelution/wp](https://github.com/InputEvelution/wp)
-- [lepelog/ss-dtk](https://github.com/lepelog/ss-dtk)
-- [NWPlayer123/AnimalCrossing-dtk](https://github.com/NWPlayer123/AnimalCrossing-dtk)
-- [Rainchus/mp4-dtk](https://github.com/Rainchus/mp4-dtk)
-- [Rainchus/ttyd_dtk](https://github.com/Rainchus/ttyd_dtk)
-- [Sage-of-Mirrors/zmansion](https://github.com/Sage-of-Mirrors/zmansion)
+macOS
+------
 
-## Features
+- Install [ninja](https://github.com/ninja-build/ninja/wiki/Pre-built-Ninja-packages):
 
-- Few external dependencies: Just `python` for the generator and `ninja` for the build system. See [Dependencies](docs/dependencies.md).
-- Simple configuration: Everything lives in `config.yml`, `symbols.txt`, and `splits.txt`.
-- Multi-version support: Separate configurations for each game version, and a `configure.py --version` flag to switch between them.
-- Feature-rich analyzer: Many time-consuming tasks are automated, allowing you to focus on the decompilation itself. See [Analyzer features](https://github.com/encounter/decomp-toolkit#analyzer-features).
-- REL support: RELs each have their own `symbols.txt` and `splits.txt`, and will automatically be built and linked against the main binary.
-- No manual assembly: decomp-toolkit handles splitting the DOL into relocatable objects based on the configuration. No game assets are committed to the repository.
-- Progress calculation and upload script for [frogress](https://github.com/decompals/frogress).
-- Integration with [objdiff](https://github.com/encounter/objdiff) for a diffing workflow.
-- CI workflow template for GitHub Actions.
+  ```sh
+  brew install ninja
+  ```
 
-## Project structure
+- Install [wine-crossover](https://github.com/Gcenx/homebrew-wine):
 
-- `configure.py` - Project configuration and generator script.
-- `config/[GP5E01_00]` - Configuration files for each game version.
-- `config/[GP5E01_00]/build.sha1` - SHA-1 hashes for each built artifact, for final verification.
-- `build/` - Build artifacts generated by the the build process. Ignored by `.gitignore`.
-- `orig/[GP5E01_00]` - Original game files, extracted from the disc. Ignored by `.gitignore`.
-- `orig/[GP5E01_00]/.gitkeep` - Empty checked-in file to ensure the directory is created on clone.
-- `src/` - C/C++ source files.
-- `include/` - C/C++ header files.
-- `tools/` - Scripts shared between projects.
+  ```sh
+  brew install --cask --no-quarantine gcenx/wine/wine-crossover
+  ```
 
-Temporary, delete when done:
+After OS upgrades, if macOS complains about `Wine Crossover.app` being unverified, you can unquarantine it using:
 
-- `config/GP5E01_00/config.example.yml` - Example configuration file and documentation.
-- `docs/` - Documentation for decomp-toolkit configuration.
-- `README.md` - This file, replace with your own. For a template, see [`README.example.md`](README.example.md).
-- `LICENSE` - This repository is licensed under the CC0 license. Replace with your own if desired.
+```sh
+sudo xattr -rd com.apple.quarantine '/Applications/Wine Crossover.app'
+```
+
+Linux
+------
+
+- Install [ninja](https://github.com/ninja-build/ninja/wiki/Pre-built-Ninja-packages).
+- For non-x86(_64) platforms: Install wine from your package manager.
+  - For x86(_64), [wibo](https://github.com/decompals/wibo), a minimal 32-bit Windows binary wrapper, will be automatically downloaded and used.
+
+Building
+========
+
+- Clone the repository:
+
+  ```sh
+  git clone https://github.com/mariopartyrd/marioparty5.git
+  ```
+
+- Copy your game's disc image to `orig/GP5E01_00`.
+  - Supported formats: ISO (GCM), RVZ, WIA, WBFS, CISO, NFS, GCZ, TGC
+  - After the initial build, the disc image can be deleted to save space.
+
+- Configure:
+
+  ```sh
+  python configure.py
+  ```
+
+  To use a version other than `GP5E01_00` (USA), specify it with `--version`.
+
+- Build:
+
+  ```sh
+  ninja
+  ```
+
+Diffing
+=======
+
+Once the initial build succeeds, an `objdiff.json` should exist in the project root.
+
+Download the latest release from [encounter/objdiff](https://github.com/encounter/objdiff). Under project settings, set `Project directory`. The configuration should be loaded automatically.
+
+Select an object from the left sidebar to begin diffing. Changes to the project will rebuild automatically: changes to source files, headers, `configure.py`, `splits.txt` or `symbols.txt`.
+
+![](assets/objdiff.png)

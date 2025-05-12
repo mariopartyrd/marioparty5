@@ -1038,9 +1038,6 @@ Runtime.PPCEABI.H/global_destructor_chain.c:
 	.dtors      start:0x801A9B88 end:0x801A9B8C
 	.sbss       start:0x80289278 end:0x80289280
 
-Runtime.PPCEABI.H/__mem.c:
-	.init       start:0x80003458 end:0x80003590
-
 Runtime.PPCEABI.H/New.cp:
 	extab       start:0x800056C0 end:0x800056E8
 	extabindex  start:0x800057C0 end:0x800057CC
@@ -1309,6 +1306,9 @@ TRK_MINNOW_DOLPHIN/notify.c:
 
 TRK_MINNOW_DOLPHIN/flush_cache.c:
 	.text       start:0x8017A154 end:0x8017A18C
+
+Runtime.PPCEABI.H/__mem.c:
+	.init       start:0x80003458 end:0x80003590
 
 TRK_MINNOW_DOLPHIN/mem_TRK.c:
 	.init       start:0x80003590 end:0x800035E4
