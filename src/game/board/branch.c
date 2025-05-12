@@ -7,12 +7,11 @@
 #include "game/board/status.h"
 #include "game/board/window.h"
 #include "game/board/scroll.h"
+#include "game/board/pad.h"
+
 #include "messnum/boardope.h"
 
 #include "game/frand.h"
-
-s8 MBPadStkXGet(int padNo);
-s8 MBPadStkYGet(int padNo);
 
 static OMOBJ *branchGuideObj[GW_PLAYER_MAX];
 
@@ -310,7 +309,7 @@ static BOOL BranchExec(int playerNo, s16 *masuId, BOOL debugF)
         } else {
             dir.x = MBPadStkXGet(padNo);
             dir.y = MBPadStkYGet(padNo);
-            btnDown = HuPadBtnDown[padNo];
+            btnDown = MBPadBtnDown(padNo);
         }
         if(btnDown == PAD_BUTTON_A) {
             *masuId = branchLinkTbl[choice];
@@ -332,7 +331,7 @@ static BOOL BranchExec(int playerNo, s16 *masuId, BOOL debugF)
             BranchGuideCreate(playerNo, masuPlayer, branchLinkTbl, linkNum, choice);
             continue;
         }
-        if(debugF && (HuPadBtnDown[padNo] == PAD_BUTTON_X)) {
+        if(debugF && (MBPadBtnDown(padNo) == PAD_BUTTON_X)) {
             BranchGuideKill(playerNo);
             return TRUE;
         }

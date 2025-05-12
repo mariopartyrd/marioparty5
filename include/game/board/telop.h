@@ -4,7 +4,7 @@
 #include "game/charman.h"
 
 #define MBTelopCharCreate(playerNo, no, waitF) MBTelopCreate(playerNo, no, waitF)
-#define MBTelopLogoCreate(playerNo, no, waitF) MBTelopCreate(playerNo, (no)+CHAR_MAX, waitF)
+#define MBTelopLogoCreate(no, waitF) MBTelopCreate(-1, (no)+CHARNO_MAX, waitF)
 
 void MBTelopPlayerCreate(int playerNo);
 void MBTelopCreate(int playerNo, int telopNo, BOOL waitF);

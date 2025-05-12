@@ -52,6 +52,7 @@
 #define MB_SAIMODE_NKINOKO 3
 #define MB_SAIMODE_KILLER 4
 
+#define MBPlayerDispSet2(playerNo, dispF) MBModelDispSet(MBPlayerModelGet(playerNo), dispF)
 
 typedef BOOL (*MBPLAYERTURNHOOK)(void);
 

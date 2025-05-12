@@ -395,7 +395,7 @@ static void SaiPadWinCreate(SAIWORK *work)
         return;
     }
     if(work->saiType == SAITYPE_PATAPATA_COIN ||
-        work->saiType == SAITYPE_KUPA ||
+        work->saiType == SAITYPE_EVENT ||
         work->saiType == SAITYPE_CHANCE_TRADE ||
         work->saiType == SAITYPE_CHANCE_CHAR ||
         work->saiType == SAITYPE_BLOCK) {
@@ -639,7 +639,7 @@ static void SaiExec(SAIWORK *work)
             break;
         }
         if(work->no != 0 ||
-            work->saiType == SAITYPE_KUPA ||
+            work->saiType == SAITYPE_EVENT ||
             work->saiType == SAITYPE_PATAPATA_COIN ||
             work->saiType == SAITYPE_CHANCE_TRADE ||
             work->saiType == SAITYPE_CHANCE_CHAR ||

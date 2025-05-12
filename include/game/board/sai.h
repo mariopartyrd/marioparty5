@@ -13,7 +13,7 @@ typedef void (*SAIMOTHOOK)(int playerNo);
 #define SAITYPE_NKINOKO 3
 #define SAITYPE_KILLER 4
 #define SAITYPE_HIDDEN 5
-#define SAITYPE_KUPA 6
+#define SAITYPE_EVENT 6
 #define SAITYPE_PATAPATA_COIN 7
 #define SAITYPE_CHANCE_TRADE 8
 #define SAITYPE_CHANCE_CHAR 9
@@ -47,7 +47,7 @@ int MBSaiChanceCharExec(int playerNo, int *playerNoTbl);
 void MBSaiKill(int playerNo);
 void MBSaiClose(void);
 BOOL MBSaiKillCheck(int playerNo);
-BOOL MBSaiKillCheckAll(void);
+BOOL MBSaiKillCheckAll();
 int MBSaiResultGet(int playerNo);
 void MBSaiHitHookSet(int playerNo, SAIHITHOOK hook);
 void MBSaiObjHit(int playerNo);

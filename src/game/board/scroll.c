@@ -10,6 +10,7 @@
 #include "game/board/player.h"
 #include "game/board/star.h"
 #include "game/board/branch.h"
+#include "game/board/pad.h"
 
 #include "game/wipe.h"
 #include "game/sprite.h"
@@ -171,7 +172,7 @@ static void ScrollMain(void)
         }
         while(1) {
             s16 padNo = GwPlayer[scrollPlayer].padNo;
-            u16 btn = HuPadBtnDown[padNo];
+            u16 btn = MBPadBtnDown(padNo);
             if(btn == PAD_BUTTON_B) {
                 exitF = TRUE;
                 break;
@@ -184,7 +185,7 @@ static void ScrollMain(void)
             }
             switch(mode) {
                 case 0:
-                    maxSpeed = (HuPadBtn[padNo] & PAD_BUTTON_A) ? 40.0f : 20.0f;
+                    maxSpeed = (MBPadBtn(padNo) & PAD_BUTTON_A) ? 40.0f : 20.0f;
                     stkX = MBPadStkXGet(padNo);
                     stkY = -((float)MBPadStkYGet(padNo));
                     speed = HuMagPoint2D(stkX, stkY);
@@ -195,14 +196,14 @@ static void ScrollMain(void)
                         mapScrollWorkP->pos.z += stkY*maxSpeed;
                     }
                     UpdateScrollView(MBCameraGet(), &mapScrollWorkP->pos, TRUE);
-                    if(HuPadTrigR[padNo] > 8 && masuId >= 0) {
+                    if(MBPadTrigR(padNo) > 8 && masuId >= 0) {
                         mode = 1;
                         scrollPos = mapScrollWorkP->pos;
                     }
                     break;
                 
                 case 1:
-                    if(HuPadTrigR[padNo] > 8) {
+                    if(MBPadTrigR(padNo) > 8) {
                         VECSubtract(&starPos, &scrollPos, &scrollDir);
                         if(VECMag(&scrollDir) < 50) {
                             pos = starPos;
@@ -631,7 +632,7 @@ static void ExecViewMap(void)
     MBTopWinPosSet(216, 384);
     while(1) {
         int padNo = GwPlayer[scrollPlayer].padNo;
-        u16 btn = HuPadBtnDown[padNo];
+        u16 btn = MBPadBtnDown(padNo);
         if(btn & PAD_BUTTON_A) {
             mapDispAllF ^= 1;
             ResetMapSpr();
