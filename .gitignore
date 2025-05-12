@@ -3,6 +3,7 @@ __pycache__
 .vscode
 .ninja_*
 .mypy_cache
+.cache/
 *.exe
 build
 build.ninja
@@ -11,3 +12,4 @@ orig/*/*
 !orig/*/.gitkeep
 /*.txt
 ctx.c
+compile_commands.json

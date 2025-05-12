@@ -20,7 +20,7 @@
 #define SAVE_BOX_STORY_PLAYER_OFS (SAVE_BOX_STORY_SYSTEM_OFS+sizeof(GWSYSTEM))
 #define SAVE_BOX_SDCOMMON_OFS (SAVE_BOX_STORY_PLAYER_OFS+(GW_PLAYER_MAX*sizeof(GWPLAYER)))
 
-#define SL_CUR_SLOT_MESS (MPSYSTEM_CARD_SLOTA+curSlotNo)
+#define SL_CUR_SLOT_MESS (MESS_MPSYSTEM_CARD_SLOTA+curSlotNo)
 
 #define SL_MESSID_NONE -1
 
@@ -152,7 +152,7 @@ s32 SLFileCreate(char *fileName, u32 size, void *addr)
         SLMessOut(SL_MESS_CARD_INSSPACE);
         return CARD_RESULT_INSSPACE;
     }
-    winId = SLMessWinCreate(MPSYSTEM_CARD_CREATEFILE, SL_CUR_SLOT_MESS, SL_MESSID_NONE, 200);
+    winId = SLMessWinCreate(MESS_MPSYSTEM_CARD_CREATEFILE, SL_CUR_SLOT_MESS, SL_MESSID_NONE, 200);
     HuSRDisableF = TRUE;
     result = HuCardCreate(curSlotNo, fileName, size, &curFileInfo);
     if(result < 0) {
@@ -206,11 +206,11 @@ s32 SLFileWrite(s32 length, void *addr)
     }
     HuWinInit(1);
     HuWinInsertMesSizeGet(SL_CUR_SLOT_MESS, 0);
-    HuWinMesMaxSizeGet(1, &size, MPSYSTEM_MES_CARD_WRITE);
+    HuWinMesMaxSizeGet(1, &size, MESS_MPSYSTEM_MES_CARD_WRITE);
     winId = HuWinExCreateFrame(-10000, 200, size.x, size.y, HUWIN_SPEAKER_NONE, 2);
     HuWinExOpen(winId);
     HuWinInsertMesSet(winId, SL_CUR_SLOT_MESS, 0);
-    HuWinMesSet(winId, MPSYSTEM_MES_CARD_WRITE);
+    HuWinMesSet(winId, MESS_MPSYSTEM_MES_CARD_WRITE);
     HuWinMesWait(winId);
     HuPrcSleep(60);
     SLSerialNoGet();
@@ -405,7 +405,7 @@ s32 SLSave(void)
             SLMessOut(SL_MESS_SERIAL_INVALID);
             goto savefail;
         } else {
-            SLCurWinId = SLMessWinCreate(MPSYSTEM_MES_SAVE_SAVE, SL_CUR_SLOT_MESS, -1, 150);
+            SLCurWinId = SLMessWinCreate(MESS_MPSYSTEM_MES_SAVE_SAVE, SL_CUR_SLOT_MESS, -1, 150);
             result = SLFileCreate(SLSaveFileName, SAVE_BUF_SIZE, &saveBuf[curSlotNo][0]);
             SLMessWinKill(SLCurWinId);
             SLCurWinId = HUWIN_NONE;
@@ -429,7 +429,7 @@ s32 SLSave(void)
             SLMessOut(SL_MESS_SERIAL_INVALID);
             goto savefail;
         }
-        SLCurWinId = SLMessWinCreate(MPSYSTEM_MES_SAVE_SAVE, SL_CUR_SLOT_MESS, -1, 150);
+        SLCurWinId = SLMessWinCreate(MESS_MPSYSTEM_MES_SAVE_SAVE, SL_CUR_SLOT_MESS, -1, 150);
         result = SLFileWrite(SAVE_BUF_SIZE, &saveBuf[curSlotNo][0]);
         SLMessWinKill(SLCurWinId);
         SLCurWinId = HUWIN_NONE;
@@ -753,7 +753,7 @@ s32 SLFormat(s16 slotNo)
         UnMountCnt = 0;
         return CARD_RESULT_READY;
     } else {
-        HUWINID winId = SLMessWinCreate(MPSYSTEM_CARD_FORMAT_WARN, SL_CUR_SLOT_MESS, SL_MESSID_NONE, 200);
+        HUWINID winId = SLMessWinCreate(MESS_MPSYSTEM_CARD_FORMAT_WARN, SL_CUR_SLOT_MESS, SL_MESSID_NONE, 200);
         HuPrcSleep(30);
         (void)winId;
         (void)winId;
@@ -863,11 +863,11 @@ s16 SLMessOut(s16 messId)
         case SL_MESS_NOCARD:
             HuWinInsertMesSizeGet(SL_CUR_SLOT_MESS, 0);
             insertMes = SL_CUR_SLOT_MESS;
-            mess = MPSYSTEM_CARD_NOCARD;
+            mess = MESS_MPSYSTEM_CARD_NOCARD;
             break;
         
         case SL_MESS_FATAL_ERROR:
-            mess = MPSYSTEM_CARD_FATAL_ERROR;
+            mess = MESS_MPSYSTEM_CARD_FATAL_ERROR;
             HuWinInsertMesSizeGet(SL_CUR_SLOT_MESS, 0);
             insertMes = SL_CUR_SLOT_MESS;
             break;
@@ -875,17 +875,17 @@ s16 SLMessOut(s16 messId)
         case SL_MESS_CARD_NOENT:
             HuWinInsertMesSizeGet(SL_CUR_SLOT_MESS, 0);
             insertMes = SL_CUR_SLOT_MESS;
-            mess = MPSYSTEM_CARD_NOENT;
+            mess = MESS_MPSYSTEM_CARD_NOENT;
             break;
         
         case SL_MESS_CARD_INSSPACE:
-            mess = MPSYSTEM_CARD_INSSPACE;
+            mess = MESS_MPSYSTEM_CARD_INSSPACE;
             HuWinInsertMesSizeGet(SL_CUR_SLOT_MESS, 0);
             insertMes = SL_CUR_SLOT_MESS;
             break;
         
         case SL_MESS_CARD_FULL:
-            mess = MPSYSTEM_CARD_FULL;
+            mess = MESS_MPSYSTEM_CARD_FULL;
             HuWinInsertMesSizeGet(SL_CUR_SLOT_MESS, 0);
             insertMes = SL_CUR_SLOT_MESS;
             break;
@@ -893,47 +893,47 @@ s16 SLMessOut(s16 messId)
         case SL_MESS_FORMAT_CHOICE:
             HuWinInsertMesSizeGet(SL_CUR_SLOT_MESS, 0);
             insertMes = SL_CUR_SLOT_MESS;
-            mess = MPSYSTEM_CARD_FORMAT_CHOICE;
+            mess = MESS_MPSYSTEM_CARD_FORMAT_CHOICE;
             choiceF = TRUE;
             break;
         
         case SL_MESS_FORMAT_ERROR:
-            mess = MPSYSTEM_CARD_FORMAT_ERROR;
+            mess = MESS_MPSYSTEM_CARD_FORMAT_ERROR;
             break;
         
         case SL_MESS_WRONGDEVICE:
             HuWinInsertMesSizeGet(SL_CUR_SLOT_MESS, 0);
             insertMes = SL_CUR_SLOT_MESS;
-            mess = MPSYSTEM_CARD_WRONGDEVICE;
+            mess = MESS_MPSYSTEM_CARD_WRONGDEVICE;
             break;
         
         case SL_MESS_CARD_INVALID:
             HuWinInsertMesSizeGet(SL_CUR_SLOT_MESS, 0);
             insertMes = SL_CUR_SLOT_MESS;
-            mess = MPSYSTEM_CARD_INVALID;
+            mess = MESS_MPSYSTEM_CARD_INVALID;
             break;
         
         case SL_MESS_SERIAL_INVALID:
             HuWinInsertMesSizeGet(SL_CUR_SLOT_MESS, 0);
             insertMes = SL_CUR_SLOT_MESS;
-            mess = MPSYSTEM_CARD_SERIAL_INVALID;
+            mess = MESS_MPSYSTEM_CARD_SERIAL_INVALID;
             break;
         
         case SL_MESS_NOSAVE_CHOICE:
-            mess = MPSYSTEM_NOSAVE_CHOICE;
+            mess = MESS_MPSYSTEM_NOSAVE_CHOICE;
             choiceF = TRUE;
             break;
         
         case SL_MESS_CARD_REINSERT:
             HuWinInsertMesSizeGet(SL_CUR_SLOT_MESS, 0);
             insertMes = SL_CUR_SLOT_MESS;
-            mess = MPSYSTEM_CARD_REINSERT;
+            mess = MESS_MPSYSTEM_CARD_REINSERT;
             break;
         
         case SL_MESS_CARD_FORMAT_UNMOUNT:
             HuWinInsertMesSizeGet(SL_CUR_SLOT_MESS, 0);
             insertMes = SL_CUR_SLOT_MESS;
-            mess = MPSYSTEM_CARD_FORMAT_UNMOUNT;
+            mess = MESS_MPSYSTEM_CARD_FORMAT_UNMOUNT;
             break;
     }
     if(SLWinId == HUWIN_NONE) {
@@ -956,7 +956,7 @@ s16 SLMessOut(s16 messId)
     if(choiceF) {
         if(messId == SL_MESS_FORMAT_CHOICE) {
             HuWinInsertMesSet(winId, SL_CUR_SLOT_MESS, 0);
-            HuWinMesSet(winId, MPSYSTEM_CARD_FORMAT);
+            HuWinMesSet(winId, MESS_MPSYSTEM_CARD_FORMAT);
             HuWinMesWait(winId);
         }
         choiceNo = HuWinChoiceGet(winId, -1);
@@ -1191,7 +1191,7 @@ s32 SLSaveSdBExec(void)
             SLMessOut(SL_MESS_SERIAL_INVALID);
             goto savefail;
         } else {
-            SLCurWinId = SLMessWinCreate(MPSYSTEM_MES_SAVE_SAVE, SL_CUR_SLOT_MESS, -1, 150);
+            SLCurWinId = SLMessWinCreate(MESS_MPSYSTEM_MES_SAVE_SAVE, SL_CUR_SLOT_MESS, -1, 150);
             result = SLFileCreate(SLSaveFileName, SAVE_BUF_SIZE, &saveBuf[curSlotNo][0]);
             SLMessWinKill(SLCurWinId);
             SLCurWinId = HUWIN_NONE;
@@ -1209,7 +1209,7 @@ s32 SLSaveSdBExec(void)
             SLMessOut(SL_MESS_SERIAL_INVALID);
             goto savefail;
         }
-        SLCurWinId = SLMessWinCreate(MPSYSTEM_MES_SAVE_SAVE, SL_CUR_SLOT_MESS, -1, 150);
+        SLCurWinId = SLMessWinCreate(MESS_MPSYSTEM_MES_SAVE_SAVE, SL_CUR_SLOT_MESS, -1, 150);
         result = SLFileWrite(SAVE_BUF_SIZE, &saveBuf[curSlotNo][0]);
         SLMessWinKill(SLCurWinId);
         SLCurWinId = HUWIN_NONE;
@@ -1254,12 +1254,12 @@ s32 SLSaveSdBExec(void)
         winP->padMask = HUWIN_PLAYER_1;
         HuWinExOpen(winId);
         HuWinInsertMesSet(winId, SL_CUR_SLOT_MESS, 0);
-        HuWinMesSet(winId, SDG_FILE_SAVEFAIL);
+        HuWinMesSet(winId, MESS_SDG_FILE_SAVEFAIL);
         HuWinMesWait(winId);
         result = HuWinChoiceGet(winId, -1);
         if(result != 0) {
             HuWinInsertMesSet(winId, SL_CUR_SLOT_MESS, 0);
-            HuWinMesSet(winId, MPSYSTEM_CARD_REINSERT);
+            HuWinMesSet(winId, MESS_MPSYSTEM_CARD_REINSERT);
             HuWinMesWait(winId);
             while(!(HuPadBtnDown[0] & PAD_BUTTON_A)) {
                 HuPrcVSleep();
