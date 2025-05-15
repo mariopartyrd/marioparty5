@@ -982,7 +982,7 @@ void SLSaveBoardTurnExec(void)
     HuSprInit();
     espInit();
     HuWinComKeyReset();
-    if(!SaveEnableF || GWSaveModeGet() == 1) {
+    if(!SaveEnableF || GWSaveModeGet() == GW_SAVEMODE_NONE) {
         return;
     }
     HuPrcVSleep();
@@ -992,8 +992,8 @@ void SLSaveBoardTurnExec(void)
     Hu3DBGColorSet(0, 0, 0);
     WipeCreate(WIPE_MODE_IN, WIPE_TYPE_PREVTYPE, 20);
     WipeWait();
-    if(GWSaveModeGet() == 2) {
-        GWSaveModeSet(1);
+    if(GWSaveModeGet() == GW_SAVEMODE_TURN) {
+        GWSaveModeSet(GW_SAVEMODE_NONE);
     }
     if(GWPartyFGet() == TRUE) {
         GwCommon.partyContinue = TRUE;

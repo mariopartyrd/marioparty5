@@ -172,7 +172,7 @@ int MBPlayerCoinGet(int playerNo);
 void MBPlayerCoinAdd(int playerNo, int coinNum);
 void MBPlayerGrpCoinSet(int grp, int coinNum);
 s16 MBPlayerGrpCoinGet(int grp);
-int MBPlayerMaxCoinGet(int grp);
+int MBPlayerMaxCoinGet();
 void MBPlayerStarSet(int playerNo, int starNum);
 int MBPlayerStarGet(int playerNo);
 void MBPlayerStarAdd(int playerNo, int starNum);

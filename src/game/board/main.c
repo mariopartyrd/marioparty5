@@ -15,6 +15,7 @@
 #include "game/board/tutorial.h"
 #include "game/board/opening.h"
 #include "game/board/story.h"
+#include "game/board/mgcall.h"
 
 #include "game/saveload.h"
 #include "game/sprite.h"
@@ -29,7 +30,6 @@
 #include "game/flag.h"
 
 //Prototypes for board functions
-void MBMgInit(void);
 void MBBankCoinReset(void);
 void MBCapsuleHookSet(void *func); //Fix input type as well
 void MBCircuitMgEndExec(int playerNo);
@@ -37,9 +37,7 @@ void MBCircuitExec(BOOL turnIntrF);
 void MBCircuitReset(void);
 void MBTelopLast5Create(void);
 void MBTurnExecParty(BOOL turnIntrF);
-void MBMgExec(void);
 void MBTurnExecStory(BOOL turnIntrF);
-void MBMgDataDirClose(void);
 
 void MBWinInit(void);
 void MBGateInit(void);
@@ -108,13 +106,13 @@ void MBObjectSetup(int boardNo, MBCREATEHOOK createHook, MBKILLHOOK killHook)
         _ClearFlag(FLAG_BOARD_SAI_SHORT);
         _ClearFlag(FLAGNUM(FLAG_GROUP_BOARD, 6));
         _ClearFlag(FLAG_BOARD_LAST5);
-        MBMgInit();
+        MBMgCallInit();
         MBStarNoInit();
         MBMasuCapsuleClear();
         MBBankCoinReset();
     }
     if(_CheckFlag(FLAG_BOARD_STAR_RESET)) {
-        MBMgInit();
+        MBMgCallInit();
         MBStarNoInit();
         MBCapsuleHookSet(NULL);
         _ClearFlag(FLAG_BOARD_STAR_RESET);
@@ -296,7 +294,7 @@ static void MBMainProc(void)
                 continue;
             } else {
                 GwSystem.turnPlayerNo = -1;
-                MBMgExec();
+                MBMgCallExec();
                 MBStatusColorAllSet(STATUS_COLOR_GRAY);
                 if(postTurnHook) {
                     postTurnHook();
@@ -369,7 +367,7 @@ static void CreateMB(void)
         _ClearFlag(FLAG_BOARD_MGVS);
     }
     if(MBEventMgCheck()) {
-        MBMgDataDirClose();
+        MBMgCallDataClose();
     }
     HuSprExecLayerSet(32, 4);
     MBCameraCreate();

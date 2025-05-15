@@ -2371,7 +2371,7 @@ s16 MBPlayerGrpCoinGet(int grp)
     return GWPlayerCoinGet(MBPlayerGrpFindPlayer(grp, 0));
 }
 
-int MBPlayerMaxCoinGet(int grp)
+int MBPlayerMaxCoinGet(void)
 {
     int maxCoin = 0;
     int i;
