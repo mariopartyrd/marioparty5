@@ -23,6 +23,23 @@ extern void HuPadRumbleAllStop(void);
 #define GW_MGNO_BASE 501
 #define GW_MGNO_NONE 65535
 
+#define GW_MGPACK_ALL 0
+#define GW_MGPACK_EASY 1
+#define GW_MGPACK_ACTION 2
+#define GW_MGPACK_SKILL 3
+#define GW_MGPACK_GOOFY 4
+#define GW_MGPACK_MAX 5
+
+#define GW_MESS_SPEED_FAST 0
+#define GW_MESS_SPEED_NORMAL 1
+#define GW_MESS_SPEED_SLOW 2
+#define GW_MESS_SPEED_MAX 3
+
+#define GW_SAVEMODE_ALL 0
+#define GW_SAVEMODE_NONE 1
+#define GW_SAVEMODE_TURN 2
+#define GW_SAVEMODE_MAX 3
+
 //Try moving to window.h later
 #define HUWIN_LANG_JAPAN 0
 #define HUWIN_LANG_ENGLISH 1
@@ -59,6 +76,8 @@ typedef struct GwPlayer_s {
     u16 orderNo : 2;
     u16 saiNum : 2;
     u16 rank : 2;
+    u16 unk : 1;
+    u16 grpBackup : 1;
     s8 walkNum;
     s16 masuId;
     s16 masuIdPrev;
@@ -337,8 +356,8 @@ static inline s16 GWMgCoinGet(s32 playerNo)
 
 static inline s32 GWMessSpeedGet(void)
 {
-    if (GwSystem.messSpeed == 3) {
-        GwSystem.messSpeed = 1;
+    if (GwSystem.messSpeed == GW_MESS_SPEED_MAX) {
+        GwSystem.messSpeed = GW_MESS_SPEED_NORMAL;
     }
     return GwSystem.messSpeed;
 }
@@ -347,11 +366,11 @@ static inline void GWMessSpeedSet(s32 value)
 {
 	GwSystem.messSpeed = value;
 	switch(value) {
-		case 0:
+		case GW_MESS_SPEED_FAST:
 			GwSystem.messDelay = 16;
 			break;
 			
-		case 2:
+		case GW_MESS_SPEED_SLOW:
 			GwSystem.messDelay = 48;
 			break;
 			
@@ -363,8 +382,8 @@ static inline void GWMessSpeedSet(s32 value)
 
 static inline s32 GWMgPackGet(void)
 {
-    if (GwSystem.mgPack >= 5) {
-        GwSystem.mgPack = 0;
+    if (GwSystem.mgPack >= GW_MGPACK_MAX) {
+        GwSystem.mgPack = GW_MGPACK_ALL;
     }
     return GwSystem.mgPack;
 }
@@ -382,8 +401,8 @@ static inline void GWSaveModeSet(s32 value)
 
 static inline s32 GWSaveModeGet(void)
 {
-    if (GwSystem.saveMode == 3) {
-		GWSaveModeSet(1);
+    if (GwSystem.saveMode == GW_SAVEMODE_MAX) {
+		GWSaveModeSet(GW_SAVEMODE_NONE);
     }
     return GwSystem.saveMode;
 }

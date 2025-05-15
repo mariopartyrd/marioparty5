@@ -5,6 +5,7 @@
 #include "game/board/player.h"
 #include "game/board/capsule.h"
 #include "game/board/star.h"
+#include "game/board/mgcall.h"
 
 #include "game/wipe.h"
 #include "game/esprite.h"
@@ -105,8 +106,6 @@ BOOL MBTutorialExec(int instNo)
     tutorialExecTbl[instNo](tutorialExecNum[instNo]++);
 }
 
-extern void MBMgTutorialExec(void);
-
 static int TutorialExecTurn(int execNum)
 {
     switch(execNum) {
@@ -120,7 +119,7 @@ static int TutorialExecTurn(int execNum)
         
         case 8:
             MBCapMachineTutorialExec();
-            MBMgTutorialExec();
+            MBMgCallTutorialExec();
             MBStarTutorialExec();
             tutorialExitF = TRUE;
             HuPrcSleep(-1);
