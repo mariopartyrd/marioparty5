@@ -319,7 +319,7 @@ static void objMesh(HU3DMODEL *modelP, HSFOBJECT *objPtr)
                 drawObj->model = modelP;
                 drawObj->object = objPtr;
                 if(!(constData->attr & HU3D_CONST_REFLECTMODEL)
-                    && (constData->attr & (HU3D_ATTR_CAMERA|HU3D_ATTR_MOT_EXEC|HU3D_ATTR_DISPOFF) && shadowModelDrawF == FALSE)) {
+                    && (constData->attr & (HU3D_CONST_NEAR|HU3D_CONST_ALTBLEND|HU3D_CONST_XLU) && shadowModelDrawF == FALSE)) {
                     pos.x = drawObj->matrix[0][3];
                     pos.y = drawObj->matrix[1][3];
                     pos.z = drawObj->matrix[2][3];
