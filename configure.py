@@ -465,7 +465,7 @@ config.libs = [
             Object(NonMatching, "game/board/pauseoption.c"),
             Object(NonMatching, "game/board/gate.c"),
             Object(NonMatching, "game/board/story.c"),
-            Object(NonMatching, "game/board/telop.c"),
+            Object(Matching, "game/board/telop.c"),
             Object(NonMatching, "game/board/mgcircuit.c"),
             Object(NonMatching, "game/code_801A7E90.c"),
         ],
