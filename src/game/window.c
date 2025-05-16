@@ -186,6 +186,8 @@ static void HuWinSpcFontClear(HUWIN *winP);
 static void HuWinChoice(HUWIN *winP);
 static void GetMesMaxSizeSub(u32 messNum);
 static s32 GetMesMaxSizeSub2(HUWIN *winP, void *data);
+static u32 HuWinActivePadGet(HUWIN *winP);
+static u32 HuWinActiveKeyGetX(HUWIN *winP);
 
 void HuWindowInit(void)
 {
@@ -1192,7 +1194,7 @@ static void HuWinChoice(HUWIN *winP) {
 #undef WIN_CHOICEDIR_DOWN
 #undef WIN_CHOICE_DIST_INVALID 
 
-u32 HuWinActivePadGet(HUWIN *winP)
+static u32 HuWinActivePadGet(HUWIN *winP)
 {
     s32 key;
     u32 i;
@@ -1206,7 +1208,7 @@ u32 HuWinActivePadGet(HUWIN *winP)
     return key;
 }
 
-u32 HuWinActiveKeyGetX(HUWIN *winP)
+static u32 HuWinActiveKeyGetX(HUWIN *winP)
 {
     u32 btn;
     u32 i;
