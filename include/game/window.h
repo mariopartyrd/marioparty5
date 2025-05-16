@@ -178,8 +178,6 @@ void *HuWinMesDataPtrGet(void *messData, u32 messNum);
 
 void HuWinHomeClear(HUWINID winId);
 void HuWinKeyWaitEntry(HUWINID winId);
-u32 HuWinActivePadGet(HUWIN *winP);
-u32 HuWinActiveKeyGetX(HUWIN *winP);
 void HuWinPosSet(HUWINID winId, float posX, float posY);
 void HuWinScaleSet(HUWINID winId, float scaleX, float scaleY);
 void HuWinZRotSet(HUWINID winId, float zRot);

@@ -16,6 +16,8 @@
 #include "game/board/opening.h"
 #include "game/board/story.h"
 #include "game/board/mgcall.h"
+#include "game/board/telop.h"
+#include "game/board/window.h"
 
 #include "game/saveload.h"
 #include "game/sprite.h"
@@ -35,20 +37,12 @@ void MBCapsuleHookSet(void *func); //Fix input type as well
 void MBCircuitMgEndExec(int playerNo);
 void MBCircuitExec(BOOL turnIntrF);
 void MBCircuitReset(void);
-void MBTelopLast5Create(void);
-void MBTurnExecParty(BOOL turnIntrF);
-void MBTurnExecStory(BOOL turnIntrF);
 
-void MBWinInit(void);
 void MBGateInit(void);
 void MBCapMachineInit(void);
 void MBCapsuleObjInit(void);
-void MBTauntInit(void);
-
-void MBTauntKill(void);
 void MBGateClose(void);
 void MBCapMachineClose(void);
-void MBWinClose(void);
 
 static MBTURNHOOK postTurnHook;
 static MBTURNHOOK preTurnHook;
