@@ -63,18 +63,18 @@ static const unsigned int bubbleFileTbl[3] = {
 
 static ANIMDATA *telopAnim[4];
 
-static OMOBJ *telopObj;
-static void *telopDlBuf;
-static OMOBJ *telopLast5Obj;
-static OMOBJ *telopComNumObj;
-static OMOBJ *tauntObj;
-static unsigned int telopLast5File;
-static GXColor bubbleCol;
-static GXColor bubbleBlendCol;
-static u32 telopDlSize;
-static u32 telopRetrace;
-static HuVec2F *telopBubbleVtx;
 static TELOPBUBBLE *telopBubbleData;
+static HuVec2F *telopBubbleVtx;
+static u32 telopRetrace;
+static u32 telopDlSize;
+static GXColor bubbleBlendCol;
+static GXColor bubbleCol;
+static unsigned int telopLast5File;
+static OMOBJ *tauntObj;
+static OMOBJ *telopComNumObj;
+static OMOBJ *telopLast5Obj;
+static void *telopDlBuf;
+static OMOBJ *telopObj;
 
 static void TelopObjCreate(OMOBJ *obj);
 
@@ -129,7 +129,7 @@ static void TelopObjCreate(OMOBJ *obj)
 {
     TELOPOBJ_WORK *work = omObjGetWork(obj, TELOPOBJ_WORK);
     obj->mdlId[0] = Hu3DHookFuncCreate(TelopDraw);
-    Hu3DModelLayerDraw(obj->mdlId[0], 4);
+    Hu3DModelLayerSet(obj->mdlId[0], 4);
     Hu3DModelCameraSet(obj->mdlId[0], HU3D_CAM0);
     work->time = 0;
     work->maxTime = (work->no >= TELOP_CHAR_MAX) ? 60 : 15;
@@ -377,7 +377,7 @@ static void TelopDLCreate(int bubbleNum)
     void *buf = HuMemDirectMallocNum(HEAP_HEAP, 16384, HU_MEMNUM_OVL);
     int vtxNum, i;
     DCInvalidateRange(buf, 16384);
-    GXBeginDisplayLsit(buf, 16384);
+    GXBeginDisplayList(buf, 16384);
     for(vtxNum=0, i=0; i<bubbleNum; i++, vtxNum += 4) {
         GXBegin(GX_QUADS, GX_VTXFMT0, 4);
         GXPosition1x16(vtxNum);
@@ -541,7 +541,7 @@ void MBTelopLast5Create(void)
     HUSPRITE *sp;
     static unsigned int fileTbl[3] = {
         BOARD_ANM_telopLast,
-        BOARD_ANM_telopTurn,
+        BOARD_ANM_telopTurnNum,
         BOARD_ANM_telopTurnMulti
     };
     static HuVec2F posTbl[2][3] = {
@@ -833,8 +833,8 @@ s8 MBPadStkXGet(int playerNo)
 
 s8 MBPadStkYGet(int playerNo)
 {
-    s8 stkY = HuPadStkX[playerNo];
-    s8 subStkY = HuPadSubStkX[playerNo];
+    s8 stkY = HuPadStkY[playerNo];
+    s8 subStkY = HuPadSubStkY[playerNo];
     if(abs(stkY) > abs(subStkY)) {
         if(abs(stkY) < 8) {
             return 0;
