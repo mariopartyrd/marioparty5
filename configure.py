@@ -903,7 +903,7 @@ config.libs = [
     Rel(
         "e3bootdll",
         objects={
-            Object(NonMatching, "REL/e3bootdll/e3boot.c"),
+            Object(Matching, "REL/e3bootdll/e3boot.c"),
         },
     ),
     Rel(
@@ -1322,7 +1322,7 @@ config.libs = [
     Rel(
         "selmenuDll",
         objects={
-            Object(NonMatching, "REL/selmenuDll/selmenu.c"),
+            Object(Matching, "REL/selmenuDll/selmenu.c"),
         },
     ),
     Rel(
