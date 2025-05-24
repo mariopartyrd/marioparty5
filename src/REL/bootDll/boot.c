@@ -344,7 +344,6 @@ void BootProgExec(void)
     HuPrcSleep(30);
 }
 
-
 void CameraOutView(OMOBJ *obj)
 {
     static u16 cameraMask[] = { HU3D_CAM0, HU3D_CAM1 };
@@ -378,7 +377,7 @@ void CameraMove(void)
     Vec yOfs;
 
     f32 rotZ;
-    s8 stick_pos;
+    s8 stickPos;
     static BOOL moveF = FALSE;
     
     if ((HuPadBtnDown[0] & PAD_BUTTON_Y)) {
@@ -416,18 +415,18 @@ void CameraMove(void)
 
         VECCrossProduct(&dir, &offset, &offset);
         VECNormalize(&offset, &offset);
-        stick_pos = (HuPadSubStkX[0] & 0xF8);
-        if (stick_pos != 0) {
-            cameraCenter[0].x += 0.05f * (offset.x * stick_pos);
-            cameraCenter[0].y += 0.05f * (offset.y * stick_pos);
-            cameraCenter[0].z += 0.05f * (offset.z * stick_pos);
+        stickPos = (HuPadSubStkX[0] & 0xF8);
+        if (stickPos != 0) {
+            cameraCenter[0].x += 0.05f * (offset.x * stickPos);
+            cameraCenter[0].y += 0.05f * (offset.y * stickPos);
+            cameraCenter[0].z += 0.05f * (offset.z * stickPos);
         }
         VECNormalize(&yOfs, &offset);
-        stick_pos = -(HuPadSubStkY[0] & 0xF8);
-        if (stick_pos != 0) {
-            cameraCenter[0].x += 0.05f * (offset.x * stick_pos);
-            cameraCenter[0].y += 0.05f * (offset.y * stick_pos);
-            cameraCenter[0].z += 0.05f * (offset.z * stick_pos);
+        stickPos = -(HuPadSubStkY[0] & 0xF8);
+        if (stickPos != 0) {
+            cameraCenter[0].x += 0.05f * (offset.x * stickPos);
+            cameraCenter[0].y += 0.05f * (offset.y * stickPos);
+            cameraCenter[0].z += 0.05f * (offset.z * stickPos);
         }
     }
 }
