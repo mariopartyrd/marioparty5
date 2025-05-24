@@ -105,7 +105,7 @@ static BOOL PGFinishF;
 static char *PGName;
 static BOOL matHookCallF;
 static BOOL TL32F;
-static BOOL CancelTRXF;
+static BOOL cancelTRXF;
 
 u8 texMtxTbl[] = {
     GX_TEXMTX0, GX_TEXMTX1,
@@ -154,7 +154,7 @@ void Hu3DDraw(HU3DMODEL *modelP, Mtx mtx, HuVecF *scale)
     PSMTXCopy(mtx, MTXBuf[0]);
     scaleBuf[0] = *scale;
     MTXIdx = 1;
-    CancelTRXF = FALSE;
+    cancelTRXF = FALSE;
     hookIdx = HU3D_MODELID_NONE;
     shadingBak = -1;
     vtxModeBak = -1;
@@ -241,7 +241,7 @@ static void objMesh(HU3DMODEL *modelP, HSFOBJECT *objPtr)
     }
     constData = objPtr->constData;
     if(!(constData->attr & HU3D_CONST_LOCK)) {
-        if(CancelTRXF == FALSE) {
+        if(cancelTRXF == FALSE) {
             if(objPtr->mesh.cenvNum != 0 && hookIdx == HU3D_MODELID_NONE) {
                 i = objPtr - hsf->object;
                 PSMTXConcat(MTXBuf[0], hsf->matrix->data[i+hsf->matrix->base_idx], MTXBuf[MTXIdx]);
@@ -277,7 +277,7 @@ static void objMesh(HU3DMODEL *modelP, HSFOBJECT *objPtr)
                 PSMTXCopy(MTXBuf[MTXIdx-1], drawObj->matrix);
             }
             drawObj->scale = scaleBuf[MTXIdx-1];
-            CancelTRXF = FALSE;
+            cancelTRXF = FALSE;
             applyF = FALSE;
         }
         PSMTXCopy(drawObj->matrix, constData->matrix);
@@ -2032,7 +2032,7 @@ static void objNull(HU3DMODEL *modelP, HSFOBJECT *objPtr)
     s16 i;
     Mtx mtx;
 
-    if(CancelTRXF == FALSE) {
+    if(cancelTRXF == FALSE) {
         if(attachMotionF == FALSE) {
             transformP = &objPtr->mesh.base;
         } else {
@@ -2052,7 +2052,7 @@ static void objNull(HU3DMODEL *modelP, HSFOBJECT *objPtr)
         MTXIdx++;
         applyF = TRUE;
     } else {
-        CancelTRXF = FALSE;
+        cancelTRXF = FALSE;
         applyF = FALSE;
     }
     for(i=0; i<objPtr->mesh.childNum; i++) {
@@ -2072,7 +2072,7 @@ static void objRoot(HU3DMODEL *modelP, HSFOBJECT *objPtr)
     s16 applyF;
     Mtx mtx;
 
-    if(CancelTRXF == FALSE) {
+    if(cancelTRXF == FALSE) {
         if(attachMotionF == FALSE) {
             transformP = &objPtr->mesh.base;
         } else {
@@ -2092,7 +2092,7 @@ static void objRoot(HU3DMODEL *modelP, HSFOBJECT *objPtr)
         MTXIdx++;
         applyF = TRUE;
     } else {
-        CancelTRXF = FALSE;
+        cancelTRXF = FALSE;
         applyF = FALSE;
     }
     for(i=0; i<objPtr->mesh.childNum; i++) {
@@ -2112,7 +2112,7 @@ static void objJoint(HU3DMODEL *modelP, HSFOBJECT *objPtr)
     s16 i;
     Mtx mtx;
 
-    if(CancelTRXF == FALSE) {
+    if(cancelTRXF == FALSE) {
         if(attachMotionF == FALSE) {
             transformP = &objPtr->mesh.base;
         } else {
@@ -2132,7 +2132,7 @@ static void objJoint(HU3DMODEL *modelP, HSFOBJECT *objPtr)
         MTXIdx++;
         applyF = TRUE;
     } else {
-        CancelTRXF = FALSE;
+        cancelTRXF = FALSE;
         applyF = FALSE;
     }
     for(i=0; i<objPtr->mesh.childNum; i++) {
@@ -2152,7 +2152,7 @@ static void objMap(HU3DMODEL *modelP, HSFOBJECT *objPtr)
     s16 applyF;
     Mtx mtx;
 
-    if(CancelTRXF == FALSE) {
+    if(cancelTRXF == FALSE) {
         if(attachMotionF == FALSE) {
             transformP = &objPtr->mesh.base;
         } else {
@@ -2170,7 +2170,7 @@ static void objMap(HU3DMODEL *modelP, HSFOBJECT *objPtr)
         MTXIdx++;
         applyF = TRUE;
     } else {
-        CancelTRXF = FALSE;
+        cancelTRXF = FALSE;
         applyF = FALSE;
     }
     for(i=0; i<objPtr->mesh.childNum; i++) {
@@ -2201,9 +2201,9 @@ static void objReplica(HU3DMODEL *modelP, HSFOBJECT *objPtr)
     scaleBuf[MTXIdx].y = transformP->scale.y*scaleBuf[MTXIdx-1].y;
     scaleBuf[MTXIdx].z = transformP->scale.z*scaleBuf[MTXIdx-1].z;
     MTXIdx++;
-    CancelTRXF = TRUE;
+    cancelTRXF = TRUE;
     objCall(modelP, objPtr->mesh.replica);
-    CancelTRXF = FALSE;
+    cancelTRXF = FALSE;
     MTXIdx--;
 }
 
@@ -3141,7 +3141,7 @@ void Hu3DModelObjMtxGet(HU3DMODELID modelId, char *objName, Mtx mtx)
     PGMaxPos.x = PGMaxPos.y = PGMaxPos.z = -1000000.0f;
     PGMinPos.x = PGMinPos.y = PGMinPos.z = 1000000.0f;
     MTXIdx = 1;
-    CancelTRXF = FALSE;
+    cancelTRXF = FALSE;
     PGFinishF = FALSE;
     hookIdx = HU3D_MODELID_NONE;
     PGName = HuMemDirectMallocNum(HEAP_HEAP, 0x200, HU_MEMNUM_OVL);
@@ -3191,7 +3191,7 @@ void PGObjCalc(HU3DMODEL *model, HSFOBJECT *object)
     Mtx mtx;
     Mtx rot;
 
-    if(CancelTRXF == FALSE) {
+    if(cancelTRXF == FALSE) {
         if(attachMotionF == FALSE) {
             transformP = &object->mesh.base;
         } else {
@@ -3205,7 +3205,7 @@ void PGObjCalc(HU3DMODEL *model, HSFOBJECT *object)
         MTXIdx++;
         applyF = TRUE;
     } else {
-        CancelTRXF = FALSE;
+        cancelTRXF = FALSE;
         applyF = FALSE;
     }
     if(strcmp(PGName, object->name) == 0) {
@@ -3305,10 +3305,10 @@ void PGObjReplica(HU3DMODEL *model, HSFOBJECT *object)
     mtxTransCat(mtx, transformP->pos.x, transformP->pos.y, transformP->pos.z);
     PSMTXConcat(MTXBuf[MTXIdx-1], mtx, MTXBuf[MTXIdx]);
     MTXIdx++;
-    CancelTRXF = TRUE;
+    cancelTRXF = TRUE;
     PGObjCall(model, object->mesh.replica);
     if(PGFinishF == FALSE) {
-        CancelTRXF = FALSE;
+        cancelTRXF = FALSE;
         MTXIdx--;
     }
 }
@@ -3404,7 +3404,7 @@ void Hu3DModelObjDrawInit(void) {
     for(i=0; i<8; i++) {
         BmpPtrBak[i] = PTR_INVALID;
     }
-    CancelTRXF = FALSE;
+    cancelTRXF = FALSE;
     hookIdx = HU3D_MODELID_NONE;
     shadingBak = -1;
     vtxModeBak = -1;
