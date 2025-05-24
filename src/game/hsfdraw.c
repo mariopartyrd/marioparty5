@@ -15,6 +15,8 @@
 
 #define MTXBUF_MAX 96
 
+void HuSprTexLoad(ANIMDATA *anim, s16 bmpNo, s16 texMapId, GXTexWrapMode wrapS, GXTexWrapMode wrapT, GXTexFilter filter);
+
 static void objCall(HU3DMODEL *modelP, HSFOBJECT *objPtr);
 static void objMesh(HU3DMODEL *modelP, HSFOBJECT *objPtr);
 static void FaceDraw(HU3DDRAWOBJ *modelP, HSFFACE *face);
@@ -28,7 +30,7 @@ static void SetProjection(HU3DDRAWOBJ *drawObj, s16 tevStage, s16 projNo, s16 te
 static void SetShadowTex(void);
 static void SetShadow(HU3DDRAWOBJ *drawObj, s16 tevStage, s16 texCoord);
 static void FaceDrawShadow(HU3DDRAWOBJ *modelP, HSFFACE *face);
-static s32 LoadTexture(HU3DMODEL *modelP, HSFBITMAP *bmpPtr, HSFATTRIBUTE *attrP, s16 texId);
+static void LoadTexture(HU3DMODEL *modelP, HSFBITMAP *bmpPtr, HSFATTRIBUTE *attrP, s16 texId);
 static void objNull(HU3DMODEL *modelP, HSFOBJECT *objPtr);
 static void objRoot(HU3DMODEL *modelP, HSFOBJECT *objPtr);
 static void objJoint(HU3DMODEL *modelP, HSFOBJECT *objPtr);
@@ -478,13 +480,13 @@ static void FaceDraw(HU3DDRAWOBJ *drawObj, HSFFACE *face)
         totalMatCnt++;
         materialBak = matP;
         color.r = matP->litColor[0]*(modelP->ambR * Hu3DAmbColR);
-        color.g = matP->litColor[0]*(modelP->ambG * Hu3DAmbColG);
-        color.b = matP->litColor[0]*(modelP->ambB * Hu3DAmbColB);
+        color.g = matP->litColor[1]*(modelP->ambG * Hu3DAmbColG);
+        color.b = matP->litColor[2]*(modelP->ambB * Hu3DAmbColB);
         color.a  = 255;
         GXSetChanAmbColor(GX_COLOR0A0, color);
         color.r = matP->color[0];
-        color.g = matP->color[0];
-        color.b = matP->color[0];
+        color.g = matP->color[1];
+        color.b = matP->color[2];
         color.a  = 255;
         GXSetChanMatColor(GX_COLOR0A0, color);
         if(modelP->attr & HU3D_ATTR_ZCMP_OFF) {
@@ -533,7 +535,7 @@ static void FaceDraw(HU3DDRAWOBJ *drawObj, HSFFACE *face)
                 GXSetTevDirect(tevStageNo);
             }
         }
-        for(i=GX_TEVSTAGE0; i<GX_MAX_TEVSTAGE; i++) {
+        for(i=GX_TEVSTAGE0; i<8; i++) {
             GXSetTevKAlphaSel(i, GX_TEV_KASEL_1);
         }
         if(matP->attrNum == 0) {
@@ -605,14 +607,12 @@ static void FaceDraw(HU3DDRAWOBJ *drawObj, HSFFACE *face)
                 }
                 BmpPtrBak[hiliteMapNo] = PTR_INVALID;
             }
-            if(flags & HSF_MATERIAL_MATHOOK) {
-                if(modelP->matHook) {
-                    matHook = modelP->matHook;
-                    matHook(drawObj, matP);
-                    matHookCallF = TRUE;
-                    for(j=0; j<8; j++) {
-                        BmpPtrBak[j] = PTR_INVALID;
-                    }
+            if((flags & HSF_MATERIAL_MATHOOK) && modelP->matHook) {
+                matHook = modelP->matHook;
+                matHook(drawObj, matP);
+                matHookCallF = TRUE;
+                for(j=0; j<8; j++) {
+                    BmpPtrBak[j] = PTR_INVALID;
                 }
             } else {
                 Hu3DTevStageNoTexSet(drawObj, matP);
@@ -668,11 +668,11 @@ static void FaceDraw(HU3DDRAWOBJ *drawObj, HSFFACE *face)
                     } else if(animWorkP->attr & HU3D_ATTRANIM_ATTR_BMPANIM) {
                         bitMapPtr = animWorkP->bitMapPtr;
                         if(bitMapPtr->dataFmt != HSF_BMPFMT_CI_IA8) {
-                            LoadTexture(drawObj->model, bitMapPtr, attrP, (s16)i);
+                            LoadTexture(drawObj->model, bitMapPtr, attrP, (s32)i);
                         } else {
-                            LoadTexture(drawObj->model, animWorkP->bitMapPtr, attrP, (s16)i);
+                            LoadTexture(drawObj->model, animWorkP->bitMapPtr, attrP, (s32)i);
                             LoadTexture(drawObj->model, animWorkP->bitMapPtr, attrP, texNo|HSF_TEXID_TL32);
-                            texCol[i].r = (s32)texNo;
+                            texCol[i].r = (s16)texNo;
                             texCol[i].a = 2;
                             texNo++;
                         }
@@ -696,11 +696,11 @@ static void FaceDraw(HU3DDRAWOBJ *drawObj, HSFFACE *face)
                     } else {
                         texCol[i].a = 0;
                         if(bitMapPtr->dataFmt != HSF_BMPFMT_CI_IA8) {
-                            LoadTexture(drawObj->model, bitMapPtr, attrP, (s16)i);
+                            LoadTexture(drawObj->model, bitMapPtr, attrP, (s32)i);
                         } else {
-                            LoadTexture(drawObj->model, bitMapPtr, attrP, (s16)i);
+                            LoadTexture(drawObj->model, bitMapPtr, attrP, (s32)i);
                             LoadTexture(drawObj->model, bitMapPtr, attrP, texNo|HSF_TEXID_TL32);
-                            texCol[i].r = (s32)texNo;
+                            texCol[i].r = (s16)texNo;
                             texCol[i].a = 2;
                             texNo++;
                         }
@@ -768,14 +768,12 @@ static void FaceDraw(HU3DDRAWOBJ *drawObj, HSFFACE *face)
                 }
                 BmpPtrBak[toonMapNo] = PTR_INVALID;
             }
-            if(flags & HSF_MATERIAL_MATHOOK) {
-                if(modelP->matHook) {
-                    matHook = modelP->matHook;
-                    matHook(drawObj, matP);
-                    matHookCallF = TRUE;
-                    for(j=0; j<8; j++) {
-                        BmpPtrBak[j] = PTR_INVALID;
-                    }
+            if((flags & HSF_MATERIAL_MATHOOK) && modelP->matHook) {
+                matHook = modelP->matHook;
+                matHook(drawObj, matP);
+                matHookCallF = TRUE;
+                for(j=0; j<8; j++) {
+                    BmpPtrBak[j] = PTR_INVALID;
                 }
             } else {
                 Hu3DTevStageTexSet(drawObj, matP);
@@ -1899,7 +1897,7 @@ static void FaceDrawShadow(HU3DDRAWOBJ *drawObj, HSFFACE *face)
     drawCnt++;
 }
 
-static s32 LoadTexture(HU3DMODEL *modelP, HSFBITMAP *bmpPtr, HSFATTRIBUTE *attrP, s16 texId)
+static void LoadTexture(HU3DMODEL *modelP, HSFBITMAP *bmpPtr, HSFATTRIBUTE *attrP, s16 texId)
 {
     GXTexObj texObj;
     GXTlutObj tlutObj;
@@ -3122,7 +3120,7 @@ void Hu3DModelObjPosGet(HU3DMODELID modelId, char *objName, HuVecF *pos)
     pos->y = mtx[1][3];
     pos->z = mtx[2][3];
     if(PGFinishF == 0) {
-        OSReport("Error: Not Found %s forObjPosGet\n", objName);
+        OSReport("Error: Not Found %s for ObjPosGet\n", objName);
         pos->x = pos->y = pos->z = 0.0f;
     }
 }
@@ -3156,7 +3154,7 @@ void Hu3DModelObjMtxGet(HU3DMODELID modelId, char *objName, Mtx mtx)
     PGObjCall(modelP, hsf->root);
     PSMTXCopy(MTXBuf[MTXIdx-1], mtx);
     if(PGFinishF == FALSE && *PGName != '\0') {
-        OSReport("Error: Not Found %s forObjPosGet\n", objName);
+        OSReport("Error: Not Found %s for ObjPosGet\n", objName);
         PSMTXIdentity(MTXBuf[MTXIdx]);
     }
     HuMemDirectFree(PGName);
