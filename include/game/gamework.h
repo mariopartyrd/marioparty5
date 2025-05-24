@@ -435,6 +435,11 @@ static inline GWPLAYER *GWPlayerGet(int playerNo)
     return &GwPlayer[playerNo];
 }
 
+static inline void GWSubGameNoSet(int subGameNo)
+{
+    GwSystem.subGameNo = subGameNo;
+}
+
 #define GWMgCoinBonusAdd(player, value) GWMgCoinBonusSet((player), GWMgCoinBonusGet((player))+(value))
 #define GWMgCoinAdd(player, value) GWMgCoinSet((player), GWMgCoinGet((player))+(value))
 

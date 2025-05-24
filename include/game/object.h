@@ -160,5 +160,12 @@ extern s32 omovlevtno;
 extern s32 omovlstat;
 extern u8 omUPauseFlag;
 extern s16 omdispinfo;
+extern float CZoomM[HU3D_CAM_MAX];
+extern HuVecF CenterM[HU3D_CAM_MAX];
+extern HuVecF CRotM[HU3D_CAM_MAX];
+extern float CZoom;
+extern HuVecF Center;
+extern HuVecF CRot;
+
 
 #endif
