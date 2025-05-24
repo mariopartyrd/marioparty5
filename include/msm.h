@@ -209,4 +209,7 @@ s32 msmStreamPause(int streamNo, BOOL pause, s32 speed);
 void msmStreamStopAll(s32 speed);
 s32 msmStreamGetStatus(int streamNo);
 
+MSMSE *msmSeGetIndexPtr(s32 seId);
+void msmMusSetMasterVolume(int volume);
+
 #endif
