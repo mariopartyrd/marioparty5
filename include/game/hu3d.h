@@ -740,7 +740,6 @@ void Hu3DAnimAttrReset(HU3DANIMID animId, u16 attr);
 void Hu3DAnimSpeedSet(HU3DANIMID animId, float speed);
 void Hu3DAnimBankSet(HU3DANIMID animId, s32 bank);
 void Hu3DAnmNoSet(HU3DANIMID animId, u16 anmNo);
-s32 Hu3DAnimSet(HU3DMODEL *modelP, HSFATTRIBUTE *attrP, s16 texSlotNo);
 void Hu3DAnimExec(void);
 HU3DTEXSCRID Hu3DTexScrollCreate(HU3DMODELID modelId, char *bmpName);
 void Hu3DTexScrollKill(HU3DTEXSCRID texScrId);
