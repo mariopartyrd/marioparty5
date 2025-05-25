@@ -1086,7 +1086,7 @@ config.libs = [
             Object(NonMatching, "REL/m512Dll/stage.cpp"),
             Object(NonMatching, "REL/m512Dll/player.cpp"),
             Object(NonMatching, "REL/m512Dll/score.cpp"),
-            Object(NonMatching, "REL/m512Dll/penguin.cpp"),
+            Object(NonMatching, "REL/m512Dll/zako.cpp"),
             Object(NonMatching, "REL/m512Dll/heiho.cpp"),
         },
     ),
@@ -1138,6 +1138,127 @@ config.libs = [
             Object(NonMatching, "REL/m516Dll/effect.c"),
             Object(NonMatching, "REL/m516Dll/score.c"),
             Object(NonMatching, "REL/m516Dll/actor.c"),
+        },
+    ),
+    Rel(
+        "m517Dll",
+        objects={
+            Object(NonMatching, "REL/m517Dll/effect.cpp"),
+            Object(NonMatching, "REL/m517Dll/m517.cpp"),
+            Object(NonMatching, "REL/m517Dll/input.cpp"),
+            Object(NonMatching, "REL/m517Dll/gamemaster.cpp"),
+            Object(NonMatching, "REL/m517Dll/dusteff.cpp"),
+            Object(NonMatching, "REL/m517Dll/kuribo.cpp"),
+            Object(NonMatching, "REL/m517Dll/objectsetup.cpp"),
+            Object(NonMatching, "REL/m517Dll/stage.cpp"),
+            Object(NonMatching, "REL/m517Dll/misc.cpp"),
+            Object(NonMatching, "REL/m517Dll/choro.cpp"),
+            Object(NonMatching, "REL/m517Dll/papereff.cpp"),
+            Object(NonMatching, "REL/m517Dll/player.cpp"),
+            Object(NonMatching, "REL/m517Dll/camera.cpp"),
+            Object(NonMatching, "REL/m517Dll/dustcloud.cpp"),
+            Object(NonMatching, "REL/m517Dll/audio.cpp"),
+        },
+    ),
+    Rel(
+        "m518dll",
+        objects={
+            Object(NonMatching, "REL/m518dll/m518.c"),
+        },
+    ),
+    Rel(
+        "m519dll",
+        objects={
+            Object(NonMatching, "REL/m519dll/m519.c"),
+        },
+    ),
+    Rel(
+        "m520Dll",
+        objects={
+            Object(NonMatching, "REL/m520Dll/m520.c"),
+        },
+    ),
+    Rel(
+        "m521Dll",
+        objects={
+            Object(NonMatching, "REL/m521Dll/tokei.cpp"),
+            Object(NonMatching, "REL/m521Dll/tokeihand.cpp"),
+            Object(NonMatching, "REL/m521Dll/m521.cpp"),
+            Object(NonMatching, "REL/m521Dll/debugline.cpp"),
+            Object(NonMatching, "REL/m521Dll/driver.cpp"),
+            Object(NonMatching, "REL/m521Dll/gamemaster.cpp"),
+            Object(NonMatching, "REL/m521Dll/objectsetup.cpp"),
+            Object(NonMatching, "REL/m521Dll/camera.cpp"),
+            Object(NonMatching, "REL/m521Dll/stage.cpp"),
+            Object(NonMatching, "REL/m521Dll/player.cpp"),
+            Object(NonMatching, "REL/m521Dll/score.cpp"),
+        },
+    ),
+    Rel(
+        "m522Dll",
+        objects={
+            Object(NonMatching, "REL/m522Dll/fire.cpp"),
+            Object(NonMatching, "REL/m522Dll/bubble.cpp"),
+            Object(NonMatching, "REL/m522Dll/m522.cpp"),
+            Object(NonMatching, "REL/m522Dll/gamemaster.cpp"),
+            Object(NonMatching, "REL/m522Dll/objectsetup.cpp"),
+            Object(NonMatching, "REL/m522Dll/camera.cpp"),
+            Object(NonMatching, "REL/m522Dll/sunfire.cpp"),
+            Object(NonMatching, "REL/m522Dll/stage.cpp"),
+            Object(NonMatching, "REL/m522Dll/player.cpp"),
+        },
+    ),
+    Rel(
+        "m523Dll",
+        objects={
+            Object(NonMatching, "REL/m523Dll/m523.c"),
+            Object(NonMatching, "REL/m523Dll/player.c"),
+        },
+    ),
+    Rel(
+        "m524Dll",
+        objects={
+            Object(NonMatching, "REL/m524Dll/m524.c"),
+        },
+    ),
+    Rel(
+        "m525Dll",
+        objects={
+            Object(NonMatching, "REL/m525Dll/m525.c"),
+        },
+    ),
+    Rel(
+        "m526Dll",
+        objects={
+            Object(NonMatching, "REL/m526Dll/m526.c"),
+            Object(NonMatching, "REL/m526Dll/math.c"),
+        },
+    ),
+    Rel(
+        "m527Dll",
+        objects={
+            Object(NonMatching, "REL/m527Dll/m527.c"),
+        },
+    ),
+    Rel(
+        "m528Dll",
+        objects={
+            Object(NonMatching, "REL/m528Dll/m528.c"),
+        },
+    ),
+    Rel(
+        "m529dll",
+        objects={
+            Object(NonMatching, "REL/m529dll/m529.c"),
+        },
+    ),
+    Rel(
+        "m530Dll",
+        objects={
+            Object(NonMatching, "REL/m530Dll/m530.c"),
+            Object(NonMatching, "REL/m530Dll/kinomi.c"),
+            Object(NonMatching, "REL/m530Dll/player.c"),
+            Object(NonMatching, "REL/m530Dll/effect.c"),
         },
     ),
     Rel(

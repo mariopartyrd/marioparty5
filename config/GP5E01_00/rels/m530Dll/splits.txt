@@ -5,3 +5,26 @@ Sections:
 	.rodata     type:rodata align:8
 	.data       type:data align:8
 	.bss        type:bss align:8
+
+REL/m530Dll/m530.c:
+	.text       start:0x00000000 end:0x000045A0
+	.rodata     start:0x00000000 end:0x000000D8
+	.data       start:0x00000000 end:0x00000150
+	.bss        start:0x00000000 end:0x000000C0
+
+REL/m530Dll/kinomi.c:
+	.text       start:0x000045A0 end:0x00006D7C
+	.rodata     start:0x000000D8 end:0x00000120
+	.data       start:0x00000150 end:0x000002E8
+	.bss        start:0x000000C0 end:0x000000D0
+
+REL/m530Dll/player.c:
+	.text       start:0x00006D7C end:0x00008848
+	.rodata     start:0x00000120 end:0x000001C0
+	.data       start:0x000002E8 end:0x00000390
+	.bss        start:0x000000D0 end:0x0000076C
+
+REL/m530Dll/effect.c:
+	.text       start:0x00008848 end:0x0000989C
+	.rodata     start:0x000001C0 end:0x00000218
+	.data       start:0x00000390 end:0x0000039C

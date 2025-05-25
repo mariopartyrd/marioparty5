@@ -5,3 +5,77 @@ Sections:
 	.rodata     type:rodata align:8
 	.data       type:data align:8
 	.bss        type:bss align:8
+
+REL/m521Dll/tokei.cpp:
+	.text       start:0x00000000 end:0x000048FC
+	.ctors      start:0x00000000 end:0x00000004
+	.rodata     start:0x00000000 end:0x00000118
+	.data       start:0x00000000 end:0x00000020
+	.bss        start:0x00000000 end:0x00000010
+
+REL/m521Dll/tokeihand.cpp:
+	.text       start:0x000048FC end:0x00004A68
+	.rodata     start:0x00000118 end:0x00000120
+
+REL/m521Dll/m521.cpp:
+	.text       start:0x00004A68 end:0x0000AADC
+	.ctors      start:0x00000004 end:0x00000008
+	.rodata     start:0x00000120 end:0x00000190
+	.data       start:0x00000020 end:0x00000230
+	.bss        start:0x00000010 end:0x00000A00
+
+REL/m521Dll/debugline.cpp:
+	.text       start:0x0000AADC end:0x0000AF00
+	.rodata     start:0x00000190 end:0x00000198
+
+REL/m521Dll/driver.cpp:
+	.text       start:0x0000AF00 end:0x00011520
+	.ctors      start:0x00000008 end:0x0000000C
+	.rodata     start:0x00000198 end:0x00000240
+	.data       start:0x00000230 end:0x00000538
+	.bss        start:0x00000A00 end:0x00000A18
+
+REL/m521Dll/gamemaster.cpp:
+	.text       start:0x00011520 end:0x000140D8
+	.ctors      start:0x0000000C end:0x00000010
+	.rodata     start:0x00000240 end:0x00000278
+	.data       start:0x00000538 end:0x00000568
+	.bss        start:0x00000A18 end:0x00000A88
+
+REL/m521Dll/objectsetup.cpp:
+	.text       start:0x000140D8 end:0x0001416C
+	.ctors      start:0x00000010 end:0x00000014
+	.bss        start:0x00000A88 end:0x00000A98
+
+REL/m521Dll/camera.cpp:
+	.text       start:0x0001416C end:0x0001490C
+	.rodata     start:0x00000278 end:0x000002D0
+	.data       start:0x00000568 end:0x000005D0
+
+REL/m521Dll/stage.cpp:
+	.text       start:0x0001490C end:0x00015298
+	.ctors      start:0x00000014 end:0x00000018
+	.rodata     start:0x000002D0 end:0x00000318
+	.data       start:0x000005D0 end:0x00000680
+	.bss        start:0x00000A98 end:0x00000AA8
+
+REL/m521Dll/player.cpp:
+	.text       start:0x00015298 end:0x00017F78
+	.ctors      start:0x00000018 end:0x0000001C
+	.rodata     start:0x00000318 end:0x000003D0
+	.data       start:0x00000680 end:0x000007B8
+	.bss        start:0x00000AA8 end:0x00000AB8
+
+REL/m521Dll/score.cpp:
+	.text       start:0x00017F78 end:0x00018B18
+	.rodata     start:0x000003D0 end:0x00000400
+	.data       start:0x000007B8 end:0x000007F8
+
+REL/global_destructor_chain.c:
+	.text       start:0x00018B18 end:0x00018BA0
+	.dtors      start:0x00000000 end:0x00000004
+	.bss        start:0x00000AB8 end:0x00000ABC
+
+REL/ptmf.c:
+	.text       start:0x00018BA0 end:0x00018CE8
+	.rodata     start:0x00000400 end:0x0000040C
