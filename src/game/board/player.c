@@ -2904,7 +2904,7 @@ int MBPlayerVoicePlay(int playerNo, s16 seId)
     u8 pan;
     MBPlayerPosGet(playerNo, &pos);
     pan = MBAudFXPosPanGet(&pos);
-    return HuAudCharFXPlayVolPan(GwPlayer[playerNo].charNo, seId, MSM_VOL_MAX, pan);
+    return CharFXPlayVolPan(GwPlayer[playerNo].charNo, seId, MSM_VOL_MAX, pan);
 }
 
 void MBPlayerDispSet(int playerNo, BOOL dispF)

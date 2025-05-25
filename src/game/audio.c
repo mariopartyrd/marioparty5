@@ -6,6 +6,7 @@
 #include "game/process.h"
 #include "game/memory.h"
 #include "game/gamework.h"
+#include "game/charman.h"
 
 #define HUMSMHEAP_SIZE 0xBFC00
 
@@ -16,7 +17,7 @@
 
 static int HuSePlay(int seId, MSM_SEPARAM *param);
 
-static BOOL charFxLoadF[13];
+static BOOL charFxLoadF[CHARNO_MAX];
 static s32 sndFxBuf[64][2];
 
 static s16 Hu3DAudVol;
@@ -61,7 +62,7 @@ void HuAudInit(void)
     for(i=0; i<64; i++) {
         sndFxBuf[i][0] = -1;
     }
-    for(i=0; i<13; i++) {
+    for(i=0; i<CHARNO_MAX; i++) {
         charFxLoadF[i] = FALSE;
     }
     sndGroupBak = MSM_GRP_NONE;
@@ -402,12 +403,12 @@ int HuAudSStreamPlay(s16 streamId)
     return HuAudSStreamChanPlay(streamId, 0);
 }
 
-int HuAudSStreamPlayFront(s16 streamId)
+int HuAudBGMPlay(s16 streamId)
 {
     return HuAudSStreamChanPlay(streamId, 0);
 }
 
-int HuAudSStreamPlayBack(s16 streamId)
+int HuAudJinglePlay(s16 streamId)
 {
     return HuAudSStreamChanPlay(streamId, 2);
 }
@@ -715,7 +716,7 @@ void HuAudSndCommonGrpSet(s16 grp, BOOL delGrpF)
     void *buf;
     s16 i;
     
-    for(i=0; i<13; i++) {
+    for(i=0; i<CHARNO_MAX; i++) {
         charFxLoadF[i] = 0;
     }
     msmMusStopAll(TRUE, 0);
@@ -752,7 +753,7 @@ void HuAudAUXVolSet(s8 volA, s8 volB)
     HuAuxBVol = volB;
 }
 
-static s32 charSndGrpTable[13] = {
+static s32 charSndGrpTable[CHARNO_MAX] = {
     10,
     11,
     12,
@@ -768,7 +769,7 @@ static s32 charSndGrpTable[13] = {
     10
 };
 
-void HuAudCharGrpSet(s16 ovl)
+void HuAudSndCharGrpSet(s16 ovl)
 {
     SNDGRPTBL *sndGrpP;
     OSTick tickStart;
@@ -793,12 +794,12 @@ void HuAudCharGrpSet(s16 ovl)
     }
     for(i=loadNum=0; i<GW_PLAYER_MAX; i++) {
         charNo = GwPlayerConf[i].charNo;
-        if(charNo < 0 || charNo >= 13 || charNo == 0xFF || charFxLoadF[charNo]) {
+        if(charNo < 0 || charNo >= CHARNO_MAX || charNo == 0xFF || charFxLoadF[charNo]) {
             loadNum++;
         }
     }
     if(loadNum < GW_PLAYER_MAX) {
-        for(i=0; i<13; i++) {
+        for(i=0; i<CHARNO_MAX; i++) {
             charFxLoadF[i] = FALSE;
         }
         msmMusStopAll(TRUE, 0);
@@ -814,7 +815,7 @@ void HuAudCharGrpSet(s16 ovl)
         }
         for(i=0; i<GW_PLAYER_MAX; i++) {
             charNo = GwPlayerConf[i].charNo;
-            if(charNo >= 0 && charNo < 8 && charNo != 0xFF) {
+            if(charNo >= 0 && charNo < CHARNO_MAX && charNo != 0xFF) {
                 charFxLoadF[charNo] = TRUE;
                 grpSet = charSndGrpTable[charNo];
                 buf = HuMemDirectMalloc(HEAP_MODEL, msmSysGetSampSize(grpSet));
@@ -826,25 +827,25 @@ void HuAudCharGrpSet(s16 ovl)
     }
 }
 
-s32 HuAudPlayerFXPlay(s16 playerNo, s16 seId)
+s32 PlayerFXPlay(s16 playerNo, s16 seId)
 {
     s16 charNo = GwPlayerConf[playerNo].charNo;
-    return HuAudCharFXPlay(charNo, seId);
+    return CharFXPlay(charNo, seId);
 }
 
-s32 HuAudPlayerFXPlayPos(s16 playerNo, s16 seId, Vec *pos)
+s32 PlayerFXPlayPos(s16 playerNo, s16 seId, Vec *pos)
 {
     s16 charNo = GwPlayerConf[playerNo].charNo;
-    return HuAudCharFXPlayPos(charNo, seId, pos);
+    return CharFXPlayPos(charNo, seId, pos);
 }
 
-void HuAudPlayerFXStop(s16 playerNo, s16 seId)
+void PlayerFXStop(s16 playerNo, s16 seId)
 {
     s16 charNo = GwPlayerConf[playerNo].charNo;
-    HuAudCharFXStop(charNo, seId);
+    CharFXStop(charNo, seId);
 }
 
-static int charSeIdTable[13] = {
+int CharSeTable[CHARNO_MAX] = {
     MSM_SE_MARIO,
     MSM_SE_LUIGI,
     MSM_SE_PEACH,
@@ -860,7 +861,7 @@ static int charSeIdTable[13] = {
     MSM_SE_MINIKOOPAB
 };
 
-static int charVoiceSeIdTable[13] = {
+int CharVoiceSeTable[CHARNO_MAX] = {
     MSM_SE_VOICE_MARIO,
     MSM_SE_VOICE_LUIGI,
     MSM_SE_VOICE_PEACH,
@@ -876,7 +877,7 @@ static int charVoiceSeIdTable[13] = {
     MSM_SE_VOICE_MINIKOOPAB
 };
 
-s32 HuAudCharFXPlayVolPan(s16 charNo, s16 seId, s16 vol, s16 pan)
+s32 CharFXPlayVolPan(s16 charNo, s16 seId, s16 vol, s16 pan)
 {
     MSM_SEPARAM param;
     if(omSysExitReq || WipeCheck()) {
@@ -884,10 +885,10 @@ s32 HuAudCharFXPlayVolPan(s16 charNo, s16 seId, s16 vol, s16 pan)
     }
     if(seId < MSM_SE_VOICE_MARIO) {
         seId -= MSM_SE_MARIO;
-        seId += charSeIdTable[charNo];
+        seId += CharSeTable[charNo];
     } else {
         seId -= MSM_SE_VOICE_MARIO;
-        seId += charVoiceSeIdTable[charNo];
+        seId += CharVoiceSeTable[charNo];
     }
     param.flag = MSM_SEPARAM_NONE;
     if(HuAuxAVol != -1) {
@@ -904,28 +905,28 @@ s32 HuAudCharFXPlayVolPan(s16 charNo, s16 seId, s16 vol, s16 pan)
     return HuSePlay(seId, &param);
 }
 
-s32 HuAudCharFXPlay(s16 charNo, s16 seId)
+s32 CharFXPlay(s16 charNo, s16 seId)
 {
-    return HuAudCharFXPlayVolPan(charNo, seId, MSM_VOL_MAX, MSM_PAN_CENTER);
+    return CharFXPlayVolPan(charNo, seId, MSM_VOL_MAX, MSM_PAN_CENTER);
 }
 
-s32 HuAudCharFXPlayVol(s16 charNo, s16 seId, s16 vol)
+s32 CharFXPlayVol(s16 charNo, s16 seId, s16 vol)
 {
-    return HuAudCharFXPlayVolPan(charNo, seId, vol, MSM_PAN_CENTER);
+    return CharFXPlayVolPan(charNo, seId, vol, MSM_PAN_CENTER);
 }
 
-s32 HuAudCharFXPlayPan(s16 charNo, s16 seId, s16 pan)
+s32 CharFXPlayPan(s16 charNo, s16 seId, s16 pan)
 {
-    return HuAudCharFXPlayVolPan(charNo, seId, MSM_VOL_MAX, pan);
+    return CharFXPlayVolPan(charNo, seId, MSM_VOL_MAX, pan);
 }
 
-s32 HuAudCharFXPlayPos(s16 charNo, s16 seId, Vec *pos)
+s32 CharFXPlayPos(s16 charNo, s16 seId, Vec *pos)
 {
     MSM_SEPARAM param;
     if(omSysExitReq) {
         return 0;
     }
-    seId += charSeIdTable[charNo];
+    seId += CharSeTable[charNo];
     param.flag = MSM_SEPARAM_POS;
     if(HuAuxAVol != -1) {
         param.flag |= MSM_SEPARAM_AUXVOLA;
@@ -941,12 +942,12 @@ s32 HuAudCharFXPlayPos(s16 charNo, s16 seId, Vec *pos)
     return HuSePlay(seId, &param);
 }
 
-void HuAudCharFXStop(s16 charNo, s16 seId)
+void CharFXStop(s16 charNo, s16 seId)
 {
     int entrySeNo[MSM_ENTRY_SENO_MAX];
     u16 entryNum;
     u16 i;
-    seId += charSeIdTable[charNo];
+    seId += CharSeTable[charNo];
     entryNum = msmSeGetEntryID(seId, entrySeNo);
     for(i=0; i<entryNum; i++) {
         msmSeStop(entrySeNo[i], 0);

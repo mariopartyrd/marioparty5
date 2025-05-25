@@ -49,8 +49,8 @@ s32 HuAudSeqMidiCtrlGet(int musNo, s8 channel, s8 ctrl);
 
 int HuAudSStreamChanPlay(s16 streamId, s16 chanNo);
 int HuAudSStreamPlay(s16 streamId);
-int HuAudSStreamPlayFront(s16 streamId);
-int HuAudSStreamPlayBack(s16 streamId);
+int HuAudBGMPlay(s16 streamId);
+int HuAudJinglePlay(s16 streamId);
 void HuAudSStreamStop(int streamNo);
 void HuAudSStreamFadeOut(int streamNo, s32 speed);
 void HuAudSStreamAllFadeOut(s32 speed);
@@ -68,16 +68,16 @@ void HuAudSndGrpSet(s16 grp);
 void HuAudAUXSet(s32 auxA, s32 auxB);
 void HuAudAUXVolSet(s8 volA, s8 volB);
 
-s32 HuAudPlayerFXPlay(s16 playerNo, s16 seId);
-s32 HuAudPlayerFXPlayPos(s16 playerNo, s16 seId, Vec *pos);
-void HuAudPlayerFXStop(s16 playerNo, s16 seId);
+s32 PlayerFXPlay(s16 playerNo, s16 seId);
+s32 PlayerFXPlayPos(s16 playerNo, s16 seId, Vec *pos);
+void PlayerFXStop(s16 playerNo, s16 seId);
 
-s32 HuAudCharFXPlayVolPan(s16 charNo, s16 seId, s16 vol, s16 pan);
-s32 HuAudCharFXPlay(s16 charNo, s16 seId);
-s32 HuAudCharFXPlayVol(s16 charNo, s16 seId, s16 vol);
-s32 HuAudCharFXPlayPan(s16 charNo, s16 seId, s16 pan);
-s32 HuAudCharFXPlayPos(s16 charNo, s16 seId, Vec *pos);
-void HuAudCharFXStop(s16 charNo, s16 seId);
+s32 CharFXPlayVolPan(s16 charNo, s16 seId, s16 vol, s16 pan);
+s32 CharFXPlay(s16 charNo, s16 seId);
+s32 CharFXPlayVol(s16 charNo, s16 seId, s16 vol);
+s32 CharFXPlayPan(s16 charNo, s16 seId, s16 pan);
+s32 CharFXPlayPos(s16 charNo, s16 seId, Vec *pos);
+void CharFXStop(s16 charNo, s16 seId);
 
 extern SNDGRPTBL sndGrpTable[];
 
