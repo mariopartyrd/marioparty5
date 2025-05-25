@@ -53,7 +53,7 @@ REL/m512Dll/score.cpp:
 	.rodata     start:0x00000388 end:0x000003E8
 	.data       start:0x00000458 end:0x000004E8
 
-REL/m512Dll/penguin.cpp:
+REL/m512Dll/zako.cpp:
 	.text       start:0x0000E698 end:0x00010750
 	.ctors      start:0x00000014 end:0x00000018
 	.rodata     start:0x000003E8 end:0x00000558

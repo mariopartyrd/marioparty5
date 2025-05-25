@@ -5,3 +5,15 @@ Sections:
 	.rodata     type:rodata align:8
 	.data       type:data align:8
 	.bss        type:bss align:8
+
+REL/m523Dll/m523.c:
+	.text       start:0x00000000 end:0x00003914
+	.rodata     start:0x00000000 end:0x000000F0
+	.data       start:0x00000000 end:0x00000208
+	.bss        start:0x00000000 end:0x000000E8
+
+REL/m523Dll/player.c:
+	.text       start:0x00003914 end:0x00009A20
+	.rodata     start:0x000000F0 end:0x00000280
+	.data       start:0x00000208 end:0x0000039A
+	.bss        start:0x000000E8 end:0x000001C8

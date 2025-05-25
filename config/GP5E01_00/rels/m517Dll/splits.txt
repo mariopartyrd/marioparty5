@@ -5,3 +5,93 @@ Sections:
 	.rodata     type:rodata align:8
 	.data       type:data align:8
 	.bss        type:bss align:8
+
+REL/m517Dll/effect.cpp:
+	.text       start:0x00000000 end:0x00001EE8
+	.rodata     start:0x00000000 end:0x00000098
+	.data       start:0x00000000 end:0x00000080
+	.bss        start:0x00000000 end:0x00000018
+
+REL/m517Dll/m517.cpp:
+	.text       start:0x00001EE8 end:0x00007B2C
+	.ctors      start:0x00000000 end:0x00000004
+	.rodata     start:0x00000098 end:0x000000F0
+	.data       start:0x00000080 end:0x00000260
+	.bss        start:0x00000018 end:0x00000A00
+
+REL/m517Dll/input.cpp:
+	.text       start:0x00007B2C end:0x0000A168
+	.rodata     start:0x000000F0 end:0x000001B8
+	.data       start:0x00000260 end:0x00000338
+	.bss        start:0x00000A00 end:0x00000A10
+
+REL/m517Dll/gamemaster.cpp:
+	.text       start:0x0000A168 end:0x0000BDB0
+	.ctors      start:0x00000004 end:0x00000008
+	.data       start:0x00000338 end:0x000003F0
+	.bss        start:0x00000A10 end:0x00000A28
+
+REL/m517Dll/dusteff.cpp:
+	.text       start:0x0000BDB0 end:0x0000C994
+	.rodata     start:0x000001B8 end:0x00000218
+
+REL/m517Dll/kuribo.cpp:
+	.text       start:0x0000C994 end:0x0000DBB8
+	.rodata     start:0x00000218 end:0x00000248
+	.data       start:0x000003F0 end:0x00000480
+
+REL/m517Dll/objectsetup.cpp:
+	.text       start:0x0000DBB8 end:0x0000DC4C
+	.ctors      start:0x00000008 end:0x0000000C
+	.bss        start:0x00000A28 end:0x00000A38
+
+REL/m517Dll/camera.cpp:
+	.text       start:0x0000DC4C end:0x0000E3A4
+	.rodata     start:0x00000248 end:0x000002A0
+	.data       start:0x00000480 end:0x000004F0
+
+REL/m517Dll/stage.cpp:
+	.text       start:0x0000E3A4 end:0x0000EBD0
+	.rodata     start:0x000002A0 end:0x00000348
+	.data       start:0x000004F0 end:0x00000548
+
+REL/m517Dll/misc.cpp:
+	.text       start:0x0000EBD0 end:0x0000FAB0
+	.rodata     start:0x00000348 end:0x00000380
+	.data       start:0x00000548 end:0x00000588
+
+REL/m517Dll/choro.cpp:
+	.text       start:0x0000FAB0 end:0x00013590
+	.rodata     start:0x00000380 end:0x00000498
+	.data       start:0x00000588 end:0x00000678
+	.bss        start:0x00000A38 end:0x00000A48
+
+REL/m517Dll/papereff.cpp:
+	.text       start:0x00013590 end:0x00015500
+	.rodata     start:0x00000498 end:0x00000588
+	.data       start:0x00000678 end:0x000006D0
+
+REL/m517Dll/player.cpp:
+	.text       start:0x00015500 end:0x0001A4D4
+	.ctors      start:0x0000000C end:0x00000010
+	.rodata     start:0x00000588 end:0x000006A8
+	.data       start:0x000006D0 end:0x00000858
+	.bss        start:0x00000A48 end:0x00000A58
+
+REL/m517Dll/dustcloud.cpp:
+	.text       start:0x0001A4D4 end:0x0001B48C
+	.rodata     start:0x000006A8 end:0x00000718
+	.data       start:0x00000858 end:0x00000880
+
+REL/m517Dll/audio.cpp:
+	.text       start:0x0001B48C end:0x0001BF20
+	.rodata     start:0x00000718 end:0x00000750
+
+REL/global_destructor_chain.c:
+	.text       start:0x0001BF20 end:0x0001BFA8
+	.dtors      start:0x00000000 end:0x00000004
+	.bss        start:0x00000A58 end:0x00000A5C
+
+REL/ptmf.c:
+	.text       start:0x0001BFA8 end:0x0001C0F0
+	.rodata     start:0x00000750 end:0x0000075C
