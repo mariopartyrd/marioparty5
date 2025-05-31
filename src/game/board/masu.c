@@ -8,6 +8,7 @@
 #include "game/board/pause.h"
 #include "game/board/coin.h"
 #include "game/board/star.h"
+#include "game/board/gate.h"
 
 #include "game/board/branch.h"
 
@@ -25,7 +26,6 @@ typedef struct MasuLight_s {
 
 //Functions in headers that don't exist
 
-void MBGateCreate(void);
 
 static u8 masuPathVisitF[MASU_MAX];
 static s16 masuDonkeyTbl[MASU_DONKEY_MAX];

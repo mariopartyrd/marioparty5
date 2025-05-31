@@ -18,6 +18,7 @@
 #include "game/board/mgcall.h"
 #include "game/board/telop.h"
 #include "game/board/window.h"
+#include "game/board/gate.h"
 
 #include "game/saveload.h"
 #include "game/sprite.h"
@@ -38,10 +39,8 @@ void MBCircuitMgEndExec(int playerNo);
 void MBCircuitExec(BOOL turnIntrF);
 void MBCircuitReset(void);
 
-void MBGateInit(void);
 void MBCapMachineInit(void);
 void MBCapsuleObjInit(void);
-void MBGateClose(void);
 void MBCapMachineClose(void);
 
 static MBTURNHOOK postTurnHook;
