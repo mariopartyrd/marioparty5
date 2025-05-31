@@ -6,14 +6,14 @@ Sections:
 	.data       type:data align:8
 	.bss        type:bss align:8
 
-REL/m521Dll/tokei.cpp:
+REL/m521Dll/clock.cpp:
 	.text       start:0x00000000 end:0x000048FC
 	.ctors      start:0x00000000 end:0x00000004
 	.rodata     start:0x00000000 end:0x00000118
 	.data       start:0x00000000 end:0x00000020
 	.bss        start:0x00000000 end:0x00000010
 
-REL/m521Dll/tokeihand.cpp:
+REL/m521Dll/clockhand.cpp:
 	.text       start:0x000048FC end:0x00004A68
 	.rodata     start:0x00000118 end:0x00000120
 

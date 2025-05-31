@@ -9,6 +9,7 @@
 #include "game/board/window.h"
 #include "game/board/branch.h"
 #include "game/board/scroll.h"
+#include "game/board/gate.h"
 
 #include "game/flag.h"
 #include "game/wipe.h"
@@ -19,7 +20,6 @@
 void MBStarDispSetAll(BOOL dispF);
 void MBStarMasuDispSet(int masuId, BOOL dispF);
 
-s16 MBGateMasuExec(int playerNo, s16 masuId, s16 masuNext);
 
 static MBPLAYERWORK playerWork[GW_PLAYER_MAX];
 static int startPlayerNo;
