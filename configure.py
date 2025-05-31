@@ -463,7 +463,7 @@ config.libs = [
             Object(Matching, "game/board/mgcall.c"),
             Object(Matching, "game/board/effect.c"),
             Object(NonMatching, "game/board/pauseoption.c"),
-            Object(NonMatching, "game/board/gate.c"),
+            Object(Matching, "game/board/gate.c"),
             Object(NonMatching, "game/board/story.c"),
             Object(Matching, "game/board/telop.c"),
             Object(NonMatching, "game/board/mgcircuit.c"),
@@ -1181,8 +1181,8 @@ config.libs = [
     Rel(
         "m521Dll",
         objects={
-            Object(NonMatching, "REL/m521Dll/tokei.cpp"),
-            Object(NonMatching, "REL/m521Dll/tokeihand.cpp"),
+            Object(NonMatching, "REL/m521Dll/clock.cpp"),
+            Object(NonMatching, "REL/m521Dll/clockhand.cpp"),
             Object(NonMatching, "REL/m521Dll/m521.cpp"),
             Object(NonMatching, "REL/m521Dll/debugline.cpp"),
             Object(NonMatching, "REL/m521Dll/driver.cpp"),

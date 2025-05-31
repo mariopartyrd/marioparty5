@@ -3,6 +3,7 @@
 
 #include "game/hu3d.h"
 #include "game/sprite.h"
+#include "game/frand.h"
 
 //Particle Blend Modes
 #define MB_EFFECT_BLEND_NORMAL 0
@@ -13,6 +14,8 @@
 #define MB_EFFECT_ATTR_STOPCNT (1 << 1)
 #define MB_EFFECT_ATTR_UPAUSE (1 << 3)
 #define MB_EFFECT_ATTR_3D (1 << 4)
+
+#define MBEffRandF() (0.000015258789f*(frand() & 0xFFFF))
 
 typedef struct MBEffect_s MBEFFECT;
 typedef void (*MBEFFHOOK)(HU3DMODEL *modelP, MBEFFECT *effP, Mtx matrix);

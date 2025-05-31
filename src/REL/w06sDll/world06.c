@@ -721,8 +721,6 @@ static void MB6Ev_KnifeEffHook(HU3DMODEL *modelP, MBEFFECT *effP, Mtx matrix)
     }
 }
 
-#define EFFRANDF() (0.000015258789f*(frand() & 0xFFFF))
-
 static void MB6Ev_KnifeEffCreate(int modelId)
 {
     MBEFFECT *effP = Hu3DData[modelId].hookData;
@@ -736,24 +734,24 @@ static void MB6Ev_KnifeEffCreate(int modelId)
         if(effDataP->time) {
             continue;
         }
-        effDataP->time = 60.0f*(0.7f+(0.5f*EFFRANDF()));
-        angle1 = 360*EFFRANDF();
-        angle2 = 360*EFFRANDF();
+        effDataP->time = 60.0f*(0.7f+(0.5f*MBEffRandF()));
+        angle1 = 360*MBEffRandF();
+        angle2 = 360*MBEffRandF();
         dir.x = (HuSin(angle1) * HuCos(angle2));
         dir.y = HuSin(angle2);
         dir.z = (HuCos(angle1) * HuCos(angle2));
         VECScale(&dir, &effDataP->pos, 50);
-        VECScale(&dir, &effDataP->vel, (1.6666666f*(6.0f*EFFRANDF()))+3.3333333f);
-        effDataP->rot.z = 360*EFFRANDF();
-        effDataP->scale = (60*EFFRANDF())+60;
-        effDataP->color.a = (100*EFFRANDF())+80;
-        effDataP->color.r = (100*EFFRANDF())+150;
-        effDataP->color.g = (100*EFFRANDF())+150;
-        effDataP->color.b = (100*EFFRANDF())+150;
+        VECScale(&dir, &effDataP->vel, (1.6666666f*(6.0f*MBEffRandF()))+3.3333333f);
+        effDataP->rot.z = 360*MBEffRandF();
+        effDataP->scale = (60*MBEffRandF())+60;
+        effDataP->color.a = (100*MBEffRandF())+80;
+        effDataP->color.r = (100*MBEffRandF())+150;
+        effDataP->color.g = (100*MBEffRandF())+150;
+        effDataP->color.b = (100*MBEffRandF())+150;
     }
 }
 
-#undef EFFRANDF
+#undef MBEffRandF
 #undef CAKEMOVE_PLAYER_KILL
 #undef CAKEMOVE_PLAYER_INIT
 #undef CAKEMOVE_PLAYER_IDLE
@@ -767,7 +765,7 @@ static void MB6Ev_KnifeEffCreate(int modelId)
 #undef CAKEMOVE_PLAYER_ROTATE
 #undef CAKEMOVE_PLAYER_NULL
 
-float MB6_DistRatiGet(HuVecF *vec1, HuVecF *vec2, HuVecF *vec3)
+float MB6_DistRatioGet(HuVecF *vec1, HuVecF *vec2, HuVecF *vec3)
 {
     float mag = VECMag(vec3);
     if(mag > 0) {
