@@ -918,7 +918,7 @@ config.libs = [
     Rel(
         "fileseldll",
         objects={
-            Object(NonMatching, "REL/fileseldll/filesel.c"),
+            Object(Matching, "REL/fileseldll/filesel.c"),
             Object(NonMatching, "REL/fileseldll/saveload.c"),
             Object(NonMatching, "REL/fileseldll/filename.c"),
             Object(NonMatching, "REL/fileseldll/toueidisp.c"),

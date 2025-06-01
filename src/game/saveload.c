@@ -38,6 +38,8 @@
 #define SL_MESS_CARD_REINSERT 11
 #define SL_MESS_CARD_FORMAT_UNMOUNT 12
 
+void SLCurBoxNoSet(s16 boxNo);
+
 u64 SLSerialNo[2] = {};
 static u32 boxDataOfs[SAVE_BOX_MAX*2] = {
     SAVE_BOX_OFS(0),
