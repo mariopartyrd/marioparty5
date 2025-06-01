@@ -45,7 +45,6 @@ extern s16 curSlotNo;
 
 void SLCurSlotNoSet(s16 slotNo);
 s16 SLCurSlotNoGet(void);
-void SLCurBoxNoSet(s16 boxNo);
 s16 SLCurBoxNoGet(void);
 void SLSaveFlagSet(BOOL saveFlag);
 BOOL SLSaveFlagGet(void);

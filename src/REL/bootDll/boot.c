@@ -525,7 +525,7 @@ BOOL BootTitleExec(BOOL fromTitle)
             Hu3DMotionStartEndSet(titleMdlId[1], 0, Hu3DMotionMaxTimeGet(titleMdlId[1]));
             Hu3DModelAttrReset(titleMdlId[1], HU3D_MOTATTR_LOOP);
             Hu3DMotionTimeSet(titleMdlId[1], 360);
-            HuAudFXPlay(MSM_SE_MENU_39);
+            HuAudFXPlay(MSM_SE_MENU_40);
             HuPrcSleep(20);
             return TRUE;
         }
