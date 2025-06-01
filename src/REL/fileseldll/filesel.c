@@ -7,7 +7,6 @@
 
 #include "relprolog.inc"
 
-#include "datanum/filesel.h"
 #include "messnum/mpsystem.h"
 #include "messnum/syshelp.h"
 
@@ -91,7 +90,7 @@ void FileselMain(void)
     HuWinExOpen(infoWinId);
     SLSaveFlagSet(TRUE);
     repeat:
-    result = FileBoxInit(-1);
+    result = FileBoxInit(HUWIN_NONE);
     if(result != CARD_RESULT_WRONGDEVICE) {
         if(result == CARD_RESULT_BUSY) {
             FileCommonInit();
@@ -500,7 +499,7 @@ s32 FileselSelect(void)
                             }
                         }
                         SLSdSave(SLCurSlotNoGet(), SLCurBoxNoGet(), &GwSdCommon);
-                        result = FileClear(-1);
+                        result = FileClear(HUWIN_NONE);
                         if(result == FILESEL_RESULT_CANCEL || result == CARD_RESULT_NOFILE || result == CARD_RESULT_IOERROR) {
                             goto readFail;
                         }
@@ -512,7 +511,7 @@ s32 FileselSelect(void)
                         SLSaveDataMake(FALSE, &time);
                         SLCommonSet();
                         SLSdSave(SLCurSlotNoGet(), SLCurBoxNoGet(), &GwSdCommon);
-                        result = FileSaveMesOpen(-1, MESS_MPSYSTEM_MES_SAVE_SAVE);
+                        result = FileSaveMesOpen(HUWIN_NONE, MESS_MPSYSTEM_MES_SAVE_SAVE);
                         if(result == FILESEL_RESULT_CANCEL || result == CARD_RESULT_NOFILE || result == CARD_RESULT_IOERROR) {
                             goto readFail;
                         }
@@ -739,7 +738,7 @@ s32 FileselCopy(s16 srcBoxNo)
     HuSprGrpZRotSet(boxGrpId[boxNo], 0);
     memcpy(&saveBuf[curSlotNo][SLBoxDataOffsetGet(boxNo)], &saveBuf[curSlotNo][SLBoxDataOffsetGet(srcBoxNo)], SAVE_BOX_SIZE);
     deleteSeNo = HuAudFXPlay(MSM_SE_MENU_07);
-    result = FileSaveMesOpen(-1, MESS_MPSYSTEM_MES_SAVE_COPY);
+    result = FileSaveMesOpen(HUWIN_NONE, MESS_MPSYSTEM_MES_SAVE_COPY);
     HuAudFXStop(deleteSeNo);
     HuAudFXPlay(MSM_SE_MENU_08);
     if(result != FILESEL_RESULT_CANCEL) {
@@ -827,7 +826,7 @@ s32 FileselEraseConfirm(s16 boxNo)
     if(result == 0) {
         int deleteSeNo = HuAudFXPlay(MSM_SE_MENU_09);
         SLSaveEmptyMark(curSlotNo, boxNo);
-        result = FileSaveMesOpen(-1, MESS_MPSYSTEM_MES_SAVE_ERASE);
+        result = FileSaveMesOpen(HUWIN_NONE, MESS_MPSYSTEM_MES_SAVE_ERASE);
         HuAudFXStop(deleteSeNo);
         if(result == 0) {
             HuAudFXPlay(MSM_SE_MENU_10);

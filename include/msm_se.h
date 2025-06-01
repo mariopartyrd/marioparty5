@@ -94,6 +94,9 @@
 #define MSM_SE_MENU_10 976
 #define MSM_SE_MENU_11 977
 #define MSM_SE_MENU_12 978
+#define MSM_SE_MENU_13 979
+#define MSM_SE_MENU_15 981
+
 #define MSM_SE_MENU_40 1006
 
 #define MSM_SE_BD3_13 1512
