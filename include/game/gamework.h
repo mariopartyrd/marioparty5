@@ -153,7 +153,7 @@ typedef struct GwCommon_s {
     s8 rumbleF;
     u16 totalStar;
     OSTime time;
-    char name[17];
+    s8 name[17];
     u32 mgUnlock[4];
     u32 mgRecord[12];
     u16 charPlayNum[10][10];

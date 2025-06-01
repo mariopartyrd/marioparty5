@@ -312,9 +312,9 @@ void SLSaveDataSlotMake(s16 slotNo, BOOL eraseF, OSTime *saveTime)
     memcpy(buf+SAVE_ICON_OFS, anim->bmp->data, CARD_ICON_WIDTH*CARD_ICON_HEIGHT*4);
     memcpy(buf+SAVE_ICON_TLUT_OFS, anim->bmp->palData, 512);
     SLSaveDataInfoSet(slotNo, saveTime);
-    checkSum = SLCheckSumSlotGet(slotNo, 0, SAVE_MAIN_CHECKSUM_OFS);
-    saveBuf[slotNo][SAVE_MAIN_CHECKSUM_OFS] = checkSum >> 8;
-    saveBuf[slotNo][SAVE_MAIN_CHECKSUM_OFS+1] = checkSum & 0xFF;
+    checkSum = SLCheckSumSlotGet(slotNo, 0, SAVE_ICONBANNER_SIZE);
+    saveBuf[slotNo][SAVE_ICONBANNER_CHECKSUM_OFS] = checkSum >> 8;
+    saveBuf[slotNo][SAVE_ICONBANNER_CHECKSUM_OFS+1] = checkSum & 0xFF;
 }
 
 void SLSaveDataMake(BOOL eraseF, OSTime *saveTime)
@@ -348,9 +348,9 @@ void SLSaveDataInfoSet(s16 slotNo, OSTime *saveTime)
     saveBuf[slotNo][SAVE_COMMENT_DATE_OFS+8] = digit+'0';
     year -= digit*10;
     saveBuf[slotNo][SAVE_COMMENT_DATE_OFS+9] = year+'0';
-    checkSum = SLCheckSumGet(0, SAVE_MAIN_CHECKSUM_OFS);
-    saveBuf[slotNo][SAVE_MAIN_CHECKSUM_OFS] = checkSum >> 8;
-    saveBuf[slotNo][SAVE_MAIN_CHECKSUM_OFS+1] = checkSum & 0xFF;
+    checkSum = SLCheckSumGet(0, SAVE_ICONBANNER_SIZE);
+    saveBuf[slotNo][SAVE_ICONBANNER_SIZE] = checkSum >> 8;
+    saveBuf[slotNo][SAVE_ICONBANNER_SIZE+1] = checkSum & 0xFF;
 }
 
 void SLCommonSet(void)
@@ -593,7 +593,7 @@ BOOL SLCheckSumBoxSlotCheck(s16 slotNo, s16 boxNo)
     }
 }
 
-BOOL SLCheckSumCheck(s16 slotNo, s16 boxNo)
+BOOL SLCheckSumCheck(void)
 {
     return SLCheckSumBoxSlotCheck(curSlotNo, curBoxNo);
 }
