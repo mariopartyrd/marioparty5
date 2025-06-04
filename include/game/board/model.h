@@ -94,7 +94,7 @@ float MBMotionSpeedGet(MBMODELID modelId);
 BOOL MBMotionSpeedSet(MBMODELID modelId, float speed);
 BOOL MBMotionEndCheck(MBMODELID modelId);
 BOOL MBMotionShapeSet(MBMODELID modelId, int motNo, u32 attr);
-BOOL MBMotionShapeTimeSet(MBMODELID modelId, float time);
+//BOOL MBMotionShapeTimeSet(MBMODELID modelId, float time);
 float MBMotionShapeTimeGet(MBMODELID modelId);
 float MBMotionShapeMaxTimeGet(MBMODELID modelId);
 BOOL MBMotionShapeSpeedSet(MBMODELID modelId, float speed);
