@@ -56,6 +56,7 @@ static HU3DPARMANPARAM storyEffParmanParam = {
     { { 0xFF, 0xFF, 0xFF, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 }, { 0, 0, 0, 0 } },
 };
 
+BOOL MBMotionShapeTimeSet(MBMODELID modelId, double time);
 static Point3d capMachineOfs = { 0.0f, -140.0f, 0.0f };
 void CapMachineExec(); 
 void CapMachineStoryExec();

@@ -660,7 +660,7 @@ BOOL MBMotionShapeSet(MBMODELID modelId, int motNo, u32 attr)
     }
 }
 
-BOOL MBMotionShapeTimeSet(MBMODELID modelId, double time)
+BOOL MBMotionShapeTimeSet(MBMODELID modelId, float time)
 {
     MBMODEL *modelP = MBModelGet(modelId);
     if(!modelP) {
