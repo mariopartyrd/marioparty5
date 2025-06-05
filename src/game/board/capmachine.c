@@ -64,7 +64,7 @@ void CapMachineStoryExec();
 //Start The Stirring Sequence
 void CapMachineKakimazeStart(capMachineWork_s *arg0) {
     arg0->unk_28 = 60;
-    MBAudFXPlay(MSM_SE_CAPSULE_MACHINE_02);
+    MBAudFXPlay(MSM_SE_BOARD_18);
 }
 
 //Check If We Can Stir
@@ -171,10 +171,10 @@ void MBCapMachineTutorialExec(void) {
     }
     MBWinCreate(6, 0x2A0017, -1);
     MBTopWinWait();
-    MBAudFXPlay(MSM_SE_CAPSULE_MACHINE_01);
+    MBAudFXPlay(MSM_SE_BOARD_17);
     MBModelAttrReset(CapMachineWork_ref->unk_4, 0x40000040);
     CapMachineWork_ref->unk_28 = 0x3C;
-    MBAudFXPlay(MSM_SE_CAPSULE_MACHINE_02);
+    MBAudFXPlay(MSM_SE_BOARD_18);
     while (CapMachineWork_ref->unk_28) {
         HuPrcVSleep();
     }
