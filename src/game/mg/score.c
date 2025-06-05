@@ -270,7 +270,7 @@ static void ScoreDispUpdate(MGSCORE *score)
     if (score->validF == 0) {
         i = 0;
         value = score->value;
-        digitVal = 0xF4240;
+        digitVal = 1000000;
         digitNum = 0;
         digitDispF = 0;
         if (value == 0) {
