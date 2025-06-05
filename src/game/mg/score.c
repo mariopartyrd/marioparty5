@@ -4,337 +4,332 @@
 #include "game/mg/score.h"
 #include "game/sprite.h"
 
+#define SCORE_UNIT_SPRNO (MGSCORE_DIGIT_MAX)
+#define SCORE_SPRMAX (MGSCORE_DIGIT_MAX+1)
 
-static const  float unitOfsTbl[3][4] = {
+static const float unitOfsTbl[3][4] = {
     8.0f, 28.0f, 28.0f, 8.0f, 
     10.0f, 34.0f, 34.0f, 10.0f, 
     12.0f, 40.0f, 40.0f, 12.0f
 };
 
-void ScoreExec();
-static void (*modeTbl[1])(void *) = { ScoreExec };
+static void ScoreExec(MGSCORE *score);
+static void ScoreMain();
+static void ScoreDispUpdate(MGSCORE *score);
 
-void ScoreMain();
-score_s *MgScoreInit(s32 arg0);
-void MgScorePriSet(score_s *arg0, s16 arg1);
-void ScoreDispUpdate(score_s *arg0);
+typedef void (*SCOREFUNC)(MGSCORE *timer);
 
-score_s *MgScoreCreate(s32 arg0, s32 arg1, s32 arg2) {
-    score_s *var_r31;
-    s32 var_r30;
-    s32 var_r29;
-    s32 var_r28;
-    var_r30 = 0;
-    var_r29 = 0;
-    var_r29 = 1;
-    var_r31 = MgScoreInit(arg0);
-    if (var_r31 == NULL) {
+static SCOREFUNC modeTbl[1] = { ScoreExec };
+
+
+MGSCORE *MgScoreCreate(int digitFile, int unitFile, BOOL dispLeadZeroF) {
+    MGSCORE *score;
+    int unitType;
+    int unit;
+    unitType = 0;
+    unit = 0;
+    unit = 1;
+    score = MgScoreInit(digitFile);
+    if (score == NULL) {
         return NULL;
     }
-    if (arg1  != -1) {
-        var_r31->unk_40[7] = (s16)HuSprCreate(HuSprAnimRead(HuDataSelHeapReadNum(arg1, 0x10000000, HEAP_MODEL)), 0, 0);
-        HuSprGrpMemberSet(var_r31->unk_44, 7, var_r31->unk_40[7]);
-        HuSprBankSet(var_r31->unk_44, 7, var_r29);
+    if (unitFile  != -1) {
+        score->sprId[SCORE_UNIT_SPRNO] = (int)HuSprCreate(HuSprAnimDataRead(unitFile), 0, 0);
+        HuSprGrpMemberSet(score->grpId, SCORE_UNIT_SPRNO, score->sprId[SCORE_UNIT_SPRNO]);
+        HuSprBankSet(score->grpId, SCORE_UNIT_SPRNO, unit);
     }
-    switch (arg1) {
-        case 0x960035:
-        case 0x960036:
-            var_r30 = 0;
+    switch (unitFile) {
+        case MGCONST_ANM_unitSmall:
+        case MGCONST_ANM_unitBlueSmall:
+            unitType = 0;
             break;
 
-        case 0x960037:
-            var_r30 = 1;
+        case MGCONST_ANM_unitBlueMedium:
+            unitType = 1;
             break;
 
-        case 0x960038:
-            var_r30 = 2;
+        case MGCONST_ANM_unitLarge:
+            unitType = 2;
             break;
 
         default:
-            var_r30 = 0;
+            unitType = 0;
             break;
     }
-    var_r31->unk_20 = unitOfsTbl[var_r30][var_r29];
-    var_r31->unk_24 = unitOfsTbl[var_r30][3];
-    var_r31->unk_50 = arg2;
-    MgScorePriSet(var_r31, 0x5A);
-    return var_r31;
+    score->unitOfs.x = unitOfsTbl[unitType][unit];
+    score->unitOfs.y = unitOfsTbl[unitType][3];
+    score->dispLeadZeroF = dispLeadZeroF;
+    MgScorePriSet(score, 90);
+    return score;
 }
 
-score_s *MgScoreInit(s32 arg0) {
-    score_s *var_r31;
-    s32 i;
+MGSCORE *MgScoreInit(int digitFile) {
+    MGSCORE *score;
+    int i;
 
-    var_r31 = HuMemDirectMallocNum(HEAP_HEAP, 0x5C, 0x10000000);
-    if (var_r31 == NULL) {
+    score = HuMemDirectMallocNum(HEAP_HEAP, sizeof(MGSCORE), HU_MEMNUM_OVL);
+    if (score == NULL) {
         return NULL;
     }
-    var_r31->unk_8 = 0.0f;
-    var_r31->unk_C = 0.0f;
-    var_r31->unk_10 = 1.0f;
-    var_r31->unk_14 = 1.0f;
-    var_r31->unk_18 = 1.0f;
-    var_r31->unk_1C = 1.0f;
-    var_r31->unk_28 = 0.0f;
-    var_r31->unk_30 = 1.0f;
-    var_r31->unk_0 = 0;
-    var_r31->unk_38 = 0;
-    var_r31->unk_3C = 5;
-    var_r31->unk_34 = 0xff;
-    var_r31->unk_35 = 0xD8;
-    var_r31->unk_36 = 0x15;
-    var_r31->unk_48 = 1;
-    var_r31->unk_4C = 0;
-    var_r31->unk_50 = 0;
-    var_r31->unk_20 = 0.0f;
-    var_r31->unk_24 = 0.0f;
-    var_r31->unk_44 = HuSprGrpCreate(8);
-    var_r31->unk_40 = HuMemDirectMallocNum(HEAP_HEAP, 0x10, 0x10000000);
-    var_r31->unk_54 = HuSprAnimRead(HuDataSelHeapReadNum(arg0, 0x10000000, HEAP_MODEL));
+    score->pos.x = 0.0f;
+    score->pos.y = 0.0f;
+    score->scale.x = 1.0f;
+    score->scale.y = 1.0f;
+    score->digitScale.x = 1.0f;
+    score->digitScale.y = 1.0f;
+    score->zRot = 0.0f;
+    score->tpLvl = 1.0f;
+    score->mode = 0;
+    score->value = 0;
+    score->maxDigit = 5;
+    score->r = 255;
+    score->g = 216;
+    score->b = 21;
+    score->dispF = 1;
+    score->validF = 0;
+    score->dispLeadZeroF = 0;
+    score->unitOfs.x = 0.0f;
+    score->unitOfs.y = 0.0f;
+    score->grpId = HuSprGrpCreate(SCORE_SPRMAX);
+    score->sprId = HuMemDirectMallocNum(HEAP_HEAP, SCORE_SPRMAX*sizeof(HUSPRID), HU_MEMNUM_OVL);
+    score->digitAnim = HuSprAnimDataRead(digitFile);
 
-    for (i = 0; i < 7; i++) {
-        var_r31->unk_40[i] = (s16) HuSprCreate(var_r31->unk_54, 0, 0);
-        HuSprGrpMemberSet(var_r31->unk_44, i, var_r31->unk_40[i]);
+    for (i = 0; i < MGSCORE_DIGIT_MAX; i++) {
+        score->sprId[i] = (int)HuSprCreate(score->digitAnim, 0, 0);
+        HuSprGrpMemberSet(score->grpId, i, score->sprId[i]);
     }
-    var_r31->unk_40[7] = -1;
-    var_r31->unk_2C = HuSprData[var_r31->unk_40[0]].data->pat->sizeX;
-    MgScorePriSet(var_r31, 0x5A);
-    ScoreDispUpdate(var_r31);
-    var_r31->unk_58 = HuPrcChildCreate(ScoreMain, 0x1000, 0x1000, 0, HuPrcCurrentGet());
-    var_r31->unk_58->property = var_r31;
-    return var_r31;
+    score->sprId[MGSCORE_DIGIT_MAX] = HUSPR_NONE;
+    score->digitW = HuSprData[score->sprId[0]].data->pat->sizeX;
+    MgScorePriSet(score, 90);
+    ScoreDispUpdate(score);
+    score->proc = HuPrcChildCreate(ScoreMain, 0x1000, 0x1000, 0, HuPrcCurrentGet());
+    score->proc->property = score;
+    return score;
 }
 
-void MgScoreKill(score_s *arg0) {
-    HuSprGrpKill(arg0->unk_44);
-    HuPrcKill(arg0->unk_58);
-    HuMemDirectFree(arg0->unk_40);
-    HuMemDirectFree(arg0);
+void MgScoreKill(MGSCORE *score) {
+    HuSprGrpKill(score->grpId);
+    HuPrcKill(score->proc);
+    HuMemDirectFree(score->sprId);
+    HuMemDirectFree(score);
 }
 
-s32 MgScoreModeGet(s32 *arg0) {
-    return *arg0;
+int MgScoreModeGet(MGSCORE *score) {
+    return score->mode;
 }
 
-void MgScoreValueSet(score_s *arg0, s32 arg1) {
-    arg0->unk_38 = arg1;
-    arg0->unk_4C = 0;
+void MgScoreValueSet(MGSCORE *score, int value) {
+    score->value = value;
+    score->validF = FALSE;
 }
 
-s32 MgScoreValueGet(score_s *arg0) {
-    return arg0->unk_38;
+int MgScoreValueGet(MGSCORE *score) {
+    return score->value;
 }
 
-void MgScorePosSet(score_s *arg0, f32 arg8, f32 arg9) {
-    arg0->unk_8 = arg8;
-    arg0->unk_C = arg9;
-    arg0->unk_4C = 0;
+void MgScorePosSet(MGSCORE *score, float posX, float posY) {
+    score->pos.x = posX;
+    score->pos.y = posY;
+    score->validF = FALSE;
 }
 
-void MgScorePosGet(score_s *arg0, f32 *arg1, f32 *arg2) {
-    *arg1 = arg0->unk_8;
-    *arg2 = arg0->unk_C;
+void MgScorePosGet(MGSCORE *score, float *posX, float *posY) {
+    *posX = score->pos.x;
+    *posY = score->pos.y;
 }
 
-void MgScoreScaleSet(score_s *arg0, f32 arg8, f32 arg9) {
-    arg0->unk_10 = arg8;
-    arg0->unk_14 = arg9;
-    arg0->unk_4C = 0;
+void MgScoreScaleSet(MGSCORE *score, float scaleX, float scaleY) {
+    score->scale.x = scaleX;
+    score->scale.y = scaleY;
+    score->validF = FALSE;
 }
 
-void MgScoreScaleGet(score_s *arg0, f32 *arg1, f32 *arg2) {
-    *arg1 = arg0->unk_10;
-    *arg2 = arg0->unk_14;
+void MgScoreScaleGet(MGSCORE *score, float *scaleX, float *scaleY) {
+    *scaleX = score->scale.x;
+    *scaleY = score->scale.y;
 }
 
-void MgScoreDigitScaleSet(score_s *arg0, f32 arg8, f32 arg9) {
-    arg0->unk_18 = arg8;
-    arg0->unk_1C = arg9;
-    arg0->unk_4C = 0;
+void MgScoreDigitScaleSet(MGSCORE *score, float scaleX, float scaleY) {
+    score->digitScale.x = scaleX;
+    score->digitScale.y = scaleY;
+    score->validF = FALSE;
 }
 
-void MgScoreZRotSet(score_s *arg0, f32 arg8) {
-    arg0->unk_28 = arg8;
-    arg0->unk_4C = 0;
+void MgScoreZRotSet(MGSCORE *score, float zRot) {
+    score->zRot = zRot;
+    score->validF = FALSE;
 }
 
-void MgScoreZRotGet(score_s *arg0, f32 *arg1) {
-    *arg1 = arg0->unk_28;
+void MgScoreZRotGet(MGSCORE *score, float *zRot) {
+    *zRot = score->zRot;
 }
 
-void MgScoreTPLvlSet(score_s *arg0, f32 arg8) {
-    arg0->unk_30 = arg8;
-    arg0->unk_4C = 0;
+void MgScoreTPLvlSet(MGSCORE *score, float tpLvl) {
+    score->tpLvl = tpLvl;
+    score->validF = FALSE;
 }
 
-void MgScoreTPLvlGet(score_s *arg0, f32 *arg1) {
-    *arg1 = arg0->unk_30;
+void MgScoreTPLvlGet(MGSCORE *score, float *tpLvl) {
+    *tpLvl = score->tpLvl;
 }
 
-void MgScoreColorSet(score_s *arg0, u8 arg1, u8 arg2, u8 arg3) {
-    arg0->unk_34 = arg1;
-    arg0->unk_35 = arg2;
-    arg0->unk_36 = arg3;
-    arg0->unk_4C = 0;
+void MgScoreColorSet(MGSCORE *score, u8 r, u8 g, u8 b) {
+    score->r = r;
+    score->g = g;
+    score->b = b;
+    score->validF = FALSE;
 }
 
-void MgScoreMaxDigitSet(score_s *arg0, s32 arg1) {
-    arg0->unk_3C = arg1;
-    arg0->unk_4C = 0;
+void MgScoreMaxDigitSet(MGSCORE *score, int maxDigit) {
+    score->maxDigit = maxDigit;
+    score->validF = FALSE;
 }
 
-void MgScoreMaxDigitGet(score_s *arg0, s32 *arg1) {
-    *arg1 = arg0->unk_3C;
+void MgScoreMaxDigitGet(MGSCORE *score, int *maxDigit) {
+    *maxDigit = score->maxDigit;
 }
 
-void MgScoreDigitWidthSet(score_s *arg0, f32 arg8) {
-    arg0->unk_2C = arg8;
-    arg0->unk_4C = 0;
+void MgScoreDigitWidthSet(MGSCORE *score, float digitW) {
+    score->digitW = digitW;
+    score->validF = FALSE;
 }
 
-void MgScoreDigitWidthGet(score_s *arg0, f32 *arg1) {
-    *arg1 = arg0->unk_2C;
+void MgScoreDigitWidthGet(MGSCORE *score, float *digitW) {
+    *digitW = score->digitW;
 }
 
-void MgScoreDispOn(score_s *arg0) {
-    arg0->unk_48 = TRUE;
-    arg0->unk_4C = 0;
+void MgScoreDispOn(MGSCORE *score) {
+    score->dispF = TRUE;
+    score->validF = FALSE;
 }
 
-void MgScoreDispOff(score_s *arg0) {
-    arg0->unk_48 = FALSE;
-    arg0->unk_4C = 0;
+void MgScoreDispOff(MGSCORE *score) {
+    score->dispF = FALSE;
+    score->validF = FALSE;
 }
 
 
-void MgScorePriSet(score_s *arg0, s16 arg1) {
-    s32 i;
-    arg0->unk_46 = arg1;
-    for (i = 0; i < 8; i++) {
-        if (arg0->unk_40[i] != -1) {
-            HuSprPriSet(arg0->unk_44, i, arg1);
+void MgScorePriSet(MGSCORE *score, s16 prio) {
+    int i;
+    score->prio = prio;
+    for (i = 0; i < SCORE_SPRMAX; i++) {
+        if (score->sprId[i] != HUSPR_NONE) {
+            HuSprPriSet(score->grpId, i, prio);
         }
     }
 }
 
-void ScoreMain(void){
-    score_s *var_r31;
+static void ScoreMain(void)
+{
+    MGSCORE *score;
 
-    var_r31 = HuPrcCurrentGet()->property;
+    score = HuPrcCurrentGet()->property;
     while (TRUE) {
-    modeTbl[var_r31->unk_0](var_r31);
+        modeTbl[score->mode](score);
     }
 }
 
-void MgScoreModeDefaultSet(s32 *arg0) {
-    *arg0 = 0;
+void MgScoreModeDefaultSet(MGSCORE *score) {
+    score->mode = 0;
 }
 
-//Todo: Discover Type
-void ScoreExec(s32 *arg0) {
-    s32 var_r31;
-    s16 var_r30;
-    s32 var_r29;
-    s16 var_r28;
-    s16 var_r27;
+static void ScoreExec(MGSCORE *score)
+{
+    s32 i;
+    s16 mode;
+    s32 maxCheck;
+    s16 prevMode;
 
     while (1) {
-        var_r29 = 1;
-        var_r31 = 0;
-
-        while (var_r31 < var_r29) {
+        for(maxCheck=1, i=0; i<maxCheck; i++) {
             ScoreDispUpdate(HuPrcCurrentGet()->property);
             HuPrcVSleep();
 
-            var_r30 = ((Unk_Score*)HuPrcCurrentGet()->property)->unk_00;
-            var_r28 = ((Unk_Score*)HuPrcCurrentGet()->property)->unk_04;
-            ((Unk_Score*)HuPrcCurrentGet()->property)->unk_04 = var_r30;
+            mode = ((MGSCORE *)HuPrcCurrentGet()->property)->mode;
+            prevMode = ((MGSCORE *)HuPrcCurrentGet()->property)->prevMode;
+            ((MGSCORE *)HuPrcCurrentGet()->property)->prevMode = mode;
 
-            if (var_r30 != var_r28) {
+            if (mode != prevMode) {
                 return;
             }
-            var_r31 += 1;
         }
     }
 }
 
-#define ARRAY_COUNT(arr) (s32)(sizeof(arr) / sizeof(arr[0]))
+static void ScoreDispUpdate(MGSCORE *score)
+{
+    int i;
+    int digitNum;
+    int digitVal;
+    int value;
+    int digit;
+    BOOL digitDispF;
+    float posX;
+    int bank[MGSCORE_DIGIT_MAX];
 
-//Todo: Make this use array count of sp8
-void ScoreDispUpdate(score_s *arg0) {
-    s32 i;
-    s32 var_r29;
-    s32 var_r28;
-    s32 var_r27;
-    s32 var_r26;
-    s32 var_r25;
-    s32 temp_r0;
-    f32 var_f31;
-    s32 sp8[7];
-
-    if (arg0->unk_4C == 0) {
+    if (score->validF == 0) {
         i = 0;
-        var_r27 = arg0->unk_38;
-        var_r28 = 0xF4240;
-        var_r29 = 0;
-        var_r25 = 0;
-        if (var_r27 == 0) {
-            if (arg0->unk_50) {
-                for (i = 0; i < 7; i++) {
-                    sp8[i] = 0;
-                    var_r29++;
+        value = score->value;
+        digitVal = 0xF4240;
+        digitNum = 0;
+        digitDispF = 0;
+        if (value == 0) {
+            if (score->dispLeadZeroF) {
+                for (i = 0; i < MGSCORE_DIGIT_MAX; i++) {
+                    bank[i] = 0;
+                    digitNum++;
                 }
             } else {
-                sp8[i++] = 0;
-                var_r29++;
+                bank[i++] = 0;
+                digitNum++;
             }
         } else {
             do {
-                var_r26 = var_r27 / var_r28;
-                var_r27 = var_r27 - (var_r26 * var_r28);
-                if ((var_r26 > 0) || (var_r25) || (arg0->unk_50)) {
-                    var_r25 = 1;
-                    sp8[i++] = var_r26;
-                    var_r29++;
+                digit = value / digitVal;
+                value = value - (digit * digitVal);
+                if ((digit > 0) || (digitDispF) || (score->dispLeadZeroF)) {
+                    digitDispF = 1;
+                    bank[i++] = digit;
+                    digitNum++;
                 }
-                var_r28 = var_r28 / 10;
-            } while (var_r28 > 0);
+                digitVal = digitVal / 10;
+            } while (digitVal > 0);
         }
-        while (i < 7) {
-            sp8[i] = -1;
+        while (i < MGSCORE_DIGIT_MAX) {
+            bank[i] = -1;
             i++;
         }
-        var_f31 = arg0->unk_2C * (arg0->unk_3C - var_r29);
+        posX = score->digitW * (score->maxDigit - digitNum);
 
-        for (i = 0; i < 7; i++) {
-                 HuSprPosSet(arg0->unk_44, i, var_f31, 0.0f);
-            var_f31 += arg0->unk_2C;
-            if ((sp8[i] != -1) && ((arg0->unk_50 == 0) || (i >= (7 - arg0->unk_3C)))) {
-                HuSprBankSet(arg0->unk_44, i, sp8[i]);
-                if (arg0->unk_48) {
-                    HuSprAttrReset(arg0->unk_44, i, 4);
+        for (i = 0; i < MGSCORE_DIGIT_MAX; i++) {
+            HuSprPosSet(score->grpId, i, posX, 0.0f);
+            posX += score->digitW;
+            if ((bank[i] != -1) && ((score->dispLeadZeroF == 0) || (i >= (MGSCORE_DIGIT_MAX - score->maxDigit)))) {
+                HuSprBankSet(score->grpId, i, bank[i]);
+                if (score->dispF) {
+                    HuSprDispOn(score->grpId, i);
                 } else {
-                    HuSprAttrSet(arg0->unk_44, i, 4);
+                    HuSprDispOff(score->grpId, i);
                 }
-                HuSprScaleSet(arg0->unk_44, i, arg0->unk_18, arg0->unk_1C);
-                HuSprColorSet(arg0->unk_44, i, arg0->unk_34, arg0->unk_35, arg0->unk_36);
+                HuSprScaleSet(score->grpId, i, score->digitScale.x, score->digitScale.y);
+                HuSprColorSet(score->grpId, i, score->r, score->g, score->b);
             } else {
-                HuSprAttrSet(arg0->unk_44, i, 4);
+                HuSprDispOff(score->grpId, i);
             }
         }
-        HuSprPosSet(arg0->unk_44, 7, (arg0->unk_20 + (arg0->unk_3C * arg0->unk_2C)) - arg0->unk_24, 0.0f);
-        HuSprColorSet(arg0->unk_44, 7, arg0->unk_34, arg0->unk_35, arg0->unk_36);
-        HuSprScaleSet(arg0->unk_44, 7, arg0->unk_18, arg0->unk_1C);
-        if (arg0->unk_48) {
-            HuSprAttrReset(arg0->unk_44, 7, 4);
+        HuSprPosSet(score->grpId, SCORE_UNIT_SPRNO, (score->unitOfs.x + (score->maxDigit * score->digitW)) - score->unitOfs.y, 0.0f);
+        HuSprColorSet(score->grpId, SCORE_UNIT_SPRNO, score->r, score->g, score->b);
+        HuSprScaleSet(score->grpId, SCORE_UNIT_SPRNO, score->digitScale.x, score->digitScale.y);
+        if (score->dispF) {
+            HuSprDispOn(score->grpId, SCORE_UNIT_SPRNO);
         } else {
-            HuSprAttrSet(arg0->unk_44, 7, 4);
+            HuSprDispOff(score->grpId, SCORE_UNIT_SPRNO);
         }
-        HuSprGrpPosSet(arg0->unk_44, arg0->unk_8, arg0->unk_C);
-        HuSprGrpZRotSet(arg0->unk_44, arg0->unk_28);
-        HuSprGrpScaleSet(arg0->unk_44, arg0->unk_10, arg0->unk_14);
-        HuSprGrpTPLvlSet(arg0->unk_44, arg0->unk_30);
-        arg0->unk_4C = 1;
+        HuSprGrpPosSet(score->grpId, score->pos.x, score->pos.y);
+        HuSprGrpZRotSet(score->grpId, score->zRot);
+        HuSprGrpScaleSet(score->grpId, score->scale.x, score->scale.y);
+        HuSprGrpTPLvlSet(score->grpId, score->tpLvl);
+        score->validF = 1;
     }
 }
 

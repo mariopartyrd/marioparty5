@@ -4,28 +4,31 @@
 #include "game/process.h"
 #include "game/main.h"
 #include "game/mg/timer.h"
+#include "datanum/mgconst.h"
 
 
-const static s16 lbl_80289D88[4] = { 
-    0, 0x3C, 0x64, 0x3C 
+const static s16 timeUnitTbl[4] = { 
+    0, 60, 100, 60 
 };
-const static s16 scoreWinSize[4][2] = { 
-    { 0x20, 0x0020 }, 
-    { 0x90, 0x0030 }, 
-    { 0x60, 0x0020 }, 
-    { 0x88, 0x0020 } };
-void TimerExec();
-void MgTimerDigitColorSet(timer_s* arg0, u8 arg1, u8 arg2, u8 arg3);
-void CreateScoreSpr(timer_s* arg0);
-void KillScoreSpr(timer_s* arg0);
-void UpdateTimerSpr(timer_s* arg0);
-void MgTimerDispOn(timer_s* arg0);
-void MgTimerDispOff(timer_s* arg0);
-void espBankSet(s16 espId, s32 bank);
 
-void TimerExecOn();
-void TimerExecOff();
-static const float scoreOfsTbl[4][15][2] = {
+const static s16 scoreWinSize[MGTIMER_TYPE_MAX][2] = { 
+    { 32, 32 }, 
+    { 144, 48 }, 
+    { 96, 32 }, 
+    { 136, 32 }
+};
+
+typedef void (*TIMERFUNC)(MGTIMER *timer);
+
+static void TimerExec();
+static void TimerExecOn(MGTIMER* timer);
+static void TimerExecOff(MGTIMER* timer);
+static void CreateScoreSpr(MGTIMER* timer);
+static void KillScoreSpr(MGTIMER* timer);
+static void UpdateTimerSpr(MGTIMER* timer);
+
+
+static const HuVec2F scoreOfsTbl[MGTIMER_TYPE_MAX][15] = {
     {
         { 0.0f,  0.0f}, { 0.0f,  0.0f}, { 0.0f,  0.0f}, { 0.0f,  0.0f},
         { 0.0f,  0.0f}, { 0.0f,  0.0f}, { 0.0f,  0.0f}, { 0.0f,  0.0f},
@@ -51,483 +54,467 @@ static const float scoreOfsTbl[4][15][2] = {
         {-900.0f, -900.0f}, {-900.0f, -900.0f}, {-900.0f, -900.0f}
     },
 };
-static void (*modeTbl[2])(void *) = { TimerExecOff, TimerExecOn};
 
+static TIMERFUNC modeTbl[MGTIMER_MODE_MAX] = { TimerExecOff, TimerExecOn};
 
-timer_s* MgTimerCreate(s32 arg0) {
-    timer_s* timer;
-    s32 i;
-    timer = HuMemDirectMallocNum(HEAP_HEAP, 0x74, 0x10000000);
+MGTIMER* MgTimerCreate(int type) {
+    MGTIMER* timer;
+    int i;
+    timer = HuMemDirectMallocNum(HEAP_HEAP, sizeof(MGTIMER), HU_MEMNUM_OVL);
     if (timer == NULL) {
         return NULL;
     }
-    timer->unk_8 = arg0;
-    timer->unk_0 = 0;
-    timer->unk_4 = 0;
-    timer->unk_10 = 0;
-    timer->unk_1C = 1;
-    timer->unk_14 = 0;
-    timer->unk_18 = 0;
-    timer->unk_20 = 0;
-    timer->unk_30 = 0;
-    timer->unk_24 = 0;
-    timer->unk_34 = 0;
-    timer->unk_28 = 0;
-    timer->unk_2C = 0;
-    timer->unk_3C = 288.0f;
-    timer->unk_40 = 64.0f;
-    timer->unk_46 = -1;
-    timer->unk_48 = -1;
-    timer->unk_70 = 0xFF;
-    timer->unk_71 = 0xFF;
-    timer->unk_72 = 0xFF;
-    timer->unk_68 = 1.0f;
-    timer->unk_44 = lbl_80289D88[arg0];
-    timer->unk_38 = 0;
-    for (i = 0; i < 0xF; i++) {
-        timer->unk_4A[i] = -1 ;
+    timer->type = type;
+    timer->mode = MGTIMER_MODE_OFF;
+    timer->prevMode = MGTIMER_MODE_OFF;
+    timer->dispOnF = FALSE;
+    timer->winDispF = TRUE;
+    timer->stopF = FALSE;
+    timer->scaleDir = 0;
+    timer->flashFlag = 0;
+    timer->time = 0;
+    timer->maxTime = 0;
+    timer->recordTime = 0;
+    timer->endTime = 0;
+    timer->speed = 0;
+    timer->pos.x = 288.0f;
+    timer->pos.y = 64.0f;
+    timer->gMesId = GMES_ID_NONE;
+    timer->winGrpId = HUSPR_GRP_NONE;
+    timer->digitR = 255;
+    timer->digitG = 255;
+    timer->digitB = 255;
+    timer->digitScale = 1.0f;
+    timer->timeUnit = timeUnitTbl[type];
+    timer->fadeOutTime = 0;
+    for (i = 0; i < 15; i++) {
+        timer->espId[i] = -1 ;
     }
     CreateScoreSpr(timer);
-    switch (arg0) {
+    switch (type) {
         case 0:
-        break;
+            break;
+            
         case 1:
         case 2:
         case 3:
-        timer->unk_48 = MgScoreWinCreate(scoreWinSize[timer->unk_8][0], scoreWinSize[timer->unk_8][1]);
-        MgScoreWinColorSet(timer->unk_48, 0, 0, 0);
-        MgScoreWinTPLvlSet(timer->unk_48, 0.7f);
-        MgScoreWinDispSet(timer->unk_48, 0);
+            timer->winGrpId = MgScoreWinCreate(scoreWinSize[timer->type][0], scoreWinSize[timer->type][1]);
+            MgScoreWinColorSet(timer->winGrpId, 0, 0, 0);
+            MgScoreWinTPLvlSet(timer->winGrpId, 0.7f);
+            MgScoreWinDispSet(timer->winGrpId, 0);
+            break;
 
     }
-    MgTimerDigitColorSet(timer, 0xFF, 0xFF, 0xFF);
+    MgTimerDigitColorSet(timer, 255, 255, 255);
     UpdateTimerSpr(timer);
-    timer->unk_6C = HuPrcChildCreate(TimerExec, 0x1000, 0x1200, 0, HuPrcCurrentGet());
-    timer->unk_6C->property = timer;
+    timer->proc = HuPrcChildCreate(TimerExec, 0x1000, 0x1200, 0, HuPrcCurrentGet());
+    timer->proc->property = timer;
     return timer;
 }
 
-void MgTimerKill(timer_s* arg0) {
-    HuPrcKill(arg0->unk_6C);
-    KillScoreSpr(arg0);
-    if (arg0->unk_46 != -1) {
-        GMesKill(arg0->unk_46);
+void MgTimerKill(MGTIMER* timer) {
+    HuPrcKill(timer->proc);
+    KillScoreSpr(timer);
+    if (timer->gMesId != GMES_ID_NONE) {
+        GMesKill(timer->gMesId);
     }
-    HuMemDirectFree(arg0);
+    HuMemDirectFree(timer);
 }
 
-s32 MgTimerModeGet(s32* arg0) {
-    return *arg0;
+int MgTimerModeGet(MGTIMER* timer) {
+    return timer->mode;
 }
 
-void MgTimerParamSet(timer_s* arg0, s32 arg1, s32 arg2, s32 arg3) {
-    s32 var_r30;
-    s32 var_r29;
-    arg0->unk_24 = arg1;
-    arg0->unk_30 = arg0->unk_24;
-    arg0->unk_28 = arg2;
-    arg0->unk_34 = arg3;
-    if (arg1 == arg2) {
-        var_r30 = 0;
-    } else {
-        if (arg1 > arg2) {
-            var_r29 = -1;
-        } else {
-            var_r29 = 1;
-        }
-        var_r30 = var_r29;
-    }
-    arg0->unk_2C = var_r30;
-    UpdateTimerSpr(arg0);
+void MgTimerParamSet(MGTIMER* timer, int maxTime, int endTime, int recordTime) {
+    timer->maxTime = maxTime;
+    timer->time = timer->maxTime;
+    timer->endTime = endTime;
+    timer->recordTime = recordTime;
+    timer->speed = (maxTime == endTime) ? 0 : ((maxTime > endTime) ? -1 : 1);
+    UpdateTimerSpr(timer);
 }
 
-s32 MgTimerValueGet(timer_s* arg0) {
-    return arg0->unk_30;
+int MgTimerValueGet(MGTIMER* timer) {
+    return timer->time;
 }
 
-
-void MgTimerPosSet(timer_s *arg0, f32 arg8, f32 arg9) {
-    arg0->unk_3C = arg8;
-    arg0->unk_40 = arg9;
-    UpdateTimerSpr(arg0);
+void MgTimerPosSet(MGTIMER *timer, float posX, float posY) {
+    timer->pos.x = posX;
+    timer->pos.y = posY;
+    UpdateTimerSpr(timer);
 }
 
-void MgTimerPosGet(timer_s* arg0, f32* arg1, f32* arg2) {
-    *arg1 = arg0->unk_3C;
-    *arg2 = arg0->unk_40;
+void MgTimerPosGet(MGTIMER* timer, float *posX, float *posY) {
+    *posX = timer->pos.x;
+    *posY = timer->pos.y;
 }
 
-
-void MgTimerModeOnSet(timer_s* arg0, s32 arg1) {
-    arg0->unk_C = arg1;
-    arg0->unk_14 = 0;
-    arg0->unk_0 = 1;
+void MgTimerModeOnSet(MGTIMER* timer, int offType) {
+    timer->offType = offType;
+    timer->stopF = FALSE;
+    timer->mode = MGTIMER_MODE_ON;
 }
 
-void MgTimerModeOffSet(s32* arg0) {
-    *arg0 = 0;
+void MgTimerModeOffSet(MGTIMER* timer) {
+    timer->mode = MGTIMER_MODE_OFF;
 }
 
-BOOL MgTimerDoneCheck(timer_s* arg0) {
-    return arg0->unk_28 == arg0->unk_30;
+BOOL MgTimerDoneCheck(MGTIMER* timer) {
+    return timer->endTime == timer->time;
 }
 
-void MgTimerRecordSet(timer_s* arg0, s32 arg1) {
-    if (arg1 == -1) {
-        if (((arg0->unk_2C > 0) && (arg0->unk_30 < arg0->unk_34)) || ((arg0->unk_2C < 0) && (arg0->unk_30 > arg0->unk_34))) {
-            arg0->unk_34 = arg0->unk_30;
-            arg0->unk_20 = arg0->unk_20 | 2;
+void MgTimerRecordSet(MGTIMER* timer, int recordTime) {
+    if (recordTime == -1) {
+        if (((timer->speed > 0) && (timer->time < timer->recordTime)) || ((timer->speed < 0) && (timer->time > timer->recordTime))) {
+            timer->recordTime = timer->time;
+            timer->flashFlag = timer->flashFlag | MGTIMER_FLASH_RECORD;
         }
     } else {
-        arg0->unk_34 = arg1;
-        arg0->unk_20 = arg0->unk_20 | 2;
+        timer->recordTime = recordTime;
+        timer->flashFlag = timer->flashFlag | MGTIMER_FLASH_RECORD;
     }
 }
-void espColorSet(s16 espId, u8 r, u8 g, u8 b);
 
-void MgTimerDigitColorSet(timer_s* arg0, u8 arg1, u8 arg2, u8 arg3) {
-    s32 i;
-    arg0->unk_70 = arg1;
-    arg0->unk_71 = arg2;
-    arg0->unk_72 = arg3;
+void MgTimerDigitColorSet(MGTIMER* timer, u8 r, u8 g, u8 b) {
+    int i;
+    timer->digitR = r;
+    timer->digitG = g;
+    timer->digitB = b;
     for (i = 0; i <= 6; i++) {
-        if (arg0->unk_4A[i] != -1) {
-            espColorSet(arg0->unk_4A[i], arg1 & 0xff, arg2 & 0xff, arg3 & 0xff);
+        if (timer->espId[i] != -1) {
+            espColorSet(timer->espId[i], r, g, b);
         }
     }
 }
 
-void MgTimerWinColorSet(timer_s* arg0, u8 arg1, u8 arg2, u8 arg3) {
-    if (arg0->unk_48 != -1) {
-        MgScoreWinColorSet(arg0->unk_48, arg1, arg2, arg3);
+void MgTimerWinColorSet(MGTIMER* timer, u8 r, u8 g, u8 b) {
+    if (timer->winGrpId != HUSPR_GRP_NONE) {
+        MgScoreWinColorSet(timer->winGrpId, r, g, b);
     }
 }
 
-void TimerExec(void) {
-    timer_s* var_r31;
+static void TimerExec(void) {
+    MGTIMER* timer;
 
-    var_r31 = HuPrcCurrentGet()->property;
-    while (TRUE) {
-    modeTbl[var_r31->unk_0](var_r31);
+    timer = HuPrcCurrentGet()->property;
+    while (1) {
+        modeTbl[timer->mode](timer);
     }
 }
-void TimerExecOff(timer_s* arg0) {
-    s32 var_r31;
-    s16 var_r30;
-    s32 var_r29;
-    s16 var_r28;
-    s16 var_r27;
+
+static void TimerExecOff(MGTIMER* timer) {
+    int i;
+    s16 mode;
+    int maxCheck;
+    s16 prevMode;
 
     while (1) {
-        UpdateTimerSpr(arg0);
-        var_r29 = 1;
-        var_r31 = 0;
-
-        while (var_r31 < var_r29) {
+        UpdateTimerSpr(timer);
+        for(maxCheck=1, i=0; i<maxCheck; i++) {
             HuPrcVSleep();
-
-            var_r30 = ((Unk_Timer*)HuPrcCurrentGet()->property)->unk_00;
-            var_r28 = ((Unk_Timer*)HuPrcCurrentGet()->property)->unk_04;
-            ((Unk_Timer*)HuPrcCurrentGet()->property)->unk_04 = var_r30;
-
-            if (var_r30 != var_r28) {
+            mode = ((MGTIMER *)HuPrcCurrentGet()->property)->mode;
+            prevMode = ((MGTIMER *)HuPrcCurrentGet()->property)->prevMode;
+            ((MGTIMER *)HuPrcCurrentGet()->property)->prevMode = mode;
+            if (mode != prevMode) {
                 return;
             }
-            var_r31 += 1;
         }
     }
 }
 
-void TimerExecOn(timer_s* arg0) {
-    s32* var_r31;
-    s32 var_r30;
-    s16 var_r29;
-    s32 var_r28;
-    s16 var_r27;
+static void TimerExecOn(MGTIMER* timer) {
+    int i;
+    s16 mode;
+    int maxCheck;
+    s16 prevMode;
     
-    if (arg0->unk_10 == 0) {
-        MgTimerDispOn(arg0);
+    if (timer->dispOnF == 0) {
+        MgTimerDispOn(timer);
     }
-    while ((arg0->unk_30 != arg0->unk_28) && (arg0->unk_14 == 0)) {
-        arg0->unk_30 = arg0->unk_30 + arg0->unk_2C;
-        UpdateTimerSpr(arg0);
-        var_r28 = 1;
-        var_r30 = 0;
-        while (var_r30 < var_r28) {
+    while ((timer->time != timer->endTime) && (timer->stopF == 0)) {
+        timer->time = timer->time + timer->speed;
+        UpdateTimerSpr(timer);
+        for(maxCheck=1, i=0; i<maxCheck; i++) {
             HuPrcVSleep();
-            var_r29 = ((Unk_Timer*)HuPrcCurrentGet()->property)->unk_00;
-            var_r27 = ((Unk_Timer*)HuPrcCurrentGet()->property)->unk_04;
-            ((Unk_Timer*)HuPrcCurrentGet()->property)->unk_04 = var_r29;
-            if (var_r29 != var_r27) {
+            mode = ((MGTIMER*)HuPrcCurrentGet()->property)->mode;
+            prevMode = ((MGTIMER*)HuPrcCurrentGet()->property)->prevMode;
+            ((MGTIMER*)HuPrcCurrentGet()->property)->prevMode = mode;
+            if (mode != prevMode) {
                 return;
             }
-            var_r30 += 1;
         }
     }
-    arg0->unk_14 = 1;
-    UpdateTimerSpr(arg0);
-    arg0->unk_38 = 0;
-    switch (arg0->unk_C) {               
-    case 0:
-        arg0->unk_0 = 0;
-        return;
-    case 1:
-        if (arg0->unk_8 == 0) {
-            MgTimerDispOff(arg0);
-        } else {
-            arg0->unk_20 = arg0->unk_20 | 4;
-        }
-        arg0->unk_0 = 0;
-        return;
-    case 2:
-        arg0->unk_20 = arg0->unk_20 | 1;
-        arg0->unk_0 = 0;
-        break;
-    }
-}
-
-void CreateScoreSpr(timer_s* arg0) {
-    s32 i;
-
-    switch (arg0->unk_8) {
-        case 0:
-        break;
-        case 1:
-        case 2:
-        case 3:
-        for (i = 0; i < 7; i++) {
-        arg0->unk_4A[i] = espEntry(0x960030, 0, 0);
-        espColorSet(arg0->unk_4A[i], 0xFF, 0xFF, 0xFF);
-        }
-        for (i = 0; i < 7; i++) {
-        arg0->unk_4A[i + 7] = espEntry(0x960030, 0, 0);
-        espColorSet(arg0->unk_4A[i + 7], 0x42, 0xFF, 0x7a);
-        }
-        arg0->unk_4A[14] = espEntry(0x960045, 0, 0);
-        espBankSet(arg0->unk_4A[1], 0xA);
-        espBankSet(arg0->unk_4A[4], 0xB);
-        espBankSet(arg0->unk_4A[8], 0xA);
-        espBankSet(arg0->unk_4A[11], 0xB);
-        for (i = 0; i < 0xF; i++) {
-            if (arg0->unk_4A[i] != -1 ) {
-                espDispOff(arg0->unk_4A[i]);
-                espPriSet(arg0->unk_4A[i], 9); 
+    timer->stopF = TRUE;
+    UpdateTimerSpr(timer);
+    timer->fadeOutTime = 0;
+    switch (timer->offType) {               
+        case MGTIMER_OFFTYPE_NORMAL:
+            timer->mode = MGTIMER_MODE_OFF;
+            return;
+            
+        case MGTIMER_OFFTYPE_FADEOUT:
+            if (timer->type == MGTIMER_TYPE_NORMAL) {
+                MgTimerDispOff(timer);
+            } else {
+                timer->flashFlag = timer->flashFlag | MGTIMER_FLASH_FADEOUT;
             }
-    }
-        break;
-    }
-}
-
-void KillScoreSpr(timer_s* arg0) {
-    s32 i;
-    for (i = 0; i < 0xF; i++) {
-        if (arg0->unk_4A[i] != -1) {
-            espKill(arg0->unk_4A[i]);
-            arg0->unk_4A[i] = -1;
-        }
+            timer->mode = MGTIMER_MODE_OFF;
+            return;
+            
+        case MGTIMER_OFFTYPE_FLASH:
+            timer->flashFlag = timer->flashFlag | MGTIMER_FLASH_COLOR;
+            timer->mode = MGTIMER_MODE_OFF;
+            break;
     }
 }
 
-void UpdateTimerSpr(timer_s* arg0) {
-    s32 temp_r3;
-    s32 i;
-    s32 temp_r3_2;
-    s32 temp_r3_3;
-    s32 temp_r3_5;
-    s32 var_r29;
-    s32 var_r28;
-    s32 var_r27;
-    u8 var_r26;
-    u8 var_r25;
-    u8 var_r24;
-    s32 temp_r0_2;
-    s32 temp_r0_3;
-    f32 var_f31;
+static void CreateScoreSpr(MGTIMER* timer) {
+    int i;
 
-    switch (arg0->unk_8) {
-        case 0:
-        if ((arg0->unk_30 % 60) == 0) {
-        GMesDispSet(arg0->unk_46, 1, arg0->unk_30 / 60);
-        }
-        GMesPosSet(arg0->unk_46, arg0->unk_3C, arg0->unk_40);
-        break;
-        case 1:
-        case 2:
-        case 3:
+    switch (timer->type) {
+        case MGTIMER_TYPE_NORMAL:
+            break;
+            
+        case MGTIMER_TYPE_RECORD:
+        case MGTIMER_TYPE_SCORE:
+        case MGTIMER_TYPE_WIDESCORE:
+            for (i = 0; i < 7; i++) {
+                timer->espId[i] = espEntry(MGCONST_ANM_scoreSmall, 0, 0);
+                espColorSet(timer->espId[i], 255, 255, 255);
+            }
+            for (i = 0; i < 7; i++) {
+                timer->espId[i + 7] = espEntry(MGCONST_ANM_scoreSmall, 0, 0);
+                espColorSet(timer->espId[i + 7], 66, 255, 122);
+            }
+            timer->espId[14] = espEntry(MGCONST_ANM_crown, 0, 0);
+            espBankSet(timer->espId[1], 10);
+            espBankSet(timer->espId[4], 11);
+            espBankSet(timer->espId[8], 10);
+            espBankSet(timer->espId[11], 11);
             for (i = 0; i < 15; i++) {
-                if (arg0->unk_4A[i] != -1) {
-                    espPosSet(arg0->unk_4A[i],  arg0->unk_3C + scoreOfsTbl[arg0->unk_8][i][0], arg0->unk_40 + scoreOfsTbl[arg0->unk_8][i][1]);
+                if (timer->espId[i] != -1) {
+                    espDispOff(timer->espId[i]);
+                    espPriSet(timer->espId[i], 9); 
+                }
+            }
+            break;
+    }
+}
+
+static void KillScoreSpr(MGTIMER* timer) {
+    int i;
+    for (i = 0; i < 15; i++) {
+        if (timer->espId[i] != -1) {
+            espKill(timer->espId[i]);
+            timer->espId[i] = -1;
+        }
+    }
+}
+
+static void UpdateTimerSpr(MGTIMER* timer) {
+    int i;
+    s32 second;
+    s32 centisecs;
+    s32 minute;
+    u8 r;
+    u8 g;
+    u8 b;
+    float tpLvl;
+
+    switch (timer->type) {
+        case MGTIMER_TYPE_NORMAL:
+            if ((timer->time % 60) == 0) {
+                GMesDispSet(timer->gMesId, 1, timer->time / 60);
+            }
+            GMesPosSet(timer->gMesId, timer->pos.x, timer->pos.y);
+            break;
+        
+        case MGTIMER_TYPE_RECORD:
+        case MGTIMER_TYPE_SCORE:
+        case MGTIMER_TYPE_WIDESCORE:
+            for (i = 0; i < 15; i++) {
+                if (timer->espId[i] != -1) {
+                    espPosSet(timer->espId[i],  timer->pos.x + scoreOfsTbl[timer->type][i].x, timer->pos.y + scoreOfsTbl[timer->type][i].y);
                 } 
             }
-            if (arg0->unk_48 != -1) {
-                MgScoreWinPosSet(arg0->unk_48, arg0->unk_3C - 8.0f, arg0->unk_40 - 8.0f);
+            if (timer->winGrpId != -1) {
+                MgScoreWinPosSet(timer->winGrpId, timer->pos.x - 8.0f, timer->pos.y - 8.0f);
             }
-            var_r27 = (arg0->unk_30) / (arg0->unk_44 * 0x3C);
-            var_r29 = (arg0->unk_30 % (arg0->unk_44 * 0x3C)) / 60;
-            var_r28 =  1.6666666f * ((arg0->unk_30 % 3600) % 60);
-            espBankSet(arg0->unk_4A[0], var_r27 % 10);
-            espBankSet(arg0->unk_4A[2], var_r29 / 10);
-            espBankSet(arg0->unk_4A[3], var_r29 % 10);
-            espBankSet(arg0->unk_4A[5], var_r28 / 10);
-            espBankSet(arg0->unk_4A[6], var_r28 % 10);
+            minute = (timer->time) / (timer->timeUnit * 60);
+            second = (timer->time % (timer->timeUnit * 60)) / 60;
+            centisecs =  1.6666666f * ((timer->time % 3600) % 60);
+            espBankSet(timer->espId[0], minute % 10);
+            espBankSet(timer->espId[2], second / 10);
+            espBankSet(timer->espId[3], second % 10);
+            espBankSet(timer->espId[5], centisecs / 10);
+            espBankSet(timer->espId[6], centisecs % 10);
 
-            var_r27 = arg0->unk_34 / (arg0->unk_44 * 60);
-            var_r29 = (arg0->unk_34 % (arg0->unk_44 * 0x3C)) / 60;
-            var_r28 = 1.6666666f * ((arg0->unk_34 % 3600) % 60);
-            espBankSet(arg0->unk_4A[7], var_r27 % 10);
-            espBankSet(arg0->unk_4A[9], var_r29 / 10);
-            espBankSet(arg0->unk_4A[10], var_r29 % 10);
-            espBankSet(arg0->unk_4A[12], var_r28 / 10);
-            espBankSet(arg0->unk_4A[13],  var_r28 - (var_r28 / 10 * 10));
-            if (arg0->unk_20 & 1) {
-                if (!((GlobalCounter / 10) & 1)) {
-                    var_r26 = arg0->unk_70;
-                    var_r25 = arg0->unk_71;
-                    var_r24 = arg0->unk_72;
+            minute = timer->recordTime / (timer->timeUnit * 60);
+            second = (timer->recordTime % (timer->timeUnit * 60)) / 60;
+            centisecs = 1.6666666f * ((timer->recordTime % 3600) % 60);
+            espBankSet(timer->espId[7], minute % 10);
+            espBankSet(timer->espId[9], second / 10);
+            espBankSet(timer->espId[10], second % 10);
+            espBankSet(timer->espId[12], centisecs / 10);
+            espBankSet(timer->espId[13],  centisecs - (centisecs / 10 * 10));
+            if (timer->flashFlag & MGTIMER_FLASH_COLOR) {
+                if (((GlobalCounter / 10) & 1) == 0) {
+                    r = timer->digitR;
+                    g = timer->digitG;
+                    b = timer->digitB;
                 } else {
-                    var_r26 = 0xFF;
-                    var_r25 = 0xD8;
-                    var_r24 = 0;
+                    r = 255;
+                    g = 216;
+                    b = 0;
                 }
                 for (i = 0; i < 7; i++) {
-                    if (arg0->unk_4A[i] != -1) {
-                        espColorSet(arg0->unk_4A[i], var_r26 & 0xFF, var_r25 & 0xFF, var_r24 & 0xFF);
+                    if (timer->espId[i] != -1) {
+                        espColorSet(timer->espId[i], r, g, b);
                     } 
                 }
             }
-            if (arg0->unk_20 & 2) {
-                if (arg0->unk_18) {
-                    if ((arg0->unk_68 += 0.02f) >= 1.2f) {
-                        arg0->unk_68 = 1.2f;
-                        arg0->unk_18 = 0;
+            if (timer->flashFlag & MGTIMER_FLASH_RECORD) {
+                if (timer->scaleDir) {
+                    if ((timer->digitScale += 0.02f) >= 1.2f) {
+                        timer->digitScale = 1.2f;
+                        timer->scaleDir = 0;
                     }
                 } else {
-                    //arg0->unk_68 -=  0.04f;
-                    if ((arg0->unk_68 -= 0.04f) <= 1.0f) {
-                        arg0->unk_68 = 1.0f;
-                        arg0->unk_18 = 1;
+                    if ((timer->digitScale -= 0.04f) <= 1.0f) {
+                        timer->digitScale = 1.0f;
+                        timer->scaleDir = 1;
                     }
                 }
                 for (i = 0; i < 8; i++) {
-                    if (arg0->unk_4A[i+7] != -1) {
-                        espScaleSet(arg0->unk_4A[i+7], arg0->unk_68, arg0->unk_68);
+                    if (timer->espId[i+7] != -1) {
+                        espScaleSet(timer->espId[i+7], timer->digitScale, timer->digitScale);
                     }  
                 }
             }
-            if (arg0->unk_20 & 4) {
-                var_f31 = 1.0f - (0.016666668f * arg0->unk_38);
+            if (timer->flashFlag & MGTIMER_FLASH_FADEOUT) {
+                tpLvl = 1.0f - (0.016666668f * timer->fadeOutTime);
                 for (i = 0; i < 15; i++) {
-                    if (arg0->unk_4A[i] != -1) {
-                        espTPLvlSet(arg0->unk_4A[i], var_f31);
+                    if (timer->espId[i] != -1) {
+                        espTPLvlSet(timer->espId[i], tpLvl);
                     }
-                    if (arg0->unk_48 != -1) {
-                        MgScoreWinTPLvlSet(arg0->unk_48, var_f31);
+                    if (timer->winGrpId != -1) {
+                        MgScoreWinTPLvlSet(timer->winGrpId, tpLvl);
                     } 
                 }
-                if (arg0->unk_38++ >= 0x3C) {
-                    arg0->unk_20 = arg0->unk_20 & 0xFFFFFFFB;
-                    MgTimerDispOff(arg0);
+                if (timer->fadeOutTime++ >= 60) {
+                    timer->flashFlag = timer->flashFlag & ~MGTIMER_FLASH_FADEOUT;
+                    MgTimerDispOff(timer);
                 }
             }
     }
-    (void)var_r29;
+    (void)second;
 }
 
-void MgTimerDispOn(timer_s* arg0) {
-    s32 i;
+void MgTimerDispOn(MGTIMER* timer) {
+    int i;
 
-    switch (arg0->unk_8) {
-        case 0:
-            if (arg0->unk_46 == -1) {
-                arg0->unk_46 = GMesCreate(1, arg0->unk_30 / 60, -1, -1);
-                GMesPosSet(arg0->unk_46, arg0->unk_3C, arg0->unk_40);
-            }
-        break;
-        case 1:
-        case 2:
-        case 3:
-            for (i = 0; i < 15; i++) {
-                if (arg0->unk_4A[i] != -1) {
-                    espDispOn(arg0->unk_4A[i]);
-                }
-            }
-            if (arg0->unk_48 != -1) {
-                MgScoreWinDispSet(arg0->unk_48, arg0->unk_1C);
-            }
-    }
-    arg0->unk_10 = 1;
-}
-
-void MgTimerDispOff(timer_s* arg0) {
-    s32 i;
-
-    switch (arg0->unk_8) {
-        case 0:
-            if (arg0->unk_46 != -1) {
-                GMesDispSet(arg0->unk_46, 2, -1);
-                arg0->unk_46 = -1;
-            }
-        break;
-        case 1:
-        case 2:
-        case 3:
-            for (i = 0; i < 15; i++) {
-                if (arg0->unk_4A[i] != -1) {
-                    espDispOff(arg0->unk_4A[i]);
-                }
-            }
-            if (arg0->unk_48 != -1) {
-                MgScoreWinDispSet(arg0->unk_48, 0);
-            }
-    }
-    arg0->unk_10 = 0;
-}
-
-void MgTimerRecordDispOn(timer_s* arg0) {
-    s32 i;
-    switch (arg0->unk_8) {
-        case 0:
-            if (arg0->unk_46 == -1) {
-            arg0->unk_46 = GMesCreate(1, arg0->unk_30 / 60, -1, -1);
-            GMesPosSet(arg0->unk_46, arg0->unk_3C, arg0->unk_40);
-            }   
-        break;
-        case 1:
-        case 2:
-        case 3:
-            for (i = 0; i < 15; i++) {
-                if (arg0->unk_4A[i] != -1) {
-                    espDispOn(arg0->unk_4A[i]);
-                }
-            }
-            if (arg0->unk_48 != -1) {
-                MgScoreWinDispSet(arg0->unk_48, arg0->unk_1C);
-            }
-    }
-    arg0->unk_10 = 1;
-}
-
-void MgTimerRecordDispOff(timer_s* arg0) {
-    s32 i;
-    switch (arg0->unk_8) {
-        case 0:
-            if (arg0->unk_46 != -1) {
-                GMesDispSet(arg0->unk_46, 2, -1);
-                arg0->unk_46 = -1;
+    switch (timer->type) {
+        case MGTIMER_TYPE_NORMAL:
+            if (timer->gMesId == GMES_ID_NONE) {
+                timer->gMesId = GMesCreate(1, timer->time / 60, -1, -1);
+                GMesPosSet(timer->gMesId, timer->pos.x, timer->pos.y);
             }
             break;
-        case 1:
-        case 2:
-        case 3:
-            for ( i = 0; i < 15; i++) {
-                if (arg0->unk_4A[i] != -1) {
-                    espDispOff(arg0->unk_4A[i]);
+        
+        case MGTIMER_TYPE_SCORE:
+        case MGTIMER_TYPE_RECORD:
+        case MGTIMER_TYPE_WIDESCORE:
+            for (i = 0; i < 15; i++) {
+                if (timer->espId[i] != -1) {
+                    espDispOn(timer->espId[i]);
                 }
             }
-            if (arg0->unk_48 != -1) {
-                MgScoreWinDispSet(arg0->unk_48, 0);
+            if (timer->winGrpId != -1) {
+                MgScoreWinDispSet(timer->winGrpId, timer->winDispF);
+            }
+            break;
+            
+    }
+    timer->dispOnF = TRUE;
+}
+
+void MgTimerDispOff(MGTIMER* timer) {
+    int i;
+
+    switch (timer->type) {
+        case MGTIMER_TYPE_NORMAL:
+            if (timer->gMesId != GMES_ID_NONE) {
+                GMesDispSet(timer->gMesId, 2, -1);
+                timer->gMesId = GMES_ID_NONE;
+            }
+            break;
+        
+        case MGTIMER_TYPE_RECORD:
+        case MGTIMER_TYPE_SCORE:
+        case MGTIMER_TYPE_WIDESCORE:
+            for (i = 0; i < 15; i++) {
+                if (timer->espId[i] != -1) {
+                    espDispOff(timer->espId[i]);
+                }
+            }
+            if (timer->winGrpId != -1) {
+                MgScoreWinDispSet(timer->winGrpId, FALSE);
+            }
+            break;
+    }
+    timer->dispOnF = FALSE;
+}
+
+void MgTimerRecordDispOn(MGTIMER* timer) {
+    int i;
+    
+    switch (timer->type) {
+        case MGTIMER_TYPE_NORMAL:
+            if (timer->gMesId == GMES_ID_NONE) {
+                timer->gMesId = GMesCreate(1, timer->time / 60, -1, -1);
+                GMesPosSet(timer->gMesId, timer->pos.x, timer->pos.y);
+            }   
+            break;
+        
+        case MGTIMER_TYPE_RECORD:
+        case MGTIMER_TYPE_SCORE:
+        case MGTIMER_TYPE_WIDESCORE:
+            for (i = 0; i < 15; i++) {
+                if (timer->espId[i] != -1) {
+                    espDispOn(timer->espId[i]);
+                }
+            }
+            if (timer->winGrpId != HUSPR_GRP_NONE) {
+                MgScoreWinDispSet(timer->winGrpId, timer->winDispF);
+            }
+            break;
+    }
+    timer->dispOnF = TRUE;
+}
+
+void MgTimerRecordDispOff(MGTIMER* timer) {
+    int i;
+    
+    switch (timer->type) {
+        case MGTIMER_TYPE_NORMAL:
+            if(timer->gMesId != GMES_ID_NONE) {
+                GMesDispSet(timer->gMesId, 2, -1);
+                timer->gMesId = GMES_ID_NONE;
+            }
+            break;
+            
+        case MGTIMER_TYPE_RECORD:
+        case MGTIMER_TYPE_SCORE:
+        case MGTIMER_TYPE_WIDESCORE:
+            for(i = 0; i < 15; i++) {
+                if (timer->espId[i] != -1) {
+                    espDispOff(timer->espId[i]);
+                }
+            }
+            if(timer->winGrpId != -1) {
+                MgScoreWinDispSet(timer->winGrpId, FALSE);
             }
     }
     
-    arg0->unk_10 = 0;
+    timer->dispOnF = FALSE;
 }
