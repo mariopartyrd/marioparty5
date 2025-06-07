@@ -3,67 +3,82 @@
 
 #include "dolphin/types.h"
 #include "game/mg/timer.h"
+#include "game/gamemes.h"
+
+typedef void (*MGSEQ_FUNC)(s16 mode, s16 frameNo);
 
 
+#define MGSEQ_MODEHOOK_NULL -1
 
+#define MGSEQ_MODE_NONE 0
+#define MGSEQ_MODE_INIT 1
+#define MGSEQ_MODE_FADEIN 2
+#define MGSEQ_MODE_START 3
+#define MGSEQ_MODE_PREMAIN 4
 
-typedef void (SEQMAN_FUNC)(s16 arg0, s16 arg1);
+#define MGSEQ_MODE_MAIN 5
+#define MGSEQ_MODE_FINISH 6
+#define MGSEQ_MODE_PREWIN 7
+#define MGSEQ_MODE_WINNER 8
+#define MGSEQ_MODE_FADEOUT 9
+#define MGSEQ_MODE_CLOSE 10
+#define MGSEQ_MODE_EXIT 11
+#define MGSEQ_MODE_MAX 12
 
-typedef struct MgSeqman_s {
-    s16 unk_0;
-    u8 unk_2;
-    SEQMAN_FUNC* unk_4;
-    SEQMAN_FUNC* unk_8;
-    SEQMAN_FUNC* unk_C;
-    SEQMAN_FUNC* unk_10;
-    SEQMAN_FUNC* unk_14;
-    SEQMAN_FUNC* unk_18;
-    SEQMAN_FUNC* unk_1C;
-    SEQMAN_FUNC* unk_20;
-    SEQMAN_FUNC* unk_24;
-} MGSEQMAN;
+#define MGSEQ_MODEHOOK_MAX 64
+
+#define MGSEQ_STAT_MODENEXT (1 << 0)
+#define MGSEQ_STAT_MODECHANGE_OFF (1 << 1)
+#define MGSEQ_STAT_RECORD (1 << 2)
+#define MGSEQ_STAT_WINNER (1 << 3)
+#define MGSEQ_STAT_UNKBIT (1 << 4)
+#define MGSEQ_STAT_FADEIN_OFF (1 << 5)
+#define MGSEQ_STAT_FADEOUT_OFF (1 << 6)
+
+#define MGSEQ_TIMER_TOP 0
+#define MGSEQ_TIMER_BOTTOM 1
+#define MGSEQ_TIMER_RIGHT 2
+
+typedef struct MgSeqParam_s {
+    s16 maxTime;
+    u8 timerPos;
+    MGSEQ_FUNC initHook;
+    MGSEQ_FUNC fadeInHook;
+    MGSEQ_FUNC startHook;
+    MGSEQ_FUNC mainHook;
+    MGSEQ_FUNC finishHook;
+    MGSEQ_FUNC preWinnerHook;
+    MGSEQ_FUNC winnerHook;
+    MGSEQ_FUNC fadeOutHook;
+    MGSEQ_FUNC closeHook;
+} MGSEQ_PARAM;
 
 typedef struct {
-    u16 a;
-    SEQMAN_FUNC* b;
-} SEQMAN_UNK;
-    
-typedef struct MgSeqManWork_s {
-    MGSEQMAN unk_0; 
-    MGTIMER* unk_28;
-    u16 unk_2C;
-        s16 unk_2E;
-        u16 unk_30;
-        s16 unk_32;
-        s32 unk_34;
-        s16 unk_38[4];
-        s16 unk_40[12];
-        u16 unk_58;
-        s16 unk_5A;
-        SEQMAN_UNK unk_5C[1];
-} MgSeqManWork;
+    u16 mode;
+    MGSEQ_FUNC hook;
+} MGSEQ_MODEHOOK;
 
-void MgSeqCreate(MGSEQMAN* arg0);
-void MgSeqCreatePrio(MGSEQMAN* arg0, s32 arg1);
+void MgSeqCreate(MGSEQ_PARAM* param);
+void MgSeqCreatePrio(MGSEQ_PARAM* param, s32 prio);
 void MgSeqKill();
 u16 MgSeqModeGet();
 u16 MgSeqModeNext();
-u16 MgSeqModeSet(u32 arg0);
+u16 MgSeqModeSet(u32 mode);
 u16 MgSeqModeChangeOff();
 u16 MgSeqModeChangeOn();
 s32 MgSeqTimerValueGet();
-void MgSeqRecordSet(s32 arg0);
+void MgSeqRecordSet(s32 record);
 u16 MgSeqStatGet();
-u16 MgSeqWinSet(s16 arg0, s16 arg1, s16 arg2, s16 arg3);
+u16 MgSeqWinnerSet(s16 charNo1, s16 charNo2, s16 charNo3, s16 charNo4);
 u16 MgSeqDrawSet();
 void fn_8006C2E0();
-void MgSeqModeDelaySet(s16 arg0, s16 arg1);
-u32 MgSeqModeHookAdd(s16 arg0, SEQMAN_FUNC* arg1);
-void MgSeqModeHookReset(s16 arg0);
+void MgSeqModeDelaySet(s16 mode, s16 delay);
+u32 MgSeqModeHookAdd(s16 mode, MGSEQ_FUNC func);
+void MgSeqModeHookReset(s16 mode);
 u32 MgSeqFrameNoGet();
-s16 MgSeqTimerMesGet();
-void MgSeqTimerKill(s16 arg0);
-void MgSeqStatBitSet(u16 arg0);
-void MgSeqStatBitReset(s32 arg0);
+GMESID MgSeqGMesIdGet();
+void MgSeqMaxTimeSet(s16 maxTime);
+void MgSeqStatBitSet(u16 bit);
+void MgSeqStatBitReset(u16 bit);
 
 #endif
