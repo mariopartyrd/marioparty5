@@ -20,7 +20,7 @@
 #define GMES_MES_TIMER 1
 #define GMES_MES_MG 2
 #define GMES_MES_MG_2VS2 3
-#define GMES_MES_MG_WIN 4
+#define GMES_MES_MG_WINNER 4
 #define GMES_MES_MG_1VS3 5
 #define GMES_MES_MG_BATTLE 6
 #define GMES_MES_MG_4P 7
@@ -47,6 +47,31 @@
 #define GMES_SUBMODE_NONE 0
 
 #define GMES_STR_NONE -1
+
+#define GMES_MG_TYPE_START 0
+#define GMES_MG_TYPE_FINISH 1
+#define GMES_MG_TYPE_DRAW 2
+
+#define GMES_MG_WINNER_NONE -1
+
+#define GMesTimerCreate(time) GMesCreate(GMES_MES_TIMER, time, -1, -1)
+#define GMesTimerPosCreate(time, x, y) GMesCreate(GMES_MES_TIMER, time, x, y)
+#define GMesTimerValueSet(gMesId, value) GMesDispSet(gMesId, GMES_DISP_UPDATE, value)
+#define GMesTimerEnd(gMesId) GMesDispSet(gMesId, GMES_DISP_SET, -1)
+
+#define GMesMgStartCreate() GMesCreate(GMES_MES_MG, GMES_MG_TYPE_START)
+#define GMesMgFinishCreate() GMesCreate(GMES_MES_MG, GMES_MG_TYPE_FINISH)
+#define GMesMgDrawCreate() GMesCreate(GMES_MES_MG, GMES_MG_TYPE_DRAW)
+#define GMesFXPlayCheck(gMesId) (GMesStatGet(gMesId) & GMES_STAT_FXPLAY)
+#define GMesMgStartTypeCreate(type) GMesCreate(type, GMES_MG_TYPE_START)
+#define GMesMgFinishTypeCreate(type) GMesCreate(type, GMES_MG_TYPE_FINISH)
+#define GMesMgDrawTypeCreate(type) GMesCreate(type, GMES_MG_TYPE_DRAW)
+
+#define GMesMgWinnerCreate(charNo1, charNo2, charNo3, charNo4) GMesCreate(GMES_MES_MG_WINNER, 3, charNo1, charNo2, charNo3, charNo4)
+
+
+#define GMesRecordCreate(val) GMesCreate(GMES_MES_MG_RECORD, val)
+
 
 typedef s16 GMESID;
 
@@ -117,8 +142,8 @@ BOOL GMesTimerExec(GAMEMES *gMes);
 BOOL GMesMgInit(GAMEMES *gMes, va_list args);
 BOOL GMesMg4PExec(GAMEMES *gMes);
 BOOL GMesMg2Vs2Exec(GAMEMES *gMes);
-BOOL GMesMgWinInit(GAMEMES *gMes, va_list args);
-BOOL GMesMgWinExec(GAMEMES *gMes);
+BOOL GMesMgWinnerInit(GAMEMES *gMes, va_list args);
+BOOL GMesMgWinnerExec(GAMEMES *gMes);
 BOOL GMesMg1Vs3Init(GAMEMES *gMes, va_list args);
 BOOL GMesMg1Vs3Exec(GAMEMES *gMes);
 BOOL GMesMgBattleInit(GAMEMES *gMes, va_list args);

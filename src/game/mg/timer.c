@@ -324,7 +324,7 @@ static void UpdateTimerSpr(MGTIMER* timer) {
     switch (timer->type) {
         case MGTIMER_TYPE_NORMAL:
             if ((timer->time % 60) == 0) {
-                GMesDispSet(timer->gMesId, 1, timer->time / 60);
+                GMesTimerValueSet(timer->gMesId, timer->time / 60);
             }
             GMesPosSet(timer->gMesId, timer->pos.x, timer->pos.y);
             break;
@@ -416,7 +416,7 @@ void MgTimerDispOn(MGTIMER* timer) {
     switch (timer->type) {
         case MGTIMER_TYPE_NORMAL:
             if (timer->gMesId == GMES_ID_NONE) {
-                timer->gMesId = GMesCreate(1, timer->time / 60, -1, -1);
+                timer->gMesId = GMesTimerCreate(timer->time / 60);
                 GMesPosSet(timer->gMesId, timer->pos.x, timer->pos.y);
             }
             break;
@@ -444,7 +444,7 @@ void MgTimerDispOff(MGTIMER* timer) {
     switch (timer->type) {
         case MGTIMER_TYPE_NORMAL:
             if (timer->gMesId != GMES_ID_NONE) {
-                GMesDispSet(timer->gMesId, 2, -1);
+                GMesTimerEnd(timer->gMesId);
                 timer->gMesId = GMES_ID_NONE;
             }
             break;
@@ -471,7 +471,7 @@ void MgTimerRecordDispOn(MGTIMER* timer) {
     switch (timer->type) {
         case MGTIMER_TYPE_NORMAL:
             if (timer->gMesId == GMES_ID_NONE) {
-                timer->gMesId = GMesCreate(1, timer->time / 60, -1, -1);
+                timer->gMesId = GMesTimerCreate(timer->time / 60);
                 GMesPosSet(timer->gMesId, timer->pos.x, timer->pos.y);
             }   
             break;
@@ -498,7 +498,7 @@ void MgTimerRecordDispOff(MGTIMER* timer) {
     switch (timer->type) {
         case MGTIMER_TYPE_NORMAL:
             if(timer->gMesId != GMES_ID_NONE) {
-                GMesDispSet(timer->gMesId, 2, -1);
+                GMesTimerEnd(timer->gMesId);
                 timer->gMesId = GMES_ID_NONE;
             }
             break;

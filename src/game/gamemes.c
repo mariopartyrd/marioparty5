@@ -66,8 +66,8 @@ GMESTBL gMesTbl[] = {
         180
     },
     {
-        GMesMgWinInit,
-        GMesMgWinExec,
+        GMesMgWinnerInit,
+        GMesMgWinnerExec,
         { 292, 240 },
         { 1, 1 },
         180
