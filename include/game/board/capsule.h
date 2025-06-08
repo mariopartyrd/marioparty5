@@ -2,6 +2,8 @@
 #define _BOARD_CAPSULE_H
 
 #include "dolphin/types.h"
+#include "game/object.h"
+#include "game/board/model.h"
 
 #define CAPSULE_KINOKO 0
 #define CAPSULE_SKINOKO 1
@@ -36,6 +38,7 @@
 #define CAPSULE_DEBUGCAM 40
 #define CAPSULE_DEBUGWARP 41
 #define CAPSULE_DEBUGSETPOS 42
+#define CAPSULE_MAX 43
 #define CAPSULE_NULL -1
 
 void MBCapsuleOpeningAdd(int capsuleNum);
@@ -49,6 +52,7 @@ void MBVsMgEndExec(int playerNo);
 void MBLast5Exec(void);
 void MBKupaExec(int playerNo);
 void MBDonkeyExec(int playerNo);
+void MBCapsuleKupaGetExec(int playerNo);
 
 void MB3MiracleGetExec(int playerNo);
 void MBCapMachineCreateAll(void);
@@ -72,5 +76,20 @@ void MBCapMachineTutorialExec(void);
 void MBDonkeyOpeningExec(void);
 
 unsigned int MBCapsuleMdlGet(int capsuleNo);
+
+BOOL MBCapsuleUseExec(int playerNo, int capsuleNo);
+int MBComCapsuleSelGet(int playerNo);
+float MBCapsuleSelModelUpdate(HuVecF *posStart, HuVecF *posEnd, MBMODELID modelId, float weight);
+int MBCapsuleWinCreate(int capsuleNo);
+
+void MBCapMachineObjCreate(int masuId);
+
+int MBCapsuleObjCreate(int capsuleNo, BOOL linkF);
+void MBCapsuleObjScaleSet(int id, float scaleX, float scaleY, float scaleZ);
+void MBCapsuleObjKill(int capsuleNo);
+
+u32 MBCapsuleMesGet(int capsuleNo);
+
+int MBCapsuleListGet(int *capsuleNo);
 
 #endif

@@ -53,5 +53,6 @@ void MBStatusRainbowSet(int statusNo, float time, int colorEnd);
 void MBStatusColorSet(int playerNo, int color);
 int MBStatusColorGet(int playerNo);
 void MBStatusColorAllSet(int color);
+void MBStatusDispFocusSet(int playerNo, BOOL dispF);
 
 #endif
