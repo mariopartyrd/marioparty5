@@ -455,7 +455,7 @@ config.libs = [
             Object(Matching, "game/board/pause.c"),
             Object(Matching, "game/board/tutorial.c"),
             Object(Matching, "game/board/roulette.c"),
-            Object(NonMatching, "game/board/capmachine.c"),
+            Object(Matching, "game/board/capmachine.c"),
             Object(NonMatching, "game/board/capsule.c"),
             Object(NonMatching, "game/board/capmain.c"),
             Object(Matching, "game/board/guide.c"),
