@@ -173,7 +173,7 @@ void MB6Ev_KaneBackKill(void);
 void MB6Ev_KaneBackTPLvlSet(float tpLvl);
 void MB6Ev_Kane(int playerNo);
 
-float MB6_AddAngle(float start, float end);
+float MB6_AngleDiff(float start, float end);
 unsigned int MB6Ev_BitGet(int outMask, unsigned int inMask);
 unsigned int MB6Ev_MasuFlagGet(int outMask, unsigned int inMask);
 
@@ -1804,7 +1804,7 @@ static void MB6Ev_CakeThrowPlayerUpdate(int playerNo)
                 evPlayer->ballNo = -1;
                 evPlayer->timer++;
             } else if(evPlayer->timer == 1) {
-                if(fabsf2(MB6_AddAngle(evPlayer->rot.y, evPlayer->angleStart)) < 10.0f) {
+                if(fabsf2(MB6_AngleDiff(evPlayer->rot.y, evPlayer->angleStart)) < 10.0f) {
                     evPlayer->ballNo = MB6Ev_CakeThrowBallSet(playerNo);
                     if(evPlayer->ballNo >= 0) {
                         evPlayer->ballDist = 0;
@@ -2644,7 +2644,7 @@ float MB6_DistRatioGet(HuVecF *vec1, HuVecF *vec2, HuVecF *vec3)
     return mag;
 }
 
-float MB6_AddAngle(float start, float end)
+float MB6_AngleDiff(float start, float end)
 {
     float angle = fmodf(end-start, 360);
     if(angle < 0) {

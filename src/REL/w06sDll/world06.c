@@ -773,7 +773,7 @@ float MB6_DistRatioGet(HuVecF *vec1, HuVecF *vec2, HuVecF *vec3)
     return mag;
 }
 
-float MB6_WrapAngle(float start, float end)
+float MB6_AngleDiff(float start, float end)
 {
     float angle = fmodf(end-start, 360);
     if(angle < 0) {
