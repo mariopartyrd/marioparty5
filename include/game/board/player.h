@@ -154,7 +154,7 @@ void MBPlayerMotionNoSet(int playerNo, int motNo, u32 attr);
 int MBPlayerMotionNoGet(int playerNo);
 void MBPlayerMotionNoShiftSet(int playerNo, int motNo, float start, float end, u32 attr);
 int MBPlayerMotionCreate(int playerNo, int dataNum);
-void MBPlayerMotionKill(int playerNo, int motNo);
+int MBPlayerMotionKill(int playerNo, int motNo);
 void MBPlayerMotionSpeedSet(int playerNo, float speed);
 void MBPlayerMotionTimeSet(int playerNo, float time);
 float MBPlayerMotionTimeGet(int playerNo);

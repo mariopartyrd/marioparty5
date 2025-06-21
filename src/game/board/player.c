@@ -2249,9 +2249,9 @@ int MBPlayerMotionCreate(int playerNo, int dataNum)
     return MBMotionCreate(MBPlayerModelGet(playerNo), dataNum);
 }
 
-void MBPlayerMotionKill(int playerNo, int motNo)
+int MBPlayerMotionKill(int playerNo, int motNo)
 {
-    MBMotionKill(MBPlayerModelGet(playerNo), motNo);
+    return MBMotionKill(MBPlayerModelGet(playerNo), motNo);
 }
 
 void MBPlayerMotionSpeedSet(int playerNo, float speed)
