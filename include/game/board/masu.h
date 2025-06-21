@@ -27,6 +27,8 @@
 #define MASU_LINK_MAX 5
 
 #define MASU_FLAG_BIT(bit) (1U << (bit))
+#define MASU_FLAG_BIT_MULTI(bitStart, bitNum) (((1U << bitNum)-1) << (bitStart))
+#define MASU_FLAG_BITFIELD(bitStart, bitNum, value) (((unsigned int)(value) & ((1 << bitNum)-1)) << (bitStart))
 
 #define MASU_FLAG_NONE 0
 #define MASU_FLAG_JUMPTO MASU_FLAG_BIT(16)

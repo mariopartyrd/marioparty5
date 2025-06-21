@@ -54,9 +54,9 @@
 
 #define GMES_MG_WINNER_NONE -1
 
-#define GMesTimerCreate(time) GMesCreate(GMES_MES_TIMER, time, -1, -1)
-#define GMesTimerPosCreate(time, x, y) GMesCreate(GMES_MES_TIMER, time, x, y)
-#define GMesTimerValueSet(gMesId, value) GMesDispSet(gMesId, GMES_DISP_UPDATE, value)
+#define GMesTimerCreate(time) GMesCreate(GMES_MES_TIMER, (int)(time), -1, -1)
+#define GMesTimerPosCreate(time, x, y) GMesCreate(GMES_MES_TIMER, (int)(time), (int)(x), (int)(y))
+#define GMesTimerValueSet(gMesId, value) GMesDispSet(gMesId, GMES_DISP_UPDATE, (int)(value))
 #define GMesTimerEnd(gMesId) GMesDispSet(gMesId, GMES_DISP_SET, -1)
 
 #define GMesMgStartCreate() GMesCreate(GMES_MES_MG, GMES_MG_TYPE_START)

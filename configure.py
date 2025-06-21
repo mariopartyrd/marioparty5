@@ -1541,7 +1541,7 @@ config.libs = [
     Rel(
         "w06Dll",
         objects={
-            Object(NonMatching, "REL/w06Dll/world06.c"),
+            Object(Matching, "REL/w06Dll/world06.c"),
         },
     ),
     Rel(

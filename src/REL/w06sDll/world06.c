@@ -16,9 +16,9 @@
 #include "datanum/w06s.h"
 
 #define MB6EV_CAKEMOVE_MAX 2
-#define MB6EV_CAKEMOVE_1_FLAG MASU_FLAG_BIT(0)
-#define MB6EV_CAKEMOVE_2_FLAG (MASU_FLAG_BIT(0)|MASU_FLAG_BIT(1))
-#define MB6EV_CAKEMOVE_FLAG (MB6EV_CAKEMOVE_1_FLAG|MB6EV_CAKEMOVE_2_FLAG)
+#define MB6EV_CAKEMOVE_1 MASU_FLAG_BITFIELD(0, 2, 1)
+#define MB6EV_CAKEMOVE_2 MASU_FLAG_BITFIELD(0, 2, 3)
+#define MB6EV_CAKEMOVE_FLAG MASU_FLAG_BIT_MULTI(0, 2)
 #define MB6EV_CAKEMOVE_LINK_FLAG MASU_FLAG_BIT(3)
 
 #define MB6_OBJ_MAX 3
@@ -265,10 +265,10 @@ void MB6Ev_CakeMoveCreate(void)
     int modelId;
     
     static unsigned int cakeMoveData[MB6EV_CAKEMOVE_MAX][3] = {
-        MB6EV_CAKEMOVE_1_FLAG,
+        MB6EV_CAKEMOVE_1,
         W06S_HSF_cakeMove1,
         W06S_HSF_knife1,
-        MB6EV_CAKEMOVE_2_FLAG,
+        MB6EV_CAKEMOVE_2,
         W06S_HSF_cakeMove2,
         W06S_HSF_knife2,
     };
@@ -751,7 +751,6 @@ static void MB6Ev_KnifeEffCreate(int modelId)
     }
 }
 
-#undef MBEffRandF
 #undef CAKEMOVE_PLAYER_KILL
 #undef CAKEMOVE_PLAYER_INIT
 #undef CAKEMOVE_PLAYER_IDLE

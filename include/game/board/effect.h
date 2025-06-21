@@ -16,6 +16,7 @@
 #define MB_EFFECT_ATTR_3D (1 << 4)
 
 #define MBEffRandF() (0.000015258789f*(frand() & 0xFFFF))
+#define MBEffSRandF() ((0.000030517578f*(frand() & 0xFFFF))-1)
 
 typedef struct MBEffect_s MBEFFECT;
 typedef void (*MBEFFHOOK)(HU3DMODEL *modelP, MBEFFECT *effP, Mtx matrix);
