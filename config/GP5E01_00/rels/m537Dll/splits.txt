@@ -5,3 +5,73 @@ Sections:
 	.rodata     type:rodata align:8
 	.data       type:data align:8
 	.bss        type:bss align:8
+
+REL/m537Dll/m537.cpp:
+	.text       start:0x00000000 end:0x00005E4C
+	.ctors      start:0x00000000 end:0x00000004
+	.rodata     start:0x00000000 end:0x00000080
+	.data       start:0x00000000 end:0x00000210
+	.bss        start:0x00000000 end:0x000009F0
+
+REL/m537Dll/dorrie.cpp:
+	.text       start:0x00005E4C end:0x00007254
+	.rodata     start:0x00000080 end:0x000000F8
+	.data       start:0x00000210 end:0x000002D0
+	.bss        start:0x000009F0 end:0x000009F8
+
+REL/m537Dll/effect.cpp:
+	.text       start:0x00007254 end:0x000083CC
+	.rodata     start:0x000000F8 end:0x000001F8
+	.data       start:0x000002D0 end:0x00000320
+	.bss        start:0x000009F8 end:0x00000A00
+
+REL/m537Dll/game_master.cpp:
+	.text       start:0x000083CC end:0x000088D0
+	.ctors      start:0x00000004 end:0x00000008
+	.rodata     start:0x000001F8 end:0x00000238
+	.data       start:0x00000320 end:0x00000350
+	.bss        start:0x00000A00 end:0x00000A18
+
+REL/m537Dll/object_setup.cpp:
+	.text       start:0x000088D0 end:0x00008964
+	.ctors      start:0x00000008 end:0x0000000C
+	.bss        start:0x00000A18 end:0x00000A28
+
+REL/m537Dll/camera.cpp:
+	.text       start:0x00008964 end:0x00009290
+	.rodata     start:0x00000238 end:0x000002A8
+	.data       start:0x00000350 end:0x000003D0
+
+REL/m537Dll/stage.cpp:
+	.text       start:0x00009290 end:0x00009930
+	.rodata     start:0x000002A8 end:0x000002D8
+	.data       start:0x000003D0 end:0x00000410
+
+REL/m537Dll/player.cpp:
+	.text       start:0x00009930 end:0x0000FF4C
+	.ctors      start:0x0000000C end:0x00000010
+	.rodata     start:0x000002D8 end:0x00000528
+	.data       start:0x00000410 end:0x00000620
+	.bss        start:0x00000A28 end:0x00000A50
+
+REL/m537Dll/center_obj.cpp:
+	.text       start:0x0000FF4C end:0x000125AC
+	.ctors      start:0x00000010 end:0x00000014
+	.rodata     start:0x00000528 end:0x00000600
+	.data       start:0x00000620 end:0x00000690
+	.bss        start:0x00000A50 end:0x00000A98
+
+REL/m537Dll/water.cpp:
+	.text       start:0x000125AC end:0x000172D0
+	.rodata     start:0x00000600 end:0x00000768
+	.data       start:0x00000690 end:0x00000734
+	.bss        start:0x00000A98 end:0x00000AA0
+
+REL/global_destructor_chain.c:
+	.text       start:0x000172D0 end:0x00017358
+	.dtors      start:0x00000000 end:0x00000004
+	.bss        start:0x00000AA0 end:0x00000AA4
+
+REL/ptmf.c:
+	.text       start:0x00017358 end:0x000174A0
+	.rodata     start:0x00000768 end:0x00000774

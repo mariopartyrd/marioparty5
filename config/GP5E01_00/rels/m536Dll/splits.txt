@@ -5,3 +5,75 @@ Sections:
 	.rodata     type:rodata align:8
 	.data       type:data align:8
 	.bss        type:bss align:8
+
+REL/m536Dll/m536.cpp:
+	.text       start:0x00000000 end:0x00006074
+	.ctors      start:0x00000000 end:0x00000004
+	.rodata     start:0x00000000 end:0x00000080
+	.data       start:0x00000000 end:0x00000210
+	.bss        start:0x00000000 end:0x000009F0
+
+REL/m536Dll/game_master.cpp:
+	.text       start:0x00006074 end:0x00006594
+	.ctors      start:0x00000004 end:0x00000008
+	.data       start:0x00000210 end:0x00000268
+	.bss        start:0x000009F0 end:0x00000A18
+
+REL/m536Dll/object_setup.cpp:
+	.text       start:0x00006594 end:0x00006628
+	.ctors      start:0x00000008 end:0x0000000C
+	.bss        start:0x00000A18 end:0x00000A28
+
+REL/m536Dll/camera.cpp:
+	.text       start:0x00006628 end:0x000073BC
+	.rodata     start:0x00000080 end:0x00000140
+	.data       start:0x00000268 end:0x000002E8
+
+REL/m536Dll/killereff.cpp:
+	.text       start:0x000073BC end:0x00008A74
+	.ctors      start:0x0000000C end:0x00000010
+	.rodata     start:0x00000140 end:0x00000188
+	.data       start:0x000002E8 end:0x00000338
+	.bss        start:0x00000A28 end:0x00000A68
+
+REL/m536Dll/stage.cpp:
+	.text       start:0x00008A74 end:0x00009B50
+	.ctors      start:0x00000010 end:0x00000014
+	.rodata     start:0x00000188 end:0x000001B0
+	.data       start:0x00000338 end:0x000003C8
+	.bss        start:0x00000A68 end:0x00000A80
+
+REL/m536Dll/player.cpp:
+	.text       start:0x00009B50 end:0x0000D6FC
+	.ctors      start:0x00000014 end:0x00000018
+	.rodata     start:0x000001B0 end:0x00000258
+	.data       start:0x000003C8 end:0x00000538
+	.bss        start:0x00000A80 end:0x00000AB0
+
+REL/m536Dll/score.cpp:
+	.text       start:0x0000D6FC end:0x0000E24C
+	.rodata     start:0x00000258 end:0x000002A0
+	.data       start:0x00000538 end:0x000005B8
+
+REL/m536Dll/killer.cpp:
+	.text       start:0x0000E24C end:0x0000F670
+	.ctors      start:0x00000018 end:0x0000001C
+	.rodata     start:0x000002A0 end:0x00000318
+	.data       start:0x000005B8 end:0x00000670
+	.bss        start:0x00000AB0 end:0x00000AC8
+
+REL/m536Dll/gun.cpp:
+	.text       start:0x0000F670 end:0x00010428
+	.ctors      start:0x0000001C end:0x00000020
+	.rodata     start:0x00000318 end:0x00000360
+	.data       start:0x00000670 end:0x000006BC
+	.bss        start:0x00000AC8 end:0x00000AE0
+
+REL/global_destructor_chain.c:
+	.text       start:0x00010428 end:0x000104B0
+	.dtors      start:0x00000000 end:0x00000004
+	.bss        start:0x00000AE0 end:0x00000AE4
+
+REL/ptmf.c:
+	.text       start:0x000104B0 end:0x000105F8
+	.rodata     start:0x00000360 end:0x0000036C

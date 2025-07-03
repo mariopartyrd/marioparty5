@@ -5,3 +5,87 @@ Sections:
 	.rodata     type:rodata align:8
 	.data       type:data align:8
 	.bss        type:bss align:8
+
+REL/m531Dll/m531.cpp:
+	.text       start:0x00000000 end:0x000026EC
+	.ctors      start:0x00000000 end:0x00000004
+	.rodata     start:0x00000000 end:0x00000050
+	.data       start:0x00000000 end:0x000000E8
+	.bss        start:0x00000000 end:0x00000010
+
+REL/m531Dll/effect.cpp:
+	.text       start:0x000026EC end:0x00002B70
+	.data       start:0x000000E8 end:0x00000110
+
+REL/m531Dll/scorebase.cpp:
+	.text       start:0x00002B70 end:0x00002CA0
+	.data       start:0x00000110 end:0x00000120
+
+REL/m531Dll/flow.cpp:
+	.text       start:0x00002CA0 end:0x00005700
+	.ctors      start:0x00000004 end:0x00000008
+	.rodata     start:0x00000050 end:0x00000380
+	.data       start:0x00000120 end:0x00000168
+	.bss        start:0x00000010 end:0x00000028
+
+REL/m531Dll/polish.cpp:
+	.text       start:0x00005700 end:0x000075A8
+	.rodata     start:0x00000380 end:0x000003F8
+	.data       start:0x00000168 end:0x000001C0
+
+REL/m531Dll/score.cpp:
+	.text       start:0x000075A8 end:0x00007BB0
+	.rodata     start:0x000003F8 end:0x00000428
+	.data       start:0x000001C0 end:0x000001D0
+
+REL/m531Dll/object.cpp:
+	.text       start:0x00007BB0 end:0x000090CC
+	.rodata     start:0x00000428 end:0x000004B0
+	.data       start:0x000001D0 end:0x00000348
+
+REL/m531Dll/player.cpp:
+	.text       start:0x000090CC end:0x0000BA9C
+	.ctors      start:0x00000008 end:0x0000000C
+	.rodata     start:0x000004B0 end:0x000005D0
+	.data       start:0x00000348 end:0x000003F8
+	.bss        start:0x00000028 end:0x00000060
+
+REL/m531Dll/objectsetup.cpp:
+	.text       start:0x0000BA9C end:0x0000BBCC
+	.ctors      start:0x0000000C end:0x00000010
+	.data       start:0x000003F8 end:0x00000430
+	.bss        start:0x00000060 end:0x00000070
+
+REL/m531Dll/gamemaster.cpp:
+	.text       start:0x0000BBCC end:0x0000BEAC
+	.ctors      start:0x00000010 end:0x00000014
+	.rodata     start:0x000005D0 end:0x000005F0
+	.bss        start:0x00000070 end:0x00000080
+
+REL/m531Dll/stage.cpp:
+	.text       start:0x0000BEAC end:0x0000C0E8
+	.rodata     start:0x000005F0 end:0x000005F8
+	.data       start:0x00000430 end:0x00000440
+
+REL/m531Dll/playerbase.cpp:
+	.text       start:0x0000C0E8 end:0x0000CB98
+	.rodata     start:0x000005F8 end:0x00000608
+	.data       start:0x00000440 end:0x00000470
+
+REL/m531Dll/audio.cpp:
+	.text       start:0x0000CB98 end:0x0000D62C
+	.rodata     start:0x00000608 end:0x00000640
+
+REL/m531Dll/cleaneff.cpp:
+	.text       start:0x0000D62C end:0x000115D8
+	.rodata     start:0x00000640 end:0x00000790
+	.data       start:0x00000470 end:0x000004EB
+
+REL/global_destructor_chain.c:
+	.text       start:0x000115D8 end:0x00011660
+	.dtors      start:0x00000000 end:0x00000004
+	.bss        start:0x00000080 end:0x00000084
+
+REL/ptmf.c:
+	.text       start:0x00011660 end:0x000117A8
+	.rodata     start:0x00000790 end:0x0000079C

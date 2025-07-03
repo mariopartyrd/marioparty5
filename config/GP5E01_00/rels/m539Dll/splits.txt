@@ -5,3 +5,81 @@ Sections:
 	.rodata     type:rodata align:8
 	.data       type:data align:8
 	.bss        type:bss align:8
+
+REL/m539Dll/m539.cpp:
+	.text       start:0x00000000 end:0x00006398
+	.ctors      start:0x00000000 end:0x00000004
+	.rodata     start:0x00000000 end:0x000000B0
+	.data       start:0x00000000 end:0x00000210
+	.bss        start:0x00000000 end:0x000009F0
+
+REL/m539Dll/input.cpp:
+	.text       start:0x00006398 end:0x00006704
+	.data       start:0x00000210 end:0x00000258
+
+REL/m539Dll/drum.cpp:
+	.text       start:0x00006704 end:0x00008248
+	.rodata     start:0x000000B0 end:0x000000D8
+	.data       start:0x00000258 end:0x000002C0
+	.bss        start:0x000009F0 end:0x000009F8
+
+REL/m539Dll/game_master.cpp:
+	.text       start:0x00008248 end:0x00009BDC
+	.ctors      start:0x00000004 end:0x00000008
+	.rodata     start:0x000000D8 end:0x00000100
+	.data       start:0x000002C0 end:0x00000340
+	.bss        start:0x000009F8 end:0x00000A20
+
+REL/m539Dll/heiho.cpp:
+	.text       start:0x00009BDC end:0x0000A27C
+	.rodata     start:0x00000100 end:0x00000140
+
+REL/m539Dll/object_setup.cpp:
+	.text       start:0x0000A27C end:0x0000A310
+	.ctors      start:0x00000008 end:0x0000000C
+	.bss        start:0x00000A20 end:0x00000A30
+
+REL/m539Dll/camera.cpp:
+	.text       start:0x0000A310 end:0x0000BEBC
+	.rodata     start:0x00000140 end:0x000001C0
+	.data       start:0x00000340 end:0x000003B0
+	.bss        start:0x00000A30 end:0x00000A38
+
+REL/m539Dll/man_map.cpp:
+	.text       start:0x0000BEBC end:0x0000C8DC
+	.ctors      start:0x0000000C end:0x00000010
+	.rodata     start:0x000001C0 end:0x00000258
+	.data       start:0x000003B0 end:0x00000430
+	.bss        start:0x00000A38 end:0x00000A48
+
+REL/m539Dll/effect.cpp:
+	.text       start:0x0000C8DC end:0x0000D010
+	.rodata     start:0x00000258 end:0x00000298
+
+REL/m539Dll/player.cpp:
+	.text       start:0x0000D010 end:0x0000EFF4
+	.ctors      start:0x00000010 end:0x00000014
+	.rodata     start:0x00000298 end:0x00000300
+	.data       start:0x00000430 end:0x00000540
+	.bss        start:0x00000A48 end:0x00000A58
+
+REL/m539Dll/scorespr.cpp:
+	.text       start:0x0000EFF4 end:0x0000FAB4
+	.ctors      start:0x00000014 end:0x00000018
+	.rodata     start:0x00000300 end:0x00000328
+	.data       start:0x00000540 end:0x00000598
+	.bss        start:0x00000A58 end:0x00000A70
+
+REL/m539Dll/score.cpp:
+	.text       start:0x0000FAB4 end:0x00011038
+	.rodata     start:0x00000328 end:0x00000440
+	.data       start:0x00000598 end:0x000005C2
+
+REL/global_destructor_chain.c:
+	.text       start:0x00011038 end:0x000110C0
+	.dtors      start:0x00000000 end:0x00000004
+	.bss        start:0x00000A70 end:0x00000A74
+
+REL/ptmf.c:
+	.text       start:0x000110C0 end:0x00011208
+	.rodata     start:0x00000440 end:0x0000044C
