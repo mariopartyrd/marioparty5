@@ -5,3 +5,38 @@ Sections:
 	.rodata     type:rodata align:8
 	.data       type:data align:8
 	.bss        type:bss align:8
+
+REL/m534Dll/m534.c:
+	.text       start:0x00000000 end:0x00001840
+	.rodata     start:0x00000000 end:0x00000048
+	.data       start:0x00000000 end:0x00000050
+	.bss        start:0x00000000 end:0x00000028
+
+REL/m534Dll/camera.c:
+	.text       start:0x00001840 end:0x00002290
+	.rodata     start:0x00000048 end:0x000000A0
+	.data       start:0x00000050 end:0x00000100
+	.bss        start:0x00000028 end:0x00000030
+
+REL/m534Dll/player.c:
+	.text       start:0x00002290 end:0x00003360
+	.rodata     start:0x000000A0 end:0x00000130
+	.data       start:0x00000100 end:0x00000190
+	.bss        start:0x00000030 end:0x00000048
+
+REL/m534Dll/stage.c:
+	.text       start:0x00003360 end:0x00006314
+	.rodata     start:0x00000130 end:0x00000328
+	.data       start:0x00000190 end:0x00000350
+	.bss        start:0x00000048 end:0x00000050
+
+REL/m534Dll/effect.c:
+	.text       start:0x00006314 end:0x00006BDC
+	.rodata     start:0x00000328 end:0x000003B8
+	.bss        start:0x00000050 end:0x00000058
+
+REL/m534Dll/score.c:
+	.text       start:0x00006BDC end:0x00007518
+	.rodata     start:0x000003B8 end:0x00000400
+	.data       start:0x00000350 end:0x000003C5
+	.bss        start:0x00000058 end:0x0000005C

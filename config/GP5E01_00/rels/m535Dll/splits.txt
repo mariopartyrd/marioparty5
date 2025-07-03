@@ -5,3 +5,9 @@ Sections:
 	.rodata     type:rodata align:8
 	.data       type:data align:8
 	.bss        type:bss align:8
+
+REL/m535Dll/m535.c:
+	.text       start:0x00000000 end:0x0000BED8
+	.rodata     start:0x00000000 end:0x00000BB0
+	.data       start:0x00000000 end:0x0000C1E4
+	.bss        start:0x00000000 end:0x00008F44

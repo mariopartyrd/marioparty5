@@ -5,3 +5,15 @@ Sections:
 	.rodata     type:rodata align:8
 	.data       type:data align:8
 	.bss        type:bss align:8
+
+REL/m533dll/m533.c:
+	.text       start:0x00000000 end:0x00006528
+	.rodata     start:0x00000000 end:0x00000148
+	.data       start:0x00000000 end:0x00000670
+	.bss        start:0x00000000 end:0x000002C8
+
+REL/m533dll/pillar.c:
+	.text       start:0x00006528 end:0x00008338
+	.rodata     start:0x00000148 end:0x00000208
+	.data       start:0x00000670 end:0x00000734
+	.bss        start:0x000002C8 end:0x000004EC
