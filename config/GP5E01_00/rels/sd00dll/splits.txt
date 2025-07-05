@@ -7,13 +7,13 @@ Sections:
 	.bss        type:bss align:8
 
 REL/sd00dll/sd00.c:
-	.text       start:0x00000000 end:0x0000C5C0
+	.text       start:0x00000000 end:0x0000C648
 	.rodata     start:0x00000000 end:0x00000518
 	.data       start:0x00000000 end:0x00000108
 	.bss        start:0x00000000 end:0x00000008
 
 REL/sd00dll/machine.c:
-	.text       start:0x0000C5C0 end:0x00011C64
+	.text       start:0x0000C648 end:0x00011C64
 	.rodata     start:0x00000518 end:0x000006A0
 	.data       start:0x00000108 end:0x00001018
 
@@ -41,13 +41,17 @@ REL/sd00dll/math.c:
 	.text       start:0x0002EAAC end:0x0002F65C
 	.rodata     start:0x00001318 end:0x00001398
 
+REL/sd00dll/util.c:
+	.text       start:0x0002F65C end:0x0002FD00
+	.rodata     start:0x00001398 end:0x000013E0
+
 REL/sd00dll/flag.c:
-	.text       start:0x0002F65C end:0x00031500
-	.rodata     start:0x00001398 end:0x00001488
+	.text       start:0x0002FD00 end:0x0003128C
+	.rodata     start:0x000013E0 end:0x00001488
 	.data       start:0x000019C0 end:0x000019CB
 	.bss        start:0x00000260 end:0x000002B0
 
 REL/sd00dll/rabbit.c:
-	.text       start:0x00031500 end:0x000343E0
+	.text       start:0x0003128C end:0x000343E0
 	.rodata     start:0x00001488 end:0x000015E4
 	.bss        start:0x000002B0 end:0x000004BC

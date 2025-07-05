@@ -78,7 +78,29 @@ static MB6_SAVEWORK *mb6_SaveWorkP;
 static MB6_WORK mb6_Work;
 static OMOBJ *mb6_MainObj;
 
-#include "relprolog.inc"
+typedef void (*VoidFunc)(void);
+extern const VoidFunc _ctors[];
+extern const VoidFunc _dtors[];
+
+extern void ObjectSetup(void);
+
+int _prolog(void) {
+    const VoidFunc* ctors = _ctors;
+    while (*ctors != 0) {
+        (**ctors)();
+        ctors++;
+    }
+    ObjectSetup();
+    return 0;
+}
+
+void _epilog(void) {
+    const VoidFunc* dtors = _dtors;
+    while (*dtors != 0) {
+        (**dtors)();
+        dtors++;
+    }
+}
 
 void MB6_Create(void);
 void MB6_Kill(void);

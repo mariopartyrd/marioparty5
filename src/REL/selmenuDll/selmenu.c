@@ -172,8 +172,29 @@ static u16 smPadDStkAllPrev[4] = {};
 static void SMInit(OMOBJ *obj);
 static void SMRandMain(OMOBJ *obj);
 
-#include "relprolog.inc"
+typedef void (*VoidFunc)(void);
+extern const VoidFunc _ctors[];
+extern const VoidFunc _dtors[];
 
+extern void ObjectSetup(void);
+
+int _prolog(void) {
+    const VoidFunc* ctors = _ctors;
+    while (*ctors != 0) {
+        (**ctors)();
+        ctors++;
+    }
+    ObjectSetup();
+    return 0;
+}
+
+void _epilog(void) {
+    const VoidFunc* dtors = _dtors;
+    while (*dtors != 0) {
+        (**dtors)();
+        dtors++;
+    }
+}
 
 void ObjectSetup(void)
 {
