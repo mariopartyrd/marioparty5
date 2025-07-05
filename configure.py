@@ -295,6 +295,7 @@ cflags_rel = [
     "-O0,p",
     "-char unsigned",
     "-fp_contract off",
+    "-sym on",
     "-sdata 0",
     "-sdata2 0",
     "-pool off",
@@ -304,6 +305,7 @@ cflags_rel = [
 cflags_game = [
     *cflags_base,
     "-O0,p",
+    "-sym on",
     "-char unsigned",
     "-fp_contract off",
 ]
@@ -1374,6 +1376,12 @@ config.libs = [
         },
     ),
     Rel(
+        "m540Dll",
+        objects={
+            Object(NonMatching, "REL/m540Dll/m540.c"),
+        },
+    ),
+    Rel(
         "mdbeachDll",
         objects={
             Object(NonMatching, "REL/mdbeachDll/mdbeach.c"),
@@ -1514,6 +1522,7 @@ config.libs = [
             Object(NonMatching, "REL/sd00dll/gun.c"),
             Object(NonMatching, "REL/sd00dll/stage.c"),
             Object(NonMatching, "REL/sd00dll/math.c"),
+            Object(NonMatching, "REL/sd00dll/util.c"),
             Object(NonMatching, "REL/sd00dll/flag.c"),
             Object(NonMatching, "REL/sd00dll/rabbit.c"),
         },

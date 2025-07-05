@@ -15,7 +15,29 @@
 
 #include "datanum/e3boot.h"
 
-#include "relprolog.inc"
+typedef void (*VoidFunc)(void);
+extern const VoidFunc _ctors[];
+extern const VoidFunc _dtors[];
+
+extern void ObjectSetup(void);
+
+int _prolog(void) {
+    const VoidFunc* ctors = _ctors;
+    while (*ctors != 0) {
+        (**ctors)();
+        ctors++;
+    }
+    ObjectSetup();
+    return 0;
+}
+
+void _epilog(void) {
+    const VoidFunc* dtors = _dtors;
+    while (*dtors != 0) {
+        (**dtors)();
+        dtors++;
+    }
+}
 
 #define HU_PAD_BTN_ALL (HuPadBtn[0] | HuPadBtn[1] | HuPadBtn[2] | HuPadBtn[3])
 #define HU_PAD_BTNDOWN_ALL (HuPadBtnDown[0] | HuPadBtnDown[1] | HuPadBtnDown[2] | HuPadBtnDown[3])
