@@ -43,6 +43,9 @@
 
 #define CHAR_MOTNO(dataNum) FILENUM(dataNum)
 
+#define CHARMOT_DATANUM(dataNum, charName) (DATANUM(DATA_##charName##mot, FILENUM(dataNum)))
+#define CHAR_DATANUM(dataNum, charName) (DATANUM(DATA_##charName, FILENUM(dataNum)))
+
 void CharInit(void);
 AMEM_PTR CharMotionAMemPGet(s16 charNo);
 void CharMotionInit(s16 charNo);

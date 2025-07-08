@@ -188,6 +188,7 @@ cflags_base = [
     "-str reuse",
     "-multibyte",  # For Wii compilers, replace with `-enc SJIS`
     "-i include",
+    "-i src",
     "-DMUSY_TARGET=MUSY_TARGET_DOLPHIN",
     f"-i build/{config.version}/include",
     f"-DVERSION={version_num}",
@@ -1232,8 +1233,8 @@ config.libs = [
     Rel(
         "m526Dll",
         objects={
-            Object(NonMatching, "REL/m526Dll/m526.c"),
-            Object(NonMatching, "REL/m526Dll/math.c"),
+            Object(Matching, "REL/m526Dll/m526.c"),
+            Object(Matching, "REL/m526Dll/math.c"),
         },
     ),
     Rel(
