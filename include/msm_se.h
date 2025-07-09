@@ -44,6 +44,7 @@
 
 #define MSM_SE_GUIDE_02 703
 #define MSM_SE_GUIDE_04 705
+#define MSM_SE_GUIDE_26 727
 #define MSM_SE_GUIDE_31 732
 #define MSM_SE_GUIDE_49 750
 #define MSM_SE_GUIDE_50 751
@@ -124,5 +125,14 @@
 #define MSM_SE_BD6_11 1554
 #define MSM_SE_BD6_12 1555
 #define MSM_SE_BD6_14 1557
+
+#define MSM_SE_M526_01 1902
+#define MSM_SE_M526_02 1903
+#define MSM_SE_M526_03 1904
+#define MSM_SE_M526_04 1905
+#define MSM_SE_M526_05 1906
+#define MSM_SE_M526_06 1907
+#define MSM_SE_M526_07 1908
+#define MSM_SE_M526_08 1909
 
 #endif
