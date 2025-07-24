@@ -51,6 +51,9 @@
 #define GMES_MG_TYPE_START 0
 #define GMES_MG_TYPE_FINISH 1
 #define GMES_MG_TYPE_DRAW 2
+#define GMES_MG_TYPE_WIN 3
+#define GMES_MG_TYPE_LOSE 4
+#define GMES_MG_TYPE_CHAMPION 5
 
 #define GMES_MG_WINNER_NONE -1
 
@@ -67,7 +70,9 @@
 #define GMesMgFinishTypeCreate(type) GMesCreate(type, GMES_MG_TYPE_FINISH)
 #define GMesMgDrawTypeCreate(type) GMesCreate(type, GMES_MG_TYPE_DRAW)
 
-#define GMesMgWinnerCreate(charNo1, charNo2, charNo3, charNo4) GMesCreate(GMES_MES_MG_WINNER, 3, charNo1, charNo2, charNo3, charNo4)
+#define GMesMgWinnerCreate(charNo1, charNo2, charNo3, charNo4) GMesCreate(GMES_MES_MG_WINNER, GMES_MG_TYPE_WIN, charNo1, charNo2, charNo3, charNo4)
+#define GMesMgWinnerTypeCreate(type, charNo1, charNo2, charNo3, charNo4) GMesCreate(GMES_MES_MG_WINNER, type, charNo1, charNo2, charNo3, charNo4)
+#define GMesMgWinnerDrawCreate(type) GMesCreate(GMES_MES_MG_WINNER, GMES_MG_TYPE_DRAW)
 
 
 #define GMesRecordCreate(val) GMesCreate(GMES_MES_MG_RECORD, val)

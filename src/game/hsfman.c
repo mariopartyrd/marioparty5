@@ -17,16 +17,11 @@
 #define REFLECT_TEX_W 128
 #define REFLECT_TEX_H 128
 
-#define LIGHT_TYPE_SPOT 0
-#define LIGHT_TYPE_INFINITYT 1
-#define LIGHT_TYPE_POINT 2
-#define LIGHT_TYPE_STATIC 0x8000
-#define LIGHT_TYPE_NONE -1
-
 #define LIGHT_TYPE_SET(lightP, lightType) ((lightP)->type &= 0xFF00); \
     ((lightP)->type |= (lightType))
 
 #define LIGHT_TYPE_GET(lightP) ((lightP)->type & 0xFF)
+
 
 #include "refMapData0.inc"
 #include "refMapData1.inc"
@@ -1389,17 +1384,17 @@ void Hu3DLighInit(void)
     s16 i;
     lightP = &Hu3DGlobalLight[0];
     for(i=0; i<HU3D_GLIGHT_MAX; i++, lightP++) {
-        lightP->type = LIGHT_TYPE_NONE;
+        lightP->type = HU3D_LIGHT_TYPE_NONE;
     }
     lightP = &Hu3DLocalLight[0];
     for(i=0; i<HU3D_LLIGHT_MAX; i++, lightP++) {
-        lightP->type = LIGHT_TYPE_NONE;
+        lightP->type = HU3D_LIGHT_TYPE_NONE;
     }
 }
 
 static void Hu3DLightCreate(HU3DLIGHT *lightP, HuVecF *pos, HuVecF *dir, GXColor *color)
 {
-    lightP->type = LIGHT_TYPE_SPOT;
+    lightP->type = HU3D_LIGHT_TYPE_SPOT;
     lightP->pos = *pos;
     lightP->dir = *dir;
     lightP->offset.x = lightP->offset.y = lightP->offset.z = 0;
@@ -1432,7 +1427,7 @@ HU3DLIGHTID Hu3DGLightCreateV(HuVecF *pos, HuVecF *dir, GXColor *color)
     HU3DLIGHTID lightId;
     HU3DLIGHT *lightP;
     for(lightP=&Hu3DGlobalLight[0], lightId=0; lightId<HU3D_GLIGHT_MAX; lightId++, lightP++) {
-        if(lightP->type == LIGHT_TYPE_NONE) {
+        if(lightP->type == HU3D_LIGHT_TYPE_NONE) {
             break;
         }
     }
@@ -1468,7 +1463,7 @@ HU3DLLIGHTID Hu3DLLightCreateV(HU3DMODELID modelId, HuVecF *pos, HuVecF *dir, GX
     HU3DLLIGHTID lLightId;
     HU3DLIGHT *lightP;
     for(lightP=&Hu3DLocalLight[0], lightId=0; lightId<HU3D_LLIGHT_MAX; lightId++, lightP++) {
-        if(lightP->type == LIGHT_TYPE_NONE) {
+        if(lightP->type == HU3D_LIGHT_TYPE_NONE) {
             break;
         }
     }
@@ -1491,7 +1486,7 @@ HU3DLLIGHTID Hu3DLLightCreateV(HU3DMODELID modelId, HuVecF *pos, HuVecF *dir, GX
 
 static void Hu3DLightSpotSet(HU3DLIGHT *lightP, GXSpotFn spotFunc, float cutoff)
 {
-    LIGHT_TYPE_SET(lightP, LIGHT_TYPE_SPOT);
+    LIGHT_TYPE_SET(lightP, HU3D_LIGHT_TYPE_SPOT);
     lightP->cutoff = cutoff;
     lightP->func = spotFunc;
 }
@@ -1511,7 +1506,7 @@ void Hu3DLLightSpotSet(HU3DMODELID modelId, HU3DLLIGHTID lightId, GXSpotFn spotF
 
 static void Hu3DLightInfinitytSet(HU3DLIGHT *lightP)
 {
-    LIGHT_TYPE_SET(lightP, LIGHT_TYPE_INFINITYT);
+    LIGHT_TYPE_SET(lightP, HU3D_LIGHT_TYPE_INFINITYT);
 }
 
 void Hu3DGLightInfinitytSet(HU3DLIGHTID lightId)
@@ -1529,7 +1524,7 @@ void Hu3DLLightInfinitytSet(HU3DMODELID modelId, HU3DLLIGHTID lightId)
 
 static void Hu3DLightPointSet(HU3DLIGHT *lightP, float refDistance, float refBrightness, GXDistAttnFn distFunc)
 {
-    LIGHT_TYPE_SET(lightP, LIGHT_TYPE_POINT);
+    LIGHT_TYPE_SET(lightP, HU3D_LIGHT_TYPE_POINT);
     lightP->cutoff = refDistance;
     lightP->brightness = refBrightness;
     lightP->func = distFunc;
@@ -1550,7 +1545,7 @@ void Hu3DLLightPointSet(HU3DMODELID modelId, HU3DLLIGHTID lightId, float refDist
 
 void Hu3DGLightKill(HU3DLIGHTID lightId)
 {
-    Hu3DGlobalLight[lightId].type = LIGHT_TYPE_NONE;
+    Hu3DGlobalLight[lightId].type = HU3D_LIGHT_TYPE_NONE;
 }
 
 void Hu3DLLightKill(HU3DMODELID modelId, HU3DLLIGHTID lightId)
@@ -1558,7 +1553,7 @@ void Hu3DLLightKill(HU3DMODELID modelId, HU3DLLIGHTID lightId)
     HU3DMODEL *modelP = &Hu3DData[modelId];
     HU3DLIGHT *lightP = &Hu3DLocalLight[modelP->lLightId[lightId]];
     s16 i;
-    lightP->type = LIGHT_TYPE_NONE;
+    lightP->type = HU3D_LIGHT_TYPE_NONE;
     modelP->lLightId[lightId] = HU3D_LIGHTID_NONE;
     for(i=0; i<HU3D_MODEL_LLIGHT_MAX; i++) {
         if(modelP->lLightId[i] == HU3D_LIGHTID_NONE) {
@@ -1575,7 +1570,7 @@ void Hu3DLightAllKill(void)
     HU3DLIGHTID lightId;
     HU3DLIGHT *lightP;
     for(lightP=&Hu3DGlobalLight[0], lightId=0; lightId<HU3D_GLIGHT_MAX; lightId++, lightP++) {
-        if(lightP->type != LIGHT_TYPE_NONE) {
+        if(lightP->type != HU3D_LIGHT_TYPE_NONE) {
             Hu3DGLightKill(lightId);
         }
     }
@@ -1718,9 +1713,9 @@ void Hu3DLLightPosAimSet(HU3DMODELID modelId, HU3DLLIGHTID lightId, float posX, 
 static void Hu3DLightStatSet(HU3DLIGHT *lightP, BOOL staticF)
 {
     if(staticF) {
-        lightP->type |= LIGHT_TYPE_STATIC;
+        lightP->type |= HU3D_LIGHT_TYPE_STATIC;
     } else {
-        lightP->type &= ~LIGHT_TYPE_STATIC;
+        lightP->type &= ~HU3D_LIGHT_TYPE_STATIC;
     }
 }
 void Hu3DGLightStaticSet(HU3DLIGHTID lightId, BOOL staticF)
@@ -1837,7 +1832,7 @@ s16 Hu3DLightSet(HU3DMODEL *modelP, Mtx cameraMtx, Mtx cameraMtxXPose, float hil
     lightBit = 0;
     bit = (1 << 0);
     for(lightP = &Hu3DGlobalLight[0], i=0; i<HU3D_GLIGHT_MAX; i++, lightP++) {
-        if(lightP->type != LIGHT_TYPE_NONE) {
+        if(lightP->type != HU3D_LIGHT_TYPE_NONE) {
             lightSet(lightP, bit, cameraMtxXPose, cameraMtx, hilitePower);
             lightBit |= bit;
             bit <<= 1;
@@ -1862,23 +1857,23 @@ static void lightSet(HU3DLIGHT *lightP, s16 lightBit, Mtx cameraMtx, Mtx cameraM
     HuVecF dir;
     HuVecF pos;
     switch(LIGHT_TYPE_GET(lightP)) {
-        case LIGHT_TYPE_SPOT:
+        case HU3D_LIGHT_TYPE_SPOT:
             GXInitLightAttn(&lightObj, 1, 0, 0, 1, 0, 0);
             GXInitLightSpot(&lightObj, lightP->cutoff, lightP->func);
             break;
             
-        case LIGHT_TYPE_INFINITYT:
+        case HU3D_LIGHT_TYPE_INFINITYT:
             GXInitLightAttnK(&lightObj, 1, 0, 0);
             GXInitLightDistAttn(&lightObj, 0, 1, GX_DA_OFF);
             HuScaleVecF(&lightP->dir, &lightP->pos, -1000000.0f);
             break;
         
-        case LIGHT_TYPE_POINT:
+        case HU3D_LIGHT_TYPE_POINT:
             GXInitLightAttn(&lightObj, 1, 0, 0, 0, 0, 0);
             GXInitLightDistAttn(&lightObj, lightP->cutoff, lightP->brightness, lightP->func);
             break;
     }
-    if(lightP->type & LIGHT_TYPE_STATIC) {
+    if(lightP->type & HU3D_LIGHT_TYPE_STATIC) {
         MTXMultVec(cameraMtx, &lightP->dir, &dir);
         MTXMultVec(cameraMtxXPose, &lightP->pos, &pos);
         GXInitLightPos(&lightObj, pos.x, pos.y, pos.z);

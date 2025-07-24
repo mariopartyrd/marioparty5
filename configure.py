@@ -937,6 +937,14 @@ config.libs = [
         },
     ),
     Rel(
+        "m433Dll",
+        objects={
+            Object(Matching, "REL/m433Dll/m433.c"),
+            Object(Matching, "REL/m433Dll/stage.c"),
+            Object(Matching, "REL/m433Dll/player.c"),
+        },
+    ),
+    Rel(
         "m501Dll",
         objects={
             Object(NonMatching, "REL/m501Dll/m501.cpp"),

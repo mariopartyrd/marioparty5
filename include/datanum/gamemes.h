@@ -23,6 +23,7 @@ enum {
     GAMEMES_ANM_number0 = DATANUM(DATA_gamemes, 16),
     GAMEMES_ANM_letterAUpper = DATANUM(DATA_gamemes, 26),
     GAMEMES_ANM_letterALower = DATANUM(DATA_gamemes, 52),
+    GAMEMES_ANM_fontScoreDash = DATANUM(DATA_gamemes, 78),
     GAMEMES_ANM_fontApos = DATANUM(DATA_gamemes, 79),
     GAMEMES_ANM_fontDash = DATANUM(DATA_gamemes, 80),
     GAMEMES_ANM_punctExcl = DATANUM(DATA_gamemes, 81),

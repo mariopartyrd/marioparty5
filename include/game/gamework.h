@@ -440,6 +440,11 @@ static inline void GWSubGameNoSet(int subGameNo)
     GwSystem.subGameNo = subGameNo;
 }
 
+static inline int GWSubGameNoGet()
+{
+    return GwSystem.subGameNo;
+}
+
 #define GWMgCoinBonusAdd(player, value) GWMgCoinBonusSet((player), GWMgCoinBonusGet((player))+(value))
 #define GWMgCoinAdd(player, value) GWMgCoinSet((player), GWMgCoinGet((player))+(value))
 

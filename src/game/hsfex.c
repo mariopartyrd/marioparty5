@@ -383,6 +383,11 @@ static void SetObjCamMotion(HU3DMODELID modelId, HSFTRACK *trackP, float curve, 
     }
 }
 
+extern inline float fabsf2(float x)
+{
+   return (float)fabs((float)x);
+}
+
 int CamMotionExPathGet(HU3DMODELID modelId, s16 stepSpeed, float maxTime, s16 mode, CAMMOTIONWORK **workBuf, int *stepMax)
 {
     HU3DMODEL *modelP = &Hu3DData[modelId];
@@ -474,7 +479,7 @@ int CamMotionExPathGet(HU3DMODELID modelId, s16 stepSpeed, float maxTime, s16 mo
         distBuf[1] = VECMag(&temp);
         distMax += distBuf[1];
     }
-    if(fabsf(distMax) > 0.0001) {
+    if(fabsf2(distMax) > 0.0001) {
         work = *workBuf;
         distBuf = distBufBegin;
         for(dist=0, time=0; time<num; time++, work++, distBuf++) {
