@@ -20,5 +20,6 @@ enum {
 #define DATANUM(dir, file) ((dir)|(file))
 
 #define FILENUM(dataNum) ((dataNum) & 0xFFFF)
+#define DIRNUM(dataNum) ((dataNum) & 0xFFFF0000)
 
 #endif

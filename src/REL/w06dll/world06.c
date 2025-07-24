@@ -1779,16 +1779,6 @@ static int MB6Ev_CakeThrowCupCheck(MB6EV_CAKEBALL *ballP)
 #undef CAKETHROW_BALL_THROW
 #undef CAKETHROW_BALL_SHRINK
 
-//HACK: Fixes weirdness with fabsf inline in MB6Ev_CakeThrowPlayerUpdate
-_MATH_INLINE float fabsf2(register float x) {
-    register float outF;
-	// clang-format off
-    asm {
-        fabs outF, x
-    }
-    return outF;
-}
-
 static void MB6Ev_CakeThrowPlayerUpdate(int playerNo)
 {
     MB6EV_PLAYER *evPlayer = &mb6_Work.evPlayer[playerNo];
@@ -1826,7 +1816,7 @@ static void MB6Ev_CakeThrowPlayerUpdate(int playerNo)
                 evPlayer->ballNo = -1;
                 evPlayer->timer++;
             } else if(evPlayer->timer == 1) {
-                if(fabsf2(MB6_AngleDiff(evPlayer->rot.y, evPlayer->angleStart)) < 10.0f) {
+                if(fabsf(MB6_AngleDiff(evPlayer->rot.y, evPlayer->angleStart)) < 10.0f) {
                     evPlayer->ballNo = MB6Ev_CakeThrowBallSet(playerNo);
                     if(evPlayer->ballNo >= 0) {
                         evPlayer->ballDist = 0;
