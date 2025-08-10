@@ -96,6 +96,12 @@
 #define MSM_SE_BOARD_130 888
 #define MSM_SE_BOARD_137 895
 
+#define MSM_SE_INST_01 897
+
+#define MSM_SE_INST_25 921
+#define MSM_SE_INST_26 922
+
+
 #define MSM_SE_MENU_01 967
 #define MSM_SE_MENU_04 970
 #define MSM_SE_MENU_05 971
@@ -109,6 +115,12 @@
 #define MSM_SE_MENU_15 981
 
 #define MSM_SE_MENU_40 1006
+
+#define MSM_SE_DEFAULT_75 1241
+#define MSM_SE_DEFAULT_78 1244
+#define MSM_SE_DEFAULT_79 1245
+#define MSM_SE_DEFAULT_83 1249
+
 
 #define MSM_SE_BD3_13 1512
 

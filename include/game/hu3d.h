@@ -208,6 +208,7 @@
 #define Hu3DModelZWriteOn(modelId) Hu3DModelAttrReset(modelId, HU3D_ATTR_ZWRITE_OFF)
 
 #define Hu3DModelCreateData(dataNum) (Hu3DModelCreate(HuDataSelHeapReadNum((dataNum), HU_MEMNUM_OVL, HEAP_MODEL)))
+#define Hu3DMotionCreateData(dataNum) (Hu3DMotionCreate(HuDataSelHeapReadNum((dataNum), HU_MEMNUM_OVL, HEAP_MODEL)))
 #define Hu3DJointMotionData(model, dataNum) (Hu3DJointMotion((model), HuDataSelHeapReadNum((dataNum), HU_MEMNUM_OVL, HEAP_MODEL)))
 
 //Typedefs for various IDs

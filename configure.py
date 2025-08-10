@@ -898,9 +898,9 @@ config.libs = [
     Rel(
         "decathlonDll",
         objects={
-            Object(NonMatching, "REL/decathlonDll/mgtournament.c"),
-            Object(NonMatching, "REL/decathlonDll/score.c"),
-            Object(NonMatching, "REL/decathlonDll/mess.c"),
+            Object(Matching, "REL/decathlonDll/mgtournament.c"),
+            Object(Matching, "REL/decathlonDll/score.c"),
+            Object(Matching, "REL/decathlonDll/mess.c"),
         },
     ),
     Rel(
