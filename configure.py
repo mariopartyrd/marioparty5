@@ -1391,6 +1391,176 @@ config.libs = [
         },
     ),
     Rel(
+        "m541Dll",
+        objects={
+            Object(NonMatching, "REL/m541Dll/m541.c"),
+            Object(NonMatching, "REL/m541Dll/game.c"),
+            Object(NonMatching, "REL/m541Dll/stage.c"),
+        },
+    ),
+    Rel(
+        "m542dll",
+        objects={
+            Object(NonMatching, "REL/m542dll/m542.c"),
+            Object(NonMatching, "REL/m542dll/game.c"),
+            Object(NonMatching, "REL/m542dll/stage.c"),
+        },
+    ),
+    Rel(
+        "m543Dll",
+        objects={
+            Object(NonMatching, "REL/m543Dll/m543.c"),
+            Object(NonMatching, "REL/m543Dll/game.c"),
+            Object(NonMatching, "REL/m543Dll/stage.c"),
+        },
+    ),
+    Rel(
+        "m544Dll",
+        objects={
+            Object(NonMatching, "REL/m544Dll/m544.c"),
+            Object(NonMatching, "REL/m544Dll/game.c"),
+            Object(NonMatching, "REL/m544Dll/stage.c"),
+        },
+    ),
+    Rel(
+        "m545Dll",
+        objects={
+            Object(NonMatching, "REL/m545Dll/m545.c"),
+            Object(NonMatching, "REL/m545Dll/game.c"),
+            Object(NonMatching, "REL/m545Dll/stage.c"),
+        },
+    ),
+    Rel(
+        "m546Dll",
+        objects={
+            Object(NonMatching, "REL/m546Dll/m546.c"),
+            Object(NonMatching, "REL/m546Dll/game.c"),
+            Object(NonMatching, "REL/m546Dll/stage.c"),
+        },
+    ),
+    Rel(
+        "m547dll",
+        objects={
+            Object(NonMatching, "REL/m547dll/m547.c"),
+            Object(NonMatching, "REL/m547dll/game.c"),
+            Object(NonMatching, "REL/m547dll/stage.c"),
+        },
+    ),
+    Rel(
+        "m548dll",
+        objects={
+            Object(NonMatching, "REL/m548dll/m548.c"),
+            Object(NonMatching, "REL/m548dll/game.c"),
+            Object(NonMatching, "REL/m548dll/stage.c"),
+        },
+    ),
+    Rel(
+        "m549Dll",
+        objects={
+            Object(NonMatching, "REL/m549Dll/m549.c"),
+            Object(NonMatching, "REL/m549Dll/game.c"),
+            Object(NonMatching, "REL/m549Dll/cloud.c"),
+            Object(NonMatching, "REL/m549Dll/stage.c"),
+        },
+    ),
+    Rel(
+        "m550dll",
+        objects={
+            Object(NonMatching, "REL/m550dll/m550.c"),
+            Object(NonMatching, "REL/m550dll/game.c"),
+            Object(NonMatching, "REL/m550dll/stage.c"),
+        },
+    ),
+    Rel(
+        "m551Dll",
+        objects={
+            Object(NonMatching, "REL/m551Dll/m551.c"),
+            Object(NonMatching, "REL/m551Dll/game.c"),
+            Object(NonMatching, "REL/m551Dll/stage.c"),
+        },
+    ),
+    Rel(
+        "m552dll",
+        objects={
+            Object(NonMatching, "REL/m552dll/m552.c"),
+            Object(NonMatching, "REL/m552dll/game.c"),
+            Object(NonMatching, "REL/m552dll/cube.c"),
+            Object(NonMatching, "REL/m552dll/com.c"),
+            Object(NonMatching, "REL/m552dll/stage.c"),
+        },
+    ),
+    Rel(
+        "m553Dll",
+        objects={
+            Object(NonMatching, "REL/m553Dll/m553.c"),
+            Object(NonMatching, "REL/m553Dll/game.c"),
+            Object(NonMatching, "REL/m553Dll/stage.c"),
+        },
+    ),
+    Rel(
+        "m554dll",
+        objects={
+            Object(NonMatching, "REL/m554dll/m554.c"),
+            Object(NonMatching, "REL/m554dll/game.c"),
+            Object(NonMatching, "REL/m554dll/stage.c"),
+        },
+    ),
+    Rel(
+        "m555Dll",
+        objects={
+            Object(NonMatching, "REL/m555Dll/m555.c"),
+            Object(NonMatching, "REL/m555Dll/game.c"),
+            Object(NonMatching, "REL/m555Dll/stage.c"),
+        },
+    ),
+    Rel(
+        "m559dll",
+        objects={
+            Object(NonMatching, "REL/m559dll/m559.c"),
+        },
+    ),
+    Rel(
+        "m560dll",
+        objects={
+            Object(NonMatching, "REL/m560dll/m560.c"),
+            Object(NonMatching, "REL/m560dll/effect.c"),
+        },
+    ),
+    Rel(
+        "m561dll",
+        objects={
+            Object(NonMatching, "REL/m561dll/m561.c"),
+            Object(NonMatching, "REL/m561dll/effect.c"),
+        },
+    ),
+    Rel(
+        "m562dll",
+        objects={
+            Object(NonMatching, "REL/m562dll/m562.c"),
+            Object(NonMatching, "REL/m562dll/main.c"),
+            Object(NonMatching, "REL/m562dll/back.c"),
+            Object(NonMatching, "REL/m562dll/stage.c"),
+            Object(NonMatching, "REL/m562dll/player.c"),
+            Object(NonMatching, "REL/m562dll/koopa.c"),
+            Object(NonMatching, "REL/m562dll/koopaboss.c"),
+            Object(NonMatching, "REL/m562dll/fire.c"),
+            Object(NonMatching, "REL/m562dll/mini_mechakoopa.c"),
+            Object(NonMatching, "REL/m562dll/firering.c"),
+            Object(NonMatching, "REL/m562dll/sunbomb.c"),
+            Object(NonMatching, "REL/m562dll/camera.c"),
+            Object(NonMatching, "REL/m562dll/light.c"),
+            Object(NonMatching, "REL/m562dll/sprite.c"),
+            Object(NonMatching, "REL/m562dll/evt_opening.c"),
+            Object(NonMatching, "REL/m562dll/evt_fire.c"),
+            Object(NonMatching, "REL/m562dll/evt_fight.c"),
+            Object(NonMatching, "REL/m562dll/evt_fall.c"),
+            Object(NonMatching, "REL/m562dll/evt_koopagrow.c"),
+            Object(NonMatching, "REL/m562dll/evt_ending.c"),
+            Object(NonMatching, "REL/m562dll/evt_winner.c"),
+            Object(NonMatching, "REL/m562dll/effect.c"),
+        },
+    ),
+    Rel(
         "mdbeachDll",
         objects={
             Object(NonMatching, "REL/mdbeachDll/mdbeach.c"),

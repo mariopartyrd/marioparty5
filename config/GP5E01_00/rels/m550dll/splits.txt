@@ -5,3 +5,21 @@ Sections:
 	.rodata     type:rodata align:8
 	.data       type:data align:8
 	.bss        type:bss align:8
+
+REL/m550dll/m550.c:
+	.text       start:0x00000000 end:0x00001C84
+	.rodata     start:0x00000000 end:0x00000078
+	.data       start:0x00000000 end:0x00000250
+	.bss        start:0x00000000 end:0x00001EC0
+
+REL/m550dll/game.c:
+	.text       start:0x00001C84 end:0x00004E8C
+	.rodata     start:0x00000078 end:0x00000170
+	.data       start:0x00000250 end:0x000003D8
+	.bss        start:0x00001EC0 end:0x00001FC0
+
+REL/m550dll/stage.c:
+	.text       start:0x00004E8C end:0x00008424
+	.rodata     start:0x00000170 end:0x000003D4
+	.data       start:0x000003D8 end:0x00000440
+	.bss        start:0x00001FC0 end:0x00001FC4

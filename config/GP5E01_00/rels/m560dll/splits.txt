@@ -5,3 +5,15 @@ Sections:
 	.rodata     type:rodata align:8
 	.data       type:data align:8
 	.bss        type:bss align:8
+
+REL/m560dll/m560.c:
+	.text       start:0x00000000 end:0x0000668C
+	.rodata     start:0x00000000 end:0x00000170
+	.data       start:0x00000000 end:0x000002F0
+	.bss        start:0x00000000 end:0x00000520
+
+REL/m560dll/effect.c:
+	.text       start:0x0000668C end:0x000076EC
+	.rodata     start:0x00000170 end:0x000001F0
+	.data       start:0x000002F0 end:0x00000328
+	.bss        start:0x00000520 end:0x00000544

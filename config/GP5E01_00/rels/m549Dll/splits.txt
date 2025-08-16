@@ -5,3 +5,27 @@ Sections:
 	.rodata     type:rodata align:8
 	.data       type:data align:8
 	.bss        type:bss align:8
+
+REL/m549Dll/m549.c:
+	.text       start:0x00000000 end:0x00003B74
+	.rodata     start:0x00000000 end:0x00000088
+	.data       start:0x00000000 end:0x00000440
+	.bss        start:0x00000000 end:0x000015E0
+
+REL/m549Dll/game.c:
+	.text       start:0x00003B74 end:0x000115A8
+	.rodata     start:0x00000088 end:0x00000200
+	.data       start:0x00000440 end:0x00000510
+	.bss        start:0x000015E0 end:0x000015F8
+
+REL/m549Dll/cloud.c:
+	.text       start:0x000115A8 end:0x00011BC0
+	.rodata     start:0x00000200 end:0x00000220
+	.data       start:0x00000510 end:0x00000528
+	.bss        start:0x000015F8 end:0x00001608
+
+REL/m549Dll/stage.c:
+	.text       start:0x00011BC0 end:0x00014A1C
+	.rodata     start:0x00000220 end:0x0000047C
+	.data       start:0x00000528 end:0x00000544
+	.bss        start:0x00001608 end:0x0000160C
