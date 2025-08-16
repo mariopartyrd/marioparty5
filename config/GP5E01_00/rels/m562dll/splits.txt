@@ -5,3 +5,127 @@ Sections:
 	.rodata     type:rodata align:8
 	.data       type:data align:8
 	.bss        type:bss align:8
+
+REL/m562dll/m562.c:
+	.text       start:0x00000000 end:0x00000AC4
+	.rodata     start:0x00000000 end:0x00000018
+	.data       start:0x00000000 end:0x00000030
+	.bss        start:0x00000000 end:0x00000008
+
+REL/m562dll/main.c:
+	.text       start:0x00000AC4 end:0x00003808
+	.rodata     start:0x00000018 end:0x000000C8
+	.data       start:0x00000030 end:0x00000060
+	.bss        start:0x00000008 end:0x00007810
+
+REL/m562dll/back.c:
+	.text       start:0x00003808 end:0x00005688
+	.rodata     start:0x000000C8 end:0x00000190
+	.data       start:0x00000060 end:0x000000C8
+	.bss        start:0x00007810 end:0x00007820
+
+REL/m562dll/stage.c:
+	.text       start:0x00005688 end:0x00006B28
+	.rodata     start:0x00000190 end:0x00000220
+	.data       start:0x000000C8 end:0x00000190
+
+REL/m562dll/player.c:
+	.text       start:0x00006B28 end:0x0000B2E0
+	.rodata     start:0x00000220 end:0x00000340
+	.data       start:0x00000190 end:0x000007F8
+
+REL/m562dll/koopa.c:
+	.text       start:0x0000B2E0 end:0x0000F784
+	.rodata     start:0x00000340 end:0x00000478
+	.data       start:0x000007F8 end:0x00000880
+	.bss        start:0x00007820 end:0x00007828
+
+REL/m562dll/koopaboss.c:
+	.text       start:0x0000F784 end:0x00013CFC
+	.rodata     start:0x00000478 end:0x000005E0
+	.data       start:0x00000880 end:0x00000998
+	.bss        start:0x00007828 end:0x00007840
+
+REL/m562dll/fire.c:
+	.text       start:0x00013CFC end:0x000177EC
+	.rodata     start:0x000005E0 end:0x000006E8
+	.data       start:0x00000998 end:0x000009F8
+
+REL/m562dll/mini_mechakoopa.c:
+	.text       start:0x000177EC end:0x00018E88
+	.rodata     start:0x000006E8 end:0x000007C0
+	.data       start:0x000009F8 end:0x00000A30
+	.bss        start:0x00007840 end:0x00007848
+
+REL/m562dll/firering.c:
+	.text       start:0x00018E88 end:0x0001EE3C
+	.rodata     start:0x000007C0 end:0x000008A0
+	.data       start:0x00000A30 end:0x00000AB0
+	.bss        start:0x00007848 end:0x00007900
+
+REL/m562dll/sunbomb.c:
+	.text       start:0x0001EE3C end:0x00020CE0
+	.rodata     start:0x000008A0 end:0x00000960
+	.data       start:0x00000AB0 end:0x00000AE0
+
+REL/m562dll/camera.c:
+	.text       start:0x00020CE0 end:0x0002253C
+	.rodata     start:0x00000960 end:0x00000A70
+	.data       start:0x00000AE0 end:0x00000B10
+
+REL/m562dll/light.c:
+	.text       start:0x0002253C end:0x00023ECC
+	.rodata     start:0x00000A70 end:0x00000A88
+	.data       start:0x00000B10 end:0x00000BF0
+
+REL/m562dll/sprite.c:
+	.text       start:0x00023ECC end:0x0002446C
+	.rodata     start:0x00000A88 end:0x00000AB0
+	.data       start:0x00000BF0 end:0x00000C30
+
+REL/m562dll/evt_opening.c:
+	.text       start:0x0002446C end:0x000252B4
+	.rodata     start:0x00000AB0 end:0x00000B38
+	.data       start:0x00000C30 end:0x00000CC8
+	.bss        start:0x00007900 end:0x00007930
+
+REL/m562dll/evt_fire.c:
+	.text       start:0x000252B4 end:0x000260B8
+	.rodata     start:0x00000B38 end:0x00000BF0
+	.data       start:0x00000CC8 end:0x00000D28
+	.bss        start:0x00007930 end:0x00007958
+
+REL/m562dll/evt_fight.c:
+	.text       start:0x000260B8 end:0x00027950
+	.rodata     start:0x00000BF0 end:0x00000CD0
+	.data       start:0x00000D28 end:0x00000D98
+	.bss        start:0x00007958 end:0x00007960
+
+REL/m562dll/evt_fall.c:
+	.text       start:0x00027950 end:0x000280C8
+	.rodata     start:0x00000CD0 end:0x00000D40
+	.data       start:0x00000D98 end:0x00000DB0
+	.bss        start:0x00007960 end:0x00007990
+
+REL/m562dll/evt_koopagrow.c:
+	.text       start:0x000280C8 end:0x00029DF8
+	.rodata     start:0x00000D40 end:0x00000E20
+	.data       start:0x00000DB0 end:0x00000EA8
+	.bss        start:0x00007990 end:0x000079A0
+
+REL/m562dll/evt_ending.c:
+	.text       start:0x00029DF8 end:0x0002C118
+	.rodata     start:0x00000E20 end:0x00000F38
+	.data       start:0x00000EA8 end:0x00000F88
+	.bss        start:0x000079A0 end:0x000079F8
+
+REL/m562dll/evt_winner.c:
+	.text       start:0x0002C118 end:0x0002CD6C
+	.rodata     start:0x00000F38 end:0x00000FB8
+	.data       start:0x00000F88 end:0x00000FF8
+
+REL/m562dll/effect.c:
+	.text       start:0x0002CD6C end:0x0002F1EC
+	.rodata     start:0x00000FB8 end:0x00001070
+	.data       start:0x00000FF8 end:0x00001030
+	.bss        start:0x000079F8 end:0x00007A1C
