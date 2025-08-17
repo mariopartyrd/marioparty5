@@ -5,3 +5,51 @@ Sections:
 	.rodata     type:rodata align:8
 	.data       type:data align:8
 	.bss        type:bss align:8
+
+REL/m580Dll/m580.c:
+	.text       start:0x00000000 end:0x00002804
+	.rodata     start:0x00000000 end:0x00000130
+	.data       start:0x00000000 end:0x00000090
+	.bss        start:0x00000000 end:0x00000050
+
+REL/m580Dll/player.c:
+	.text       start:0x00002804 end:0x000083FC
+	.rodata     start:0x00000130 end:0x000003A8
+	.data       start:0x00000090 end:0x00000298
+	.bss        start:0x00000050 end:0x000000B0
+
+REL/m580Dll/stage.c:
+	.text       start:0x000083FC end:0x00008A64
+	.rodata     start:0x000003A8 end:0x000003D0
+	.data       start:0x00000298 end:0x00000310
+	.bss        start:0x000000B0 end:0x000000B8
+
+REL/m580Dll/stick.c:
+	.text       start:0x00008A64 end:0x0000C8F8
+	.rodata     start:0x000003D0 end:0x00000538
+	.data       start:0x00000310 end:0x00000778
+	.bss        start:0x000000B8 end:0x00000240
+
+REL/m580Dll/puck.c:
+	.text       start:0x0000C8F8 end:0x0000D7E0
+	.rodata     start:0x00000538 end:0x000005C0
+	.data       start:0x00000778 end:0x000007A0
+	.bss        start:0x00000240 end:0x00000248
+
+REL/m580Dll/effect.c:
+	.text       start:0x0000D7E0 end:0x0000EE34
+	.rodata     start:0x000005C0 end:0x00000710
+	.data       start:0x000007A0 end:0x000007E0
+	.bss        start:0x00000248 end:0x00000250
+
+REL/m580Dll/score.c:
+	.text       start:0x0000EE34 end:0x000110A0
+	.rodata     start:0x00000710 end:0x000007D8
+	.data       start:0x000007E0 end:0x000008A8
+	.bss        start:0x00000250 end:0x00000258
+
+REL/m580Dll/reflect.c:
+	.text       start:0x000110A0 end:0x00012758
+	.rodata     start:0x000007D8 end:0x00000834
+	.data       start:0x000008A8 end:0x000008B8
+	.bss        start:0x00000258 end:0x0000025C

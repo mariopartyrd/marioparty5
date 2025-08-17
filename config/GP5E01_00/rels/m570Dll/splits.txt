@@ -5,3 +5,15 @@ Sections:
 	.rodata     type:rodata align:8
 	.data       type:data align:8
 	.bss        type:bss align:8
+
+REL/m570Dll/m570.c:
+	.text       start:0x00000000 end:0x00004210
+	.rodata     start:0x00000000 end:0x00000128
+	.data       start:0x00000000 end:0x00000350
+	.bss        start:0x00000000 end:0x00000110
+
+REL/m570Dll/player.c:
+	.text       start:0x00004210 end:0x00005FB8
+	.rodata     start:0x00000128 end:0x00000188
+	.data       start:0x00000350 end:0x000006DB
+	.bss        start:0x00000110 end:0x000001D4

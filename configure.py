@@ -1561,6 +1561,181 @@ config.libs = [
         },
     ),
     Rel(
+        "m563dll",
+        objects={
+            Object(NonMatching, "REL/m563dll/m563.c"),
+            Object(NonMatching, "REL/m563dll/util.c"),
+        },
+    ),
+    Rel(
+        "m564Dll",
+        objects={
+            Object(NonMatching, "REL/m564Dll/m564.c"),
+            Object(NonMatching, "REL/m564Dll/player.c"),
+            Object(NonMatching, "REL/m564Dll/bomb.c"),
+            Object(NonMatching, "REL/m564Dll/com.c"),
+        },
+    ),
+    Rel(
+        "m565dll",
+        objects={
+            Object(NonMatching, "REL/m565dll/m565.c"),
+            Object(NonMatching, "REL/m565dll/main.c"),
+            Object(NonMatching, "REL/m565dll/object.c"),
+            Object(NonMatching, "REL/m565dll/back.c"),
+            Object(NonMatching, "REL/m565dll/stage.c"),
+            Object(NonMatching, "REL/m565dll/player.c"),
+            Object(NonMatching, "REL/m565dll/puku2.c"),
+            Object(NonMatching, "REL/m565dll/com.c"),
+            Object(NonMatching, "REL/m565dll/opening.c"),
+            Object(NonMatching, "REL/m565dll/ending.c"),
+            Object(NonMatching, "REL/m565dll/light.c"),
+        },
+    ),
+    Rel(
+        "m566Dll",
+        objects={
+            Object(NonMatching, "REL/m566Dll/m566.c"),
+        },
+    ),
+    Rel(
+        "m567Dll",
+        objects={
+            Object(NonMatching, "REL/m567Dll/m567.c"),
+        },
+    ),
+    Rel(
+        "m568Dll",
+        objects={
+            Object(NonMatching, "REL/m568Dll/archive.cpp"),
+            Object(NonMatching, "REL/m568Dll/m568.cpp"),
+            Object(NonMatching, "REL/m568Dll/input.cpp"),
+            Object(NonMatching, "REL/m568Dll/game_master.cpp"),
+            Object(NonMatching, "REL/m568Dll/heiho.cpp"),
+            Object(NonMatching, "REL/m568Dll/object_setup.cpp"),
+            Object(NonMatching, "REL/m568Dll/camera.cpp"),
+            Object(NonMatching, "REL/m568Dll/effect.cpp"),
+            Object(NonMatching, "REL/m568Dll/stage.cpp"),
+            Object(NonMatching, "REL/m568Dll/math.cpp"),
+            Object(NonMatching, "REL/m568Dll/octtree.cpp"),
+            Object(NonMatching, "REL/m568Dll/player.cpp"),
+            Object(NonMatching, "REL/m568Dll/tube.cpp"),
+        },
+    ),
+    Rel(
+        "m569Dll",
+        objects={
+            Object(NonMatching, "REL/m569Dll/m569.c"),
+            Object(NonMatching, "REL/m569Dll/player.c"),
+            Object(NonMatching, "REL/m569Dll/kuribo.c"),
+            Object(NonMatching, "REL/m569Dll/block.c"),
+            Object(NonMatching, "REL/m569Dll/score.c"),
+        },
+    ),
+    Rel(
+        "m570Dll",
+        objects={
+            Object(NonMatching, "REL/m570Dll/m570.c"),
+            Object(NonMatching, "REL/m570Dll/player.c"),
+        },
+    ),
+    Rel(
+        "m571dll",
+        objects={
+            Object(NonMatching, "REL/m571dll/m571.c"),
+        },
+    ),
+    Rel(
+        "m572dll",
+        objects={
+            Object(NonMatching, "REL/m572dll/m572.c"),
+        },
+    ),
+    Rel(
+        "m573dll",
+        objects={
+            Object(NonMatching, "REL/m573dll/m573.c"),
+        },
+    ),
+    Rel(
+        "m574Dll",
+        objects={
+            Object(NonMatching, "REL/m574Dll/m574.c"),
+            Object(NonMatching, "REL/m574Dll/player.c"),
+            Object(NonMatching, "REL/m574Dll/stage.c"),
+            Object(NonMatching, "REL/m574Dll/ball.c"),
+            Object(NonMatching, "REL/m574Dll/score.c"),
+            Object(NonMatching, "REL/m574Dll/collide.c"),
+        },
+    ),
+    Rel(
+        "m575dll",
+        objects={
+            Object(NonMatching, "REL/m575dll/m575.c"),
+            Object(NonMatching, "REL/m575dll/score.c"),
+            Object(NonMatching, "REL/m575dll/stage.c"),
+            Object(NonMatching, "REL/m575dll/ten.c"),
+            Object(NonMatching, "REL/m575dll/player.c"),
+            Object(NonMatching, "REL/m575dll/com.c"),
+            Object(NonMatching, "REL/m575dll/camera.c"),
+            Object(NonMatching, "REL/m575dll/light.c"),
+            Object(NonMatching, "REL/m575dll/tuboeff.c"),
+            Object(NonMatching, "REL/m575dll/tubo.c"),
+            Object(NonMatching, "REL/m575dll/coin.c"),
+            Object(NonMatching, "REL/m575dll/jugem.c"),
+            Object(NonMatching, "REL/m575dll/opening.c"),
+            Object(NonMatching, "REL/m575dll/effect.c"),
+        },
+    ),
+    Rel(
+        "m576Dll",
+        objects={
+            Object(NonMatching, "REL/m576Dll/m576.c"),
+            Object(NonMatching, "REL/m576Dll/stage.c"),
+            Object(NonMatching, "REL/m576Dll/score.c"),
+        },
+    ),
+    Rel(
+        "m577Dll",
+        objects={
+            Object(NonMatching, "REL/m577Dll/m577.c"),
+            Object(NonMatching, "REL/m577Dll/stagedata.c"),
+            Object(NonMatching, "REL/m577Dll/effect.c"),
+        },
+    ),
+    Rel(
+        "m579Dll",
+        objects={
+            Object(NonMatching, "REL/m579Dll/m579.cpp"),
+            Object(NonMatching, "REL/m579Dll/puku2.cpp"),
+            Object(NonMatching, "REL/m579Dll/game_master.cpp"),
+            Object(NonMatching, "REL/m579Dll/fishman.cpp"),
+            Object(NonMatching, "REL/m579Dll/object_setup.cpp"),
+            Object(NonMatching, "REL/m579Dll/camera.cpp"),
+            Object(NonMatching, "REL/m579Dll/water.cpp"),
+            Object(NonMatching, "REL/m579Dll/stage.cpp"),
+            Object(NonMatching, "REL/m579Dll/effect.cpp"),
+            Object(NonMatching, "REL/m579Dll/player.cpp"),
+            Object(NonMatching, "REL/m579Dll/fishline.cpp"),
+            Object(NonMatching, "REL/m579Dll/score.cpp"),
+            Object(NonMatching, "REL/m579Dll/watereff.cpp"),
+            Object(NonMatching, "REL/m579Dll/zako.cpp"),
+        },
+    ),
+    Rel(
+        "m580Dll",
+        objects={
+            Object(NonMatching, "REL/m580Dll/m580.c"),
+            Object(NonMatching, "REL/m580Dll/player.c"),
+            Object(NonMatching, "REL/m580Dll/stage.c"),
+            Object(NonMatching, "REL/m580Dll/stick.c"),
+            Object(NonMatching, "REL/m580Dll/puck.c"),
+            Object(NonMatching, "REL/m580Dll/effect.c"),
+            Object(NonMatching, "REL/m580Dll/score.c"),
+            Object(NonMatching, "REL/m580Dll/reflect.c"),
+        },
+    ),
+    Rel(
         "mdbeachDll",
         objects={
             Object(NonMatching, "REL/mdbeachDll/mdbeach.c"),

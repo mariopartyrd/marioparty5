@@ -5,3 +5,9 @@ Sections:
 	.rodata     type:rodata align:8
 	.data       type:data align:8
 	.bss        type:bss align:8
+
+REL/m566Dll/m566.c:
+	.text       start:0x00000000 end:0x0000E6C8
+	.rodata     start:0x00000000 end:0x0000082C
+	.data       start:0x00000000 end:0x000002C3
+	.bss        start:0x00000000 end:0x000022F0
