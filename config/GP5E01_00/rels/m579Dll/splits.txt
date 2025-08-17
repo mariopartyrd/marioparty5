@@ -5,3 +5,99 @@ Sections:
 	.rodata     type:rodata align:32
 	.data       type:data align:8
 	.bss        type:bss align:8
+
+REL/m579Dll/m579.cpp:
+	.text       start:0x00000000 end:0x00006074
+	.ctors      start:0x00000000 end:0x00000004
+	.rodata     start:0x00000000 end:0x00000080
+	.data       start:0x00000000 end:0x00000210
+	.bss        start:0x00000000 end:0x000009F0
+
+REL/m579Dll/puku2.cpp:
+	.text       start:0x00006074 end:0x00007650
+	.ctors      start:0x00000004 end:0x00000008
+	.rodata     start:0x00000080 end:0x00000170
+	.data       start:0x00000210 end:0x00000280
+	.bss        start:0x000009F0 end:0x00000A08
+
+REL/m579Dll/game_master.cpp:
+	.text       start:0x00007650 end:0x00007B4C
+	.ctors      start:0x00000008 end:0x0000000C
+	.rodata     start:0x00000170 end:0x00000178
+	.data       start:0x00000280 end:0x000002B0
+	.bss        start:0x00000A08 end:0x00000A28
+
+REL/m579Dll/fishman.cpp:
+	.text       start:0x00007B4C end:0x00008A78
+	.rodata     start:0x00000178 end:0x000001C8
+	.bss        start:0x00000A28 end:0x00000A38
+
+REL/m579Dll/object_setup.cpp:
+	.text       start:0x00008A78 end:0x00008B0C
+	.ctors      start:0x0000000C end:0x00000010
+	.bss        start:0x00000A38 end:0x00000A48
+
+REL/m579Dll/camera.cpp:
+	.text       start:0x00008B0C end:0x000097CC
+	.rodata     start:0x000001C8 end:0x00000280
+	.data       start:0x000002B0 end:0x00000320
+
+REL/m579Dll/water.cpp:
+	.text       start:0x000097CC end:0x0000B2C8
+	.ctors      start:0x00000010 end:0x00000014
+	.rodata     start:0x00000280 end:0x00000388
+	.data       start:0x00000320 end:0x00000360
+	.bss        start:0x00000A48 end:0x00000A88
+
+REL/m579Dll/stage.cpp:
+	.text       start:0x0000B2C8 end:0x0000BA70
+	.rodata     start:0x00000388 end:0x00000418
+	.data       start:0x00000360 end:0x000003B8
+	.bss        start:0x00000A88 end:0x00000A90
+
+REL/m579Dll/effect.cpp:
+	.text       start:0x0000BA70 end:0x0000C6D4
+	.ctors      start:0x00000014 end:0x00000018
+	.rodata     start:0x00000418 end:0x00000478
+	.data       start:0x000003B8 end:0x000003F8
+	.bss        start:0x00000A90 end:0x00000AB8
+
+REL/m579Dll/player.cpp:
+	.text       start:0x0000C6D4 end:0x00010C84
+	.ctors      start:0x00000018 end:0x0000001C
+	.rodata     start:0x00000478 end:0x000005B8
+	.data       start:0x000003F8 end:0x00000528
+	.bss        start:0x00000AB8 end:0x00000AE0
+
+REL/m579Dll/fishline.cpp:
+	.text       start:0x00010C84 end:0x00014208
+	.ctors      start:0x0000001C end:0x00000020
+	.rodata     start:0x000005B8 end:0x000006F8
+	.data       start:0x00000528 end:0x000005C0
+	.bss        start:0x00000AE0 end:0x00001288
+
+REL/m579Dll/score.cpp:
+	.text       start:0x00014208 end:0x000148AC
+	.rodata     start:0x000006F8 end:0x00000740
+	.data       start:0x000005C0 end:0x00000640
+
+REL/m579Dll/watereff.cpp:
+	.text       start:0x000148AC end:0x00015AD8
+	.rodata     start:0x00000740 end:0x00000A00
+	.data       start:0x00000640 end:0x000006B8
+
+REL/m579Dll/zako.cpp:
+	.text       start:0x00015AD8 end:0x000181B8
+	.ctors      start:0x00000020 end:0x00000024
+	.rodata     start:0x00000A00 end:0x00000B40
+	.data       start:0x000006B8 end:0x000007F7
+	.bss        start:0x00001288 end:0x000012B0
+
+REL/global_destructor_chain.c:
+	.text       start:0x000181B8 end:0x00018240
+	.dtors      start:0x00000000 end:0x00000004
+	.bss        start:0x000012B0 end:0x000012B4
+
+REL/ptmf.c:
+	.text       start:0x00018240 end:0x00018388
+	.rodata     start:0x00000B40 end:0x00000B4C

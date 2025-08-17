@@ -5,3 +5,86 @@ Sections:
 	.rodata     type:rodata align:8
 	.data       type:data align:8
 	.bss        type:bss align:8
+
+REL/m568Dll/archive.cpp:
+	.text       start:0x00000000 end:0x00000618
+	.rodata     start:0x00000000 end:0x00000010
+	.data       start:0x00000000 end:0x00000050
+
+REL/m568Dll/m568.cpp:
+	.text       start:0x00000618 end:0x0000628C
+	.ctors      start:0x00000000 end:0x00000004
+	.rodata     start:0x00000010 end:0x00000080
+	.data       start:0x00000050 end:0x00000250
+	.bss        start:0x00000000 end:0x000009F0
+
+REL/m568Dll/input.cpp:
+	.text       start:0x0000628C end:0x00007F1C
+	.rodata     start:0x00000080 end:0x00000110
+	.data       start:0x00000250 end:0x000002A8
+	.bss        start:0x000009F0 end:0x00000A00
+
+REL/m568Dll/game_master.cpp:
+	.text       start:0x00007F1C end:0x000098A0
+	.ctors      start:0x00000004 end:0x00000008
+	.rodata     start:0x00000110 end:0x00000140
+	.data       start:0x000002A8 end:0x00000360
+	.bss        start:0x00000A00 end:0x00000A18
+
+REL/m568Dll/heiho.cpp:
+	.text       start:0x000098A0 end:0x00009CCC
+	.data       start:0x00000360 end:0x00000388
+
+REL/m568Dll/object_setup.cpp:
+	.text       start:0x00009CCC end:0x00009D60
+	.ctors      start:0x00000008 end:0x0000000C
+	.bss        start:0x00000A18 end:0x00000A28
+
+REL/m568Dll/camera.cpp:
+	.text       start:0x00009D60 end:0x0000B668
+	.rodata     start:0x00000140 end:0x000001D8
+	.data       start:0x00000388 end:0x000003F8
+
+REL/m568Dll/effect.cpp:
+	.text       start:0x0000B668 end:0x0000CE20
+	.ctors      start:0x0000000C end:0x00000010
+	.rodata     start:0x000001D8 end:0x00000258
+	.data       start:0x000003F8 end:0x00000448
+	.bss        start:0x00000A28 end:0x00000A60
+
+REL/m568Dll/stage.cpp:
+	.text       start:0x0000CE20 end:0x0000ED98
+	.rodata     start:0x00000258 end:0x000003B8
+	.data       start:0x00000448 end:0x00000538
+	.bss        start:0x00000A60 end:0x00000A80
+
+REL/m568Dll/math.cpp:
+	.text       start:0x0000ED98 end:0x0000F7A0
+	.rodata     start:0x000003B8 end:0x000003F0
+	.data       start:0x00000538 end:0x00000560
+
+REL/m568Dll/octtree.cpp:
+	.text       start:0x0000F7A0 end:0x0000FD14
+	.rodata     start:0x000003F0 end:0x00000400
+	.data       start:0x00000560 end:0x000005A8
+
+REL/m568Dll/player.cpp:
+	.text       start:0x0000FD14 end:0x00011F6C
+	.ctors      start:0x00000010 end:0x00000014
+	.rodata     start:0x00000400 end:0x00000488
+	.data       start:0x000005A8 end:0x000006A0
+	.bss        start:0x00000A80 end:0x00000A90
+
+REL/m568Dll/tube.cpp:
+	.text       start:0x00011F6C end:0x0001448C
+	.rodata     start:0x00000488 end:0x00000540
+	.data       start:0x000006A0 end:0x00000774
+
+REL/global_destructor_chain.c:
+	.text       start:0x0001448C end:0x00014514
+	.dtors      start:0x00000000 end:0x00000004
+	.bss        start:0x00000A90 end:0x00000A94
+
+REL/ptmf.c:
+	.text       start:0x00014514 end:0x0001465C
+	.rodata     start:0x00000540 end:0x0000054C

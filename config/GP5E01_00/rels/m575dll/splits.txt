@@ -5,3 +5,69 @@ Sections:
 	.rodata     type:rodata align:8
 	.data       type:data align:8
 	.bss        type:bss align:8
+
+REL/m575dll/m575.c:
+	.text       start:0x00000000 end:0x00003A7C
+	.rodata     start:0x00000000 end:0x000000C8
+	.data       start:0x00000000 end:0x00000058
+	.bss        start:0x00000000 end:0x00007810
+
+REL/m575dll/score.c:
+	.text       start:0x00003A7C end:0x00003DE0
+	.rodata     start:0x000000C8 end:0x000000F0
+
+REL/m575dll/stage.c:
+	.text       start:0x00003DE0 end:0x00004BCC
+	.rodata     start:0x000000F0 end:0x00000160
+
+REL/m575dll/ten.c:
+	.text       start:0x00004BCC end:0x0000535C
+	.rodata     start:0x00000160 end:0x000001C0
+
+REL/m575dll/player.c:
+	.text       start:0x0000535C end:0x00006630
+	.rodata     start:0x000001C0 end:0x00000258
+	.data       start:0x00000058 end:0x00000278
+	.bss        start:0x00007810 end:0x00007820
+
+REL/m575dll/com.c:
+	.text       start:0x00006630 end:0x0000851C
+	.rodata     start:0x00000258 end:0x00000328
+
+REL/m575dll/camera.c:
+	.text       start:0x0000851C end:0x00009250
+	.rodata     start:0x00000328 end:0x000003D8
+	.data       start:0x00000278 end:0x000002C0
+
+REL/m575dll/light.c:
+	.text       start:0x00009250 end:0x00009320
+	.data       start:0x000002C0 end:0x000002E0
+
+REL/m575dll/tuboeff.c:
+	.text       start:0x00009320 end:0x00009BC8
+	.rodata     start:0x000003D8 end:0x00000450
+
+REL/m575dll/tubo.c:
+	.text       start:0x00009BC8 end:0x0000AEF0
+	.rodata     start:0x00000450 end:0x00000510
+
+REL/m575dll/coin.c:
+	.text       start:0x0000AEF0 end:0x0000C464
+	.rodata     start:0x00000510 end:0x000005A8
+
+REL/m575dll/jugem.c:
+	.text       start:0x0000C464 end:0x0000D00C
+	.rodata     start:0x000005A8 end:0x00000630
+	.data       start:0x000002E0 end:0x00000310
+
+REL/m575dll/opening.c:
+	.text       start:0x0000D00C end:0x0000E424
+	.rodata     start:0x00000630 end:0x000006D0
+	.data       start:0x00000310 end:0x000003A0
+	.bss        start:0x00007820 end:0x00007B98
+
+REL/m575dll/effect.c:
+	.text       start:0x0000E424 end:0x0000F2D0
+	.rodata     start:0x000006D0 end:0x00000730
+	.data       start:0x000003A0 end:0x000003D8
+	.bss        start:0x00007B98 end:0x00007BBC

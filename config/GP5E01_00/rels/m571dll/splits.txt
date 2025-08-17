@@ -5,3 +5,9 @@ Sections:
 	.rodata     type:rodata align:8
 	.data       type:data align:8
 	.bss        type:bss align:8
+
+REL/m571dll/m571.c:
+	.text       start:0x00000000 end:0x000093CC
+	.rodata     start:0x00000000 end:0x000001C4
+	.data       start:0x00000000 end:0x00000DF5
+	.bss        start:0x00000000 end:0x00000690

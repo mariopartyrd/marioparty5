@@ -5,3 +5,21 @@ Sections:
 	.rodata     type:rodata align:8
 	.data       type:data align:8
 	.bss        type:bss align:8
+
+REL/m576Dll/m576.c:
+	.text       start:0x00000000 end:0x00006784
+	.rodata     start:0x00000000 end:0x00000158
+	.data       start:0x00000000 end:0x000003B0
+	.bss        start:0x00000000 end:0x00000310
+
+REL/m576Dll/stage.c:
+	.text       start:0x00006784 end:0x0000EA08
+	.rodata     start:0x00000158 end:0x000001F8
+	.data       start:0x000003B0 end:0x00000538
+	.bss        start:0x00000310 end:0x00000470
+
+REL/m576Dll/score.c:
+	.text       start:0x0000EA08 end:0x0000EF30
+	.rodata     start:0x000001F8 end:0x00000220
+	.data       start:0x00000538 end:0x00000594
+	.bss        start:0x00000470 end:0x00000474

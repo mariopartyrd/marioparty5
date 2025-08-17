@@ -5,3 +5,18 @@ Sections:
 	.rodata     type:rodata align:8
 	.data       type:data align:8
 	.bss        type:bss align:8
+
+REL/m577Dll/m577.c:
+	.text       start:0x00000000 end:0x0000B430
+	.rodata     start:0x00000000 end:0x000001E8
+	.data       start:0x00000000 end:0x00000398
+	.bss        start:0x00000000 end:0x00000014
+
+REL/m577Dll/stagedata.c:
+	.text       start:0x0000B430 end:0x0000B5D4
+	.rodata     start:0x000001E8 end:0x00000200
+	.data       start:0x00000398 end:0x00028AA8
+
+REL/m577Dll/effect.c:
+	.text       start:0x0000B5D4 end:0x0000B9A4
+	.rodata     start:0x00000200 end:0x00000230

@@ -5,3 +5,60 @@ Sections:
 	.rodata     type:rodata align:8
 	.data       type:data align:8
 	.bss        type:bss align:8
+
+REL/m565dll/m565.c:
+	.text       start:0x00000000 end:0x00000E48
+	.rodata     start:0x00000000 end:0x00000078
+	.data       start:0x00000000 end:0x00000058
+	.bss        start:0x00000000 end:0x00000008
+
+REL/m565dll/main.c:
+	.text       start:0x00000E48 end:0x000025B4
+	.rodata     start:0x00000078 end:0x000000A8
+	.bss        start:0x00000008 end:0x00007810
+
+REL/m565dll/object.c:
+	.text       start:0x000025B4 end:0x00003690
+	.rodata     start:0x000000A8 end:0x00000108
+	.bss        start:0x00007810 end:0x00007818
+
+REL/m565dll/back.c:
+	.text       start:0x00003690 end:0x00004554
+	.rodata     start:0x00000108 end:0x00000148
+
+REL/m565dll/stage.c:
+	.text       start:0x00004554 end:0x000078BC
+	.rodata     start:0x00000148 end:0x000001D0
+	.data       start:0x00000058 end:0x000009B8
+	.bss        start:0x00007818 end:0x00007820
+
+REL/m565dll/player.c:
+	.text       start:0x000078BC end:0x00008AD0
+	.rodata     start:0x000001D0 end:0x00000220
+	.data       start:0x000009B8 end:0x00000B28
+	.bss        start:0x00007820 end:0x00007830
+
+REL/m565dll/puku2.c:
+	.text       start:0x00008AD0 end:0x00009EAC
+	.rodata     start:0x00000220 end:0x00000290
+
+REL/m565dll/com.c:
+	.text       start:0x00009EAC end:0x0000E740
+	.rodata     start:0x00000290 end:0x00000358
+	.data       start:0x00000B28 end:0x00000BE0
+	.bss        start:0x00007830 end:0x00007890
+
+REL/m565dll/opening.c:
+	.text       start:0x0000E740 end:0x0000EE4C
+	.rodata     start:0x00000358 end:0x000003A8
+	.data       start:0x00000BE0 end:0x00000C08
+
+REL/m565dll/ending.c:
+	.text       start:0x0000EE4C end:0x0000FCBC
+	.rodata     start:0x000003A8 end:0x00000428
+	.data       start:0x00000C08 end:0x00000C40
+	.bss        start:0x00007890 end:0x000078A8
+
+REL/m565dll/light.c:
+	.text       start:0x0000FCBC end:0x0000FD8C
+	.data       start:0x00000C40 end:0x00000C5C
