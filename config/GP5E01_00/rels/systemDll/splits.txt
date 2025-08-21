@@ -9,13 +9,13 @@ Sections:
 REL/systemDll/nel.c:
 	.text       start:0x00000000 end:0x0001C5A8
 	.rodata     start:0x00000000 end:0x00000158
-	.data       start:0x00000000 end:0x000016A8
+	.data       start:0x00000000 end:0x000015E8
 	.bss        start:0x00000000 end:0x00000380
 
 REL/systemDll/object.c:
 	.text       start:0x0001C5A8 end:0x0001CBA8
 	.rodata     start:0x00000158 end:0x00000160
-	.data       start:0x000016A8 end:0x000016D8
+	.data       start:0x000015E8 end:0x000016D8
 
 REL/systemDll/camera.c:
 	.text       start:0x0001CBA8 end:0x0001DC98
