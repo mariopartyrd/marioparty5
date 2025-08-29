@@ -84,8 +84,10 @@ BOOL MBMotionNoSet(MBMODELID modelId, int motNo, u32 attr);
 int MBMotionShiftIDGet(MBMODELID modelId);
 BOOL MBMotionShiftSet(MBMODELID modelId, int motNo, float start, float end, u32 attr);
 
+#ifndef MBPAUSE_ATTRSET_HACK
 BOOL MBModelAttrSet(MBMODELID modelId, u32 attr);
 BOOL MBModelAttrReset(MBMODELID modelId, u32 attr);
+#endif
 
 BOOL MBMotionTimeSet(MBMODELID modelId, float time);
 float MBMotionTimeGet(MBMODELID modelId);

@@ -5,6 +5,7 @@
 #define MSM_SE_CMN_02 1
 #define MSM_SE_CMN_03 2
 #define MSM_SE_CMN_04 3
+#define MSM_SE_CMN_05 4
 #define MSM_SE_CMN_06 5
 #define MSM_SE_CMN_07 6
 #define MSM_SE_CMN_08 7

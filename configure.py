@@ -465,7 +465,7 @@ config.libs = [
             Object(Matching, "game/board/branch.c"),
             Object(Matching, "game/board/mgcall.c"),
             Object(Matching, "game/board/effect.c"),
-            Object(NonMatching, "game/board/pauseoption.c"),
+            Object(Matching, "game/board/pauseoption.c"),
             Object(Matching, "game/board/gate.c"),
             Object(NonMatching, "game/board/story.c"),
             Object(Matching, "game/board/telop.c"),
@@ -1904,9 +1904,9 @@ config.libs = [
     Rel(
         "safDll",
         objects={
-            Object(NonMatching, "REL/safDll/safold.c"),
+            Object(NonMatching, "REL/safDll/safanim.c"),
             Object(NonMatching, "REL/safDll/saf.c"),
-            Object(NonMatching, "REL/safDll/saf2.c"),
+            Object(NonMatching, "REL/safDll/safmotion.c"),
         },
     ),
     Rel(
