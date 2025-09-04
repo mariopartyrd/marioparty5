@@ -4090,7 +4090,7 @@ int MBCapsuleNextGet(int rank)
         code = turnData[i].code;
         for(i=0, idx=0; i<num; i++) {
             if(code == capsuleTbl[list[i]].code) {
-                listBackup[idx] = list[i];
+                outList[idx] = list[i];
                 idx++;
             }
         }
