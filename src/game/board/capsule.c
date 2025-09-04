@@ -3912,8 +3912,8 @@ int MBCapsuleNextGet(int rank)
 {
     int i;
     int idx;
-    int wrapIdx;
-    int swapIdx;
+    int inIdx;
+    int outIdx;
     int num;
     int *chanceTbl;
     int gamePart;
@@ -3924,7 +3924,7 @@ int MBCapsuleNextGet(int rank)
     int chance;
     
     int list[CAPSULE_MAX-4];
-    int listBackup[CAPSULE_MAX-4];
+    int outList[CAPSULE_MAX-4];
     CAPSULE_TURNDATA turnData[5];
     
     static int chanceData[3][4][5] = {
@@ -4034,12 +4034,12 @@ int MBCapsuleNextGet(int rank)
     num = MBCapsuleListGet(list);
     if(rank < 0) {
         for(i=0; i<num*5; i++) {
-            wrapIdx = i%num;
-            swapIdx = (frand()&0x7FFF)%num;
-            if(wrapIdx != swapIdx) {
-                temp = list[wrapIdx];
-                list[wrapIdx] = list[swapIdx];
-                list[swapIdx] = temp;
+            inIdx = i%num;
+            outIdx = (frand()&0x7FFF)%num;
+            if(inIdx != outIdx) {
+                temp = list[inIdx];
+                list[inIdx] = list[outIdx];
+                list[outIdx] = temp;
             }
         }
         return list[(frand()&0x7FFF)%num];
@@ -4098,16 +4098,16 @@ int MBCapsuleNextGet(int rank)
             return MBCapsuleNextGet(-1);
         }
         for(i=0; i<idx*5; i++) {
-            wrapIdx = i%idx;
-            swapIdx = (frand()&0x7FFF)%idx;
-            if(wrapIdx != swapIdx) {
-                temp = listBackup[wrapIdx];
-                listBackup[wrapIdx] = listBackup[swapIdx];
-                listBackup[swapIdx] = temp;
+            inIdx = i%idx;
+            outIdx = (frand()&0x7FFF)%idx;
+            if(inIdx != outIdx) {
+                temp = outList[inIdx];
+                outList[inIdx] = outList[outIdx];
+                outList[outIdx] = temp;
             }
         }
         i = (frand()&0x7FFF)%idx;
-        return listBackup[i];
+        return outList[i];
     }
 }
 
