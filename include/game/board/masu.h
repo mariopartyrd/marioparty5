@@ -104,7 +104,7 @@ void MBMasuDispSet(BOOL dispF);
 void MBMasuCameraSet(u16 cameraBit);
 void MBMasuSaiHiddenSet(void);
 void MBMasuEffSet(int masuId, int effNo);
-void MBMasuEffClear(void);
+//void MBMasuEffClear(void);
 void MBMasuPlayerLightSet(int playerNo, BOOL dispLightF);
 void MBMasuMtxSet(int masuId, Mtx matrix);
 void MBMasuMtxGet(int masuId, Mtx matrix);

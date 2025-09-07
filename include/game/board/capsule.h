@@ -41,6 +41,26 @@
 #define CAPSULE_MAX 43
 #define CAPSULE_NULL -1
 
+#define CAPSULE_MASUPAT_KINOKO 0
+#define CAPSULE_MASUPAT_MOVE 1
+#define CAPSULE_MASUPAT_COIN 2
+#define CAPSULE_MASUPAT_WARN 3
+#define CAPSULE_MASUPAT_BOMHEI 4
+#define CAPSULE_MASUPAT_BANK 5
+#define CAPSULE_MASUPAT_TUMUJIKUN 6
+#define CAPSULE_MASUPAT_KETTOU 7
+#define CAPSULE_MASUPAT_WANWAN 8
+#define CAPSULE_MASUPAT_CHANCE 9
+#define CAPSULE_MASUPAT_NONE 10
+
+#define CAPSULE_COLOR_GREEN 0
+#define CAPSULE_COLOR_YELLOW 1
+#define CAPSULE_COLOR_RED 2
+#define CAPSULE_COLOR_BLUE 3
+#define CAPSULE_COLOR_MAX 4
+
+#define CAPSULE_OBJ_MAX 128
+
 void MBCapsuleOpeningAdd(int capsuleNum);
 void MBCapsuleBowserAdd(void);
 void MBKettouMgEndExec(int playerNo);
@@ -69,13 +89,14 @@ int MBCapsuleColorNoGet(int capsuleNo);
 void MBCapsuleSelStoryExec(void);
 void MBCapsuleAddStory(void);
 
-void MBCapsuleColCreate(unsigned int dataNum);
+int MBCapsuleColCreate(int dataNum);
 
 void MBCapMachineTutorialExec(void);
 
 void MBDonkeyOpeningExec(void);
 
 unsigned int MBCapsuleMdlGet(int capsuleNo);
+int MBCapsuleCostGet(int capsuleNo);
 
 BOOL MBCapsuleUseExec(int playerNo, int capsuleNo);
 int MBComCapsuleSelGet(int playerNo);
@@ -85,11 +106,43 @@ int MBCapsuleWinCreate(int capsuleNo);
 void MBCapMachineObjCreate(int masuId);
 
 int MBCapsuleObjCreate(int capsuleNo, BOOL linkF);
+void MBCapsuleObjPosSet(int id, float posX, float posY, float posZ);
+void MBCapsuleObjPosSetV(int id, HuVecF *pos);
+void MBCapsuleObjRotSet(int id, float rotX, float rotY, float rotZ);
+void MBCapsuleObjRotSetV(int id, HuVecF *rot);
+
 void MBCapsuleObjScaleSet(int id, float scaleX, float scaleY, float scaleZ);
-void MBCapsuleObjKill(int capsuleNo);
+void MBCapsuleObjScaleSetV(int id, HuVecF *scale);
+
+void MBCapsuleObjKill(int id);
+void MBCapsuleObjLayerSet(int id, u8 layer);
+void MBCapsuleObjMtxGet(int id, Mtx *mtx);
+void MBCapsuleObjMtxSet(int id, Mtx *mtx);
+void MBCapsuleObjDispSet(int id, BOOL dispF);
+u8 MBCapsuleObjLayerGet(int id);
+//void MBCapsuleObjAttrSet(int id, u32 attr);
+//void MBCapsuleObjAttrReset(int id, u32 attr);
+void MBCapsuleObjAlphaSet(int id, u8 alpha);
+
+void MBCapsuleMasuSet(int masuId, int capsuleNo);
 
 u32 MBCapsuleMesGet(int capsuleNo);
 
 int MBCapsuleListGet(int *capsuleNo);
+BOOL MBCapsuleColCheck(HuVecF *posA, HuVecF *posB, HuVecF *out);
+void MBCapMachineInit(void);
+void MBCapsuleObjInit(void);
+void MBCapMachineClose(void);
+void MBCapsuleThrowAutoExec(int masuId, int capsuleNo, HuVecF *posA, HuVecF *posB, HuVecF *masuPos);
+BOOL MBCapsuleThrowAutoCheck(void);
+void MBCapsulePosSetExec(void);
+
+BOOL MBCapsuleNoUseCheck(int capsuleNo);
+BOOL MBCapsulePosAutoSelCheck(int playerNo, int capsuleNo);
+
+void MBMasuBomheiSet(int masuId);
+int MBBankCoinGet(void);
+int MBCapsuleNextGet(int rank);
+int MBCapsuleCodeGet(int capsuleNo);
 
 #endif

@@ -39,10 +39,6 @@ void MBCircuitMgEndExec(int playerNo);
 void MBCircuitExec(BOOL turnIntrF);
 void MBCircuitReset(void);
 
-void MBCapMachineInit(void);
-void MBCapsuleObjInit(void);
-void MBCapMachineClose(void);
-
 static MBTURNHOOK postTurnHook;
 static MBTURNHOOK preTurnHook;
 static MBLIGHTHOOK lightResetHook;
