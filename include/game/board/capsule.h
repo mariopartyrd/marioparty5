@@ -281,6 +281,8 @@ int MBCapsuleExplodeEffCheck(int no);
 void MBCapsuleDustExplodeAdd(int no, HuVecF pos);
 
 int MBCapsuleGlowEffAdd(HuVecF pos, HuVecF vel, float scale, float fadeSpeed, float rotSpeed, float gravity, GXColor color);
+void MBCapsuleHanachanGlowEffAdd(HuVecF pos, float scale, float fadeSpeed, float radiusX, float radiusY, float radiusZ, int mode);
+
 int MBCapsuleGlowEffCheck(void);
 void MBCapsuleExplodeEffKill(int no);
 void MBCapsuleGlowEffKill(void);

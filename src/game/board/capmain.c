@@ -3382,7 +3382,25 @@ void MBCapsuleHanachanDestroy(void)
 
 static void CapsuleHanachanEffExec(OMOBJ *obj)
 {
+    HuVecF pos;
     
+    if((int)obj->work[0] != 0) {
+        (void)obj;
+        goto delObj;
+    }
+    if(!(++obj->work[2] & 0x1)) {
+        MBModelPosGet(obj->work[1], &pos);
+        pos.y += 100;
+        MBCapsuleHanachanGlowEffAdd(pos, ((MBCapsuleEffRandF()*0.05f)+0.15f)*100, 0.016666668f, 150, 150, 50, 1);
+    }
+    if(0) {
+        delObj:
+        omDelObjEx(mbObjMan, obj);
+        return;
+    }
+    if(MBKillCheck() || capsuleObj == NULL) {
+        omDelObjEx(mbObjMan, obj);
+    }
 }
 
 void MBCapsuleStatusPosMoveWait(BOOL dispF, BOOL waitF)
@@ -3476,6 +3494,11 @@ void MBCapsuleGlowEffBlendModeSet(int blendMode)
 }
 
 int MBCapsuleGlowEffAdd(HuVecF pos, HuVecF vel, float scale, float fadeSpeed, float rotSpeed, float gravity, GXColor color)
+{
+    
+}
+
+void MBCapsuleHanachanGlowEffAdd(HuVecF pos, float scale, float fadeSpeed, float radiusX, float radiusY, float radiusZ, int mode)
 {
     
 }
