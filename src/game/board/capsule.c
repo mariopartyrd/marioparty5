@@ -1476,8 +1476,6 @@ static int GlowEffAdd(HuVecF pos, HuVecF vel, float scale, float fadeSpeed, floa
 static int GlowEffNumGet(void);
 static int RingEffNumGet(void);
 
-#define frand7f() ((frand() & 0x7F)*(1.0f/127.0f))
-
 static void CapsuleUseExec(void)
 {
     int i;
@@ -1547,35 +1545,35 @@ static void CapsuleUseExec(void)
     coinDispPos.x = 1.5f;
     coinDispPos.y = 3.0f;
     coinDispPos.z = 200;
-    color.r = (frand7f()*64)+192;
-    color.g = (frand7f()*64)+192;
-    color.b = (frand7f()*64)+192;
+    color.r = (MBCapsuleEffRandF()*64)+192;
+    color.g = (MBCapsuleEffRandF()*64)+192;
+    color.b = (MBCapsuleEffRandF()*64)+192;
     color.a = 255;
     RingEffAdd(mdlPos, ringRot, coinDispPos, 18, 36, 2, 1, color);
     coinDispPos.x = 1.5f;
     coinDispPos.y = 3.0f;
     coinDispPos.z = 300;
-    color.r = (frand7f()*64)+192;
-    color.g = (frand7f()*64)+192;
-    color.b = (frand7f()*64)+192;
+    color.r = (MBCapsuleEffRandF()*64)+192;
+    color.g = (MBCapsuleEffRandF()*64)+192;
+    color.b = (MBCapsuleEffRandF()*64)+192;
     color.a = 255;
     RingEffAdd(mdlPos, ringRot, coinDispPos, 12, 30, 1, 1, color);
     angle = 0;
     for(i=0; i<128; i++) {
-        angle += (frand7f()+1)*10;
-        coinDispPos.x = (75*(-0.5f+frand7f()))+mdlPos.x;
-        coinDispPos.y = (75*(-0.5f+frand7f()))+mdlPos.y;
+        angle += (MBCapsuleEffRandF()+1)*10;
+        coinDispPos.x = (75*(-0.5f+MBCapsuleEffRandF()))+mdlPos.x;
+        coinDispPos.y = (75*(-0.5f+MBCapsuleEffRandF()))+mdlPos.y;
         coinDispPos.z = 30.000002f+mdlPos.z;
-        radius = (frand7f()+1.0f)*5;
+        radius = (MBCapsuleEffRandF()+1.0f)*5;
         effectVel.x = radius*HuSin(angle);
         effectVel.y = radius*HuCos(angle);
         effectVel.z = 0;
-        intensity = frand7f();
+        intensity = MBCapsuleEffRandF();
         color.r = (intensity*63)+192;
         color.g = (intensity*63)+192;
         color.b = (intensity*63)+192;
-        color.a = (frand7f()*63)+192;
-        GlowEffAdd(coinDispPos, effectVel, ((frand7f()*0.1f)+0.3f)*100, (frand7f()+1.0f)*0.016666668f, 0, 0, color);
+        color.a = (MBCapsuleEffRandF()*63)+192;
+        GlowEffAdd(coinDispPos, effectVel, ((MBCapsuleEffRandF()*0.1f)+0.3f)*100, (MBCapsuleEffRandF()+1.0f)*0.016666668f, 0, 0, color);
     }
     for(i=0; i<30.0f; i++) {
         intensity = i/30.0f;
@@ -1667,7 +1665,7 @@ BOOL MBCapsuleColCheck(HuVecF *posA, HuVecF *posB, HuVecF *out)
     return result;
 }
 
-BOOL MBCapsulePlayerMasuCheck(int playerNo)
+BOOL MBCapsulePlayerMasuCheck(int playerNo, HuVecF *a, HuVecF *b, HuVecF *out)
 {
     int i;
     BOOL result;
@@ -1865,13 +1863,13 @@ static void CapsuleThrowProcExec(void)
         MBModelPosSet(work->capsuleMdlId2, mdl2Pos.x, mdl2Pos.y, mdl2Pos.z);
         MBModelDispSet(work->capsuleMdlId2, FALSE);
         MBCameraFocusSet(work->capsuleMdlId2);
-        pos.x = effPos.x+(((0.5f-frand7f())*100)*0.75f);
-        pos.y = effPos.y+(((0.5f-frand7f())*100)*0.75f);
-        pos.z = effPos.z+(((0.5f-frand7f())*100)*0.75f);
+        pos.x = effPos.x+(((0.5f-MBCapsuleEffRandF())*100)*0.75f);
+        pos.y = effPos.y+(((0.5f-MBCapsuleEffRandF())*100)*0.75f);
+        pos.z = effPos.z+(((0.5f-MBCapsuleEffRandF())*100)*0.75f);
         vel.x = vel.y = vel.z = 0;
         color = colTbl[MBCapsuleColorNoGet(work->capsuleNo)];
-        color.a = (frand7f()*63)+192;
-        GlowEffAdd(pos, vel, ((frand7f()*0.025f)+0.1f)*100, (frand7f()+1)*0.016666668f, 0, 0.025f, color);
+        color.a = (MBCapsuleEffRandF()*63)+192;
+        GlowEffAdd(pos, vel, ((MBCapsuleEffRandF()*0.025f)+0.1f)*100, (MBCapsuleEffRandF()+1)*0.016666668f, 0, 0.025f, color);
         HuPrcVSleep();
     } while(work->time < work->maxTime);
     if(seNo != MSM_SENO_NONE) {
@@ -2566,13 +2564,13 @@ static void CapsuleThrowAutoExec(void)
         MTXConcat(rotMtx, objMtx, objMtx);
         MBCapsuleObjMtxSet(work->capsuleObjMdlId, &objMtx);
         ThrowEffPosSet(&effPos);
-        glowPos.x = effPos.x+(((0.5f-frand7f())*100)*0.75f);
-        glowPos.y = effPos.y+(((0.5f-frand7f())*100)*0.75f);
-        glowPos.z = effPos.z+(((0.5f-frand7f())*100)*0.75f);
+        glowPos.x = effPos.x+(((0.5f-MBCapsuleEffRandF())*100)*0.75f);
+        glowPos.y = effPos.y+(((0.5f-MBCapsuleEffRandF())*100)*0.75f);
+        glowPos.z = effPos.z+(((0.5f-MBCapsuleEffRandF())*100)*0.75f);
         glowVel.x = glowVel.y = glowVel.z = 0;
         color = colTbl[MBCapsuleColorNoGet(work->capsuleNo)];
-        color.a = (frand7f()*63)+192;
-        GlowEffAdd(glowPos, glowVel, ((frand7f()*0.025f)+0.1f)*100, (frand7f()+1)*0.016666668f, 0, 0.025f, color);
+        color.a = (MBCapsuleEffRandF()*63)+192;
+        GlowEffAdd(glowPos, glowVel, ((MBCapsuleEffRandF()*0.025f)+0.1f)*100, (MBCapsuleEffRandF()+1)*0.016666668f, 0, 0.025f, color);
         HuPrcVSleep();
     } while(work->time < work->maxTime);
     if(seNo != MSM_SENO_NONE){
@@ -3187,7 +3185,7 @@ static void CapsulePosAutoSelExec(void)
         } else if(num <= 1) {
             masuLast = pathTbl[0];
         } else {
-            masuLast = pathTbl[(frand() & 0x7FFF) % num];
+            masuLast = pathTbl[MBCapsuleEffRand(num)];
         }
         HuMemDirectFree(work->capsuleMasuTbl);
         work->capsuleMasuTbl = NULL;
@@ -3331,7 +3329,7 @@ static void CapsulePosAutoSelExec(void)
             }
         }
         if(selPos == 0) {
-            HuPrcSleep((frand7f()*60.0f)*0.3f);
+            HuPrcSleep((MBCapsuleEffRandF()*60.0f)*0.3f);
         }
         if(masuId == masuLast) {
             if(sePlayF) {
@@ -4098,14 +4096,14 @@ int MBCapsuleNextGet(int rank)
     if(rank < 0) {
         for(i=0; i<num*5; i++) {
             inIdx = i%num;
-            outIdx = (frand()&0x7FFF)%num;
+            outIdx = MBCapsuleEffRand(num);
             if(inIdx != outIdx) {
                 temp = list[inIdx];
                 list[inIdx] = list[outIdx];
                 list[outIdx] = temp;
             }
         }
-        return list[(frand()&0x7FFF)%num];
+        return list[MBCapsuleEffRand(num)];
     } else {
         for(i=0; i<8u; i++) {
             if(GwSystem.turnMax <= maxTurnTbl[i]) {
@@ -4141,7 +4139,7 @@ int MBCapsuleNextGet(int rank)
                 idx++;
             }
         }
-        chance = frand7f()*totalChance;
+        chance = MBCapsuleEffRandF()*totalChance;
         for(i=0; i<idx; i++) {
             if(chance < turnData[i].chance) {
                 break;
@@ -4162,14 +4160,14 @@ int MBCapsuleNextGet(int rank)
         }
         for(i=0; i<idx*5; i++) {
             inIdx = i%idx;
-            outIdx = (frand()&0x7FFF)%idx;
+            outIdx = MBCapsuleEffRand(idx);
             if(inIdx != outIdx) {
                 temp = outList[inIdx];
                 outList[inIdx] = outList[outIdx];
                 outList[outIdx] = temp;
             }
         }
-        i = (frand()&0x7FFF)%idx;
+        i = MBCapsuleEffRand(idx);
         return outList[i];
     }
 }
@@ -4274,7 +4272,7 @@ int MBComCapsuleSelGet(int playerNo)
         selMax++;
         selTblP++;
     }
-    chance = frand7f()*chanceTotal;
+    chance = MBCapsuleEffRandF()*chanceTotal;
     for(i=0, selTblP=selTbl; i<selMax; i++, selTblP++) {
         if(chance < selTblP->chance) {
             break;
@@ -4312,7 +4310,7 @@ BOOL MBCapsulePosAutoSelCheck(int playerNo, int capsuleNo)
     if(CapsuleMasuListSearch(GwPlayer[playerNo].masuId) <= 0) {
         return TRUE;
     }
-    chance = frand7f();
+    chance = MBCapsuleEffRandF();
     switch(comData->charData[charNo].code2) {
         case 'a':
             if(chance < 0.9f) {
@@ -4931,21 +4929,21 @@ static void ExplodeEffAddAll(HuVecF pos)
         float angle;
         float dist;
         angle = i*11.25f;
-        dist = (frand7f()*100)*0.33f;
+        dist = (MBCapsuleEffRandF()*100)*0.33f;
         effPos.x = pos.x+(dist*HuCos(angle));
         effPos.y = pos.y+(dist*HuSin(angle))+100;
         effPos.z = pos.z+50;
-        dist = ((frand7f()*0.04f)+0.005f)*100;
+        dist = ((MBCapsuleEffRandF()*0.04f)+0.005f)*100;
         effVel.x = dist*HuCos(angle);
         effVel.y = dist*HuSin(angle);
         effVel.z = 0;
-        dist = frand7f();
+        dist = MBCapsuleEffRandF();
         
         effColor.r = 192+(32*dist);
         effColor.g = 192+(32*dist);
         effColor.b = 192+(32*dist);
-        effColor.a = (frand7f()*63)+192;
-        ExplodeEffAdd(effPos, effVel, ((frand7f()*0.5f)+1)*100, 0.5f, ((frand7f()*0.5f)+0.5f)*100, (frand7f()*0.66f)+0.33f, effColor);
+        effColor.a = (MBCapsuleEffRandF()*63)+192;
+        ExplodeEffAdd(effPos, effVel, ((MBCapsuleEffRandF()*0.5f)+1)*100, 0.5f, ((MBCapsuleEffRandF()*0.5f)+0.5f)*100, (MBCapsuleEffRandF()*0.66f)+0.33f, effColor);
     }
 }
 
@@ -5081,7 +5079,7 @@ static int GlowEffAdd(HuVecF pos, HuVecF vel, float scale, float fadeSpeed, floa
     effDataP->rotSpeed = rotSpeed;
     effDataP->scale = scale;
     effDataP->color = color;
-    effDataP->rot.z = frand7f()*360;
+    effDataP->rot.z = MBCapsuleEffRandF()*360;
     effDataP->no = 0;
     effDataP->time = 0;
     work->effNum++;
@@ -5407,11 +5405,11 @@ static void DomeEffInit(void)
                 effDataP->scale = 1;
                 effDataP->angle = 0;
                 if(frand() & 0x1) {
-                    effDataP->angleSpeed = (frand7f()*2)+5;
+                    effDataP->angleSpeed = (MBCapsuleEffRandF()*2)+5;
                 } else {
-                    effDataP->angleSpeed = -((frand7f()*2)+5);
+                    effDataP->angleSpeed = -((MBCapsuleEffRandF()*2)+5);
                 }
-                effDataP->scaleSpeed = (frand7f()*0.035f)+0.035f;
+                effDataP->scaleSpeed = (MBCapsuleEffRandF()*0.035f)+0.035f;
                 effDataP->delay = frand() & 0xF;
                 for(vtxTri=0; vtxTri<3; vtxTri++) {
                     effDataP->pos[vtxTri].x = ofsX+(scaleX*vtxTbl[k][vtxTri].x);
@@ -5438,7 +5436,7 @@ static void DomeEffInit(void)
                 yOfs = HuMagPoint2D(effDataP->vel.x, effDataP->vel.z)/100;
                 effDataP->delay = (int)(yOfs*yOfs*30)+(frand() & 0x7);
                 VECNormalize(&effDataP->vel, &effDataP->accel);
-                VECScale(&effDataP->accel, &effDataP->accel, ((frand7f()*0.5f)+0.5f)*10);
+                VECScale(&effDataP->accel, &effDataP->accel, ((MBCapsuleEffRandF()*0.5f)+0.5f)*10);
                 effDataP->prevVel = effDataP->vel;
                 for(vtxTri=0; vtxTri<3; vtxTri++) {
                     VECSubtract(&effDataP->pos[vtxTri], &effDataP->vel, &effDataP->pos[vtxTri]);
@@ -5529,7 +5527,7 @@ static void DomeEffExec(OMOBJ *obj)
     }
     effDataP = effP->data;
     if(effP->mode >= 2 && effP->mode <= 4 && effP->segNum < 16) {
-        RayEffAdd(effP->segNum*22, (frand7f()*20)+30, ((frand7f()*0.25f)+0.3f)*300, 50);
+        RayEffAdd(effP->segNum*22, (MBCapsuleEffRandF()*20)+30, ((MBCapsuleEffRandF()*0.25f)+0.3f)*300, 50);
         RayEffMdlUpdate(obj->trans.x, obj->trans.y, obj->trans.z);
         effP->segNum++;
     }
@@ -5945,8 +5943,8 @@ static void RayEffAdd(float angleY, float angleX, float radiusMin, float fadeTim
         effDataP->time = 0;
         effDataP->radiusMin = radiusMin;
         effDataP->fadeTime = fadeTime;
-        effDataP->color.r += (u8)(frand7f()*64);
-        effDataP->color.b += (u8)(frand7f()*64);
+        effDataP->color.r += (u8)(MBCapsuleEffRandF()*64);
+        effDataP->color.b += (u8)(MBCapsuleEffRandF()*64);
         effDataP->rot.x = angleX;
         effDataP->rot.y = angleY;
         effDataP->rot.z = 0;

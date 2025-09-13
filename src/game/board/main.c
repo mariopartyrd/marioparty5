@@ -33,8 +33,6 @@
 #include "game/flag.h"
 
 //Prototypes for board functions
-void MBBankCoinReset(void);
-void MBCapsuleHookSet(void *func); //Fix input type as well
 void MBCircuitMgEndExec(int playerNo);
 void MBCircuitExec(BOOL turnIntrF);
 void MBCircuitReset(void);
@@ -103,7 +101,7 @@ void MBObjectSetup(int boardNo, MBCREATEHOOK createHook, MBKILLHOOK killHook)
     if(_CheckFlag(FLAG_BOARD_STAR_RESET)) {
         MBMgCallInit();
         MBStarNoInit();
-        MBCapsuleHookSet(NULL);
+        MBCapsuleEffHookSet(NULL);
         _ClearFlag(FLAG_BOARD_STAR_RESET);
     }
     gotoOvl = DLL_NONE;

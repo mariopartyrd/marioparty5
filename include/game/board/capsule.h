@@ -40,6 +40,7 @@
 #define CAPSULE_DEBUGSETPOS 42
 #define CAPSULE_MAX 43
 #define CAPSULE_NULL -1
+#define CAPSULE_INVALID -99
 
 #define CAPSULE_MASUPAT_KINOKO 0
 #define CAPSULE_MASUPAT_MOVE 1
@@ -61,10 +62,15 @@
 
 #define CAPSULE_OBJ_MAX 128
 
+#define MBCapsuleEffRandF() ((frand() & 0x7F)*(1.0f/127.0f))
+#define MBCapsuleEffRand(max) ((frand() & 0x7FFF)%max)
+
+typedef void (*CAPSULE_EFF_HOOK)(int capsuleNo, int type, int mdlId, BOOL flag1, BOOL flag2, BOOL flag3);
+
 void MBCapsuleOpeningAdd(int capsuleNum);
 void MBCapsuleBowserAdd(void);
 void MBKettouMgEndExec(int playerNo);
-void MBCircuitKettouMgEndExec(int playerNo);
+BOOL MBCircuitKettouMgEndExec(int playerNo);
 void MBDonkeyMgEndExec(int playerNo);
 void MBKupaMgEndExec(int playerNo);
 void MBCircuitKupaMgEndExec(int playerNo);
@@ -78,10 +84,15 @@ void MB3MiracleGetExec(int playerNo);
 void MBCapMachineCreateAll(void);
 void MBCapMachineExec(int playerNo);
 int MBCapsuleMasuPatNoGet(int capsuleNo);
-BOOL MBCapsuleExec(int playerNo, int capsuleNo, BOOL circuitF, BOOL walkF);
+BOOL MBCapsuleExec(int playerNo, int capsuleNo, BOOL circuitF, BOOL masuF);
 void MBSaiHiddenExec(int playerNo);
 void MBKillerExec(int playerNo);
 void MBKettouExec(int playerNo);
+void MBKillerEventExec(int playerNo);
+BOOL MBKillerEventCheck(int playerNo);
+BOOL MBKillerEventCheckAll(void);
+
+void MBKillerMultiExec(int *playerNo);
 
 int MBCapsuleSelExec(void);
 int MBCapsuleColorNoGet(int capsuleNo);
@@ -141,8 +152,174 @@ BOOL MBCapsuleNoUseCheck(int capsuleNo);
 BOOL MBCapsulePosAutoSelCheck(int playerNo, int capsuleNo);
 
 void MBMasuBomheiSet(int masuId);
+void MBMasuBomheiNumSet(int masuId, int num);
+
 int MBBankCoinGet(void);
 int MBCapsuleNextGet(int rank);
 int MBCapsuleCodeGet(int capsuleNo);
+
+void MBCapsuleEffHookSet(CAPSULE_EFF_HOOK effHook);
+
+BOOL MBCapsuleStatusDispCheck(int playerNo);
+
+
+void MBCapsuleKinokoExec(void);
+void MBCapsuleKinokoDestroy(void);
+void MBCapsuleSKinokoExec(void);
+void MBCapsuleSKinokoDestroy(void);
+void MBCapsuleNKinokoExec(void);
+void MBCapsuleNKinokoDestroy(void);
+void MBCapsuleDokanExec(void);
+void MBCapsuleDokanDestroy(void);
+void MBCapsuleJangoExec(void);
+void MBCapsuleJangoDestroy(void);
+void MBCapsuleBobleExec(void);
+void MBCapsuleBobleDestroy(void);
+void MBCapsuleHanachanExec(void);
+void MBCapsuleHanachanDestroy(void);
+
+void MBCapsuleHammerBroExec(void);
+void MBCapsuleHammerBroDestroy(void);
+void MBCapsuleCoinBlockExec(void);
+void MBCapsuleCoinBlockDestroy(void);
+void MBCapsuleTogezoExec(void);
+void MBCapsuleTogezoDestroy(void);
+void MBCapsulePatapataExec(void);
+void MBCapsulePatapataDestroy(void);
+void MBCapsuleKillerExec(void);
+void MBCapsuleKillerDestroy(void);
+void MBCapsuleKuriboExec(void);
+void MBCapsuleKuriboDestroy(void);
+void MBCapsuleBomheiExec(void);
+void MBCapsuleBomheiDestroy(void);
+void MBCapsuleBankExec(void);
+void MBCapsuleBankDestroy(void);
+
+void MBCapsuleKamekkuExec(void);
+void MBCapsuleKamekkuDestroy(void);
+void MBCapsuleThrowmanExec(void);
+void MBCapsuleThrowmanDestroy(void);
+void MBCapsulePakkunExec(void);
+void MBCapsulePakkunDestroy(void);
+void MBCapsuleKokamekkuExec(void);
+void MBCapsuleKokamekkuDestroy(void);
+void MBCapsuleUkkiExec(void);
+void MBCapsuleUkkiDestroy(void);
+void MBCapsuleJugemExec(void);
+void MBCapsuleJugemDestroy(void);
+
+void MBCapsuleTumujikunExec(void);
+void MBCapsuleTumujikunDestroy(void);
+void MBCapsuleKettouExec(void);
+void MBCapsuleKettouDestroy(void);
+void MBCapsuleWanwanExec(void);
+void MBCapsuleWanwanDestroy(void);
+void MBCapsuleHoneExec(void);
+void MBCapsuleHoneDestroy(void);
+void MBCapsuleKoopaExec(void);
+void MBCapsuleKoopaDestroy(void);
+void MBCapsuleChanceExec(void);
+void MBCapsuleChanceDestroy(void);
+void MBCapsuleMiracleExec(void);
+void MBCapsuleMiracleDestroy(void);
+void MBCapsuleDonkeyExec(void);
+void MBCapsuleDonkeyDestroy(void);
+void MBCapsuleVsExec(void);
+void MBCapsuleVsDestroy(void);
+
+void MBCapsuleDebugCamExec(void);
+void MBCapsuleDebugCamDestroy(void);
+void MBCapsuleDebugWarpExec(void);
+void MBCapsuleDebugWarpDestroy(void);
+void MBCapsuleDebugPosSetExec(void);
+void MBCapsuleDebugPosSetDestroy(void);
+
+void MBCapsuleKillerMoveP1Exec(void);
+void MBCapsuleKillerMoveP1Destroy(void);
+void MBCapsuleKillerMoveP2Exec(void);
+void MBCapsuleKillerMoveP2Destroy(void);
+void MBCapsuleKillerMoveP3Exec(void);
+void MBCapsuleKillerMoveP3Destroy(void);
+void MBCapsuleKillerMoveP4Exec(void);
+void MBCapsuleKillerMoveP4Destroy(void);
+
+void MBCapsuleStatusPosMoveWait(BOOL dispF, BOOL waitF);
+
+void MBCapsuleCameraViewPlayerSet(int playerNo);
+void MBCapsuleCameraViewSet(int playerNo, int viewNo, BOOL masuF);
+void MBCapsuleCameraViewNoSet(int playerNo, int viewNo);
+BOOL MBCapsuleTeamCheck(int player1, int player2);
+void MBCapsuleDataDirRead(int capsuleNo);
+void MBPlayerMoveInit(void);
+void MBPlayerMoveObjCreate(void);
+int MBCapsuleNoGet(void);
+int MBKettouCoinLoseGet(void);
+int MBKettouOppCoinLoseGet(void);
+int MBKettouCoinLoseGet2(void);
+int MBKettouOppCoinLoseGet2(void);
+void MBCapsuleEffHookStoryCall(int evtType, int type, int mdlId);
+void MBBankCoinReset(void);
+int MBCapsuleStarCreate(void);
+void MBCapsuleStarKill(int mdlId);
+void MBCapsuleStarPosSet(int mdlId, float x, float y, float z);
+void MBCapsuleStarRotSet(int mdlId, float x, float y, float z);
+void MBCapsuleStarScaleSet(int mdlId, float x, float y, float z);
+void MBCapsuleStarObjExec(OMOBJ *obj);
+s16 MBCapsulePlayerMotionCreate(int playerNo, int fileNum);
+int MBCapsuleModelCreate(int fileNum, int *motTbl, BOOL linkF, int delay, BOOL closeDir);
+void MBCapsuleModelKill(int mdlId);
+s16 MBCapsuleSprCreate(unsigned int dataNum, s16 prio, s16 bank);
+void MBCapsuleSprClose(s16 sprId);
+void *MBCapsuleMalloc(int size);
+
+void MBCapsuleExplodeEffCreate(int no);
+void MBCapsuleGlowEffCreate(void);
+int MBCapsuleExplodeEffAdd(int no, HuVecF pos, HuVecF rot, float size, float speed, float animSpeed, GXColor color);
+int MBCapsuleExplodeEffLineAdd(int no, HuVecF pos, HuVecF rot, float size, float speed, float radius, float animSpeed, GXColor color);
+int MBCapsuleExplodeEffCheck(int no);
+
+void MBCapsuleDustExplodeAdd(int no, HuVecF pos);
+
+int MBCapsuleGlowEffAdd(HuVecF pos, HuVecF vel, float scale, float fadeSpeed, float rotSpeed, float gravity, GXColor color);
+void MBCapsuleHanachanGlowEffAdd(HuVecF pos, float scale, float fadeSpeed, float radiusX, float radiusY, float radiusZ, int mode);
+
+int MBCapsuleGlowEffCheck(void);
+void MBCapsuleExplodeEffKill(int no);
+void MBCapsuleGlowEffKill(void);
+void MBCapsuleGlowEffBlendModeSet(int blendMode);
+void MBCapsuleNKinokoEffCreate(void);
+void MBCapsuleNKinokoEffKill(void);
+int MBCapsuleNKinokoEffAdd(HuVecF pos, HuVecF vel, float scale, float rotSpeed, int maxTime, GXColor color);
+int MBCapsulePlayerAliveFind(int playerNo);
+void MBCapsulePlayerMotSet(int playerNo, int motNo, u32 attr, BOOL shiftF);
+void MBCapsuleModelMotSet(int mdlId, int motNo, u32 attr, BOOL shiftF);
+BOOL MBCapsulePlayerMasuCheck(int playerNo, HuVecF *a, HuVecF *b, HuVecF *out);
+void MBCapsuleTimingHookCreate(HU3DMODELID modelId, HU3DMOTID motId, BOOL lagF);
+void MBCapsuleBezierGetV(float t, float *a, float *b, float *c, float *out);
+void MBCapsuleBezierNormGetV(float t, float *a, float *b, float *c, float *out);
+float MBCapsuleAngleLerp(float a, float b, float t);
+float MBCapsuleAngleWrap(float a, float b);
+
+void MBCapsuleLoseEffCreate(void);
+void MBCapsuleLoseEffKill(void);
+int MBCapsuleLoseEffAdd(HuVecF *pos, HuVecF *vel, float scale, int maxTime, int capsuleNo);
+void MBCapsuleLoseEffAddMulti(int playerNo, int max, float scale);
+int MBCapsuleLoseEffNumGet(void);
+
+s16 MBCapsuleMasuNextRegularGet(s16 masuId, HuVecF *pos);
+s16 MBCapsuleMasuNextGet(s16 masuId, HuVecF *pos);
+void MBPlayerMoveObjKill(int playerNo);
+
+void MBCapsuleRingEffCreate(void);
+void MBCapsuleRingEffKill(void);
+void MBCapsuleRayEffCreate(void);
+void MBCapsuleRayEffKill(void);
+void MBCapsuleHanachanRingCreate(void);
+void MBCapsuleHanachanRingKill(void);
+int MBCapsuleHanachanRingAdd(HuVecF *pos, HuVecF *dir, int inTime, int holdTime, int outTime, GXColor color);
+void MBCapsuleHanachanRingClear(void);
+void MBCapsuleChoiceSet(int choice);
+int MBCapsuleRingEffAdd(HuVecF pos, HuVecF rot, HuVecF vel, int inTime, int rotTime, int no, GXColor color);
+int MBCapsuleRayEffAdd(HuVecF pos, HuVecF rot, HuVecF moveDir, int speed, GXColor color);
 
 #endif
