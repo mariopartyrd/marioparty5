@@ -153,8 +153,10 @@ BOOL MBCapsulePosAutoSelCheck(int playerNo, int capsuleNo);
 
 void MBMasuBomheiSet(int masuId);
 void MBMasuBomheiNumSet(int masuId, int num);
+int MBMasuBomheiNumGet(int masuId);
 
 int MBBankCoinGet(void);
+void MBBankCoinAdd(int coin);
 int MBCapsuleNextGet(int rank);
 int MBCapsuleCodeGet(int capsuleNo);
 
@@ -242,8 +244,12 @@ void MBCapsuleKillerMoveP3Exec(void);
 void MBCapsuleKillerMoveP3Destroy(void);
 void MBCapsuleKillerMoveP4Exec(void);
 void MBCapsuleKillerMoveP4Destroy(void);
+void MBCapsuleKillerMoveExec(int playerNo, BOOL flag);
 
 void MBCapsuleStatusPosMoveWait(BOOL dispF, BOOL waitF);
+void MBCapsuleStatusInSet(int leftPlayer, int rightPlayer, BOOL waitF);
+void MBCapsuleStatusOutSet(int leftPlayer, int rightPlayer, BOOL waitF);
+
 
 void MBCapsuleCameraViewPlayerSet(int playerNo);
 void MBCapsuleCameraViewSet(int playerNo, int viewNo, BOOL masuF);
@@ -252,6 +258,10 @@ BOOL MBCapsuleTeamCheck(int player1, int player2);
 void MBCapsuleDataDirRead(int capsuleNo);
 void MBPlayerMoveInit(void);
 void MBPlayerMoveObjCreate(void);
+void MBPlayerMoveHitCreate(int playerNo, BOOL shockF, BOOL dizzyF);
+void MBPlayerMoveEjectCreate(int playerNo, BOOL dizzyF);
+BOOL MBPlayerMoveObjCheck(int playerNo);
+
 int MBCapsuleNoGet(void);
 int MBKettouCoinLoseGet(void);
 int MBKettouOppCoinLoseGet(void);
@@ -279,6 +289,7 @@ int MBCapsuleExplodeEffLineAdd(int no, HuVecF pos, HuVecF rot, float size, float
 int MBCapsuleExplodeEffCheck(int no);
 
 void MBCapsuleDustExplodeAdd(int no, HuVecF pos);
+void MBCapsuleDustCloudAdd(int no, HuVecF pos);
 
 int MBCapsuleGlowEffAdd(HuVecF pos, HuVecF vel, float scale, float fadeSpeed, float rotSpeed, float gravity, GXColor color);
 void MBCapsuleHanachanGlowEffAdd(HuVecF pos, float scale, float fadeSpeed, float radiusX, float radiusY, float radiusZ, int mode);
@@ -292,13 +303,17 @@ void MBCapsuleNKinokoEffKill(void);
 int MBCapsuleNKinokoEffAdd(HuVecF pos, HuVecF vel, float scale, float rotSpeed, int maxTime, GXColor color);
 int MBCapsulePlayerAliveFind(int playerNo);
 void MBCapsulePlayerMotSet(int playerNo, int motNo, u32 attr, BOOL shiftF);
+void MBCapsulePlayerIdleWait(void);
+BOOL MBCapsulePlayerMotShiftCheck(int playerNo);
 void MBCapsuleModelMotSet(int mdlId, int motNo, u32 attr, BOOL shiftF);
 BOOL MBCapsulePlayerMasuCheck(int playerNo, HuVecF *a, HuVecF *b, HuVecF *out);
 void MBCapsuleTimingHookCreate(HU3DMODELID modelId, HU3DMOTID motId, BOOL lagF);
 void MBCapsuleBezierGetV(float t, float *a, float *b, float *c, float *out);
 void MBCapsuleBezierNormGetV(float t, float *a, float *b, float *c, float *out);
+void MBCapsuleHermiteGetV(float t, HuVecF *a, HuVecF *b, HuVecF *c, HuVecF *d, HuVecF *out);
 float MBCapsuleAngleLerp(float a, float b, float t);
 float MBCapsuleAngleWrap(float a, float b);
+float MBCapsuleAngleSumLerp(float t, float a, float b);
 
 void MBCapsuleLoseEffCreate(void);
 void MBCapsuleLoseEffKill(void);
@@ -322,4 +337,26 @@ void MBCapsuleChoiceSet(int choice);
 int MBCapsuleRingEffAdd(HuVecF pos, HuVecF rot, HuVecF vel, int inTime, int rotTime, int no, GXColor color);
 int MBCapsuleRayEffAdd(HuVecF pos, HuVecF rot, HuVecF moveDir, int speed, GXColor color);
 
+void MBCapsuleCoinEffCreate(void);
+void MBCapsuleCoinEffKill(void);
+int MBCapsuleCoinEffNumGet(void);
+int MBCapsuleCoinEffAdd(HuVecF *pos, HuVecF *rot, float scale, float gravity, int maxTime, int mode);
+int MBCapsuleCoinEffMaxYSet(int id, float maxY);
+
+void MBCapsuleModelMtxSet(MBMODELID mdlId, Mtx *matrix);
+int MBCapsuleCoinDispExec(int playerNo, int coinNum, BOOL winMotF, BOOL waitF);
+
+OMOBJ *MBCapsuleSaiHiddenCreate(int playerNo, int mdlId, int effDelay, BOOL rotF, BOOL skipF);
+void MBCapsuleSaiHiddenStartSet(OMOBJ *obj, BOOL startF);
+void MBCapsuleSaiHiddenKill(OMOBJ *obj);
+BOOL MBCapsuleSaiHiddenKillCheck(OMOBJ *obj);
+BOOL MBCapsuleSaiHiddenInCheck(OMOBJ *obj);
+BOOL MBCapsuleSaiHiddenHitCheck(OMOBJ *obj, HuVecF *pos);
+void MBCapsuleSeDelayPlay(int seId, int delay);
+
+void MBCapsuleCoinManCreate(void);
+void MBCapsuleCoinManKill(void);
+int MBCapsuleCoinManAdd(BOOL downF, int playerNo, int num);
+int MBCapsuleCoinManNumGet(void);
+ 
 #endif

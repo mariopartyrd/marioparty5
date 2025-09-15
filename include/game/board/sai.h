@@ -58,5 +58,6 @@ void MBSaiNumObjKill(OMOBJ *obj);
 BOOL MBSaiNumMoveCheck(int playerNo);
 void MBSaiNumKill(int playerNo);
 void MBSaiNumShrinkSet(int playerNo);
+BOOL MBSaiNumStopCheck(int playerNo);
 
 #endif
