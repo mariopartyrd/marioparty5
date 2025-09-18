@@ -62,6 +62,10 @@
 
 #define CAPSULE_OBJ_MAX 128
 
+#define CAPSULE_PLAYERRAND_COIN 0
+#define CAPSULE_PLAYERRAND_STAR 1
+#define CAPSULE_PLAYERRAND_CAPSULE 2
+
 #define MBCapsuleEffRandF() ((frand() & 0x7F)*(1.0f/127.0f))
 #define MBCapsuleEffRand(max) ((frand() & 0x7FFF)%max)
 
@@ -261,6 +265,8 @@ void MBPlayerMoveObjCreate(void);
 void MBPlayerMoveHitCreate(int playerNo, BOOL shockF, BOOL dizzyF);
 void MBPlayerMoveEjectCreate(int playerNo, BOOL dizzyF);
 BOOL MBPlayerMoveObjCheck(int playerNo);
+void MBPlayerMoveVelSet(int playerNo, float gravity, HuVecF dir);
+void MBPlayerMoveMinYSet(int playerNo, float minY);
 
 int MBCapsuleNoGet(void);
 int MBKettouCoinLoseGet(void);
@@ -290,6 +296,7 @@ int MBCapsuleExplodeEffCheck(int no);
 
 void MBCapsuleDustExplodeAdd(int no, HuVecF pos);
 void MBCapsuleDustCloudAdd(int no, HuVecF pos);
+void MBCapsuleDustHeavyAdd(int no, HuVecF pos);
 
 int MBCapsuleGlowEffAdd(HuVecF pos, HuVecF vel, float scale, float fadeSpeed, float rotSpeed, float gravity, GXColor color);
 void MBCapsuleHanachanGlowEffAdd(HuVecF pos, float scale, float fadeSpeed, float radiusX, float radiusY, float radiusZ, int mode);
@@ -324,6 +331,7 @@ int MBCapsuleLoseEffNumGet(void);
 s16 MBCapsuleMasuNextRegularGet(s16 masuId, HuVecF *pos);
 s16 MBCapsuleMasuNextGet(s16 masuId, HuVecF *pos);
 void MBPlayerMoveObjKill(int playerNo);
+void MBPlayerMoveObjClose(void);
 
 void MBCapsuleRingEffCreate(void);
 void MBCapsuleRingEffKill(void);
@@ -359,4 +367,12 @@ void MBCapsuleCoinManKill(void);
 int MBCapsuleCoinManAdd(BOOL downF, int playerNo, int num);
 int MBCapsuleCoinManNumGet(void);
  
+void MBCapsuleStatusStartPosGet(int playerNo, int capsuleNo, HuVecF *pos);
+
+void MBCapsuleSnowEffCreate(void);
+void MBCapsuleSnowEffKill(void);
+int MBCapsuleSnowEffAdd(HuVecF *pos, int maxTime);
+
+int MBCapsulePlayerRandGet(int playerNo, int type);
+
 #endif
