@@ -9,7 +9,7 @@ enum {
     CAPSULECHAR0_HSF_heiho_walk = DATANUM(DATA_capsulechar0, 2),
     CAPSULECHAR0_HSF_heiho_run = DATANUM(DATA_capsulechar0, 3),
     CAPSULECHAR0_HSF_heiho_zenmai = DATANUM(DATA_capsulechar0, 4),
-    CAPSULECHAR0_HSF_heiho_zenma_mot = DATANUM(DATA_capsulechar0, 5),
+    CAPSULECHAR0_HSF_heiho_zenmai_mot = DATANUM(DATA_capsulechar0, 5),
     CAPSULECHAR0_HSF_bomhei = DATANUM(DATA_capsulechar0, 6),
     CAPSULECHAR0_HSF_bomhei_flash = DATANUM(DATA_capsulechar0, 7),
     CAPSULECHAR0_HSF_bomhei_explode = DATANUM(DATA_capsulechar0, 8),

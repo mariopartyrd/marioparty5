@@ -25,6 +25,7 @@
 #define MB_LAST5_EFF_RANDCAPSULE 2
 #define MB_LAST5_EFF_REDKUPA 3
 #define MB_LAST5_EFF_5STAR 4
+#define MB_LAST5_EFF_TAKEDOUBLE 5
 
 typedef void (*MBCREATEHOOK)(void);
 typedef void (*MBKILLHOOK)(void);
