@@ -21,9 +21,11 @@
 #include "game/board/roulette.h"
 #include "game/board/guide.h"
 #include "game/board/star.h"
+#include "game/board/telop.h"
 
 #include "datanum/capsule.h"
 #include "datanum/effect.h"
+#include "datanum/blast5.h"
 
 #include "datanum/capsulechar0.h"
 #include "datanum/capsulechar1.h"
@@ -42,6 +44,7 @@
 #include "messnum/circuitevent.h"
 #include "messnum/storyevent.h"
 #include "messnum/board_star.h"
+#include "messnum/boardope.h"
 
 //Fake Board Prototypes
 extern BOOL MBCircuitGoalCheck(int playerNo);
@@ -545,7 +548,7 @@ static CAPSULE_FLAG capsuleFlags;
 static int capsuleChoice;
 static int saiHookMdlId;
 static OMOBJ *capsuleObj;
-static BOOL saiHookF;
+static int saiHookTime;
 static int seDelayMax;
 static CAPSULE_EFF_HOOK capsuleEffHook;
 static CAPSULE_WORK *capsuleWork;
@@ -9930,6 +9933,914 @@ void MBCapsuleHoneDestroy(void)
     
 }
 
+static void KoopaCapsuleGetExec(int mdlId, BOOL partyF);
+static void KoopaLast5Exec(int mdlId, BOOL partyF);
+static void KoopaMasuExec(int mdlId, BOOL partyF);
+static void KoopaCircuitExec(int mdlId, BOOL partyF);
+static void KoopaEndGameExec(int mdlId, BOOL partyF);
+static void KoopaMgEndExec(int mdlId, BOOL partyF);
+static void KoopaCircuitMgEndExec(int mdlId, BOOL partyF);
+static u16 KoopaLoseSaiPadHook(int playerNo);
+static void KoopaSaiMotHook(int playerNo);
+
+void MBCapsuleKoopaExec(void)
+{
+    int motFile[32];
+    int mdlId;
+    BOOL partyF;
+    MBCapsuleExplodeEffCreate(0);
+    MBCapsuleGlowEffCreate();
+    MBCapsuleGlowEffAnimSet(CAPSULE_ANM_effStar);
+    MBPlayerMoveInit();
+    MBPlayerMoveObjCreate();
+    if(!capsuleFlags.last5KoopaF || GWPartyFGet() == FALSE) {
+        motFile[0] = CAPSULECHAR4_HSF_koopa_idle;
+        motFile[1] = CAPSULECHAR4_HSF_koopa_stomp;
+        motFile[2] = CAPSULECHAR4_HSF_koopa_laugh;
+        motFile[3] = CAPSULECHAR4_HSF_koopa_walk;
+        motFile[4] = CAPSULECHAR4_HSF_koopa_jump_start;
+        motFile[5] = CAPSULECHAR4_HSF_koopa_lose;
+        motFile[6] = CAPSULECHAR4_HSF_koopa_side_hit;
+        motFile[7] = CAPSULECHAR4_HSF_koopa_last5_jump;
+        motFile[8] = CAPSULECHAR4_HSF_koopa_last5_lose;
+        motFile[9] = CAPSULECHAR4_HSF_koopa_last5_slam;
+        motFile[10] = CAPSULECHAR4_HSF_koopa_sai_hit;
+        motFile[11] = HU_DATANUM_NONE;
+        mdlId = MBCapsuleModelCreate(CAPSULECHAR4_HSF_koopa, motFile, FALSE, 10, FALSE);
+        partyF = FALSE;
+    } else {
+        int statId;
+        HuDataDirClose(capsuleData[capsuleCurNo].dirNum);
+        statId = MBDataDirReadAsync(DATA_capsulechar2);
+        if(statId != HU_DATA_STAT_NONE) {
+            MBDataAsyncWait(statId);
+        }
+        motFile[0] = CAPSULECHAR2_HSF_koopa_idle;
+        motFile[1] = CAPSULECHAR2_HSF_koopa_laugh;
+        motFile[2] = CAPSULECHAR2_HSF_koopa_laugh;
+        motFile[3] = CAPSULECHAR2_HSF_koopa_walk;
+        motFile[4] = CAPSULECHAR2_HSF_koopa_jump;
+        motFile[5] = HU_DATANUM_NONE;
+        mdlId = MBCapsuleModelCreate(CAPSULECHAR2_HSF_koopa, motFile, FALSE, 10, FALSE);
+        partyF = TRUE;
+        HuDataDirClose(DATA_capsulechar2);
+        
+    }
+    MBModelDispSet(mdlId, FALSE);
+    if(capsuleFlags.capsuleKoopaGetF) {
+        KoopaCapsuleGetExec(mdlId, partyF);
+    } else if(capsuleFlags.last5KoopaF) {
+        KoopaLast5Exec(mdlId, partyF);
+    } else if(capsuleFlags.koopaF) {
+        KoopaMasuExec(mdlId, partyF);
+    } else if(capsuleFlags.circuitKoopaF) {
+        KoopaCircuitExec(mdlId, partyF);
+    } else if(capsuleFlags.gameEndF) {
+        KoopaEndGameExec(mdlId, partyF);
+    } else if(capsuleFlags.circuitKoopaMgEndF) {
+        KoopaCircuitMgEndExec(mdlId, partyF);
+    } else {
+        KoopaMgEndExec(mdlId, partyF);
+    }
+    MBCapsuleEffHookCall(1, MB_MODEL_NONE, FALSE, FALSE, FALSE);
+    MBCapsulePlayerIdleWait();
+    MBPlayerMoveObjClose();
+    HuPrcEnd();
+}
+
+void MBCapsuleKoopaDestroy(void)
+{
+    MBCapsuleExplodeEffKill(0);
+    MBCapsuleGlowEffKill();
+}
+
+static void KoopaLast5SaiHit(int result)
+{
+    saiHookTime = 0;
+    MBAudFXPlay(MSM_SE_BOARD_14);
+}
+
+static void KoopaCapsuleGetExec(int mdlId, BOOL partyF)
+{
+    int i; //r31
+    int masuId; //r25
+    int capsuleMdlId; //r22
+    int *masuRedTbl; //r21
+    int masuRedNum; //r20
+    int stunNum; //r17
+    
+    float scale; //f31
+    float t; //f30
+    
+    HuVecF playerPos; //sp+0x98
+    HuVecF masuPos; //sp+0x8C
+    HuVecF mdlPos; //sp+0x80
+    HuVecF capsulePos; //sp+0x74
+    int squishTbl[GW_PLAYER_MAX]; //sp+0x64
+    int playerMasuId; //sp+0x30
+    int motId; //sp+0x2C
+    
+    playerMasuId = GwPlayer[capsulePlayer].masuId;
+    MBPlayerPosGet(capsulePlayer, &playerPos);
+    HuAudFXPlay(MSM_SE_BOARD_85);
+    capsuleMdlId = MBCapsuleModelCreate(CAPSULE_HSF_selKoopa, NULL, FALSE, 10, FALSE);
+    MBModelLayerSet(capsuleMdlId, 2);
+    capsulePos.x = playerPos.x;
+    capsulePos.y = playerPos.y+300;
+    capsulePos.z = playerPos.z;
+    MBModelPosSetV(capsuleMdlId, &capsulePos);
+    MBCapsuleDustCloudAdd(0, capsulePos);
+    for(i=0; i<18.0f; i++) {
+        t = i/18.0f;
+        scale = t+(HuSin(t*180)*0.5);
+        MBModelScaleSet(capsuleMdlId, scale, scale, scale);
+        HuPrcVSleep();
+    }
+    if(GWPartyFGet() == FALSE && MBPlayerStoryComCheck(capsulePlayer)) {
+        MBPlayerWinLoseVoicePlay(capsulePlayer, MB_PLAYER_MOT_COINWIN, CHARVOICEID(5));
+        MBCapsulePlayerMotSet(capsulePlayer, MB_PLAYER_MOT_COINWIN, HU3D_MOTATTR_NONE, TRUE);
+    } else {
+        MBPlayerWinLoseVoicePlay(capsulePlayer, MB_PLAYER_MOT_COINLOSE, CHARVOICEID(10));
+        MBCapsulePlayerMotSet(capsulePlayer, MB_PLAYER_MOT_COINLOSE, HU3D_MOTATTR_NONE, TRUE);
+    }
+    MBPlayerMotionNoShiftSet(capsulePlayer, MB_PLAYER_MOT_IDLE, 0, 8, HU3D_MOTATTR_LOOP);
+    MBWinCreate(MBWIN_TYPE_TALKEVENT, MESS_CAPSULE_EX04_KOOPA, HUWIN_SPEAKER_CAPMACHINE);
+    MBTopWinWait();
+    MBTopWinKill();
+    MBAudFXPlay(MSM_SE_BOARD_103);
+    for(i=0; i<18.0f; i++) {
+        t = i/18.0f;
+        scale = HuCos(t*90);
+        MBModelScaleSet(capsuleMdlId, scale, scale, scale);
+        HuPrcVSleep();
+    }
+    MBModelDispSet(capsuleMdlId, FALSE);
+    MBMusPauseFadeOut(MB_MUS_CHAN_BG, TRUE, 0);
+    motId = MBCapsulePlayerMotionCreate(capsulePlayer, CHARMOT_HSF_c000m1_325);
+    MBPlayerMotionNoShiftSet(capsulePlayer, motId, 0, 8, HU3D_MOTATTR_NONE);
+    HuPrcSleep(60);
+    MBCameraModelViewSet(MBPlayerModelGet(capsulePlayer), NULL, &capsuleViewOfs, 1500, -1, 21);
+    MBCameraMotionWait();
+    mdlPos = playerPos;
+    MBModelPosSetV(mdlId, &mdlPos);
+    MBModelDispSet(mdlId, TRUE);
+    MBMotionNoSet(mdlId, 2, HU3D_MOTATTR_NONE);
+    MBMotionTimeSet(mdlId, MBMotionMaxTimeGet(mdlId)*0.5f);
+    MBMusPlay(MB_MUS_CHAN_FG, MSM_STREAM_CAPSULE_KOOPA, 127, 0);
+    stunNum = 0;
+    do {
+        if(stunNum == 0 && MBMotionTimeGet(mdlId) > 137) {
+            MBCapsuleDustHeavyAdd(0, mdlPos);
+            MBAudFXPlay(MSM_SE_BOARD_115);
+            MBCapsuleVibrate(1);
+            stunNum = MBCapsulePlayerSquishSet(squishTbl, playerMasuId);
+        }
+        HuPrcVSleep();
+    } while(!MBMotionEndCheck(mdlId));
+    MBAudFXPlay(MSM_SE_GUIDE_12);
+    MBCapsuleModelMotSet(mdlId, 3, HU3D_MOTATTR_NONE, TRUE);
+    MBMotionShiftSet(mdlId, 1, 0, 8, HU3D_MOTATTR_LOOP);
+    MBCapsuleEffHookCall(3, mdlId, partyF, FALSE, FALSE);
+    MBWinCreate(MBWIN_TYPE_TALKEVENT, MESS_CAPSULE_EX04_KOOPA_MASU_START, HUWIN_SPEAKER_KOOPA);
+    MBTopWinWait();
+    MBTopWinKill();
+    MBWinCreate(MBWIN_TYPE_TALKEVENT, MESS_CAPSULE_EX04_KOOPA_MASU_LOC, HUWIN_SPEAKER_KOOPA);
+    MBTopWinWait();
+    MBTopWinKill();
+    HuAudFXPlay(MSM_SE_BOARD_59);
+    MBMotionShiftSet(mdlId, 5, 0, 8, HU3D_MOTATTR_NONE);
+    do {
+        HuPrcVSleep();
+    }  while(MBMotionShiftIDGet(mdlId) != HU3D_MOTID_NONE);
+    HuAudFXPlay(MSM_SE_GUIDE_14);
+    for(i=0; i<90.0f; i++) {
+        HuPrcVSleep();
+    }
+    masuRedTbl = MBCapsuleMalloc(MASU_MAX*sizeof(int));
+    memset(masuRedTbl, 0,MASU_MAX*sizeof(int));
+    for(masuRedNum=0, i=1; i<MASU_MAX; i++) {
+        if(MBMasuTypeGet(MASU_LAYER_DEFAULT, i) == MASU_TYPE_RED) {
+            masuRedTbl[masuRedNum] = i;
+            masuRedNum++;
+        }
+    }
+    if(masuRedNum > 0) {
+        masuId = masuRedTbl[MBCapsuleEffRand(masuRedNum)];
+        MBMasuPosGet(MASU_LAYER_DEFAULT, masuId, &masuPos);
+    } else {
+        masuId = MASU_NULL;
+    }
+    if(masuId != MASU_NULL) {
+        WipeColorSet(255, 255, 255);
+        WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_CROSSCOPY, 1);
+        WipeWait();
+        MBCameraSkipSet(FALSE);
+        MBCameraFocusMasuSet(masuId);
+        MBCameraMotionWait();
+        MBCameraSkipSet(TRUE);
+        WipeCreate(WIPE_MODE_IN, WIPE_TYPE_CROSSCOPY, 15);
+        WipeWait();
+        capsulePos = masuPos;
+        MBCapsuleDustCloudAdd(0, masuPos);
+        capsulePos = masuPos;
+        capsulePos.y -= 50;
+        MBCapsuleDustCloudAdd(0, masuPos);
+        MBMasuTypeSet(MASU_LAYER_DEFAULT, masuId, MASU_TYPE_KUPA);
+        MBMasuCapsuleSet(MASU_LAYER_DEFAULT, masuId, CAPSULE_KOOPA);
+        MBAudFXPlay(MSM_SE_BOARD_85);
+        do {
+            HuPrcVSleep();
+        } while(MBCapsuleExplodeEffCheck(0) > 0);
+        for(i=0; i<60.0f; i++) {
+            HuPrcVSleep();
+        }
+        WipeColorSet(255, 255, 255);
+        WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_CROSSCOPY, 1);
+        WipeWait();
+        MBCameraSkipSet(FALSE);
+        MBCameraFocusPlayerSet(capsulePlayer);
+        MBCameraMotionWait();
+        MBCameraSkipSet(TRUE);
+        WipeCreate(WIPE_MODE_IN, WIPE_TYPE_CROSSCOPY, 15);
+    }
+    MBAudFXPlay(MSM_SE_GUIDE_12);
+    MBCapsuleModelMotSet(mdlId, 3, HU3D_MOTATTR_NONE, TRUE);
+    MBMotionShiftSet(mdlId, 1, 0, 8, HU3D_MOTATTR_LOOP);
+    MBCapsuleEffHookCall(3, mdlId, partyF, FALSE, FALSE);
+    MBWinCreate(MBWIN_TYPE_TALKEVENT, MESS_CAPSULE_EX04_KOOPA_RETURN, HUWIN_SPEAKER_KOOPA);
+    MBTopWinWait();
+    MBTopWinKill();
+    MBMusFadeOut(MB_MUS_CHAN_FG, 1000);
+    while(MBMusCheck(MB_MUS_CHAN_FG)) {
+        HuPrcVSleep();
+    }
+    MBMotionShiftSet(mdlId, 2, 0, 8, HU3D_MOTATTR_NONE);
+    HuAudFXPlay(MSM_SE_GUIDE_15);
+    for(i=0; i<90.0f; i++) {
+        HuPrcVSleep();
+    }
+    MBModelDispSet(mdlId, FALSE);
+    MBMusMainPlay();
+    MBCapsulePlayerStunSet(squishTbl, stunNum, FALSE);
+    for(i=0; i<60.0f; i++) {
+        HuPrcVSleep();
+    }
+}
+
+static void KoopaLast5Exec(int mdlId, BOOL partyF)
+{
+    int i; //r31
+    int j; //r30
+    int rank; //r28
+    int playerNo; //r27
+    int resultPlayer; //r24
+    int masuId; //r23
+    int effectNo; //r19
+    int rouletteMdlId; //r18
+    
+    float time; //f31
+    float prevTime; //f30
+    float t; //f29
+    
+    int rouletteData[10]; //sp+0x10C
+    int playerOrder[GW_PLAYER_MAX][GW_PLAYER_MAX]; //sp+0xCC
+    HuVecF playerPos; //sp+0xC0
+    HuVecF playerVel; //sp+0xB4
+    HuVecF mdlPos; //sp+0xA8
+    HuVecF masuPos; //sp+0x9C
+    HuVecF viewRot; //sp+0x90
+    HuVecF statusPosBegin; //sp+0x84
+    HuVecF statusPosEnd; //sp+0x78
+    char insertMes[16]; //sp+0x68
+    int playerMasuId; //sp+0x58
+    int helpWinId; //sp+0x54
+    int guideMdlId; //sp+0x50
+    int turnOld; //sp+0x4C
+    int hammerMdlId; //sp+0x48
+    int motId; //sp+0x44
+    BOOL dustEffF; //sp+0x40
+    int srcIdx; //sp+0x3C
+    int dstIdx; //sp+0x38
+    int temp; //sp+0x34
+    s8 storyComNum; //sp+0x8
+    static u32 rankMes[GW_PLAYER_MAX] = {
+        MESS_LAST5KOOPA_RANK_1,
+        MESS_LAST5KOOPA_RANK_2,
+        MESS_LAST5KOOPA_RANK_3,
+        MESS_LAST5KOOPA_RANK_4
+    };
+    static u32 rouletteEffMes[4] = {
+        MESS_LAST5KOOPA_EFFECT_1,
+        MESS_LAST5KOOPA_EFFECT_2,
+        MESS_LAST5KOOPA_EFFECT_3,
+        MESS_LAST5KOOPA_EFFECT_4
+    };
+    
+    static int rouletteTbl[10] = {
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        2,
+        2,
+        3
+    };
+    MBMusFadeOutDefault(MB_MUS_CHAN_BG);
+    while(MBMusCheck(MB_MUS_CHAN_BG)) {
+        HuPrcVSleep();
+    }
+    MBMusPlay(MB_MUS_CHAN_FG, MSM_STREAM_BOARD_LAST5, 127, 0);
+    playerMasuId = GwPlayer[capsulePlayer].masuId;
+    MBPlayerPosGet(capsulePlayer, &playerPos);
+    MBCapsuleStatusPosMoveWait(FALSE, TRUE);
+    for(i=0; i<GW_PLAYER_MAX; i++) {
+        if(MBPlayerAliveCheck(i)) {
+            MBModelDispSet(MBPlayerModelGet(i), FALSE);
+        }
+    }
+    if(GWPartyFGet() == TRUE) {
+        for(i=1; i<=MBMasuNumGet(MASU_LAYER_DEFAULT); i++) {
+            if(MBMasuFlagGet(MASU_LAYER_DEFAULT, i) & MASU_FLAG_START) {
+                break;
+            }
+        }
+        if(i <= MBMasuNumGet(MASU_LAYER_DEFAULT)) {
+            masuId = i;
+        } else {
+            masuId = 1;
+        }
+        MBMasuPosGet(MASU_LAYER_DEFAULT, masuId, &mdlPos);
+        mdlPos.x += 200;
+        MBModelPosSetV(mdlId, &mdlPos);
+        MBModelDispSet(mdlId, TRUE);
+        MBMotionNoSet(mdlId, 1, HU3D_MOTATTR_LOOP);
+        rouletteMdlId = MBCapsuleModelCreate(BLAST5_HSF_roulette, NULL, FALSE, 10, FALSE);
+        MBModelAttrSet(rouletteMdlId, HU3D_MOTATTR_LOOP);
+        MBMotionTimeSet(rouletteMdlId, 0);
+        MBMotionSpeedSet(rouletteMdlId, 0);
+        MBModelPosSet(rouletteMdlId, mdlPos.x-200, mdlPos.y+200, mdlPos.z-100);
+        MBCameraSkipSet(FALSE);
+        viewRot.x = -15;
+        viewRot.y = 0;
+        viewRot.z = 0;
+        masuPos.x = 0;
+        masuPos.y = 150;
+        masuPos.z = 0;
+        MBCameraModelViewSet(mdlId, &viewRot, &masuPos, 500, -1, 1);
+        MBCameraMotionWait();
+        MBCameraSkipSet(TRUE);
+        WipeColorSet(255, 255, 255);
+        WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 30);
+        WipeWait();
+        MBCapsuleEffHookCall(3, mdlId, partyF, FALSE, FALSE);
+        HuPrcSleep(60);
+        turnOld = GwSystem.turnNo;
+        if(GwSystem.turnMax-GwSystem.turnNo >= 5) {
+            GwSystem.turnNo = GwSystem.turnMax-4;
+        }
+        MBTelopLast5Create();
+        GwSystem.turnNo = turnOld;
+        hammerMdlId = MBCapsuleModelCreate(CAPSULE_HSF_hammer, NULL, FALSE, 10, FALSE);
+        MBMasuPosGet(MASU_LAYER_DEFAULT, masuId, &masuPos);
+        masuPos.y = 250;
+        MBModelPosSetV(hammerMdlId, &masuPos);
+        MBModelDispSet(hammerMdlId, FALSE);
+        viewRot.x = -20;
+        viewRot.y = 0;
+        viewRot.z = 0;
+        masuPos.x = 0;
+        masuPos.y = 150;
+        masuPos.z = 0;
+        MBCameraMasuViewSet(masuId, &viewRot, &masuPos, 1900, -1, 21);
+        MBCameraMotionWait();
+    } else {
+        for(i=1; i<=MBMasuNumGet(MASU_LAYER_DEFAULT); i++) {
+            if(MBMasuFlagGet(MASU_LAYER_DEFAULT, i) & MASU_FLAG_START) {
+                break;
+            }
+        }
+        if(i <= MBMasuNumGet(MASU_LAYER_DEFAULT)) {
+            masuId = i;
+        } else {
+            masuId = 1;
+        }
+        rouletteMdlId = MB_MODEL_NONE;
+        viewRot.x = -20;
+        viewRot.y = 0;
+        viewRot.z = 0;
+        masuPos.x = 0;
+        masuPos.y = 150;
+        masuPos.z = 0;
+        MBCameraMasuViewSet(masuId, &viewRot, &masuPos, 1900, -1, 21);
+        MBCameraMotionWait();
+        MBMasuPosGet(MASU_LAYER_DEFAULT, masuId, &mdlPos);
+        mdlPos.x += 200;
+        MBModelPosSetV(mdlId, &mdlPos);
+        MBModelDispSet(mdlId, TRUE);
+        MBMotionNoSet(mdlId, 2, HU3D_MOTATTR_NONE);
+        MBMotionTimeSet(mdlId, MBMotionMaxTimeGet(mdlId)*0.5f);
+        WipeCreate(WIPE_MODE_IN, WIPE_TYPE_CROSSCOPY,60);
+        dustEffF = FALSE;
+        do {
+            if(!dustEffF && MBMotionTimeGet(mdlId) > 137) {
+                MBCapsuleDustHeavyAdd(0, mdlPos);
+                MBAudFXPlay(MSM_SE_BOARD_115);
+                MBCapsuleVibrate(1);
+                dustEffF = TRUE;
+            }
+            HuPrcVSleep();
+        } while(!MBMotionEndCheck(mdlId) || WipeCheckEnd());
+        dustEffF = FALSE;
+        MBMotionShiftSet(mdlId, 1, 0, 8, HU3D_MOTATTR_LOOP);
+        MBCapsuleEffHookCall(3, mdlId, partyF, FALSE, FALSE);
+        HuPrcSleep(30);
+        turnOld = GwSystem.turnNo;
+        if(GwSystem.turnMax-GwSystem.turnNo >= 5) {
+            GwSystem.turnNo = GwSystem.turnMax-4;
+        }
+        MBTelopLast5Create();
+        GwSystem.turnNo = turnOld;
+    }
+    MBAudFXPlay(MSM_SE_GUIDE_12);
+    MBCapsuleModelMotSet(mdlId, 3, HU3D_MOTATTR_NONE, TRUE);
+    MBMotionShiftSet(mdlId, 1, 0, 8, HU3D_MOTATTR_LOOP);
+    MBCapsuleEffHookCall(3, mdlId, partyF, FALSE, FALSE);
+    if(GWPartyFGet() == TRUE) {
+        MBWinCreate(MBWIN_TYPE_TALKEVENT, MESS_LAST5KOOPA_START_PARTY, HUWIN_SPEAKER_KOOPA);
+        MBTopWinWait();
+        MBTopWinKill();
+    } else {
+        MBWinCreate(MBWIN_TYPE_TALKEVENT, MESS_LAST5KOOPA_START_STORY, HUWIN_SPEAKER_KOOPA);
+        MBTopWinWait();
+        MBTopWinKill();
+    }
+    MBCapsuleModelMotSet(mdlId, 4, HU3D_MOTATTR_LOOP, TRUE);
+    for(i=0; i<72.0f; i++) {
+        t = i/72.0f;
+        MBModelRotSet(mdlId, 0, -90*t, 0);
+        time = MBMotionTimeGet(mdlId);
+        if((prevTime < 20 && time >= 20) || (prevTime < 70 && time >= 70)) {
+            MBAudFXPlay(MSM_SE_GUIDE_10);
+        }
+        prevTime = time;
+        HuPrcVSleep();
+    }
+    MBCapsuleModelMotSet(mdlId, 1, HU3D_MOTATTR_LOOP, TRUE);
+    if(GWPartyFGet() == TRUE) {
+        if(!GWTeamFGet()) {
+            for(i=0; i<GW_PLAYER_MAX; i++) {
+                for(j=0; j<GW_PLAYER_MAX; j++) {
+                    playerOrder[i][j] = -1;
+                }
+            }
+            for(i=0; i<GW_PLAYER_MAX; i++) {
+                rank = GwPlayer[i].rank;
+                for(j=0; j<GW_PLAYER_MAX; j++) {
+                    if(playerOrder[rank][j] == -1) {
+                        playerOrder[rank][j] = i;
+                        break;
+                    }
+                }
+            }
+            resultPlayer = playerNo = -1;
+            rank = 0;
+            for(i=0; i<GW_PLAYER_MAX; i++) {
+                for(j=0; j<GW_PLAYER_MAX; j++) {
+                    if(playerOrder[i][j] != -1) {
+                        statusPosBegin.x = -120;
+                        statusPosBegin.y = 80.0f+(75.0f*rank);
+                        statusPosEnd.x = 120;
+                        statusPosEnd.y = 80.0f+(75.0f*rank);
+                        MBStatusLayoutSet(playerOrder[i][j], STATUS_LAYOUT_TOP);
+                        MBStatusMoveSet(playerOrder[i][j], &statusPosBegin, &statusPosEnd, STATUS_MOVE_SIN, 30);
+                        rank++;
+                        MBWinCreate(MBWIN_TYPE_TALKEVENT, rankMes[i], HUWIN_SPEAKER_KOOPA);
+                        MBTopWinInsertMesSet(MBPlayerNameMesGet(playerOrder[i][j]), 0);
+                        MBTopWinWait();
+                        MBTopWinKill();
+                        if(resultPlayer == -1) {
+                            resultPlayer = playerOrder[i][j];
+                        }
+                        playerNo = playerOrder[i][j];
+                    }
+                }
+            }
+            if(resultPlayer == -1) {
+                resultPlayer = 0;
+            }
+            if(playerNo == -1) {
+                playerNo = 0;
+            }
+            MBCapsuleEffHookCall(3, mdlId, partyF, FALSE, FALSE);
+            MBWinCreate(MBWIN_TYPE_TALKEVENT, MESS_LAST5KOOPA_RESULT_PREDICT, HUWIN_SPEAKER_KOOPA);
+            MBTopWinInsertMesSet(MBPlayerNameMesGet(resultPlayer), 0);
+            MBTopWinWait();
+            MBTopWinKill();
+            rank = 0;
+            for(i=0; i<GW_PLAYER_MAX; i++) {
+                for(j=0; j<GW_PLAYER_MAX; j++) {
+                    if(playerOrder[i][j] != -1) {
+                        statusPosBegin.x = -120;
+                        statusPosBegin.y = 80.0f+(75.0f*rank);
+                        statusPosEnd.x = 120;
+                        statusPosEnd.y = 80.0f+(75.0f*rank);
+                        MBStatusLayoutSet(playerOrder[i][j], STATUS_LAYOUT_TOP);
+                        MBStatusMoveSet(playerOrder[i][j], &statusPosEnd, &statusPosBegin, STATUS_MOVE_REVCOS, 30);
+                        rank++;
+                    }
+                }
+            }
+        } else {
+            for(i=0; i<GW_PLAYER_MAX; i++) {
+                for(j=0; j<GW_PLAYER_MAX; j++) {
+                    playerOrder[i][j] = -1;
+                }
+            }
+            for(i=0; i<2; i++) {
+                rank = MBPlayerGrpRankGet(i);
+                for(j=0; j<GW_PLAYER_MAX; j++) {
+                    if(playerOrder[rank][j] == -1) {
+                        playerOrder[rank][j] = i;
+                        break;
+                    }
+                }
+            }
+            resultPlayer = playerNo = -1;
+            rank = 0;
+            for(i=0; i<GW_PLAYER_MAX; i++) {
+                for(j=0; j<GW_PLAYER_MAX; j++) {
+                    if(playerOrder[i][j] != -1) {
+                        statusPosBegin.x = -140;
+                        statusPosBegin.y = 80.0f+(75.0f*rank);
+                        statusPosEnd.x = 140;
+                        statusPosEnd.y = 80.0f+(75.0f*rank);
+                        MBStatusLayoutSet(MBPlayerGrpFindPlayer(playerOrder[i][j], 0), STATUS_LAYOUT_TOP);
+                        MBStatusMoveSet(MBPlayerGrpFindPlayer(playerOrder[i][j], 0), &statusPosBegin, &statusPosEnd, STATUS_MOVE_SIN, 30);
+                        rank++;
+                        MBWinCreate(MBWIN_TYPE_TALKEVENT, rankMes[i], HUWIN_SPEAKER_KOOPA);
+                        MBTopWinInsertMesSet(MBCapsuleTeamNameGet(GwPlayer[MBPlayerGrpFindPlayer(playerOrder[i][j], 0)].charNo, GwPlayer[MBPlayerGrpFindPlayer(playerOrder[i][j], 1)].charNo), 0);
+                        MBTopWinWait();
+                        MBTopWinKill();
+                        if(resultPlayer == -1) {
+                            resultPlayer = playerOrder[i][j];
+                        }
+                        playerNo = playerOrder[i][j];
+                    }
+                }
+            }
+            if(resultPlayer == -1) {
+                resultPlayer = 0;
+            }
+            if(playerNo == -1) {
+                playerNo = 0;
+            }
+            MBCapsuleEffHookCall(3, mdlId, partyF, FALSE, FALSE);
+            MBWinCreate(MBWIN_TYPE_TALKEVENT, MESS_LAST5KOOPA_RESULT_PREDICT, HUWIN_SPEAKER_KOOPA);
+            MBTopWinInsertMesSet(MBCapsuleTeamNameGet(GwPlayer[MBPlayerGrpFindPlayer(resultPlayer, 0)].charNo, GwPlayer[MBPlayerGrpFindPlayer(resultPlayer, 1)].charNo), 0);
+            MBTopWinWait();
+            MBTopWinKill();
+            rank = 0;
+            for(i=0; i<GW_PLAYER_MAX; i++) {
+                for(j=0; j<GW_PLAYER_MAX; j++) {
+                    if(playerOrder[i][j] != -1) {
+                        statusPosBegin.x = -140;
+                        statusPosBegin.y = 80.0f+(75.0f*rank);
+                        statusPosEnd.x = 140;
+                        statusPosEnd.y = 80.0f+(75.0f*rank);
+                        MBStatusLayoutSet(MBPlayerGrpFindPlayer(playerOrder[i][j], 0), STATUS_LAYOUT_TOP);
+                        MBStatusMoveSet(MBPlayerGrpFindPlayer(playerOrder[i][j], 0), &statusPosEnd, &statusPosBegin, STATUS_MOVE_REVCOS, 30);
+                        rank++;
+                    }
+                }
+            }
+            playerNo = MBPlayerGrpFindPlayer(playerNo, frand() & 0x1);
+        }
+    } else {
+        rank = 0;
+        for(i=0; i<GW_PLAYER_MAX; i++) {
+            if(MBPlayerAliveCheck(i)) {
+                statusPosBegin.x = -120;
+                statusPosBegin.y = 80.0f+(75.0f*rank);
+                statusPosEnd.x = 120;
+                statusPosEnd.y = 80.0f+(75.0f*rank);
+                MBStatusLayoutSet(i, STATUS_LAYOUT_TOP);
+                MBStatusMoveSet(i, &statusPosBegin, &statusPosEnd, STATUS_MOVE_SIN, 30);
+                rank++;
+                MBWinCreate(MBWIN_TYPE_TALKEVENT, MESS_LAST5KOOPA_COINNUM, HUWIN_SPEAKER_KOOPA);
+                MBTopWinInsertMesSet(MBPlayerNameMesGet(i), 0);
+                sprintf(insertMes, "%d", MBPlayerCoinGet(i));
+                MBTopWinInsertMesSet(MESSNUM_PTR(insertMes), 1);
+                MBTopWinWait();
+                MBTopWinKill();
+            }
+        }
+        for(i=0, storyComNum=0; i<GW_PLAYER_MAX; i++) {
+            if(!MBPlayerAliveCheck(i)) {
+                continue;
+            }
+            if(MBPlayerStoryComCheck(i)) {
+                storyComNum++;
+            }
+        }
+        if(storyComNum >= 2) {
+            MBMotionShiftSet(mdlId, 3, 0, 8, HU3D_MOTATTR_LOOP);
+            MBAudFXPlay(MSM_SE_GUIDE_12);
+            MBWinCreate(MBWIN_TYPE_TALKEVENT, MESS_LAST5KOOPA_MINIK_MULTI, HUWIN_SPEAKER_KOOPA);
+        } else {
+            MBMotionShiftSet(mdlId, 9, 0, 8, HU3D_MOTATTR_LOOP);
+            MBAudFXPlay(MSM_SE_GUIDE_13);
+            MBWinCreate(MBWIN_TYPE_TALKEVENT, MESS_LAST5KOOPA_MINIK_SINGLE, HUWIN_SPEAKER_KOOPA);
+        }
+        MBTopWinWait();
+        MBTopWinKill();
+        MBMotionShiftSet(mdlId, 1, 0, 8, HU3D_MOTATTR_LOOP);
+        MBCapsuleEffHookCall(3, mdlId, partyF, FALSE, FALSE);
+        rank = 0;
+        for(i=0; i<GW_PLAYER_MAX; i++) {
+            if(MBPlayerAliveCheck(i)) {
+                statusPosBegin.x = -120;
+                statusPosBegin.y = 80.0f+(75.0f*rank);
+                statusPosEnd.x = 120;
+                statusPosEnd.y = 80.0f+(75.0f*rank);
+                MBStatusLayoutSet(i, STATUS_LAYOUT_TOP);
+                MBStatusMoveSet(i, &statusPosEnd, &statusPosBegin, STATUS_MOVE_REVCOS, 30);
+                rank++;
+            }
+        }
+        playerNo = 0;
+    }
+    do {
+        HuPrcVSleep();
+        for(i=0; i<GW_PLAYER_MAX; i++) {
+            if(MBPlayerAliveCheck(i) && !MBStatusMoveCheck(i)) {
+                break;
+            }
+        }
+    } while(i < GW_PLAYER_MAX);
+    MBStatusDispSetAll(FALSE);
+    MBCapsuleModelMotSet(mdlId, 4, HU3D_MOTATTR_LOOP, TRUE);
+    for(i=0; i<72.0f; i++) {
+        t = i/72.0f;
+        MBModelRotSet(mdlId, 0, -90+(45*t), 0);
+        time = MBMotionTimeGet(mdlId);
+        if((prevTime < 20 && time >= 20) || (prevTime < 70 && time >= 70)) {
+            MBAudFXPlay(MSM_SE_GUIDE_10);
+        }
+        prevTime = time;
+        HuPrcVSleep();
+    }
+    MBAudFXPlay(MSM_SE_GUIDE_14);
+    MBCapsuleModelMotSet(mdlId, 5, HU3D_MOTATTR_NONE, TRUE);
+    MBCapsuleEffHookCall(3, mdlId, partyF, FALSE, FALSE);
+    playerPos.x = mdlPos.x-350;
+    playerPos.y = mdlPos.y+700;
+    playerPos.z = mdlPos.z+200;
+    playerVel.x = playerVel.y = playerVel.z = 0;
+    MBPlayerMotionNoSet(playerNo, MB_PLAYER_MOT_DIZZY, HU3D_MOTATTR_LOOP);
+    do {
+        HuPrcVSleep();
+        VECAdd(&playerPos, &playerVel, &playerPos);
+        playerVel.y -= 1.6333334f;
+        MBPlayerPosSetV(playerNo, &playerPos);
+        MBPlayerRotSet(playerNo, 0, 0, 0);
+        MBModelDispSet(MBPlayerModelGet(playerNo), TRUE);
+    } while(playerPos.y > mdlPos.y);
+    omVibrate(playerNo, 12, 4, 2);
+    playerPos.y = mdlPos.y;
+    MBPlayerPosSetV(playerNo, &playerPos);
+    MBCapsuleModelMotSet(mdlId, 1, HU3D_MOTATTR_LOOP, TRUE);
+    HuPrcSleep(60);
+    MBPlayerRotateStart(playerNo, 135, 15);
+    while(!MBPlayerRotateCheck(playerNo)) {
+        HuPrcVSleep();
+    }
+    MBCapsuleEffHookCall(3, mdlId, partyF, FALSE, FALSE);
+    if(GWPartyFGet() == TRUE) {
+        MBWinCreate(MBWIN_TYPE_TALKEVENT, MESS_LAST5KOOPA_ROULETTE, HUWIN_SPEAKER_KOOPA);
+        MBTopWinInsertMesSet(MBPlayerNameMesGet(playerNo), 0);
+        MBTopWinWait();
+        MBTopWinKill();
+        MBSaiExec(playerNo, SAITYPE_BLOCK, NULL, -1, FALSE, FALSE, NULL, SAI_COLOR_GREEN);
+        saiHookTime = 1;
+        MBSaiHitHookSet(playerNo, KoopaLast5SaiHit);
+        for(i=0; i<10; i++) {
+            rouletteData[i] = rouletteTbl[i];
+        }
+        for(i=0; i<50; i++) {
+            srcIdx = MBCapsuleEffRand(10);
+            dstIdx = MBCapsuleEffRand(10);
+            if(srcIdx != dstIdx) {
+                temp = rouletteData[srcIdx];
+                rouletteData[srcIdx] = rouletteData[dstIdx];
+                rouletteData[dstIdx] = temp;
+            }
+        }
+        helpWinId = MBWinCreateHelp(MESS_BOARDOPE_PAD_SAI);
+        effectNo = MBCapsuleEffRand(4);
+        i = 0;
+        do {
+            if(saiHookTime) {
+                if(++i >= 2) {
+                    i = 0;
+                    if(++effectNo >= 10){
+                        effectNo =0;
+                    }
+                }
+                MBMotionTimeSet(rouletteMdlId, 1.5f+rouletteData[effectNo]);
+            } else {
+                if(helpWinId != MBWIN_NONE) {
+                    MBWinKill(helpWinId);
+                }
+                helpWinId = MBWIN_NONE;
+                MBSaiNumKill(playerNo);
+            }
+            HuPrcVSleep();
+        } while(!MBSaiKillCheck(playerNo));
+        effectNo = rouletteData[effectNo];
+        HuPrcSleep(30);
+        MBAudFXPlay(MSM_SE_GUIDE_12);
+        MBCapsuleModelMotSet(mdlId, 3, HU3D_MOTATTR_NONE, TRUE);
+        MBMotionShiftSet(mdlId, 1, 0, 8, HU3D_MOTATTR_LOOP);
+        MBCapsuleEffHookCall(3, mdlId, partyF, FALSE, FALSE);
+        MBWinCreate(MBWIN_TYPE_TALKEVENT, MESS_LAST5KOOPA_ROULETTE_RESULT, HUWIN_SPEAKER_KOOPA);
+        MBTopWinInsertMesSet(rouletteEffMes[effectNo], 0);
+        MBTopWinWait();
+        MBTopWinKill();
+        WipeColorSet(255, 255, 255);
+        WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_CROSSCOPY, 1);
+        WipeWait();
+        MBModelDispSet(MBPlayerModelGet(playerNo), FALSE);
+        MBModelDispSet(rouletteMdlId, FALSE);
+        MBModelDispSet(mdlId, FALSE);
+        masuId = MBMasuFlagMatchFind(MASU_LAYER_DEFAULT, MASU_FLAG_START);
+        MBMasuPosGet(MASU_LAYER_DEFAULT, masuId, &masuPos);
+        guideMdlId = MBGuideCreateDirect();
+        MBModelPosSet(guideMdlId, masuPos.x, masuPos.y+200, masuPos.z);
+        MBModelLayerSet(guideMdlId, 2);
+        HuDataDirClose(DATA_guide);
+        MBCameraSkipSet(FALSE);
+        viewRot.x = -33;
+        viewRot.y = 0;
+        viewRot.z = 0;
+        MBCameraMasuViewSet(masuId, &viewRot, &capsuleViewOfs, 1600, -1, 1);
+        MBCameraMotionWait();
+        MBCameraSkipSet(TRUE);
+        switch(effectNo) {
+            case 0:
+                GwSystem.last5Effect = MB_LAST5_EFF_COINMUL;
+                break;
+            
+            case 1:
+                GwSystem.last5Effect = MB_LAST5_EFF_RANDCAPSULE;
+                for(i=1; i<=MBMasuNumGet(MASU_LAYER_DEFAULT); i++) {
+                    if(MBMasuTypeGet(MASU_LAYER_DEFAULT, i) == MASU_TYPE_BLUE || 
+                        MBMasuTypeGet(MASU_LAYER_DEFAULT, i) == MASU_TYPE_RED) {
+                            do {
+                                j = MBCapsuleNextGet(-1);
+                            } while(j == CAPSULE_HONE || j == CAPSULE_KOOPA || j == CAPSULE_MIRACLE);
+                            MBCapsuleMasuSet(i, j);
+                        }
+                }
+                break;
+            
+            case 2:
+                GwSystem.last5Effect = MB_LAST5_EFF_REDKUPA;
+                for(i=1; i<MBMasuNumGet(MASU_LAYER_DEFAULT); i++) {
+                    if(MBMasuTypeGet(MASU_LAYER_DEFAULT, i) == MASU_TYPE_RED) {
+                        MBMasuTypeSet(MASU_LAYER_DEFAULT, i, MASU_TYPE_KUPA);
+                        MBMasuCapsuleSet(MASU_LAYER_DEFAULT, i, CAPSULE_KOOPA);
+                    }
+                }
+                break;
+            
+            default:
+                GwSystem.last5Effect = MB_LAST5_EFF_5STAR;
+                for(i=0; i<4; i++) {
+                    MBStarCreate(MBStarNoRandGet());
+                }
+                break;
+        }
+        WipeCreate(WIPE_MODE_IN, WIPE_TYPE_CROSSCOPY, 30);
+        WipeWait();
+        MBAudFXPlay(MSM_SE_GUIDE_51);
+        MBWinCreate(MBWIN_TYPE_TALKEVENT, MESS_LAST5KOOPA_RESULT, MBGuideSpeakerNoGet());
+        MBTopWinInsertMesSet(rouletteEffMes[effectNo], 0);
+        MBTopWinWait();
+        MBTopWinKill();
+        MBMusFadeOut(MB_MUS_CHAN_FG, 1000);
+        while(MBMusCheck(MB_MUS_CHAN_FG)) {
+            HuPrcVSleep();
+        }
+        WipeColorSet(255, 255, 255);
+        WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_CROSSCOPY, 1);
+        WipeWait();
+        if(guideMdlId != MB_MODEL_NONE) {
+            MBGuideEnd(guideMdlId);
+        }
+    } else {
+        MBAudFXPlay(MSM_SE_GUIDE_12);
+        MBCapsuleModelMotSet(mdlId, 3, HU3D_MOTATTR_NONE, 1);
+        MBMotionShiftSet(mdlId, 1, 0, 8, HU3D_MOTATTR_LOOP);
+        MBCapsuleEffHookCall(3, mdlId, partyF, FALSE, FALSE);
+        MBWinCreate(MBWIN_TYPE_TALKEVENT, MESS_LAST5KOOPA_KETTOU_2X, HUWIN_SPEAKER_KOOPA);
+        MBTopWinInsertMesSet(MBPlayerNameMesGet(playerNo), 0);
+        MBTopWinWait();
+        MBTopWinKill();
+        GwSystem.last5Effect = MB_LAST5_EFF_TAKEDOUBLE;
+        MBAudFXPlay(MSM_SE_GUIDE_14);
+        MBMotionShiftSet(mdlId, 5, 0, 8, HU3D_MOTATTR_NONE);
+        MBCapsuleEffHookCall(3, mdlId, partyF, FALSE, FALSE);
+        motId = MBCapsulePlayerMotionCreate(playerNo, CHARMOT_HSF_c000m1_484);
+        MBCapsulePlayerMotSet(playerNo, motId, HU3D_MOTATTR_NONE, TRUE);
+        MBMusFadeOut(MB_MUS_CHAN_FG, 1000);
+        while(MBMusCheck(MB_MUS_CHAN_FG)) {
+            HuPrcVSleep();
+        }
+        WipeColorSet(255, 255, 255);
+        WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_CROSSCOPY, 1);
+        WipeWait();
+        HuPrcSleep(30);
+        MBPlayerMotionNoSet(playerNo, MB_PLAYER_MOT_IDLE, HU3D_MOTATTR_LOOP);
+    }
+    MBModelDispSet(mdlId, FALSE);
+    if(rouletteMdlId != MB_MODEL_NONE) {
+        MBModelDispSet(rouletteMdlId, FALSE);
+    }
+    for(i=0; i<GW_PLAYER_MAX; i++) {
+        if(!MBPlayerAliveCheck(i)) {
+            continue;
+        }
+        MBModelDispSet(MBPlayerModelGet(i), TRUE);
+        MBPlayerPosFixPlayer(capsulePlayer, GwPlayer[i].masuId, TRUE);
+        MBPlayerRotSet(i, 0, 0, 0);
+    }
+    MBMasuPosGet(MASU_LAYER_DEFAULT, GwPlayer[capsulePlayer].masuId, &playerPos);
+    MBPlayerPosSetV(capsulePlayer, &playerPos);
+    MBPlayerRotSet(capsulePlayer, 0, 0, 0);
+    MBCameraSkipSet(FALSE);
+    viewRot.x = -33;
+    viewRot.y = 0;
+    viewRot.z = 0;
+    MBCameraModelViewSet(MBPlayerModelGet(0), &viewRot, &capsuleViewOfs, -1, -1, 1);
+    MBCameraMotionWait();
+    MBCameraSkipSet(TRUE);
+    MBMusMainPlay();
+}
+
+static void KoopaMasuExec(int mdlId, BOOL partyF)
+{
+    
+}
+
+static void KoopaCircuitExec(int mdlId, BOOL partyF)
+{
+    
+}
+
+static void KoopaEndGameExec(int mdlId, BOOL partyF)
+{
+    
+}
+
+static void KoopaCircuitMgEndExec(int mdlId, BOOL partyF)
+{
+    
+}
+
+static void KoopaMgEndExec(int mdlId, BOOL partyF)
+{
+    
+}
+
+static u16 KoopaLoseSaiPadHook(int playerNo)
+{
+    if(--saiHookTime <= 0) {
+        return PAD_BUTTON_A;
+    } else {
+        return 0;
+    }
+}
+
+static void KoopaSaiMotHook(int playerNo)
+{
+    int time;
+    if(saiHookMdlId == MB_MODEL_NONE) {
+        return;
+    }
+    MBMotionNoSet(saiHookMdlId, 11, HU3D_MOTATTR_NONE);
+    time = 0;
+    do {
+        if(time++ == 27) {
+            MBSaiObjHit(playerNo);
+        }
+        HuPrcVSleep();
+    } while(!MBMotionEndCheck(saiHookMdlId));
+    MBMotionNoSet(saiHookMdlId, 1, HU3D_MOTATTR_LOOP);
+}
+
 void MBCapsuleStatusInSet(int leftPlayer, int rightPlayer, BOOL waitF)
 {
     
@@ -10091,6 +11002,11 @@ int MBCapsuleGlowEffCheck(void)
 }
 
 void MBCapsuleGlowEffBlendModeSet(int blendMode)
+{
+    
+}
+
+void MBCapsuleGlowEffAnimSet(int dataNum)
 {
     
 }
@@ -10291,6 +11207,21 @@ void MBCapsulePlayerMotSet(int playerNo, int motNo, u32 attr, BOOL shiftF)
     
 }
 
+int MBCapsulePlayerSquishSet(int *playerNo, int masuId)
+{
+    
+}
+
+int MBCapsulePlayerSquishVoiceSet(int *playerNo, int masuId, BOOL voiceF)
+{
+    
+}
+
+void MBCapsulePlayerStunSet(int *playerNo, int playerNum, int type)
+{
+    
+}
+
 void MBCapsulePlayerIdleWait(void)
 {
     
@@ -10307,6 +11238,11 @@ void MBCapsuleCameraViewNoSet(int playerNo, int viewNo)
 }
 
 void MBCapsuleCameraViewSet(int playerNo, int viewNo, BOOL masuF)
+{
+    
+}
+
+void MBCapsuleVibrate(int type)
 {
     
 }

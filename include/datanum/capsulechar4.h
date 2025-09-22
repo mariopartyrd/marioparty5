@@ -1,5 +1,5 @@
-#ifndef DATANUM_CAPSULECHAR3_H
-#define DATANUM_CAPSULECHAR3_H
+#ifndef DATANUM_CAPSULECHAR4_H
+#define DATANUM_CAPSULECHAR4_H
 
 #include "datadir_enum.h"
 
