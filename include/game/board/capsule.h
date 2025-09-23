@@ -251,6 +251,8 @@ void MBCapsuleKillerMoveP4Destroy(void);
 void MBCapsuleKillerMoveExec(int playerNo, BOOL flag);
 
 void MBCapsuleStatusPosMoveWait(BOOL dispF, BOOL waitF);
+void MBCapsuleKettouStatusInSet(int leftPlayer, int rightPlayer, BOOL waitF);
+void MBCapsuleKettouStatusOutSet(int leftPlayer, int rightPlayer, BOOL waitF);
 void MBCapsuleStatusInSet(int leftPlayer, int rightPlayer, BOOL waitF);
 void MBCapsuleStatusOutSet(int leftPlayer, int rightPlayer, BOOL waitF);
 
@@ -292,6 +294,7 @@ void MBCapsuleExplodeEffCreate(int no);
 void MBCapsuleGlowEffCreate(void);
 int MBCapsuleExplodeEffAdd(int no, HuVecF pos, HuVecF rot, float size, float speed, float animSpeed, GXColor color);
 int MBCapsuleExplodeEffLineAdd(int no, HuVecF pos, HuVecF rot, float size, float speed, float radius, float animSpeed, GXColor color);
+void MBCapsuleExplodeEffCircleAdd(int no, HuVecF pos, float radius, float scale, float angle);
 int MBCapsuleExplodeEffCheck(int no);
 
 void MBCapsuleDustExplodeAdd(int no, HuVecF pos);
@@ -305,12 +308,18 @@ int MBCapsuleGlowEffCheck(void);
 void MBCapsuleExplodeEffKill(int no);
 void MBCapsuleGlowEffKill(void);
 void MBCapsuleGlowEffBlendModeSet(int blendMode);
+void MBCapsuleGlowEffAnimSet(int dataNum);
+
 void MBCapsuleNKinokoEffCreate(void);
 void MBCapsuleNKinokoEffKill(void);
 int MBCapsuleNKinokoEffAdd(HuVecF pos, HuVecF vel, float scale, float rotSpeed, int maxTime, GXColor color);
 int MBCapsulePlayerAliveFind(int playerNo);
 void MBCapsulePlayerMotSet(int playerNo, int motNo, u32 attr, BOOL shiftF);
 void MBCapsulePlayerIdleWait(void);
+int MBCapsulePlayerSquishSet(int *playerNo, int masuId);
+int MBCapsulePlayerSquishVoiceSet(int *playerNo, int masuId, BOOL voiceF);
+void MBCapsulePlayerStunSet(int *playerNo, int playerNum, int type);
+
 BOOL MBCapsulePlayerMotShiftCheck(int playerNo);
 void MBCapsuleModelMotSet(int mdlId, int motNo, u32 attr, BOOL shiftF);
 BOOL MBCapsulePlayerMasuCheck(int playerNo, HuVecF *a, HuVecF *b, HuVecF *out);
@@ -374,5 +383,14 @@ void MBCapsuleSnowEffKill(void);
 int MBCapsuleSnowEffAdd(HuVecF *pos, int maxTime);
 
 int MBCapsulePlayerRandGet(int playerNo, int type);
+int MBCapsulePlayerSameRandGet(int playerNo, int type, BOOL sameF);
+
+int MBCapsuleStarNumCreate(int playerNo, int num);
+int MBCapsuleStarNumCheck(int id);
+
+OMOBJ *MBCapsuleHoneObjCreate(HuVecF *pos, int mdlId, int masuId, int dispDelay, BOOL stompF);
+
+void MBCapsuleVibrate(int type);
+u32 MBCapsuleTeamNameGet(s16 charNo1, s16 charNo2);
 
 #endif
