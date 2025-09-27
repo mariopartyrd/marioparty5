@@ -375,7 +375,12 @@ void MBCapsuleCoinManCreate(void);
 void MBCapsuleCoinManKill(void);
 int MBCapsuleCoinManAdd(BOOL downF, int playerNo, int num);
 int MBCapsuleCoinManNumGet(void);
- 
+
+void MBCapsuleStarManCreate(void);
+void MBCapsuleStarManKill(void);
+int MBCapsuleStarManAdd(BOOL downF, int playerNo, int num);
+int MBCapsuleStarManNumGet(void);
+
 void MBCapsuleStatusStartPosGet(int playerNo, int capsuleNo, HuVecF *pos);
 
 void MBCapsuleSnowEffCreate(void);
@@ -392,5 +397,15 @@ OMOBJ *MBCapsuleHoneObjCreate(HuVecF *pos, int mdlId, int masuId, int dispDelay,
 
 void MBCapsuleVibrate(int type);
 u32 MBCapsuleTeamNameGet(s16 charNo1, s16 charNo2);
+
+void MBCapsuleSpriteShow(int file, int xPos, int yPos, BOOL fastF);
+
+void MBCapsuleChanceSprCreate(void);
+void MBCapsuleChanceSprKill(void);
+void MBCapsuleChanceSprAdd(HuVecF *pos, int no);
+void MBCapsuleChanceSprRotStart(void);
+void MBCapsuleChanceSprRemove(void);
+
+#define MBCapsuleChanceCharAdd(pos, charNo) MBCapsuleChanceSprAdd(pos, (charNo)|0x8000);
 
 #endif

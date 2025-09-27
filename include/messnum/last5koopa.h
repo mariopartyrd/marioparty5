@@ -1,5 +1,5 @@
-#ifndef MESSNUM_MESS_KOOPAMASU
-#define MESSNUM_MESS_KOOPAMASU
+#ifndef MESSNUM_MESS_LAST5KOOPA
+#define MESSNUM_MESS_LAST5KOOPA
 
 #include "messdir_enum.h"
 
