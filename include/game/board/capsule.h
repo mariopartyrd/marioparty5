@@ -302,6 +302,7 @@ void MBCapsuleDustCloudAdd(int no, HuVecF pos);
 void MBCapsuleDustHeavyAdd(int no, HuVecF pos);
 
 int MBCapsuleGlowEffAdd(HuVecF pos, HuVecF vel, float scale, float fadeSpeed, float rotSpeed, float gravity, GXColor color);
+int MBCapsuleMiracleGlowEffAdd(HuVecF pos, float scale, float fadeSpeed, float radiusX, float radiusY, float radiusZ, int mode);
 void MBCapsuleHanachanGlowEffAdd(HuVecF pos, float scale, float fadeSpeed, float radiusX, float radiusY, float radiusZ, int mode);
 
 int MBCapsuleGlowEffCheck(void);
@@ -346,6 +347,9 @@ void MBCapsuleRingEffCreate(void);
 void MBCapsuleRingEffKill(void);
 void MBCapsuleRayEffCreate(void);
 void MBCapsuleRayEffKill(void);
+int MBCapsuleRayEffNumGet(void);
+int MBCapsuleRingEffNumGet(void);
+
 void MBCapsuleHanachanRingCreate(void);
 void MBCapsuleHanachanRingKill(void);
 int MBCapsuleHanachanRingAdd(HuVecF *pos, HuVecF *dir, int inTime, int holdTime, int outTime, GXColor color);
@@ -405,6 +409,9 @@ void MBCapsuleChanceSprKill(void);
 void MBCapsuleChanceSprAdd(HuVecF *pos, int no);
 void MBCapsuleChanceSprRotStart(void);
 void MBCapsuleChanceSprRemove(void);
+
+void MBCapsuleMiracleGlowExec(OMOBJ *obj);
+BOOL MBCapsuleMiracleGlowCheck(OMOBJ *obj);
 
 #define MBCapsuleChanceCharAdd(pos, charNo) MBCapsuleChanceSprAdd(pos, (charNo)|0x8000);
 

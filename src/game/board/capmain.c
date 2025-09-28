@@ -12621,6 +12621,414 @@ void MBCapsuleChanceDestroy(void)
     MBCapsuleChanceSprKill();
 }
 
+typedef struct MiracleCapsule_s {
+    int mdlId;
+    int capsuleNo;
+    int no;
+    float angle;
+    Mtx matrix;
+    HuVecF pos;
+    HuVecF rot;
+} MIRACLE_CAPSULE;
+
+void MBCapsuleMiracleExec(void)
+{
+    MIRACLE_CAPSULE *capsuleP; //r31
+    int i; //r29
+    int playerNo1; //r28
+    int playerNo2; //r27
+    OMOBJ *obj; //r24
+    int playerNum; //r23
+    int starDelay; //r20
+    int j; //r19
+    int starNum; //r18
+    int starChange; //r17
+    
+    float t; //f31
+    float yOfs; //f30
+    float radius; //f29
+    float capsuleScale; //f28
+    float rotSpeed; //f27
+    float rotYSpeed; //f26
+    float rotYSpeedOrig; //f25
+    
+    MIRACLE_CAPSULE capsule[3]; //sp+0x1B4
+    int motFile[16]; //sp+0x174
+    HuVecF playerPos; //sp+0x168
+    HuVecF pos; //sp+0x15C
+    HuVecF capsuleOfs; //sp+0x150
+    HuVecF guidePos; //sp+0x144
+    int playerNo[GW_PLAYER_MAX]; //sp+0x134
+    HuVecF rayRot; //sp+0x128
+    HuVecF rayDir; //sp+0x11C
+    int maxRank; //sp+0xA0
+    int guideMdlId; //sp+0x9C
+    int *objWork; //sp+0x98
+    int loseMotId; //sp+0x94
+    int playerMdlId; //sp+0x90
+    int charNo; //sp+0x8C
+    int otherStarNum; //sp+0x88
+    int seNo3; //sp+0x84
+    int seNo2; //sp+0x80
+    int seNo1; //sp+0x7C
+    MBCAMERA *cameraP; //sp+0x78
+    GXColor color; //sp+0x74
+    
+    MBCapsuleGlowEffCreate();
+    MBCapsuleRingEffCreate();
+    MBCapsuleRayEffCreate();
+    MBCapsuleStarManCreate();
+    
+    MBPlayerPosGet(capsulePlayer, &playerPos);
+    HuDataDirClose(DATA_capsule);
+    HuPrcVSleep();
+    charNo = GwPlayer[capsulePlayer].charNo;
+    motFile[0] = charMotIdleFileTbl[charNo];
+    motFile[1] = charMotWinFileTbl[charNo];
+    motFile[2] = HU_DATANUM_NONE;
+    playerMdlId = MBCapsuleModelCreate(charMdlFileTbl[charNo], motFile, FALSE, 10, TRUE);
+    MBModelDispSet(playerMdlId, FALSE);
+    HuPrcVSleep();
+    HuPrcVSleep();
+    HuDataDirClose(charMdlFileTbl[charNo]);
+    HuDataDirClose(charMotIdleFileTbl[charNo]);
+    HuPrcVSleep();
+    MBDataAsyncWait(MBDataDirReadAsync(DATA_capsule));
+    for(i=0, capsuleP=&capsule[0]; i<3; i++, capsuleP++) {
+        capsuleP->mdlId = MBCapsuleModelCreate(MBCapsuleMdlGet(CAPSULE_MIRACLE), NULL, FALSE, 10, FALSE);
+        MBModelAttrSet(capsuleP->mdlId, HU3D_MOTATTR_LOOP);
+        MBModelScaleSet(capsuleP->mdlId, 0.75f, 0.75f, 0.75f);
+        MBModelLayerSet(capsuleP->mdlId, 2);
+        MBModelDispSet(capsuleP->mdlId, FALSE);
+        capsuleP->no = i;
+        capsuleP->angle = i*120.0f;
+        capsuleP->pos.x = capsuleP->pos.y = capsuleP->pos.z = 0;
+        capsuleP->rot.x = capsuleP->rot.y = capsuleP->rot.z = 0;
+        MTXIdentity(capsuleP->matrix);
+    }
+    for(i=0; i<MBPlayerCapsuleMaxGet(); i++) {
+        if(MBPlayerCapsuleGet(capsulePlayer, 0) == CAPSULE_MIRACLE) {
+            MBPlayerCapsuleRemove(capsulePlayer, 0);
+        }
+    }
+    seNo3 = MBAudFXPlay(MSM_SE_BOARD_87);
+    for(j=0; j<120.0f; j++) {
+        t = j/120.0f;
+        yOfs = 300*HuSin(t*90);
+        radius = 150*HuSin(t*90);
+        if(t < 0.5f) {
+            capsuleScale = 0.75*HuSin((t*2)*90);
+        } else {
+            capsuleScale = 0.75f;
+        }
+        pos = playerPos;
+        pos.y += yOfs;
+        for(i=0, capsuleP=&capsule[0]; i<3; i++, capsuleP++) {
+            if((capsuleP->angle += 2.5f) > 360) {
+                capsuleP->angle -= 360;
+            }
+            capsuleP->pos.x = pos.x+(radius*HuSin(capsuleP->angle));
+            capsuleP->pos.y = pos.y;
+            capsuleP->pos.z = pos.z+(radius*HuCos(capsuleP->angle));
+            MBModelPosSet(capsuleP->mdlId, capsuleP->pos.x, capsuleP->pos.y, capsuleP->pos.z);
+            MBModelScaleSet(capsuleP->mdlId, capsuleScale, capsuleScale, capsuleScale);
+            MBModelDispSet(capsuleP->mdlId, TRUE);
+        }
+        HuPrcVSleep();
+    }
+    rotSpeed = rotYSpeed = rotYSpeedOrig = 0;
+    yOfs = 300;
+    radius = 150;
+    seNo2 = MBAudFXPlay(MSM_SE_BOARD_88);
+    for(j=0; j<90.0f; j++) {
+        t = j/90.0f;
+        radius = 150*HuSin((1-t)*90);
+        pos = playerPos;
+        pos.y += yOfs;
+        if(yOfs > 150) {
+            yOfs += 0.02f*(150.0f-yOfs);
+        }
+        rotSpeed = 10*HuSin(t*90);
+        rotYSpeed = 10*HuSin(t*90);
+        rotYSpeedOrig = 10*HuSin(t*90);
+        for(i=0, capsuleP=&capsule[0]; i<3; i++, capsuleP++) {
+            static float rotTbl[3] = {
+                45,
+                -45,
+                0
+            };
+            MTXIdentity(capsuleP->matrix);
+            mtxRotCat(capsuleP->matrix, 0, capsuleP->rot.y, 0);
+            mtxRotCat(capsuleP->matrix, capsuleP->rot.x, 0, capsuleP->rot.z);
+            capsuleP->rot.y += rotYSpeed;
+            capsuleP->rot.x = MBCapsuleAngleLerp(rotTbl[i], capsuleP->rot.x, rotSpeed);
+            if((capsuleP->angle += 2.5f) > 360) {
+                capsuleP->angle -= 360;
+            }
+            capsuleOfs.x = radius*HuSin(capsuleP->angle);
+            capsuleOfs.y = 0;
+            capsuleOfs.z = radius*HuCos(capsuleP->angle);
+            MTXMultVec(capsuleP->matrix, &capsuleOfs, &capsuleOfs);
+            VECAdd(&pos, &capsuleOfs, &capsuleP->pos);
+            MBModelPosSet(capsuleP->mdlId, capsuleP->pos.x, capsuleP->pos.y, capsuleP->pos.z);
+            MBCapsuleMiracleGlowEffAdd(capsuleP->pos, ((MBCapsuleEffRandF()*0.05f)+0.15f)*100, 0.016666668f, 100, 100, 50, 2);
+            
+        }
+        HuPrcVSleep();
+    }
+    for(i=0, capsuleP=&capsule[0]; i<3; i++, capsuleP++) {
+        MBModelDispSet(capsuleP->mdlId, FALSE);
+    }
+    if(seNo3 != MSM_SENO_NONE) {
+        MBAudFXStop(seNo3);
+    }
+    if(seNo2 != MSM_SENO_NONE) {
+        MBAudFXStop(seNo2);
+    }
+    WipeColorSet(255, 255, 255);
+    WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_NORMAL, 1);
+    WipeWait();
+    obj = capsuleObj = MBAddObj(32768, 0, 0, MBCapsuleMiracleGlowExec);
+    objWork = obj->data = HuMemDirectMallocNum(HEAP_HEAP, sizeof(int), HU_MEMNUM_OVL);
+    *objWork = playerMdlId;
+    obj->work[0] = capsulePlayer;
+    obj->work[1] = 0;
+    seNo1 = MBAudFXPlay(MSM_SE_BOARD_89);
+    WipeCreate(WIPE_MODE_IN, WIPE_TYPE_NORMAL, 30);
+    for(i=0; i<2; i++) {
+        static HuVecF rotTbl[2] = {
+            { -90, 0, 35 },
+            { -90, 0, -33 },
+        };
+        static HuVecF dirTbl[2] = {
+            { 1.5f, 3.0f, 175 },
+            { 1.5f, 3.0f, 150 },
+        };
+        static GXColor colTbl[2] = {
+            { 255, 0, 255, 255 },
+            { 255, 128, 192, 255 },
+        };
+        MBCapsuleRingEffAdd(pos, rotTbl[i], dirTbl[i], 9, 27, (i+1)%3, colTbl[i]);
+    }
+    for(i=0; i<3; i++) {
+        static HuVecF dirTbl[3] = {
+            { 1.2f, 2.0f, 300 },
+            { 1.2f, 2.0f, 500 },
+            { 1.2f, 2.0f, 700 },
+        };
+        static GXColor colTbl[3] = {
+            { 255, 255, 64, 128 },
+            { 255, 0, 255, 128 },
+            { 255, 128, 255, 128 },
+        };
+        cameraP = MBCameraGet();
+        capsuleOfs.x = cameraP->rot.x;
+        capsuleOfs.y = cameraP->rot.y;
+        capsuleOfs.z = cameraP->rot.z;
+        MBCapsuleRingEffAdd(pos, capsuleOfs, dirTbl[i], 12, 15, i%3, colTbl[i]);
+    }
+    for(i=0; i<64; i++) {
+        rayRot.x = 0;
+        rayRot.y = 0;
+        rayRot.z = (i*5.625f)+((0.5f-MBCapsuleEffRandF())*10);
+        rayDir.x = 20;
+        rayDir.y = ((MBCapsuleEffRandF()*0.5f)+0.7f)*500;
+        rayDir.z = ((MBCapsuleEffRandF()*0.4f)+0.8f)*80;
+        color.r = (MBCapsuleEffRandF()*64)+128;
+        color.g = (MBCapsuleEffRandF()*64)+128;
+        color.b = (MBCapsuleEffRandF()*64)+128;
+        color.a = (MBCapsuleEffRandF()*64)+128;
+        MBCapsuleRayEffAdd(pos, rayRot, rayDir, ((MBCapsuleEffRandF()*0.3f)+0.8f)*30, color);
+    }
+    do {
+        HuPrcVSleep();
+    } while(MBCapsuleRayEffNumGet() > 0 && MBCapsuleRingEffNumGet() > 0);
+    for(i=0; i<60.0f; i++) {
+        HuPrcVSleep();
+    }
+    MBDataAsyncWait(MBDataDirReadAsync(DATA_guide));
+    MBPlayerPosGet(capsulePlayer, &guidePos);
+    guidePos.y += 300;
+    guideMdlId = MBGuideCreateFlag(MB_GUIDE_CHORL, &guidePos, FALSE, TRUE, TRUE, FALSE);
+    MBModelLayerSet(guideMdlId, 2);
+    HuDataDirClose(DATA_guide);
+    MBAudFXPlay(MSM_SE_GUIDE_49);
+    MBWinCreate(MBWIN_TYPE_TALKEVENT, MESS_CAPSULE_EX04_MIRACLE_3, HUWIN_SPEAKER_CHORL);
+    MBTopWinWait();
+    MBTopWinKill();
+    if(!GWTeamFGet()) {
+        for(i=0; i<GW_PLAYER_MAX; i++) {
+            if(MBPlayerAliveCheck(i) && MBPlayerStarGet(i) > 0) {
+                break;
+            }
+        }
+        if(i >= GW_PLAYER_MAX) {
+            MBWinCreate(MBWIN_TYPE_TALKEVENT, MESS_CAPSULE_EX04_MIRACLE_STAR_NONE, HUWIN_SPEAKER_CHORL);
+            MBTopWinWait();
+            MBTopWinKill();
+        } else {
+            if(GwPlayer[capsulePlayer].rank == 0) {
+                MBWinCreate(MBWIN_TYPE_TALKEVENT, MESS_CAPSULE_EX04_MIRACLE_STAR_SWAP_CANCEL, HUWIN_SPEAKER_CHORL);
+                MBTopWinInsertMesSet(MBPlayerNameMesGet(capsulePlayer), 0);
+                MBTopWinWait();
+                MBTopWinKill();
+            } else {
+                for(i=0, maxRank=-1; i<GW_PLAYER_MAX; i++) {
+                    if(MBPlayerAliveCheck(i) && GwPlayer[i].rank > maxRank) {
+                        maxRank = GwPlayer[i].rank;
+                    }
+                }
+                for(i=0, playerNum=0; i<GW_PLAYER_MAX; i++) {
+                    if(MBPlayerAliveCheck(i) && GwPlayer[i].rank == maxRank) {
+                        playerNo[playerNum] = i;
+                        playerNum++;
+                    }
+                }
+                if(playerNum > 0) {
+                    playerNo2 = playerNo[MBCapsuleEffRand(playerNum)];
+                } else {
+                    playerNo2 = 0;
+                }
+                for(i=0, playerNum=0; i<GW_PLAYER_MAX; i++) {
+                    if(MBPlayerAliveCheck(i) && i != playerNo2 && GwPlayer[i].rank == 0) {
+                        playerNo[playerNum] = i;
+                        playerNum++;
+                    }
+                }
+                if(playerNum > 0) {
+                    playerNo1 = playerNo[MBCapsuleEffRand(playerNum)];
+                } else {
+                    playerNo1 = GW_PLAYER_MAX-1;
+                }
+                MBWinCreate(MBWIN_TYPE_TALKEVENT, MESS_CAPSULE_EX04_MIRACLE_STAR_FIRST_LAST, HUWIN_SPEAKER_CHORL);
+                MBTopWinInsertMesSet(MBPlayerNameMesGet(playerNo1), 0);
+                MBTopWinInsertMesSet(MBPlayerNameMesGet(playerNo2), 1);
+                MBTopWinWait();
+                MBTopWinKill();
+                MBCapsuleStatusPosMoveWait(FALSE, TRUE);
+                MBCapsuleStatusInSet(playerNo2, playerNo1, TRUE);
+                starNum = MBPlayerStarGet(playerNo1);
+                starDelay = 0;
+                do {
+                    if(starNum > 0 && starDelay == 0) {
+                        if(starChange = MBCapsuleStarManAdd(TRUE, playerNo2, 1)) {
+                            MBPlayerStarAdd(playerNo1, -starChange);
+                            starNum -= starChange;
+                        }
+                    }
+                    if(++starDelay >= 30.0f) {
+                        starDelay = 0;
+                    }
+                    HuPrcVSleep();
+                } while(starNum > 0 || MBCapsuleStarManNumGet() > 0);
+                MBCapsuleStatusOutSet(playerNo2, playerNo1, TRUE);
+                MBPlayerWinLoseVoicePlay(playerNo2, MB_PLAYER_MOT_WIN, CHARVOICEID(0));
+                MBPlayerMotionNoShiftSet(playerNo2, MB_PLAYER_MOT_WIN, 0, 8, HU3D_MOTATTR_NONE);
+                if(playerNo2 == capsulePlayer) {
+                    MBMotionShiftSet(playerMdlId, 2, 0, 8, HU3D_MOTATTR_NONE);
+                }
+                loseMotId = MBCapsulePlayerMotionCreate(playerNo1, CHARMOT_HSF_c000m1_360);
+                MBPlayerWinLoseVoicePlay(playerNo1, loseMotId, CHARVOICEID(10));
+                MBPlayerMotionNoShiftSet(playerNo1, loseMotId, 0, 8, HU3D_MOTATTR_NONE);
+                do {
+                    HuPrcVSleep();
+                } while(MBMotionShiftIDGet(MBPlayerModelGet(playerNo2)) != HU3D_MOTID_NONE ||
+                    !MBPlayerMotionEndCheck(playerNo2) ||
+                    MBMotionShiftIDGet(MBPlayerModelGet(playerNo1)) != HU3D_MOTID_NONE ||
+                    !MBPlayerMotionEndCheck(playerNo1));
+            }
+        }
+    } else {
+        for(i=0; i<GW_PLAYER_MAX; i++) {
+            if(MBPlayerAliveCheck(i) && MBPlayerStarGet(i) > 0) {
+                break;
+            }
+        }
+        if(i >= GW_PLAYER_MAX) {
+            MBWinCreate(MBWIN_TYPE_TALKEVENT, MESS_CAPSULE_EX04_MIRACLE_STAR_NONE, HUWIN_SPEAKER_CHORL);
+            MBTopWinWait();
+            MBTopWinKill();
+        } else {
+            MBWinCreate(MBWIN_TYPE_TALKEVENT, MESS_CAPSULE_EX04_MIRACLE_STAR_FIRST_LAST_END, HUWIN_SPEAKER_CHORL);
+            MBTopWinWait();
+            MBTopWinKill();
+            playerNo2 = MBPlayerGrpFindPlayer(0, 0);
+            playerNo1 = MBPlayerGrpFindPlayer(1, 0);
+            MBCapsuleStatusPosMoveWait(FALSE, TRUE);
+            MBCapsuleStatusInSet(playerNo2, playerNo1, TRUE);
+            starNum = MBPlayerStarGet(playerNo2);
+            otherStarNum = MBPlayerStarGet(playerNo1);
+            starDelay = 0;
+            do {
+                if(starNum > 0 && starDelay == 0) {
+                    if(starChange = MBCapsuleStarManAdd(FALSE, playerNo1, 1)) {
+                        MBPlayerStarAdd(playerNo2, -starChange);
+                        starNum -= starChange;
+                    }
+                }
+                if(otherStarNum > 0 && starDelay == 0) {
+                    if(starChange = MBCapsuleStarManAdd(TRUE, playerNo2, 1)) {
+                        MBPlayerStarAdd(playerNo1, -starChange);
+                        otherStarNum -= starChange;
+                    }
+                }
+                if(++starDelay >= 30.0f) {
+                    starDelay = 0;
+                }
+                HuPrcVSleep();
+            } while(starNum > 0 || otherStarNum > 0 || MBCapsuleStarManNumGet() > 0);
+            MBCapsuleStatusOutSet(playerNo2, playerNo1, TRUE);
+            MBPlayerWinLoseVoicePlay(playerNo2, MB_PLAYER_MOT_WIN, CHARVOICEID(0));
+            MBPlayerMotionNoShiftSet(playerNo2, MB_PLAYER_MOT_WIN, 0, 8, HU3D_MOTATTR_NONE);
+            if(playerNo2 == capsulePlayer) {
+                MBMotionShiftSet(playerMdlId, 2, 0, 8, HU3D_MOTATTR_NONE);
+            }
+            loseMotId = MBCapsulePlayerMotionCreate(playerNo1, CHARMOT_HSF_c000m1_360);
+            MBPlayerWinLoseVoicePlay(playerNo1, loseMotId, CHARVOICEID(10));
+            MBPlayerMotionNoShiftSet(playerNo1, loseMotId, 0, 8, HU3D_MOTATTR_NONE);
+            do {
+                HuPrcVSleep();
+            } while(MBMotionShiftIDGet(MBPlayerModelGet(playerNo2)) != HU3D_MOTID_NONE ||
+                !MBPlayerMotionEndCheck(playerNo2) ||
+                MBMotionShiftIDGet(MBPlayerModelGet(playerNo1)) != HU3D_MOTID_NONE ||
+                !MBPlayerMotionEndCheck(playerNo1));
+        }
+    }
+    for(i=0; i<60.0f; i++) {
+        HuPrcVSleep();
+    }
+    MBPlayerMotionNoShiftSet(capsulePlayer, MB_PLAYER_MOT_IDLE, 0, 8, HU3D_MOTATTR_LOOP);
+    if(!MBKillCheck()) {
+        MBMotionShiftSet(playerMdlId, 1, 0, 8, HU3D_MOTATTR_LOOP);
+    }
+    for(i=0; i<GW_PLAYER_MAX; i++) {
+        if(MBPlayerAliveCheck(i)) {
+            MBPlayerMotionNoShiftSet(i, MB_PLAYER_MOT_IDLE, 0, 8, HU3D_MOTATTR_LOOP);
+        }
+    }
+    MBGuideEnd(guideMdlId);
+    if(!MBKillCheck()) {
+        obj->work[1]++;
+        obj->work[3] = 0;
+        if(seNo1 != MSM_SENO_NONE) {
+            MBAudFXStop(seNo1);
+        }
+        do {
+            HuPrcVSleep();
+        } while(!MBCapsuleMiracleGlowCheck(obj));
+        obj->work[1]++;
+    }
+    HuPrcEnd();
+}
+
+void MBCapsuleMiracleDestroy(void)
+{
+    MBCapsuleGlowEffKill();
+    MBCapsuleRingEffKill();
+    MBCapsuleRayEffKill();
+    MBCapsuleStarManKill();
+}
+
 void MBCapsuleStatusInSet(int leftPlayer, int rightPlayer, BOOL waitF)
 {
     
@@ -12702,6 +13110,16 @@ void MBPlayerMoveObjKill(int playerNo)
 }
 
 void MBPlayerMoveObjClose(void)
+{
+    
+}
+
+void MBCapsuleMiracleGlowExec(OMOBJ *obj)
+{
+    
+}
+
+BOOL MBCapsuleMiracleGlowCheck(OMOBJ *obj)
 {
     
 }
@@ -12816,12 +13234,22 @@ void MBCapsuleHanachanGlowEffAdd(HuVecF pos, float scale, float fadeSpeed, float
     
 }
 
+int MBCapsuleMiracleGlowEffAdd(HuVecF pos, float scale, float fadeSpeed, float radiusX, float radiusY, float radiusZ, int mode)
+{
+    
+}
+
 void MBCapsuleRingEffCreate(void)
 {
     
 }
 
 void MBCapsuleRingEffKill(void)
+{
+    
+}
+
+int MBCapsuleRingEffNumGet(void)
 {
     
 }
@@ -12837,6 +13265,11 @@ void MBCapsuleRayEffCreate(void)
 }
 
 void MBCapsuleRayEffKill(void)
+{
+    
+}
+
+int MBCapsuleRayEffNumGet(void)
 {
     
 }
