@@ -8761,7 +8761,7 @@ void MBCapsuleKettouExec(void)
             MBTopWinKill();
         }
         MBCapsuleEffHookCall(3, mdlId, FALSE, FALSE, FALSE);
-        MBAudFXPlay(MSM_SE_GUIDE_08);
+        MBAudFXPlay(MSM_SE_GUIDE_07);
         MBWinCreate(MBWIN_TYPE_TALKEVENT, MESS_CAPSULE_EX04_KETTOU_END, HUWIN_SPEAKER_HEYHO);
         MBTopWinWait();
         MBTopWinKill();
