@@ -302,6 +302,7 @@ void MBCapsuleDustCloudAdd(int no, HuVecF pos);
 void MBCapsuleDustHeavyAdd(int no, HuVecF pos);
 
 int MBCapsuleGlowEffAdd(HuVecF pos, HuVecF vel, float scale, float fadeSpeed, float rotSpeed, float gravity, GXColor color);
+int MBCapsuleMiracleGlowEffAdd(HuVecF pos, float scale, float fadeSpeed, float radiusX, float radiusY, float radiusZ, int mode);
 void MBCapsuleHanachanGlowEffAdd(HuVecF pos, float scale, float fadeSpeed, float radiusX, float radiusY, float radiusZ, int mode);
 
 int MBCapsuleGlowEffCheck(void);
@@ -346,6 +347,9 @@ void MBCapsuleRingEffCreate(void);
 void MBCapsuleRingEffKill(void);
 void MBCapsuleRayEffCreate(void);
 void MBCapsuleRayEffKill(void);
+int MBCapsuleRayEffNumGet(void);
+int MBCapsuleRingEffNumGet(void);
+
 void MBCapsuleHanachanRingCreate(void);
 void MBCapsuleHanachanRingKill(void);
 int MBCapsuleHanachanRingAdd(HuVecF *pos, HuVecF *dir, int inTime, int holdTime, int outTime, GXColor color);
@@ -375,7 +379,12 @@ void MBCapsuleCoinManCreate(void);
 void MBCapsuleCoinManKill(void);
 int MBCapsuleCoinManAdd(BOOL downF, int playerNo, int num);
 int MBCapsuleCoinManNumGet(void);
- 
+
+void MBCapsuleStarManCreate(void);
+void MBCapsuleStarManKill(void);
+int MBCapsuleStarManAdd(BOOL downF, int playerNo, int num);
+int MBCapsuleStarManNumGet(void);
+
 void MBCapsuleStatusStartPosGet(int playerNo, int capsuleNo, HuVecF *pos);
 
 void MBCapsuleSnowEffCreate(void);
@@ -392,5 +401,18 @@ OMOBJ *MBCapsuleHoneObjCreate(HuVecF *pos, int mdlId, int masuId, int dispDelay,
 
 void MBCapsuleVibrate(int type);
 u32 MBCapsuleTeamNameGet(s16 charNo1, s16 charNo2);
+
+void MBCapsuleSpriteShow(int file, int xPos, int yPos, BOOL fastF);
+
+void MBCapsuleChanceSprCreate(void);
+void MBCapsuleChanceSprKill(void);
+void MBCapsuleChanceSprAdd(HuVecF *pos, int no);
+void MBCapsuleChanceSprRotStart(void);
+void MBCapsuleChanceSprRemove(void);
+
+void MBCapsuleMiracleGlowExec(OMOBJ *obj);
+BOOL MBCapsuleMiracleGlowCheck(OMOBJ *obj);
+
+#define MBCapsuleChanceCharAdd(pos, charNo) MBCapsuleChanceSprAdd(pos, (charNo)|0x8000);
 
 #endif

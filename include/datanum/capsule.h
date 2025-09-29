@@ -45,7 +45,7 @@ enum {
     CAPSULE_HSF_ukkiRope = DATANUM(DATA_capsule, 38),
     CAPSULE_HSF_donkeyTree = DATANUM(DATA_capsule, 39),
     CAPSULE_HSF_ztar = DATANUM(DATA_capsule, 40),
-    CAPSULE_HSF_null = DATANUM(DATA_capsule, 41),
+    CAPSULE_HSF_ztarmot = DATANUM(DATA_capsule, 41),
     CAPSULE_HSF_kinoko = DATANUM(DATA_capsule, 42),
     CAPSULE_HSF_skinoko = DATANUM(DATA_capsule, 43),
     CAPSULE_HSF_nkinoko = DATANUM(DATA_capsule, 44),
