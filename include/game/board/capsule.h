@@ -264,11 +264,12 @@ BOOL MBCapsuleTeamCheck(int player1, int player2);
 void MBCapsuleDataDirRead(int capsuleNo);
 void MBPlayerMoveInit(void);
 void MBPlayerMoveObjCreate(void);
-void MBPlayerMoveHitCreate(int playerNo, BOOL shockF, BOOL dizzyF);
-void MBPlayerMoveEjectCreate(int playerNo, BOOL dizzyF);
+void MBPlayerMoveHitCreate(int playerNo, BOOL startMotF, BOOL shiftMotF);
+void MBPlayerMoveEjectCreate(int playerNo, BOOL shiftMotF);
 BOOL MBPlayerMoveObjCheck(int playerNo);
-void MBPlayerMoveVelSet(int playerNo, float gravity, HuVecF dir);
+void MBPlayerMoveVelSet(int playerNo, float gravity, HuVecF vel);
 void MBPlayerMoveMinYSet(int playerNo, float minY);
+void MBPlayerMoveObjExec(OMOBJ *obj);
 
 int MBCapsuleNoGet(void);
 int MBKettouCoinLoseGet(void);

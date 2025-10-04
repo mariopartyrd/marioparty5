@@ -14632,49 +14632,204 @@ void MBCapsuleSpriteShow(int file, int xPos, int yPos, BOOL fastF)
     } while(!endF);
 }
 
+static OMOBJ *moveObj[GW_PLAYER_MAX];
+typedef struct PlayerMoveWork_s {
+    int playerNo;
+    int mode;
+    int startMotNo;
+    int shiftMotNo;
+    BOOL startMotF;
+    BOOL shiftMotF;
+    float minY;
+    float gravity;
+    HuVecF pos;
+    HuVecF vel;
+} PLAYER_MOVE_WORK;
+
 void MBPlayerMoveInit(void)
 {
-    
+    int i;
+    for(i=0; i<GW_PLAYER_MAX; i++) {
+        moveObj[i] = NULL;
+    }
 }
 
 void MBPlayerMoveObjCreate(void)
 {
-    
+    PLAYER_MOVE_WORK *work;
+    int i;
+    OMOBJ *obj;
+    for(i=0; i<GW_PLAYER_MAX; i++) {
+        if(MBPlayerAliveCheck(i)) {
+            obj = moveObj[i] = MBAddObj(32768, 0, 0, MBPlayerMoveObjExec);
+            work = obj->data = HuMemDirectMallocNum(HEAP_HEAP, sizeof(PLAYER_MOVE_WORK), HU_MEMNUM_OVL);
+            memset(work, 0, sizeof(PLAYER_MOVE_WORK));
+            work->playerNo = i;
+            work->mode = 255;
+            work->startMotF = FALSE;
+            work->shiftMotF = FALSE;
+            work->startMotNo = MB_PLAYER_MOT_SHOCK;
+            work->shiftMotNo = MB_PLAYER_MOT_DIZZY;
+        }
+    }
 }
 
-void MBPlayerMoveHitCreate(int playerNo, BOOL shockF, BOOL dizzyF)
+void MBPlayerMoveHitCreate(int playerNo, BOOL startMotF, BOOL shiftMotF)
 {
-    
+    PLAYER_MOVE_WORK *work;
+    OMOBJ *obj;
+    if(!MBPlayerAliveCheck(playerNo)) {
+        return;
+    }
+    if(moveObj[playerNo] == NULL) {
+        obj = moveObj[playerNo] = MBAddObj(32768, 0, 0, MBPlayerMoveObjExec);
+        work = obj->data = HuMemDirectMallocNum(HEAP_HEAP, sizeof(PLAYER_MOVE_WORK), HU_MEMNUM_OVL);
+        memset(work, 0, sizeof(PLAYER_MOVE_WORK));
+        if(startMotF) {
+            work->startMotNo = MB_PLAYER_MOT_SHOCK;
+        } else {
+            work->startMotNo = MB_PLAYER_MOT_NONE;
+        }
+        if(shiftMotF) {
+            work->shiftMotNo = MB_PLAYER_MOT_DIZZY;
+        } else {
+            work->shiftMotNo = MB_PLAYER_MOT_NONE;
+        }
+    } else {
+        obj = moveObj[playerNo];
+        work = obj->data;
+    }
+    work->playerNo = playerNo;
+    work->mode = 0;
+    work->startMotF = startMotF;
+    work->shiftMotF = shiftMotF;
+    MBPlayerPosGet(playerNo, &work->pos);
+    work->minY = work->pos.y;
+    work->gravity = 6.5333333f;
+    work->vel.x = work->vel.z = 0;
+    work->vel.y = 60.000004f;
+    if(work->startMotF && work->startMotNo != MB_PLAYER_MOT_NONE) {
+        work->mode = 0;
+        MBPlayerMotionNoSet(playerNo, work->startMotNo, HU3D_MOTATTR_NONE);
+    } else {
+        work->mode = 1;
+        if(work->shiftMotF && work->shiftMotNo != MB_PLAYER_MOT_NONE) {
+            MBPlayerMotionNoShiftSet(playerNo, work->shiftMotNo, 0, 8, HU3D_MOTATTR_LOOP);
+        }
+    }
 }
 
-void MBPlayerMoveEjectCreate(int playerNo, BOOL dizzyF)
+void MBPlayerMoveEjectCreate(int playerNo, BOOL shiftMotF)
 {
-    
+    PLAYER_MOVE_WORK *work;
+    OMOBJ *obj;
+    if(!MBPlayerAliveCheck(playerNo)) {
+        return;
+    }
+    if(moveObj[playerNo] == NULL) {
+        obj = moveObj[playerNo] = MBAddObj(32768, 0, 0, MBPlayerMoveObjExec);
+        work = obj->data = HuMemDirectMallocNum(HEAP_HEAP, sizeof(PLAYER_MOVE_WORK), HU_MEMNUM_OVL);
+        memset(work, 0, sizeof(PLAYER_MOVE_WORK));
+        work->startMotNo = MB_PLAYER_MOT_NONE;
+        if(shiftMotF) {
+            work->shiftMotNo = MB_PLAYER_MOT_DIZZY;
+        } else {
+            work->shiftMotNo = MB_PLAYER_MOT_NONE;
+        }
+    } else {
+        obj = moveObj[playerNo];
+        work = obj->data;
+    }
+    work->playerNo = playerNo;
+    work->mode = 0;
+    work->startMotF = TRUE;
+    work->shiftMotF = shiftMotF;
+    MBPlayerPosGet(playerNo, &work->pos);
+    work->minY = work->pos.y;
+    work->gravity = 6.5333333f;
+    work->vel.x = work->vel.z = 0;
+    work->vel.y = 80.0f;
+    work->mode = 0;
 }
 
 void MBPlayerMoveMinYSet(int playerNo, float minY)
 {
-    
+    OMOBJ *obj;
+    PLAYER_MOVE_WORK *work;
+    obj = moveObj[playerNo];
+    if(obj != NULL) {
+        work = obj->data;
+        work->minY = minY;
+    }
 }
 
-void MBPlayerMoveVelSet(int playerNo, float gravity, HuVecF dir)
+void MBPlayerMoveVelSet(int playerNo, float gravity, HuVecF vel)
 {
-    
+    OMOBJ *obj;
+    PLAYER_MOVE_WORK *work;
+    obj = moveObj[playerNo];
+    if(obj != NULL) {
+        work = obj->data;
+        work->gravity = gravity;
+        work->vel = vel;
+    }
+}
+
+void MBPlayerMoveObjExec(OMOBJ *obj)
+{
+    PLAYER_MOVE_WORK *work = obj->data;
+    switch(work->mode) {
+        case 0:
+            VECAdd(&work->pos, &work->vel, &work->pos);
+            work->vel.y -= work->gravity;
+            if(work->pos.y <= work->minY) {
+                work->pos.y = work->minY;
+                work->mode++;
+                if(work->shiftMotF && work->shiftMotNo != MB_PLAYER_MOT_NONE) {
+                    MBPlayerMotionNoShiftSet(work->playerNo, work->shiftMotNo, 0, 8, HU3D_MOTATTR_LOOP);
+                }
+            }
+            MBPlayerPosSetV(work->playerNo, &work->pos);
+            break;
+        
+        case 1:
+            break;
+    }
+    if(MBKillCheck() || moveObj[work->playerNo] == NULL) {
+        HuMemDirectFree(work);
+        obj->data = NULL;
+        omDelObjEx(mbObjMan, obj);
+        moveObj[work->playerNo] = NULL;
+    }
 }
 
 BOOL MBPlayerMoveObjCheck(int playerNo)
 {
-    
+    OMOBJ *obj;
+    PLAYER_MOVE_WORK *work;
+    obj = moveObj[playerNo];
+    if(obj == NULL) {
+        return TRUE;
+    }
+    work = obj->data;
+    if(work->mode >= 1) {
+        return TRUE;
+    } else {
+        return FALSE;
+    }
 }
 
 void MBPlayerMoveObjKill(int playerNo)
 {
-    
+    moveObj[playerNo] = NULL;
 }
 
 void MBPlayerMoveObjClose(void)
 {
-    
+    int i;
+    for(i=0; i<GW_PLAYER_MAX; i++) {
+        moveObj[i] = NULL;
+    }
 }
 
 void MBCapsuleMiracleGlowExec(OMOBJ *obj)
