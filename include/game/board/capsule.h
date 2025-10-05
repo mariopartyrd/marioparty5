@@ -251,10 +251,10 @@ void MBCapsuleKillerMoveP4Destroy(void);
 void MBCapsuleKillerMoveExec(int playerNo, BOOL flag);
 
 void MBCapsuleStatusPosMoveWait(BOOL dispF, BOOL waitF);
-void MBCapsuleKettouStatusInSet(int leftPlayer, int rightPlayer, BOOL waitF);
-void MBCapsuleKettouStatusOutSet(int leftPlayer, int rightPlayer, BOOL waitF);
-void MBCapsuleStatusInSet(int leftPlayer, int rightPlayer, BOOL waitF);
-void MBCapsuleStatusOutSet(int leftPlayer, int rightPlayer, BOOL waitF);
+void MBCapsuleStatusKettouInSet(int leftPlayer, int rightPlayer, BOOL waitF);
+void MBCapsuleStatusKettouOutSet(int leftPlayer, int rightPlayer, BOOL waitF);
+void MBCapsuleStatusTradeInSet(int leftPlayer, int rightPlayer, BOOL waitF);
+void MBCapsuleStatusTradeOutSet(int leftPlayer, int rightPlayer, BOOL waitF);
 
 
 void MBCapsuleCameraViewPlayerSet(int playerNo);
@@ -264,11 +264,12 @@ BOOL MBCapsuleTeamCheck(int player1, int player2);
 void MBCapsuleDataDirRead(int capsuleNo);
 void MBPlayerMoveInit(void);
 void MBPlayerMoveObjCreate(void);
-void MBPlayerMoveHitCreate(int playerNo, BOOL shockF, BOOL dizzyF);
-void MBPlayerMoveEjectCreate(int playerNo, BOOL dizzyF);
+void MBPlayerMoveHitCreate(int playerNo, BOOL startMotF, BOOL shiftMotF);
+void MBPlayerMoveEjectCreate(int playerNo, BOOL shiftMotF);
 BOOL MBPlayerMoveObjCheck(int playerNo);
-void MBPlayerMoveVelSet(int playerNo, float gravity, HuVecF dir);
+void MBPlayerMoveVelSet(int playerNo, float gravity, HuVecF vel);
 void MBPlayerMoveMinYSet(int playerNo, float minY);
+void MBPlayerMoveObjExec(OMOBJ *obj);
 
 int MBCapsuleNoGet(void);
 int MBKettouCoinLoseGet(void);
@@ -331,6 +332,7 @@ void MBCapsuleHermiteGetV(float t, HuVecF *a, HuVecF *b, HuVecF *c, HuVecF *d, H
 float MBCapsuleAngleLerp(float a, float b, float t);
 float MBCapsuleAngleWrap(float a, float b);
 float MBCapsuleAngleSumLerp(float t, float a, float b);
+float MBCaspuleAngleRotCamera(float angle);
 
 void MBCapsuleLoseEffCreate(void);
 void MBCapsuleLoseEffKill(void);
@@ -385,7 +387,7 @@ void MBCapsuleStarManKill(void);
 int MBCapsuleStarManAdd(BOOL downF, int playerNo, int num);
 int MBCapsuleStarManNumGet(void);
 
-void MBCapsuleStatusStartPosGet(int playerNo, int capsuleNo, HuVecF *pos);
+void MBCapsuleStatusCapsulePosGet(int playerNo, int capsuleNo, HuVecF *pos);
 
 void MBCapsuleSnowEffCreate(void);
 void MBCapsuleSnowEffKill(void);
@@ -402,7 +404,7 @@ OMOBJ *MBCapsuleHoneObjCreate(HuVecF *pos, int mdlId, int masuId, int dispDelay,
 void MBCapsuleVibrate(int type);
 u32 MBCapsuleTeamNameGet(s16 charNo1, s16 charNo2);
 
-void MBCapsuleSpriteShow(int file, int xPos, int yPos, BOOL fastF);
+void MBCapsuleSpriteShow(int file, int xPos, int yPos, BOOL slowF);
 
 void MBCapsuleChanceSprCreate(void);
 void MBCapsuleChanceSprKill(void);
