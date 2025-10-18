@@ -349,10 +349,10 @@ void MBPlayerMoveObjKill(int playerNo);
 void MBPlayerMoveObjClose(void);
 
 void MBCapsuleRingEffCreate(void);
-void MBCapsuleRingEffUpdate(OMOBJ *obj);
+void MBCapsuleRingEffExec(OMOBJ *obj);
 void MBCapsuleRingEffKill(void);
 void MBCapsuleRayEffCreate(void);
-void MBCapsuleRayEffUpdate(OMOBJ *obj);
+void MBCapsuleRayEffExec(OMOBJ *obj);
 void MBCapsuleRayEffDraw(HU3DMODEL *modelP, Mtx *mtx);
 void MBCapsuleRayEffKill(void);
 int MBCapsuleRayEffAdd(HuVecF pos, HuVecF rot, HuVecF moveDir, int maxTime, GXColor color);
@@ -371,10 +371,11 @@ void MBCapsuleChoiceSet(int choice);
 int MBCapsuleRingEffAdd(HuVecF pos, HuVecF rot, HuVecF vel, int inTime, int rotTime, int no, GXColor color);
 
 void MBCapsuleCoinEffCreate(void);
+void MBCapsuleCoinEffExec(OMOBJ *obj);
 void MBCapsuleCoinEffKill(void);
 int MBCapsuleCoinEffNumGet(void);
-int MBCapsuleCoinEffAdd(HuVecF *pos, HuVecF *rot, float scale, float gravity, int maxTime, int mode);
-int MBCapsuleCoinEffMaxYSet(int id, float maxY);
+int MBCapsuleCoinEffAdd(HuVecF *pos, HuVecF *vel, float scale, float gravity, int maxTime, int mode);
+int MBCapsuleCoinEffMinYSet(int id, float minY);
 
 void MBCapsuleModelMtxSet(MBMODELID mdlId, Mtx *matrix);
 int MBCapsuleCoinDispExec(int playerNo, int coinNum, BOOL winMotF, BOOL waitF);
@@ -387,15 +388,18 @@ BOOL MBCapsuleSaiHiddenInCheck(OMOBJ *obj);
 BOOL MBCapsuleSaiHiddenHitCheck(OMOBJ *obj, HuVecF *pos);
 void MBCapsuleSeDelayPlay(int seId, int delay);
 
-void MBCapsuleCoinManCreate(void);
-void MBCapsuleCoinManKill(void);
-int MBCapsuleCoinManAdd(BOOL downF, int playerNo, int num);
-int MBCapsuleCoinManNumGet(void);
+void MBCapsuleCoinTradeCreate(void);
+void MBCapsuleCoinTradeExec(OMOBJ *obj);
+void MBCapsuleCoinTradeKill(void);
+int MBCapsuleCoinTradeAdd(BOOL downF, int playerNo, int coinNum);
+int MBCapsuleCoinTradeNumGet(void);
 
-void MBCapsuleStarManCreate(void);
-void MBCapsuleStarManKill(void);
-int MBCapsuleStarManAdd(BOOL downF, int playerNo, int num);
-int MBCapsuleStarManNumGet(void);
+void MBCapsuleStarTradeCreate(void);
+void MBCapsuleStarTradeExec(OMOBJ *obj);
+
+void MBCapsuleStarTradeKill(void);
+int MBCapsuleStarTradeAdd(BOOL downF, int playerNo, int starNum);
+int MBCapsuleStarTradeNumGet(void);
 
 void MBCapsuleStatusCapsulePosGet(int playerNo, int capsuleNo, HuVecF *pos);
 

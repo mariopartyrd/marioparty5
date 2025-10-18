@@ -556,8 +556,8 @@ static CAPSULE_EFF_HOOK capsuleEffHook;
 static CAPSULE_WORK *capsuleWork;
 static OMOBJ *chanceSprObj;
 static OMOBJ *loseEffObj;
-static OMOBJ *starManObj;
-static OMOBJ *coinManObj;
+static OMOBJ *starTradeObj;
+static OMOBJ *coinTradeObj;
 static OMOBJ *coinEffObj;
 static OMOBJ *hanachanRingObj;
 static OMOBJ *rayEffObj;
@@ -4179,7 +4179,7 @@ void MBCapsulePatapataExec(void)
                 coinVel.y = t;
                 coinId = MBCapsuleCoinEffAdd(&coinPos, &coinVel, 0.75f, 4.9f, 30, 0xFFFF);
                 if(coinId != -1){
-                    MBCapsuleCoinEffMaxYSet(coinId, mdlPos.y+50);
+                    MBCapsuleCoinEffMinYSet(coinId, mdlPos.y+50);
                 }
                 HuPrcSleep(2);
             }
@@ -4924,7 +4924,7 @@ void MBCapsuleKuriboExec(void)
     HuVecF pos;
     int coinTotal[2];
     
-    MBCapsuleCoinManCreate();
+    MBCapsuleCoinTradeCreate();
     motFile[0] = CAPSULECHAR2_HSF_kuribo_idle;
     motFile[1] = CAPSULECHAR2_HSF_kuribo_jump;
     motFile[2] = HU_DATANUM_NONE;
@@ -4993,21 +4993,21 @@ void MBCapsuleKuriboExec(void)
     if(coinTotal[0] > 0 || coinTotal[1] > 0) {
         do {
             if(coinTotal[0] > 0) {
-                coinNum = MBCapsuleCoinManAdd(FALSE, swapPlayer, 1);
+                coinNum = MBCapsuleCoinTradeAdd(FALSE, swapPlayer, 1);
                 if(coinNum) {
                     MBPlayerCoinAdd(capsulePlayer, -coinNum);
                     coinTotal[0] -= coinNum;
                 }
             }
             if(coinTotal[1] > 0) {
-                coinNum = MBCapsuleCoinManAdd(TRUE, capsulePlayer, 1);
+                coinNum = MBCapsuleCoinTradeAdd(TRUE, capsulePlayer, 1);
                 if(coinNum) {
                     MBPlayerCoinAdd(swapPlayer, -coinNum);
                     coinTotal[1] -= coinNum;
                 }
             }
             HuPrcVSleep();
-        } while(coinTotal[0] > 0 || coinTotal[1] > 0 || MBCapsuleCoinManNumGet() > 0);
+        } while(coinTotal[0] > 0 || coinTotal[1] > 0 || MBCapsuleCoinTradeNumGet() > 0);
     } else {
         MBAudFXPlay(MSM_SE_GUIDE_19);
         MBWinCreate(MBWIN_TYPE_TALKEVENT, MESS_CAPSULE_EX02_KURIBO_NOCOIN, HUWIN_SPEAKER_KURIBO);
@@ -5039,7 +5039,7 @@ void MBCapsuleKuriboExec(void)
 
 void MBCapsuleKuriboDestroy(void)
 {
-    MBCapsuleCoinManKill();
+    MBCapsuleCoinTradeKill();
 }
 
 void MBCapsuleBomheiExec(void)
@@ -5375,7 +5375,7 @@ void MBCapsuleBankExec(void)
                 coinVel.y = 0;
                 coinId = MBCapsuleCoinEffAdd(&coinPos, &coinVel, 0.75f, 4.9f, 30, 1);
                 if(coinId != -1){
-                    MBCapsuleCoinEffMaxYSet(coinId, playerPos.y+150);
+                    MBCapsuleCoinEffMinYSet(coinId, playerPos.y+150);
                 }
                 if(++decTime >= 6.0f && --coinTotal >= 0) {
                     MBAudFXPlay(MSM_SE_CMN_19);
@@ -12010,9 +12010,9 @@ void MBCapsuleChanceExec(void)
     MBMusPauseFadeOut(MB_MUS_CHAN_BG, TRUE, 0);
     MBCapsuleGlowEffCreate();
     HuPrcVSleep();
-    MBCapsuleCoinManCreate();
+    MBCapsuleCoinTradeCreate();
     HuPrcVSleep();
-    MBCapsuleStarManCreate();
+    MBCapsuleStarTradeCreate();
     HuPrcVSleep();
     MBCapsuleChanceSprCreate();
     HuPrcVSleep();
@@ -12254,13 +12254,13 @@ void MBCapsuleChanceExec(void)
                     }
                     do {
                         if(playerCoin[1] > 0) {
-                            if(coinNum = MBCapsuleCoinManAdd(TRUE, playerNo1, 1)) {
+                            if(coinNum = MBCapsuleCoinTradeAdd(TRUE, playerNo1, 1)) {
                                 MBPlayerCoinAdd(playerNo2, -coinNum);
                                 playerCoin[1] -= coinNum;
                             }
                         }
                         HuPrcVSleep();
-                    } while(playerCoin[1] > 0 || MBCapsuleCoinManNumGet() > 0);
+                    } while(playerCoin[1] > 0 || MBCapsuleCoinTradeNumGet() > 0);
                     MBCapsuleStatusTradeOutSet(playerNo1, playerNo2, TRUE);
                 }
                 break;
@@ -12286,13 +12286,13 @@ void MBCapsuleChanceExec(void)
                     }
                     do {
                         if(playerCoin[0] > 0) {
-                            if(coinNum = MBCapsuleCoinManAdd(FALSE, playerNo2, 1)) {
+                            if(coinNum = MBCapsuleCoinTradeAdd(FALSE, playerNo2, 1)) {
                                 MBPlayerCoinAdd(playerNo1, -coinNum);
                                 playerCoin[0] -= coinNum;
                             }
                         }
                         HuPrcVSleep();
-                    } while(playerCoin[0] > 0 || MBCapsuleCoinManNumGet() > 0);
+                    } while(playerCoin[0] > 0 || MBCapsuleCoinTradeNumGet() > 0);
                     MBCapsuleStatusTradeOutSet(playerNo1, playerNo2, TRUE);
                 }
                 break;
@@ -12309,19 +12309,19 @@ void MBCapsuleChanceExec(void)
                     MBCapsuleStatusTradeInSet(playerNo1, playerNo2, TRUE);
                     do {
                         if(playerCoin[0] > 0) {
-                            if(coinNum = MBCapsuleCoinManAdd(FALSE, playerNo2, 1)) {
+                            if(coinNum = MBCapsuleCoinTradeAdd(FALSE, playerNo2, 1)) {
                                 MBPlayerCoinAdd(playerNo1, -coinNum);
                                 playerCoin[0] -= coinNum;
                             }
                         }
                         if(playerCoin[1] > 0) {
-                            if(coinNum = MBCapsuleCoinManAdd(TRUE, playerNo1, 1)) {
+                            if(coinNum = MBCapsuleCoinTradeAdd(TRUE, playerNo1, 1)) {
                                 MBPlayerCoinAdd(playerNo2, -coinNum);
                                 playerCoin[1] -= coinNum;
                             }
                         }
                         HuPrcVSleep();
-                    } while(playerCoin[0] > 0 || playerCoin[1] > 0 || MBCapsuleCoinManNumGet() > 0);
+                    } while(playerCoin[0] > 0 || playerCoin[1] > 0 || MBCapsuleCoinTradeNumGet() > 0);
                     MBCapsuleStatusTradeOutSet(playerNo1, playerNo2, TRUE);
                 } else {
                     MBWinCreate(MBWIN_TYPE_TALKEVENT, MESS_CAPSULE_EX04_CHANCE_RESULT_EMPTY_SWAP, MBGuideSpeakerNoGet());
@@ -12352,13 +12352,13 @@ void MBCapsuleChanceExec(void)
                     }
                     do {
                         if(playerStar[1] > 0) {
-                            if(coinNum = MBCapsuleStarManAdd(TRUE, playerNo1, 1)) {
+                            if(coinNum = MBCapsuleStarTradeAdd(TRUE, playerNo1, 1)) {
                                 MBPlayerStarAdd(playerNo2, -coinNum);
                                 playerStar[1] -= coinNum;
                             }
                         }
                         HuPrcVSleep();
-                    } while(playerStar[1] > 0 || MBCapsuleStarManNumGet() > 0);
+                    } while(playerStar[1] > 0 || MBCapsuleStarTradeNumGet() > 0);
                     MBCapsuleStatusTradeOutSet(playerNo1, playerNo2, TRUE);
                 }
                 break;
@@ -12385,7 +12385,7 @@ void MBCapsuleChanceExec(void)
                     starTimer = 0;
                     do {
                         if(playerStar[1] > 0 && starTimer == 0) {
-                            if(coinNum = MBCapsuleStarManAdd(TRUE, playerNo1, 1)) {
+                            if(coinNum = MBCapsuleStarTradeAdd(TRUE, playerNo1, 1)) {
                                 MBPlayerStarAdd(playerNo2, -coinNum);
                                 playerStar[1] -= coinNum;
                             }
@@ -12394,7 +12394,7 @@ void MBCapsuleChanceExec(void)
                             starTimer = 0;
                         }
                         HuPrcVSleep();
-                    } while(playerStar[1] > 0 || MBCapsuleStarManNumGet() > 0);
+                    } while(playerStar[1] > 0 || MBCapsuleStarTradeNumGet() > 0);
                     MBCapsuleStatusTradeOutSet(playerNo1, playerNo2, TRUE);
                 }
                 break;
@@ -12412,13 +12412,13 @@ void MBCapsuleChanceExec(void)
                     starTimer = 0;
                     do {
                         if(playerStar[0] > 0 && starTimer == 0) {
-                            if(coinNum = MBCapsuleStarManAdd(FALSE, playerNo2, 1)) {
+                            if(coinNum = MBCapsuleStarTradeAdd(FALSE, playerNo2, 1)) {
                                 MBPlayerStarAdd(playerNo1, -coinNum);
                                 playerStar[0] -= coinNum;
                             }
                         }
                         if(playerStar[1] > 0 && starTimer == 0) {
-                            if(coinNum = MBCapsuleStarManAdd(TRUE, playerNo1, 1)) {
+                            if(coinNum = MBCapsuleStarTradeAdd(TRUE, playerNo1, 1)) {
                                 MBPlayerStarAdd(playerNo2, -coinNum);
                                 playerStar[1] -= coinNum;
                             }
@@ -12427,7 +12427,7 @@ void MBCapsuleChanceExec(void)
                             starTimer = 0;
                         }
                         HuPrcVSleep();
-                    } while(playerStar[0] > 0 || playerStar[1] > 0 || MBCapsuleStarManNumGet() > 0);
+                    } while(playerStar[0] > 0 || playerStar[1] > 0 || MBCapsuleStarTradeNumGet() > 0);
                     MBCapsuleStatusTradeOutSet(playerNo1, playerNo2, TRUE);
                 } else {
                     MBWinCreate(MBWIN_TYPE_TALKEVENT, MESS_CAPSULE_EX04_CHANCE_RESULT_EMPTY_SWAP, MBGuideSpeakerNoGet());
@@ -12455,19 +12455,19 @@ void MBCapsuleChanceExec(void)
                         MBCapsuleStatusTradeInSet(playerNo1, playerNo2, TRUE);
                         do {
                             if(playerCoin[0] > 0) {
-                                if(coinNum = MBCapsuleCoinManAdd(FALSE, playerNo2, 1)) {
+                                if(coinNum = MBCapsuleCoinTradeAdd(FALSE, playerNo2, 1)) {
                                     MBPlayerCoinAdd(playerNo1, -coinNum);
                                     playerCoin[0] -= coinNum;
                                 }
                             }
                             if(playerCoin[1] > 0) {
-                                if(coinNum = MBCapsuleCoinManAdd(TRUE, playerNo1, 1)) {
+                                if(coinNum = MBCapsuleCoinTradeAdd(TRUE, playerNo1, 1)) {
                                     MBPlayerCoinAdd(playerNo2, -coinNum);
                                     playerCoin[1] -= coinNum;
                                 }
                             }
                             HuPrcVSleep();
-                        } while(playerCoin[0] > 0 || playerCoin[1] > 0 || MBCapsuleCoinManNumGet() > 0);
+                        } while(playerCoin[0] > 0 || playerCoin[1] > 0 || MBCapsuleCoinTradeNumGet() > 0);
                         MBCapsuleStatusTradeOutSet(playerNo1, playerNo2, TRUE);
                     }
                     if(playerStar[0] > 0 || playerStar[1] > 0) {
@@ -12475,13 +12475,13 @@ void MBCapsuleChanceExec(void)
                         starTimer = 0;
                         do {
                             if(playerStar[0] > 0 && starTimer == 0) {
-                                if(coinNum = MBCapsuleStarManAdd(FALSE, playerNo2, 1)) {
+                                if(coinNum = MBCapsuleStarTradeAdd(FALSE, playerNo2, 1)) {
                                     MBPlayerStarAdd(playerNo1, -coinNum);
                                     playerStar[0] -= coinNum;
                                 }
                             }
                             if(playerStar[1] > 0 && starTimer == 0) {
-                                if(coinNum = MBCapsuleStarManAdd(TRUE, playerNo1, 1)) {
+                                if(coinNum = MBCapsuleStarTradeAdd(TRUE, playerNo1, 1)) {
                                     MBPlayerStarAdd(playerNo2, -coinNum);
                                     playerStar[1] -= coinNum;
                                 }
@@ -12490,7 +12490,7 @@ void MBCapsuleChanceExec(void)
                                 starTimer = 0;
                             }
                             HuPrcVSleep();
-                        } while(playerStar[0] > 0 || playerStar[1] > 0 || MBCapsuleStarManNumGet() > 0);
+                        } while(playerStar[0] > 0 || playerStar[1] > 0 || MBCapsuleStarTradeNumGet() > 0);
                         MBCapsuleStatusTradeOutSet(playerNo1, playerNo2, TRUE);
                     }
                 }
@@ -12618,8 +12618,8 @@ static int ChanceSaiExec(int playerNo, int mdlId, int speed, int tblNum, int *tb
 void MBCapsuleChanceDestroy(void)
 {
     MBCapsuleGlowEffKill();
-    MBCapsuleCoinManKill();
-    MBCapsuleStarManKill();
+    MBCapsuleCoinTradeKill();
+    MBCapsuleStarTradeKill();
     MBCapsuleChanceSprKill();
 }
 
@@ -12679,7 +12679,7 @@ void MBCapsuleMiracleExec(void)
     MBCapsuleGlowEffCreate();
     MBCapsuleRingEffCreate();
     MBCapsuleRayEffCreate();
-    MBCapsuleStarManCreate();
+    MBCapsuleStarTradeCreate();
     
     MBPlayerPosGet(capsulePlayer, &playerPos);
     HuDataDirClose(DATA_capsule);
@@ -12913,7 +12913,7 @@ void MBCapsuleMiracleExec(void)
                 starDelay = 0;
                 do {
                     if(starNum > 0 && starDelay == 0) {
-                        if(starChange = MBCapsuleStarManAdd(TRUE, playerNo2, 1)) {
+                        if(starChange = MBCapsuleStarTradeAdd(TRUE, playerNo2, 1)) {
                             MBPlayerStarAdd(playerNo1, -starChange);
                             starNum -= starChange;
                         }
@@ -12922,7 +12922,7 @@ void MBCapsuleMiracleExec(void)
                         starDelay = 0;
                     }
                     HuPrcVSleep();
-                } while(starNum > 0 || MBCapsuleStarManNumGet() > 0);
+                } while(starNum > 0 || MBCapsuleStarTradeNumGet() > 0);
                 MBCapsuleStatusTradeOutSet(playerNo2, playerNo1, TRUE);
                 MBPlayerWinLoseVoicePlay(playerNo2, MB_PLAYER_MOT_WIN, CHARVOICEID(0));
                 MBPlayerMotionNoShiftSet(playerNo2, MB_PLAYER_MOT_WIN, 0, 8, HU3D_MOTATTR_NONE);
@@ -12963,13 +12963,13 @@ void MBCapsuleMiracleExec(void)
             starDelay = 0;
             do {
                 if(starNum > 0 && starDelay == 0) {
-                    if(starChange = MBCapsuleStarManAdd(FALSE, playerNo1, 1)) {
+                    if(starChange = MBCapsuleStarTradeAdd(FALSE, playerNo1, 1)) {
                         MBPlayerStarAdd(playerNo2, -starChange);
                         starNum -= starChange;
                     }
                 }
                 if(otherStarNum > 0 && starDelay == 0) {
-                    if(starChange = MBCapsuleStarManAdd(TRUE, playerNo2, 1)) {
+                    if(starChange = MBCapsuleStarTradeAdd(TRUE, playerNo2, 1)) {
                         MBPlayerStarAdd(playerNo1, -starChange);
                         otherStarNum -= starChange;
                     }
@@ -12978,7 +12978,7 @@ void MBCapsuleMiracleExec(void)
                     starDelay = 0;
                 }
                 HuPrcVSleep();
-            } while(starNum > 0 || otherStarNum > 0 || MBCapsuleStarManNumGet() > 0);
+            } while(starNum > 0 || otherStarNum > 0 || MBCapsuleStarTradeNumGet() > 0);
             MBCapsuleStatusTradeOutSet(playerNo2, playerNo1, TRUE);
             MBPlayerWinLoseVoicePlay(playerNo2, MB_PLAYER_MOT_WIN, CHARVOICEID(0));
             MBPlayerMotionNoShiftSet(playerNo2, MB_PLAYER_MOT_WIN, 0, 8, HU3D_MOTATTR_NONE);
@@ -13028,7 +13028,7 @@ void MBCapsuleMiracleDestroy(void)
     MBCapsuleGlowEffKill();
     MBCapsuleRingEffKill();
     MBCapsuleRayEffKill();
-    MBCapsuleStarManKill();
+    MBCapsuleStarTradeKill();
 }
 
 static u16 DonkeySaiPadHook(int playerNo);
@@ -13059,7 +13059,7 @@ void MBCapsuleDonkeyExec(void)
     HuVecF donkeyPos; //sp+0xDC
     HuVecF tempVec; //sp+0xD0
     HuVecF effPos; //sp+0xC4
-    HuVecF effRot; //sp+0xB8
+    HuVecF effVel; //sp+0xB8
     int bonusTbl[GW_PLAYER_MAX]; //sp+0xA8
     char insertMes[16]; //sp+0x98
     int sprId[2]; //sp+0x90
@@ -13396,7 +13396,7 @@ void MBCapsuleDonkeyExec(void)
                             coinEffNum = MBCapsuleCoinEffAdd(&tempVec, &mdlVel, 0.75f, 4.9f, 30, 1);
                             if(coinEffNum != -1) {
                                 MBPlayerPosGet(capsulePlayer, &tempVec);
-                                MBCapsuleCoinEffMaxYSet(coinEffNum, tempVec.y+150);
+                                MBCapsuleCoinEffMinYSet(coinEffNum, tempVec.y+150);
                             }
                             HuPrcVSleep();
                         }
@@ -13532,7 +13532,7 @@ void MBCapsuleDonkeyExec(void)
                         coinEffNum = MBCapsuleCoinEffAdd(&tempVec, &mdlVel, 0.75f, 4.9f, 30, 1);
                         if(coinEffNum != -1) {
                             MBPlayerPosGet(capsulePlayer, &tempVec);
-                            MBCapsuleCoinEffMaxYSet(coinEffNum, tempVec.y+150);
+                            MBCapsuleCoinEffMinYSet(coinEffNum, tempVec.y+150);
                         }
                         HuPrcVSleep();
                     }
@@ -13584,10 +13584,10 @@ void MBCapsuleDonkeyExec(void)
                                 effPos.y += 100;
                                 effRotX = (MBCapsuleEffRandF()*15)+70;
                                 t = ((MBCapsuleEffRandF()*0.3f)+0.8f)*65;
-                                effRot.x = HuSin(effRotY)*HuCos(effRotX)*t;
-                                effRot.z = HuCos(effRotY)*HuCos(effRotX)*t;
-                                effRot.y = t*HuSin(effRotX);
-                                MBCapsuleCoinEffAdd(&effPos, &effRot, 0.75f, 4.9f, 30, 0);
+                                effVel.x = HuSin(effRotY)*HuCos(effRotX)*t;
+                                effVel.z = HuCos(effRotY)*HuCos(effRotX)*t;
+                                effVel.y = t*HuSin(effRotX);
+                                MBCapsuleCoinEffAdd(&effPos, &effVel, 0.75f, 4.9f, 30, 0);
                             }
                             MBCapsuleSeDelayPlay(MSM_SE_CMN_19, 30);
                             i = MBCapsuleModelCreate(CAPSULE_HSF_dkeff, NULL, FALSE, 0, FALSE);
@@ -15885,7 +15885,7 @@ void MBCapsuleRingEffCreate(void)
     }
 }
 
-void MBCapsuleRingEffUpdate(OMOBJ *obj)
+void MBCapsuleRingEffExec(OMOBJ *obj)
 {
     CAPSULE_EFFDATA *effDataP; //r31
     RING_EFF_WORK *work; //r30
@@ -16049,7 +16049,7 @@ void MBCapsuleRayEffCreate(void)
     OMOBJ *obj; //r26
     void *dlBegin; //r25
     
-    obj = rayEffObj = MBAddObj(32768, 0, 0, MBCapsuleRayEffUpdate);
+    obj = rayEffObj = MBAddObj(32768, 0, 0, MBCapsuleRayEffExec);
     work = obj->data = HuMemDirectMallocNum(HEAP_HEAP, sizeof(RAY_EFF_WORK), HU_MEMNUM_OVL);
     memset(work, 0, sizeof(RAY_EFF_WORK));
     work->mdlId = Hu3DHookFuncCreate(MBCapsuleRayEffDraw);
@@ -16096,7 +16096,7 @@ void MBCapsuleRayEffCreate(void)
     HuMemDirectFree(dlBuf);
 }
 
-void MBCapsuleRayEffUpdate(OMOBJ *obj)
+void MBCapsuleRayEffExec(OMOBJ *obj)
 {
     RAY_EFF_DATA *effDataP;
     RAY_EFF_WORK *work;
@@ -16638,72 +16638,578 @@ void MBCapsuleHanachanRingDraw(HU3DMODEL *modelP, Mtx *mtx)
             GXCallDisplayList(work->dl, work->dlSize);
         }
     }
-    
 }
+
+#define COIN_EFF_WORKMAX 32
+
+typedef struct CoinEffWork_s {
+    int mdlId;
+    BOOL enableF;
+    int mode;
+    int maxTime;
+    int time;
+    float gravity;
+    float minY;
+    HuVecF pos;
+    HuVecF rot;
+    HuVecF scale;
+    HuVecF vel;
+} COIN_EFF_WORK;
 
 void MBCapsuleCoinEffCreate(void)
 {
+    COIN_EFF_WORK *work;
+    int i;
+    OMOBJ *obj;
+    COIN_EFF_WORK *workBase;
     
+    obj = coinEffObj = MBAddObj(32768, 0, 0, MBCapsuleCoinEffExec);
+    work = workBase = obj->data = HuMemDirectMallocNum(HEAP_HEAP, sizeof(COIN_EFF_WORK)*COIN_EFF_WORKMAX, HU_MEMNUM_OVL);
+    memset(work, 0,  sizeof(COIN_EFF_WORK)*COIN_EFF_WORKMAX);
+    for(i=0; i<COIN_EFF_WORKMAX; i++, work++) {
+        if(i == 0) {
+            work->mdlId = Hu3DModelCreateData(BOARD_HSF_coin);
+        } else {
+            work->mdlId = Hu3DModelLink(workBase->mdlId);
+        }
+        Hu3DModelCameraSet(work->mdlId, HU3D_CAM0);
+        Hu3DModelLayerSet(work->mdlId, 2);
+        Hu3DModelDispOff(work->mdlId);
+        work->enableF = FALSE;
+        work->mode = 1;
+        work->maxTime = 0;
+        work->time = 0;
+        work->gravity = 0;
+        work->minY = -1000000.0f;
+        work->pos.x = work->pos.y = work->pos.z = 0;
+        work->rot.x = work->rot.y = work->rot.z = 0;
+        work->scale.x = work->scale.y = work->scale.z = 1;
+        work->vel.x = work->vel.y = work->vel.z = 0;
+    }
+}
+
+void MBCapsuleCoinEffExec(OMOBJ *obj)
+{
+    COIN_EFF_WORK *work; //r31
+    int j; //r30
+    int i; //r29
+    
+    float rotY; //f31
+    float power; //f30
+    float speed; //f29
+    float rotX; //f28
+    
+    HuVecF pos; //sp+0x6C
+    HuVecF vel; //sp+0x60
+    GXColor color; //sp+0x14
+    
+    work = obj->data;
+    if(MBKillCheck() || coinEffObj == NULL) {
+        for(i=0; i<COIN_EFF_WORKMAX; i++, work++) {
+            Hu3DModelKill(work->mdlId);
+            work->mdlId = HU3D_MODELID_NONE;
+        }
+        omDelObjEx(mbObjMan, obj);
+        coinEffObj = NULL;
+        return;
+    }
+    for(i=0; i<COIN_EFF_WORKMAX; i++, work++) {
+        if(!work->enableF) {
+            continue;
+        }
+        VECAdd(&work->pos, &work->vel, &work->pos);
+        work->vel.y -= work->gravity;
+        Hu3DModelPosSet(work->mdlId, work->pos.x, work->pos.y, work->pos.z);
+        Hu3DModelRotSet(work->mdlId, work->rot.x, work->rot.y, work->rot.z);
+        Hu3DModelScaleSet(work->mdlId, work->scale.x, work->scale.y, work->scale.z);
+        if(work->mode == 0) {
+            Hu3DModelTPLvlSet(work->mdlId, 1-((float)work->time/work->maxTime));
+        }
+        if(++work->time > work->maxTime || (work->vel.y < 0 && work->pos.y < work->minY)) {
+            work->enableF = FALSE;
+            Hu3DModelDispOff(work->mdlId);
+            switch(work->mode) {
+                case 1:
+                    for(j=0, rotY=0; j<16; j++) {
+                        rotY += (MBCapsuleEffRandF()+1)*22.5f;
+                        pos = work->pos;
+                        speed = (MBCapsuleEffRandF()+1)*2.5f;
+                        rotX = 45-(MBCapsuleEffRandF()*90);
+                        vel.x = HuSin(rotY)*HuCos(rotX)*speed;
+                        vel.y = HuCos(rotY)*HuCos(rotX)*speed;
+                        vel.z = HuSin(rotX)*speed;
+                        power = MBCapsuleEffRandF();
+                        color.r = 192+(63*power);
+                        color.g = 192+(63*power);
+                        color.b = 64+(63*power);
+                        color.a = 192+(63*MBCapsuleEffRandF());
+                        MBCapsuleGlowEffAdd(pos, vel,
+                            ((MBCapsuleEffRandF()*0.1f)+0.3f)*100,
+                            ((MBCapsuleEffRandF()*0.5f)+1.0f)*0.016666668f,
+                            0,
+                            0,
+                            color);
+                    }
+                    break;
+                
+                case 2:
+                    for(j=0, rotY=0; j<32; j++) {
+                        rotY += (MBCapsuleEffRandF()+1)*22.5f;
+                        pos = work->pos;
+                        speed = (MBCapsuleEffRandF()+1)*2.5f;
+                        rotX = 45-(MBCapsuleEffRandF()*90);
+                        vel.x = HuSin(rotY)*HuCos(rotX)*speed;
+                        vel.y = HuCos(rotY)*HuCos(rotX)*speed;
+                        vel.z = HuSin(rotX)*speed;
+                        power = MBCapsuleEffRandF();
+                        color.r = 192+(63*power);
+                        color.g = 192+(63*power);
+                        color.b = 64+(63*power);
+                        color.a = 192+(63*MBCapsuleEffRandF());
+                        MBCapsuleGlowEffAdd(pos, vel,
+                            ((MBCapsuleEffRandF()*0.1f)+0.3f)*100,
+                            ((MBCapsuleEffRandF()*0.5f)+1.0f)*0.016666668f,
+                            0,
+                            0,
+                            color);
+                    }
+                    break;
+                
+                case 3:
+                    for(j=0, rotY=0; j<16; j++) {
+                        rotY += (MBCapsuleEffRandF()+1)*22.5f;
+                        pos = work->pos;
+                        speed = ((MBCapsuleEffRandF()*0.2f)+1)*50;
+                        rotX = -((MBCapsuleEffRandF()*15)+75);
+                        vel.x = HuSin(rotY)*HuCos(rotX)*speed;
+                        vel.y = HuCos(rotY)*HuCos(rotX)*speed;
+                        vel.z = HuSin(rotX)*speed;
+                        power = MBCapsuleEffRandF();
+                        color.r = 192+(63*power);
+                        color.g = 192+(63*power);
+                        color.b = 64+(63*power);
+                        color.a = 192+(63*MBCapsuleEffRandF());
+                        MBCapsuleGlowEffAdd(pos, vel,
+                            ((MBCapsuleEffRandF()*0.1f)+0.3f)*100,
+                            0.16666667f,
+                            0,
+                            3.266667f,
+                            color);
+                    }
+                    break;
+            }
+        }
+    }
 }
 
 void MBCapsuleCoinEffKill(void)
 {
-    
+    coinEffObj = NULL;
 }
 
 int MBCapsuleCoinEffNumGet(void)
 {
-    
+    COIN_EFF_WORK *work;
+    int i;
+    int num;
+    OMOBJ *obj;
+    obj = coinEffObj;
+    num = 0;
+    if(coinEffObj == NULL) {
+        return 0;
+    }
+    for(work=obj->data, i=0; i<COIN_EFF_WORKMAX; i++, work++) {
+        if(work->enableF) {
+            num++;
+        }
+    }
+    return num;
 }
 
-int MBCapsuleCoinEffAdd(HuVecF *pos, HuVecF *rot, float scale, float gravity, int maxTime, int mode)
+int MBCapsuleCoinEffAdd(HuVecF *pos, HuVecF *vel, float scale, float gravity, int maxTime, int mode)
 {
+    COIN_EFF_WORK *work;
+    int i;
+    OMOBJ *obj;
+    int num;
     
+    obj = coinEffObj;
+    num = 0;
+    if(coinEffObj == NULL) {
+        return -1;
+    }
+    for(work=obj->data, i=0; i<COIN_EFF_WORKMAX; i++, work++) {
+        if(!work->enableF) {
+            break;
+        }
+    }
+    if(i >= COIN_EFF_WORKMAX) {
+        return -1;
+    }
+    work->enableF = TRUE;
+    work->mode = mode;
+    work->maxTime = maxTime;
+    work->time = 0;
+    work->gravity = gravity;
+    work->minY = -1000000.0f;
+    work->pos = *pos;
+    work->rot.y = MBCapsuleEffRandF()*360;
+    work->rot.x = work->rot.z = 0;
+    work->scale.x = work->scale.y = work->scale.z = scale;
+    work->vel = *vel;
+    Hu3DModelDispOn(work->mdlId);
+    Hu3DModelPosSet(work->mdlId, work->pos.x, work->pos.y, work->pos.z);
+    Hu3DModelRotSet(work->mdlId, work->rot.x, work->rot.y, work->rot.z);
+    Hu3DModelScaleSet(work->mdlId, work->scale.x, work->scale.y, work->scale.z);
+    return i;
 }
 
-int MBCapsuleCoinEffMaxYSet(int id, float maxY)
+int MBCapsuleCoinEffMinYSet(int id, float minY)
 {
-    
+    OMOBJ *obj = coinEffObj;
+    int num = 0;
+    if(coinEffObj == NULL) {
+        return 0;
+    } else {
+        COIN_EFF_WORK *work = obj->data;
+        work += id;
+        work->minY = minY;
+    }
 }
 
-void MBCapsuleCoinManCreate(void)
+#define COIN_TRADE_WORKMAX 64
+
+typedef struct CoinTradeWork_s {
+    BOOL flag;
+    int mdlId;
+    int playerNo;
+    int coinNum;
+    int time;
+    int maxTime;
+    float arcHeight;
+    HuVecF posStart;
+    HuVecF posEnd;
+} COIN_TRADE_WORK;
+
+void MBCapsuleCoinTradeCreate(void)
 {
-    
+    COIN_TRADE_WORK *work;
+    int i;
+    COIN_TRADE_WORK *workBase;
+    OMOBJ *obj;
+    obj = coinTradeObj = MBAddObj(32768, 0, 0, MBCapsuleCoinTradeExec);
+    workBase = work = obj->data = HuMemDirectMallocNum(HEAP_HEAP, sizeof(COIN_TRADE_WORK)*COIN_TRADE_WORKMAX, HU_MEMNUM_OVL);
+    memset(work, 0, sizeof(COIN_TRADE_WORK)*COIN_TRADE_WORKMAX);
+    for(i=0; i<COIN_TRADE_WORKMAX; i++, work++) {
+        if(i == 0) {
+            work->mdlId = Hu3DModelCreateData(BOARD_HSF_coin);
+        } else {
+            work->mdlId = Hu3DModelLink(workBase->mdlId);
+        }
+        Hu3DModelCameraSet(work->mdlId, HU3D_CAM0);
+        Hu3DModelLayerSet(work->mdlId, 2);
+        Hu3DModelDispOff(work->mdlId);
+        work->flag = FALSE;
+        work->playerNo = -1;
+        work->coinNum = 0;
+        work->time = 0;
+        work->maxTime = 0;
+        work->arcHeight = 0;
+        work->posStart.x = work->posStart.y = work->posStart.z = 0;
+        work->posEnd.x = work->posEnd.y = work->posEnd.z = 0;
+    }
 }
 
-void MBCapsuleCoinManKill(void)
+void MBCapsuleCoinTradeExec(OMOBJ *obj)
 {
+    COIN_TRADE_WORK *work;
+    int i;
+    float t;
+    HuVecF pos2D;
+    HuVecF pos3D;
     
+    work = obj->data;
+    if(MBKillCheck() || coinTradeObj == NULL) {
+        for(i=0; i<COIN_TRADE_WORKMAX; i++, work++) {
+            Hu3DModelKill(work->mdlId);
+        }
+        omDelObjEx(mbObjMan, obj);
+        coinTradeObj = NULL;
+        return;
+    }
+    for(i=0; i<COIN_TRADE_WORKMAX; i++, work++) {
+        if(!work->flag) {
+            continue;
+        }
+        t = (float)work->time/work->maxTime;
+        VECSubtract(&work->posEnd, &work->posStart, &pos2D);
+        VECScale(&pos2D, &pos2D, t);
+        VECAdd(&work->posStart, &pos2D, &pos2D);
+        if(work->arcHeight) {
+            pos2D.y += work->arcHeight*HuSin(t*180);
+        }
+        Hu3D2Dto3D(&pos2D, HU3D_CAM0, &pos3D);
+        Hu3DModelPosSet(work->mdlId, pos3D.x, pos3D.y, pos3D.z);
+        if(++work->time >= work->maxTime) {
+            Hu3DModelDispOff(work->mdlId);
+            work->flag = FALSE;
+            if(work->playerNo != -1 && work->coinNum > 0) {
+                MBPlayerCoinAdd(work->playerNo, work->coinNum);
+                MBAudFXPlay(MSM_SE_CMN_08);
+            }
+        }
+    }
 }
 
-int MBCapsuleCoinManNumGet(void)
+void MBCapsuleCoinTradeKill(void)
 {
-    
+    coinTradeObj = NULL;
 }
 
-int MBCapsuleCoinManAdd(BOOL downF, int playerNo, int num)
+int MBCapsuleCoinTradeNumGet(void)
 {
-    
+    COIN_TRADE_WORK *work;
+    int i;
+    int num;
+    OMOBJ *obj;
+    if(coinTradeObj == NULL) {
+        return 0;
+    }
+    obj = coinTradeObj;
+    for(work=obj->data, i=0, num=0; i<COIN_TRADE_WORKMAX; i++, work++) {
+        if(work->flag) {
+            num++;
+        }
+    }
+    return num;
 }
 
-void MBCapsuleStarManCreate(void)
+static int AddCoinTrade(int playerNo, int coinNum, float arcHeight, int maxTime, HuVecF *posStart, HuVecF *posEnd)
 {
+    COIN_TRADE_WORK *work;
+    int i;
+    OMOBJ *obj;
     
+    if(coinTradeObj == NULL) {
+        return -1;
+    }
+    obj = coinTradeObj;
+    for(work=obj->data, i=0; i<COIN_TRADE_WORKMAX; i++, work++) {
+        if(!work->flag) {
+            break;
+        }
+    }
+    if(i >= COIN_TRADE_WORKMAX) {
+        return -1;
+    }
+    work->flag = TRUE;
+    work->playerNo = playerNo;
+    work->coinNum = coinNum;
+    work->time = 0;
+    work->maxTime = maxTime;
+    work->arcHeight = arcHeight;
+    work->posStart = *posStart;
+    work->posEnd = *posEnd;
+    Hu3DModelDispOn(work->mdlId);
+    Hu3DModelPosSet(work->mdlId, work->posStart.x, work->posStart.y, work->posStart.z);
+    Hu3DModelRotSet(work->mdlId, 0, MBCapsuleEffRandF()*360, 0);
+    Hu3DModelScaleSet(work->mdlId, 0.3f, 0.3f, 0.3f);
+    return i;
 }
 
-void MBCapsuleStarManKill(void)
+int MBCapsuleCoinTradeAdd(BOOL downF, int playerNo, int coinNum)
 {
-    
+    HuVecF posStart;
+    HuVecF posEnd;
+    if(!downF) {
+        posStart.x = 80;
+        posStart.y = 240;
+        posStart.z = 1000;
+        posEnd.x = 496;
+        posEnd.y = 240;
+        posEnd.z = 1000;
+        posEnd.x += (0.5f-MBCapsuleEffRandF())*25;
+    } else {
+        posStart.x = 396;
+        posStart.y = 240;
+        posStart.z = 1000;
+        posEnd.x = 180;
+        posEnd.y = 240;
+        posEnd.z = 1000;
+        posEnd.x += (0.5f-MBCapsuleEffRandF())*25;
+    }
+    if(AddCoinTrade(playerNo, coinNum, -75+((MBCapsuleEffRandF()*0.35f)+1), 30*((MBCapsuleEffRandF()*0.3f)+1), &posStart, &posEnd) != -1) {
+        return coinNum;
+    } else {
+        return 0;
+    }
 }
 
-int MBCapsuleStarManAdd(BOOL downF, int playerNo, int num)
+#define STAR_TRADE_WORKMAX 32
+
+typedef struct StarTradeWork_s {
+    BOOL flag;
+    int mdlId;
+    int playerNo;
+    int starNum;
+    int time;
+    int maxTime;
+    float arcHeight;
+    HuVecF posStart;
+    HuVecF posEnd;
+} STAR_TRADE_WORK;
+
+void MBCapsuleStarTradeCreate(void)
 {
-    
+    STAR_TRADE_WORK *work;
+    int i;
+    STAR_TRADE_WORK *workBase;
+    OMOBJ *obj;
+    obj = starTradeObj = MBAddObj(32768, 0, 0, MBCapsuleStarTradeExec);
+    workBase = work = obj->data = HuMemDirectMallocNum(HEAP_HEAP, sizeof(STAR_TRADE_WORK)*STAR_TRADE_WORKMAX, HU_MEMNUM_OVL);
+    memset(work, 0, sizeof(STAR_TRADE_WORK)*STAR_TRADE_WORKMAX);
+    for(i=0; i<STAR_TRADE_WORKMAX; i++, work++) {
+        if(i == 0) {
+            work->mdlId = Hu3DModelCreateData(BOARD_HSF_star);
+        } else {
+            work->mdlId = Hu3DModelLink(workBase->mdlId);
+        }
+        Hu3DModelCameraSet(work->mdlId, HU3D_CAM0);
+        Hu3DModelLayerSet(work->mdlId, 2);
+        Hu3DModelDispOff(work->mdlId);
+        work->flag = FALSE;
+        work->playerNo = -1;
+        work->starNum = 0;
+        work->time = 0;
+        work->maxTime = 0;
+        work->arcHeight = 0;
+        work->posStart.x = work->posStart.y = work->posStart.z = 0;
+        work->posEnd.x = work->posEnd.y = work->posEnd.z = 0;
+    }
 }
 
-int MBCapsuleStarManNumGet(void)
+void MBCapsuleStarTradeExec(OMOBJ *obj)
 {
+    STAR_TRADE_WORK *work;
+    int i;
+    float t;
+    HuVecF pos2D;
+    HuVecF pos3D;
     
+    work = obj->data;
+    if(MBKillCheck() || starTradeObj == NULL) {
+        for(i=0; i<STAR_TRADE_WORKMAX; i++, work++) {
+            Hu3DModelKill(work->mdlId);
+        }
+        omDelObjEx(mbObjMan, obj);
+        starTradeObj = NULL;
+        return;
+    }
+    for(i=0; i<STAR_TRADE_WORKMAX; i++, work++) {
+        if(!work->flag) {
+            continue;
+        }
+        t = (float)work->time/work->maxTime;
+        VECSubtract(&work->posEnd, &work->posStart, &pos2D);
+        VECScale(&pos2D, &pos2D, t);
+        VECAdd(&work->posStart, &pos2D, &pos2D);
+        if(work->arcHeight) {
+            pos2D.y += work->arcHeight*HuSin(t*180);
+        }
+        Hu3D2Dto3D(&pos2D, HU3D_CAM0, &pos3D);
+        Hu3DModelPosSet(work->mdlId, pos3D.x, pos3D.y, pos3D.z);
+        if(++work->time >= work->maxTime) {
+            Hu3DModelDispOff(work->mdlId);
+            work->flag = FALSE;
+            if(work->playerNo != -1 && work->starNum > 0) {
+                MBPlayerStarAdd(work->playerNo, work->starNum);
+            }
+        }
+    }
+}
+
+void MBCapsuleStarTradeKill(void)
+{
+    starTradeObj = NULL;
+}
+
+int MBCapsuleStarTradeNumGet(void)
+{
+    STAR_TRADE_WORK *work;
+    int i;
+    int num;
+    OMOBJ *obj;
+    if(starTradeObj == NULL) {
+        return 0;
+    }
+    obj = starTradeObj;
+    for(work=obj->data, i=0, num=0; i<STAR_TRADE_WORKMAX; i++, work++) {
+        if(work->flag) {
+            num++;
+        }
+    }
+    return num;
+}
+
+static int AddStarTrade(int playerNo, int starNum, float arcHeight, int maxTime, HuVecF *posStart, HuVecF *posEnd)
+{
+    STAR_TRADE_WORK *work;
+    int i;
+    OMOBJ *obj;
+    
+    if(coinTradeObj == NULL) {
+        return -1;
+    }
+    obj = coinTradeObj;
+    for(work=obj->data, i=0; i<STAR_TRADE_WORKMAX; i++, work++) {
+        if(!work->flag) {
+            break;
+        }
+    }
+    if(i >= STAR_TRADE_WORKMAX) {
+        return -1;
+    }
+    work->flag = TRUE;
+    work->playerNo = playerNo;
+    work->starNum = starNum;
+    work->time = 0;
+    work->maxTime = maxTime;
+    work->arcHeight = arcHeight;
+    work->posStart = *posStart;
+    work->posEnd = *posEnd;
+    Hu3DModelDispOn(work->mdlId);
+    Hu3DModelPosSet(work->mdlId, work->posStart.x, work->posStart.y, work->posStart.z);
+    Hu3DModelRotSet(work->mdlId, 0, 0, 0);
+    Hu3DModelScaleSet(work->mdlId, 0.3f, 0.3f, 0.3f);
+    return i;
+}
+
+int MBCapsuleStarTradeAdd(BOOL downF, int playerNo, int starNum)
+{
+    HuVecF posStart;
+    HuVecF posEnd;
+    if(!downF) {
+        posStart.x = 80;
+        posStart.y = 240;
+        posStart.z = 1000;
+        posEnd.x = 496;
+        posEnd.y = 240;
+        posEnd.z = 1000;
+        posEnd.x += (0.5f-MBCapsuleEffRandF())*25;
+    } else {
+        posStart.x = 396;
+        posStart.y = 240;
+        posStart.z = 1000;
+        posEnd.x = 180;
+        posEnd.y = 240;
+        posEnd.z = 1000;
+        posEnd.x += (0.5f-MBCapsuleEffRandF())*25;
+    }
+    if(AddStarTrade(playerNo, starNum, -75+((MBCapsuleEffRandF()*0.35f)+1), 30*((MBCapsuleEffRandF()*0.3f)+1), &posStart, &posEnd) != -1) {
+        return starNum;
+    } else {
+        return 0;
+    }
 }
 
 void MBCapsuleLoseEffCreate(void)
