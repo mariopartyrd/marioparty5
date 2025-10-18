@@ -2014,7 +2014,7 @@ static void LoadTexture(HU3DMODEL *modelP, HSFBITMAP *bmpPtr, HSFATTRIBUTE *attr
     if((modelP->attr & HU3D_ATTR_TEX_NEAR) || (attrP->flag & HSF_FLAG_NEAR)) {
         GXInitTexObjLOD(&texObj, GX_NEAR, GX_NEAR, 0.0f, 0.0f, 0.0f, GX_FALSE, GX_FALSE, GX_ANISO_1);
     } else if(mipmap) {
-        GXInitTexObjLOD(&texObj, GX_LIN_MIP_LIN, GX_LINEAR, 0.0f, attrP->unk78, 0.0f, GX_FALSE, GX_TRUE, GX_ANISO_2);
+        GXInitTexObjLOD(&texObj, GX_LIN_MIP_LIN, GX_LINEAR, 0.0f, attrP->maxLod, 0.0f, GX_FALSE, GX_TRUE, GX_ANISO_2);
     } else if(bmpPtr->maxLod == 0) {
         GXInitTexObjLOD(&texObj, GX_LINEAR, GX_LINEAR, 0.0f, 0.0f, 0.0f, GX_FALSE, GX_FALSE, GX_ANISO_1);
     } else {

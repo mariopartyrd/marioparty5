@@ -201,7 +201,7 @@ typedef struct HsfAttribute_s {
     u32 wrapS;
     u32 wrapT;
     u8 unk6C[12];
-    u32 unk78;
+    u32 maxLod;
     u32 flag;
     HSFBITMAP *bitmap;
 } HSFATTRIBUTE;

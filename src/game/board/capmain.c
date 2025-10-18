@@ -1748,7 +1748,7 @@ void MBCapsuleKinokoExec(void)
     float yOfs;
     
     HuVecF effectPos;
-    HuVecF dir;
+    HuVecF vel;
     HuVecF playerPos;
     GXColor color;
     
@@ -1768,15 +1768,15 @@ void MBCapsuleKinokoExec(void)
         effectPos.y = playerPos.y+(HuSin(effAngle)*power);
         effectPos.z = playerPos.z+50;
         dirRadius = ((MBCapsuleEffRandF()*0.04f)+0.005f)*100;
-        dir.x = HuCos(effAngle)*dirRadius;
-        dir.y = HuSin(effAngle)*dirRadius;
-        dir.z = 0;
+        vel.x = HuCos(effAngle)*dirRadius;
+        vel.y = HuSin(effAngle)*dirRadius;
+        vel.z = 0;
         power = MBCapsuleEffRandF();
         color.r = 192+(power*63);
         color.g = 192+(power*63);
         color.b = 192+(power*63);
         color.a = 192+(MBCapsuleEffRandF()*63);
-        MBCapsuleExplodeEffLineAdd(0, effectPos, dir,
+        MBCapsuleExplodeEffLineAdd(0, effectPos, vel,
             ((MBCapsuleEffRandF()*0.5f)+1.0f)*100,
             2.5f,
             ((MBCapsuleEffRandF()*0.5f)+0.5f)*100,
@@ -1798,15 +1798,15 @@ void MBCapsuleKinokoExec(void)
             effectPos.x = playerPos.x+(150*(MBCapsuleEffRandF()+-0.5f));
             effectPos.y = playerPos.y+(150*(MBCapsuleEffRandF()+-0.5f));
             effectPos.z = playerPos.z+50;
-            dir.x = 0;
-            dir.z = 0;
-            dir.y = (MBCapsuleEffRandF()*0.2f)+1.0f;
+            vel.x = 0;
+            vel.z = 0;
+            vel.y = (MBCapsuleEffRandF()*0.2f)+1.0f;
             power = MBCapsuleEffRandF();
             color.r = 192+(power*63);
             color.g = 192+(power*63);
             color.b = 192+(power*63);
             color.a = 192+(MBCapsuleEffRandF()*63);
-            MBCapsuleGlowEffAdd(effectPos, dir, ((MBCapsuleEffRandF()*0.1f)+0.2f)*100, 0.016666668f, 0.1f, 0, color);
+            MBCapsuleGlowEffAdd(effectPos, vel, ((MBCapsuleEffRandF()*0.1f)+0.2f)*100, 0.016666668f, 0.1f, 0, color);
         }
         HuPrcVSleep();
     }
@@ -1824,15 +1824,15 @@ void MBCapsuleKinokoExec(void)
         effectPos.x = playerPos.x+(100*(t*(MBCapsuleEffRandF()+-0.5f)));
         effectPos.y = playerPos.y+(100*(t*(MBCapsuleEffRandF()+-0.5f)));
         effectPos.z = playerPos.z+50; 
-        dir.x = 0;
-        dir.z = 0;
-        dir.y = (MBCapsuleEffRandF()*0.2f)+1.0f;
+        vel.x = 0;
+        vel.z = 0;
+        vel.y = (MBCapsuleEffRandF()*0.2f)+1.0f;
         power = MBCapsuleEffRandF();
         color.r = 192+(power*63);
         color.g = 192+(power*63);
         color.b = 192+(power*63);
         color.a = 192+(MBCapsuleEffRandF()*63);
-        MBCapsuleGlowEffAdd(effectPos, dir, ((MBCapsuleEffRandF()*0.1f)+0.2f)*(100*t), 0.016666668f, 0.1f, 0, color);
+        MBCapsuleGlowEffAdd(effectPos, vel, ((MBCapsuleEffRandF()*0.1f)+0.2f)*(100*t), 0.016666668f, 0.1f, 0, color);
         HuPrcVSleep();
     }
     GwPlayer[capsulePlayer].saiMode = MB_SAIMODE_KINOKO;
@@ -1840,7 +1840,7 @@ void MBCapsuleKinokoExec(void)
     for(i=0; i<6.0f; i++) {
         HuPrcVSleep();
     }
-    while(MBCapsuleGlowEffCheck() > 0) {
+    while(MBCapsuleGlowEffNumGet() > 0) {
         HuPrcVSleep();
     }
     HuPrcEnd();
@@ -1866,7 +1866,7 @@ void MBCapsuleSKinokoExec(void)
     float yOfs;
     
     HuVecF effectPos;
-    HuVecF dir;
+    HuVecF vel;
     HuVecF playerPos;
     GXColor color;
     
@@ -1886,15 +1886,15 @@ void MBCapsuleSKinokoExec(void)
         effectPos.y = playerPos.y+(HuSin(effAngle)*power);
         effectPos.z = playerPos.z+50;
         dirRadius = ((MBCapsuleEffRandF()*0.04f)+0.005f)*100;
-        dir.x = HuCos(effAngle)*dirRadius;
-        dir.y = HuSin(effAngle)*dirRadius;
-        dir.z = 0;
+        vel.x = HuCos(effAngle)*dirRadius;
+        vel.y = HuSin(effAngle)*dirRadius;
+        vel.z = 0;
         power = MBCapsuleEffRandF();
         color.r = 192+(power*63);
         color.g = 192+(power*63);
         color.b = 192+(power*63);
         color.a = 192+(MBCapsuleEffRandF()*63);
-        MBCapsuleExplodeEffLineAdd(0, effectPos, dir,
+        MBCapsuleExplodeEffLineAdd(0, effectPos, vel,
             ((MBCapsuleEffRandF()*0.5f)+1.0f)*100,
             2.5f,
             ((MBCapsuleEffRandF()*0.5f)+0.5f)*100,
@@ -1916,15 +1916,15 @@ void MBCapsuleSKinokoExec(void)
             effectPos.x = playerPos.x+(150*(MBCapsuleEffRandF()+-0.5f));
             effectPos.y = playerPos.y+(150*(MBCapsuleEffRandF()+-0.5f));
             effectPos.z = playerPos.z+50;
-            dir.x = 0;
-            dir.z = 0;
-            dir.y = (MBCapsuleEffRandF()*0.2f)+1.0f;
+            vel.x = 0;
+            vel.z = 0;
+            vel.y = (MBCapsuleEffRandF()*0.2f)+1.0f;
             power = MBCapsuleEffRandF();
             color.r = 192+(power*63);
             color.g = 192+(power*63);
             color.b = 192+(power*63);
             color.a = 192+(MBCapsuleEffRandF()*63);
-            MBCapsuleGlowEffAdd(effectPos, dir, ((MBCapsuleEffRandF()*0.1f)+0.2f)*100, 0.016666668f, 0.1f, 0, color);
+            MBCapsuleGlowEffAdd(effectPos, vel, ((MBCapsuleEffRandF()*0.1f)+0.2f)*100, 0.016666668f, 0.1f, 0, color);
         }
         HuPrcVSleep();
     }
@@ -1942,15 +1942,15 @@ void MBCapsuleSKinokoExec(void)
         effectPos.x = playerPos.x+(100*(1*(MBCapsuleEffRandF()+-0.5f)));
         effectPos.y = playerPos.y+(100*(1*(MBCapsuleEffRandF()+-0.5f)));
         effectPos.z = playerPos.z+50; 
-        dir.x = 0;
-        dir.z = 0;
-        dir.y = (MBCapsuleEffRandF()*0.2f)+1.0f;
+        vel.x = 0;
+        vel.z = 0;
+        vel.y = (MBCapsuleEffRandF()*0.2f)+1.0f;
         power = MBCapsuleEffRandF();
         color.r = 192+(power*63);
         color.g = 192+(power*63);
         color.b = 192+(power*63);
         color.a = 192+(MBCapsuleEffRandF()*63);
-        MBCapsuleGlowEffAdd(effectPos, dir, ((MBCapsuleEffRandF()*0.1f)+0.2f)*(100*t), 0.016666668f, 0.1f, 0, color);
+        MBCapsuleGlowEffAdd(effectPos, vel, ((MBCapsuleEffRandF()*0.1f)+0.2f)*(100*t), 0.016666668f, 0.1f, 0, color);
         HuPrcVSleep();
     }
     GwPlayer[capsulePlayer].saiMode = MB_SAIMODE_SKINOKO;
@@ -1958,7 +1958,7 @@ void MBCapsuleSKinokoExec(void)
     for(i=0; i<6.0f; i++) {
         HuPrcVSleep();
     }
-    while(MBCapsuleGlowEffCheck() > 0) {
+    while(MBCapsuleGlowEffNumGet() > 0) {
         HuPrcVSleep();
     }
     HuPrcEnd();
@@ -1984,7 +1984,7 @@ void MBCapsuleNKinokoExec(void)
     float yOfs;
     
     HuVecF effectPos;
-    HuVecF dir;
+    HuVecF vel;
     HuVecF playerPos;
     GXColor color;
     
@@ -2005,15 +2005,15 @@ void MBCapsuleNKinokoExec(void)
         effectPos.y = playerPos.y+(HuSin(effAngle)*power);
         effectPos.z = playerPos.z+50;
         dirRadius = ((MBCapsuleEffRandF()*0.04f)+0.005f)*100;
-        dir.x = HuCos(effAngle)*dirRadius;
-        dir.y = HuSin(effAngle)*dirRadius;
-        dir.z = 0;
+        vel.x = HuCos(effAngle)*dirRadius;
+        vel.y = HuSin(effAngle)*dirRadius;
+        vel.z = 0;
         power = MBCapsuleEffRandF();
         color.r = 127+(power*32);
         color.g = 64+(power*32);
         color.b = 127+(power*32);
         color.a = 192+(MBCapsuleEffRandF()*63);
-        MBCapsuleExplodeEffLineAdd(0, effectPos, dir,
+        MBCapsuleExplodeEffLineAdd(0, effectPos, vel,
             ((MBCapsuleEffRandF()*0.5f)+1.0f)*100,
             2.5f,
             ((MBCapsuleEffRandF()*0.5f)+0.5f)*100,
@@ -2035,15 +2035,15 @@ void MBCapsuleNKinokoExec(void)
             effectPos.x = playerPos.x+(150*(MBCapsuleEffRandF()+-0.5f));
             effectPos.y = playerPos.y+(150*(MBCapsuleEffRandF()+-0.5f));
             effectPos.z = playerPos.z+50;
-            dir.x = 0;
-            dir.z = 0;
-            dir.y = (MBCapsuleEffRandF()*0.2f)+1.0f;
+            vel.x = 0;
+            vel.z = 0;
+            vel.y = (MBCapsuleEffRandF()*0.2f)+1.0f;
             power = MBCapsuleEffRandF();
             color.r = 192+(power*63);
             color.g = 64+(power*63);
             color.b = 192+(power*63);
             color.a = 127+(MBCapsuleEffRandF()*63);
-            MBCapsuleNKinokoEffAdd(effectPos, dir, ((MBCapsuleEffRandF()*0.1f)+0.2f)*100, 0.1f, 60, color);
+            MBCapsuleNKinokoEffAdd(effectPos, vel, ((MBCapsuleEffRandF()*0.1f)+0.2f)*100, 0.1f, 60, color);
         }
         HuPrcVSleep();
     }
@@ -2062,15 +2062,15 @@ void MBCapsuleNKinokoExec(void)
             effectPos.x = playerPos.x+(150*(1*(MBCapsuleEffRandF()+-0.5f)));
             effectPos.y = playerPos.y+(150*(1*(MBCapsuleEffRandF()+-0.5f)));
             effectPos.z = playerPos.z+50; 
-            dir.x = 0;
-            dir.z = 0;
-            dir.y = (MBCapsuleEffRandF()*0.2f)+1.0f;
+            vel.x = 0;
+            vel.z = 0;
+            vel.y = (MBCapsuleEffRandF()*0.2f)+1.0f;
             power = MBCapsuleEffRandF();
             color.r = 192+(power*63);
             color.g = 64+(power*63);
             color.b = 192+(power*63);
             color.a = 127+(MBCapsuleEffRandF()*63);
-            MBCapsuleNKinokoEffAdd(effectPos, dir, t*(100*((MBCapsuleEffRandF()*0.1f)+0.2f)), 0.1f, 60, color);
+            MBCapsuleNKinokoEffAdd(effectPos, vel, t*(100*((MBCapsuleEffRandF()*0.1f)+0.2f)), 0.1f, 60, color);
         }
         HuPrcVSleep();
     }
@@ -2079,7 +2079,7 @@ void MBCapsuleNKinokoExec(void)
     for(i=0; i<6.0f; i++) {
         HuPrcVSleep();
     }
-    while(MBCapsuleGlowEffCheck() > 0) {
+    while(MBCapsuleGlowEffNumGet() > 0) {
         HuPrcVSleep();
     }
     HuPrcEnd();
@@ -2825,7 +2825,7 @@ void MBCapsuleHanachanExec(void)
     float effAngle; //f29
     float power; //f28
     float radius; //f27
-    float effRadius; //f26
+    float effSpeed; //f26
     float hookYOfs; //f25
     float rotX; //f24
     float glowSpeed; //f23
@@ -2840,8 +2840,8 @@ void MBCapsuleHanachanExec(void)
     HuVecF ctrlPos; //sp+0x19C
     HuVecF startPos; //sp+0x190
     HuVecF tempVec; //sp+0x184
-    HuVecF ringDir; //sp+0x178
-    HuVecF explodeRot; //sp+0x16C
+    HuVecF ringScaleVel; //sp+0x178
+    HuVecF explodeVel; //sp+0x16C
     HuVecF rayRot; //sp+0x160
     HuVecF rayMoveDir; //sp+0x154
     HuVecF glowVel; //sp+0x148
@@ -2945,8 +2945,8 @@ void MBCapsuleHanachanExec(void)
     do {
         HuPrcVSleep();
         power = MBMotionTimeGet(flowerMdlId);
-        effRadius = MBMotionMaxTimeGet(flowerMdlId);
-        t = power/effRadius;
+        effSpeed = MBMotionMaxTimeGet(flowerMdlId);
+        t = power/effSpeed;
         if(t >= 1) {
             t = 1;
             MBPlayerMotionNoShiftSet(capsulePlayer, MB_PLAYER_MOT_IDLE, 0, 8, HU3D_MOTATTR_LOOP);
@@ -2972,7 +2972,7 @@ void MBCapsuleHanachanExec(void)
     tempVec.x = mdlPos.x+50;
     tempVec.y = mdlPos.y+100;
     tempVec.z = mdlPos.z;
-    explodeRot.x = explodeRot.y = explodeRot.z = 0;
+    explodeVel.x = explodeVel.y = explodeVel.z = 0;
     MBCapsuleDustExplodeAdd(0, tempVec);
     for(i=0; i<30.0f; i++) {
         t = i/30.0f;
@@ -3036,16 +3036,16 @@ void MBCapsuleHanachanExec(void)
             tempVec.x = mdlPos.x+(power*HuCos(effAngle));
             tempVec.y = mdlPos.y+(power*HuSin(effAngle))+50;
             tempVec.z = mdlPos.z+50;
-            effRadius = ((MBCapsuleEffRandF()*0.04f)+0.005f)*100;
-            explodeRot.x = effRadius*HuCos(effAngle);
-            explodeRot.y = effRadius*HuSin(effAngle);
-            explodeRot.z = 0;
+            effSpeed = ((MBCapsuleEffRandF()*0.04f)+0.005f)*100;
+            explodeVel.x = effSpeed*HuCos(effAngle);
+            explodeVel.y = effSpeed*HuSin(effAngle);
+            explodeVel.z = 0;
             power = MBCapsuleEffRandF();
             effColor.r = 192+(power*63);
             effColor.g = 192+(power*63);
             effColor.b = 192+(power*63);
             effColor.a = 192+(MBCapsuleEffRandF()*63);
-            MBCapsuleExplodeEffLineAdd(0, tempVec, explodeRot, 
+            MBCapsuleExplodeEffLineAdd(0, tempVec, explodeVel, 
                 ((MBCapsuleEffRandF()*0.5f)+1.0f)*100,
                 2.5f,
                 ((MBCapsuleEffRandF()*0.5f)+0.5f)*100,
@@ -3055,7 +3055,7 @@ void MBCapsuleHanachanExec(void)
         MBModelDispSet(mdlId, FALSE);
         while(1){
             HuPrcVSleep();
-            if(MBCapsuleExplodeEffCheck(0) == 0) {
+            if(MBCapsuleExplodeEffNumGet(0) == 0) {
                 break;
             }
         }
@@ -3073,8 +3073,8 @@ void MBCapsuleHanachanExec(void)
         do {
             HuPrcVSleep();
             power = MBMotionTimeGet(flowerMdlId);
-            effRadius = MBMotionMaxTimeGet(flowerMdlId);
-            t = power/effRadius;
+            effSpeed = MBMotionMaxTimeGet(flowerMdlId);
+            t = power/effSpeed;
             if(t <= 0) {
                 t = 0;
                 MBPlayerMotionNoShiftSet(capsulePlayer, MB_PLAYER_MOT_IDLE, 0, 8, HU3D_MOTATTR_LOOP);
@@ -3105,11 +3105,11 @@ void MBCapsuleHanachanExec(void)
         tempVec.x = mdlPos.x+((0.5f-MBCapsuleEffRandF())*50);
         tempVec.y = mdlPos.y+(MBCapsuleEffRandF()*150);
         tempVec.z = mdlPos.z+((0.5f-MBCapsuleEffRandF())*50);
-        ringDir.x = (MBCapsuleEffRandF()*0.7)+0.7f;
-        ringDir.y = (MBCapsuleEffRandF()*0.5)+1.5;
-        ringDir.z = (MBCapsuleEffRandF()*0.5)+2;
+        ringScaleVel.x = (MBCapsuleEffRandF()*0.7)+0.7f;
+        ringScaleVel.y = (MBCapsuleEffRandF()*0.5)+1.5;
+        ringScaleVel.z = (MBCapsuleEffRandF()*0.5)+2;
         effColor = kinokoGlowColorTbl[MBCapsuleEffRand(7)];
-        MBCapsuleHanachanRingAdd(&tempVec, &ringDir, ((MBCapsuleEffRandF()*0.2f)+0.3f)*60, -1, ((MBCapsuleEffRandF()*0.2f)+0.3f)*60, effColor);
+        MBCapsuleHanachanRingAdd(&tempVec, &ringScaleVel, ((MBCapsuleEffRandF()*0.2f)+0.3f)*60, -1, ((MBCapsuleEffRandF()*0.2f)+0.3f)*60, effColor);
         HuPrcVSleep();
     }
     for(i=0; i<30.0f; i++) {
@@ -3121,10 +3121,10 @@ void MBCapsuleHanachanExec(void)
         cameraP = MBCameraGet();
         tempVec = mdlPos;
         tempVec.y += 100;
-        ringDir.x = cameraP->rot.x;
-        ringDir.y = cameraP->rot.y;
-        ringDir.z = cameraP->rot.z;
-        MBCapsuleRingEffAdd(tempVec, ringDir, ringVel[i], 12, 15, i%3, ringCol[i]);
+        ringScaleVel.x = cameraP->rot.x;
+        ringScaleVel.y = cameraP->rot.y;
+        ringScaleVel.z = cameraP->rot.z;
+        MBCapsuleRingEffAdd(tempVec, ringScaleVel, ringVel[i], 12, 15, i%3, ringCol[i]);
     }
     for(i=0; i<32; i++) {
         tempVec = mdlPos;
@@ -6075,7 +6075,7 @@ void MBCapsulePakkunExec(void)
     HuVecF playerPos; //sp+0xCC
     HuVecF tempVec; //sp+0xC0
     HuVecF playerVel; //sp+0xB4
-    HuVecF effRot; //sp+0xA8
+    HuVecF effVel; //sp+0xA8
     HuVecF playerPosOld; //sp+0x9C
     HuVecF mdlPos; //sp+0x90
     int motId[3]; //sp+0x84
@@ -6112,13 +6112,13 @@ void MBCapsulePakkunExec(void)
             tempVec.x = playerPos.x+((MBCapsuleEffRandF()-0.5f)*100);
             tempVec.y = playerPos.y;
             tempVec.z = playerPos.z+((MBCapsuleEffRandF()-0.5f)*100);
-            effRot.x = effRot.y = effRot.z = 0;
+            effVel.x = effVel.y = effVel.z = 0;
             t = MBCapsuleEffRandF();
             color.r = 192+(t*63);
             color.g = 192+(t*63);
             color.b = 192+(t*63);
             color.a = 192+(MBCapsuleEffRandF()*63);
-            MBCapsuleExplodeEffAdd(0, tempVec, effRot,
+            MBCapsuleExplodeEffAdd(0, tempVec, effVel,
                 (MBCapsuleEffRandF()+2)*100,
                 0,
                 (MBCapsuleEffRandF()*0.2f)+0.33f,
@@ -6165,13 +6165,13 @@ void MBCapsulePakkunExec(void)
             tempVec.x = playerPos.x+((MBCapsuleEffRandF()-0.5f)*100);
             tempVec.y = playerPos.y;
             tempVec.z = playerPos.z+((MBCapsuleEffRandF()-0.5f)*100);
-            effRot.x = effRot.y = effRot.z = 0;
+            effVel.x = effVel.y = effVel.z = 0;
             t = MBCapsuleEffRandF();
             color.r = 192+(t*63);
             color.g = 192+(t*63);
             color.b = 192+(t*63);
             color.a = 192+(MBCapsuleEffRandF()*63);
-            MBCapsuleExplodeEffAdd(0, tempVec, effRot,
+            MBCapsuleExplodeEffAdd(0, tempVec, effVel,
                 (MBCapsuleEffRandF()+2)*100,
                 0,
                 (MBCapsuleEffRandF()*0.2f)+0.33f,
@@ -6527,7 +6527,7 @@ void MBCapsuleUkkiExec(void)
     HuVecF endPos; //sp+0x100
     HuVecF startPos; //sp+0xF4
     HuVecF effPos; //sp+0xE8
-    HuVecF effRot; //sp+0xDC
+    HuVecF effVel; //sp+0xDC
     HuVecF playerPosOld; //sp+0xD0
     int motId[3]; //sp+0xC4
     int playerList[GW_PLAYER_MAX]; //sp+0xB4
@@ -6785,15 +6785,15 @@ void MBCapsuleUkkiExec(void)
                     effPos.x = playerPosOther.x+((0.5f-MBCapsuleEffRandF())*175);
                     effPos.y = playerPosOther.y+(MBCapsuleEffRandF()*200);
                     effPos.z = playerPosOther.z+75+(MBCapsuleEffRandF()*20);
-                    effRot.x = 0;
-                    effRot.y = 0;
-                    effRot.z = 0;
+                    effVel.x = 0;
+                    effVel.y = 0;
+                    effVel.z = 0;
                     t = MBCapsuleEffRandF();
                     color.r = 192+(t*63);
                     color.g = 192+(t*63);
                     color.b = 192+(t*63);
                     color.a = 192+(MBCapsuleEffRandF()*63);
-                    MBCapsuleExplodeEffAdd(0, effPos, effRot, (MBCapsuleEffRandF()+2)*100, 0, 0.33f, color);
+                    MBCapsuleExplodeEffAdd(0, effPos, effVel, (MBCapsuleEffRandF()+2)*100, 0, 0.33f, color);
                 }
             }
             HuPrcVSleep();
@@ -10152,7 +10152,7 @@ static void KoopaCapsuleGetExec(int mdlId, BOOL partyF)
         MBAudFXPlay(MSM_SE_BOARD_85);
         do {
             HuPrcVSleep();
-        } while(MBCapsuleExplodeEffCheck(0) > 0);
+        } while(MBCapsuleExplodeEffNumGet(0) > 0);
         for(i=0; i<60.0f; i++) {
             HuPrcVSleep();
         }
@@ -14832,191 +14832,1814 @@ void MBPlayerMoveObjClose(void)
     }
 }
 
+static void MiracleGlowEffCreate(int mdlId, int charNo);
+
 void MBCapsuleMiracleGlowExec(OMOBJ *obj)
 {
+    int mdlId; //r30
+    int playerNo; //r29
+    int charNo; //r28
+    HU3DMODEL *playerModelP; //r27
+    HU3DMODEL *modelP; //r26
+    int *work; //r25
+    int playerMdlId; //r24
+    int rawMdlId; //r23
     
+    float angle; //f31
+    float tpLvl; //f30
+    
+    HuVecF playerPos; //sp+0x40
+    HuVecF pos; //sp+0x34
+    HuVecF vel; //sp+0x28
+    GXColor color; //sp+0xC
+    
+    static HuVecF sizeTbl[CHARNO_MAX] = {
+        { 80, 150, 0 },
+        { 80, 200, 0 },
+        { 80, 200, 0 },
+        { 80, 150, 0 },
+        { 100, 150, 0 },
+        { 80, 200, 0 },
+        { 110, 220, 0 },
+        { 80, 150, 0 },
+        { 110, 120.00001, 50 },
+        { 110, 150, 0 },
+        { 110, 150, 0 },
+        { 110, 150, 0 },
+        { 110, 150, 0 }
+    };
+    
+    playerNo = obj->work[0];
+    charNo = GwPlayer[playerNo].charNo;
+    work = obj->data;
+    mdlId = *work;
+    MBPlayerPosGet(playerNo, &playerPos);
+    switch(obj->work[1]) {
+        case 0:
+            obj->work[1]++;
+            MBModelDispSet(mdlId, TRUE);
+            MBMotionNoSet(mdlId, 1, HU3D_MOTATTR_NONE);
+            obj->work[3] = 0;
+            MBModelPosSet(mdlId, playerPos.x, playerPos.y, playerPos.z);
+            MBModelScaleSet(mdlId, 1.1f, 1.05f, 1.1f);
+            MiracleGlowEffCreate(mdlId, charNo);
+            MBPlayerLayerSet(playerNo, 2);
+        
+        case 1:
+            tpLvl = 1+(0.25*fabs(HuSin(obj->work[3]++)));
+            if(obj->work[3] > 180) {
+                obj->work[3] -= 180;
+            }
+            playerMdlId = MBModelIdGet(MBPlayerModelGet(playerNo));
+            playerModelP = &Hu3DData[playerMdlId];
+            rawMdlId = MBModelIdGet(mdlId);
+            modelP = &Hu3DData[rawMdlId];
+            modelP->motWork.time = playerModelP->motWork.time;
+            modelP->motWork.speed = playerModelP->motWork.speed;
+            angle = (MBCapsuleEffRandF()-0.5f)*90;
+            pos.x = playerPos.x+(sizeTbl[charNo].x*HuSin(angle));
+            pos.z = playerPos.z+(sizeTbl[charNo].x*HuCos(angle));
+            pos.y = (playerPos.y+sizeTbl[charNo].z)+(sizeTbl[charNo].y*MBCapsuleEffRandF());
+            vel.x = vel.z = 0;
+            vel.y = (MBCapsuleEffRandF()*0.2f)+1;
+            angle = (MBCapsuleEffRandF()*0.02f)+0.05f;
+            if(frand() & 0x1) {
+                angle *= -1;
+            }
+            color = kinokoGlowColorTbl[MBCapsuleEffRand(7)];
+            color.a = (MBCapsuleEffRandF()*63)+192;
+            MBCapsuleGlowEffAdd(pos, vel, ((MBCapsuleEffRandF()*0.05f)+0.2f)*100, 0.011111111f, angle, 0, color);
+            break;
+        
+        case 2:
+            tpLvl = 1-(obj->work[3]++/30.0f);
+            MBModelAlphaSet(mdlId, 254*tpLvl);
+            if(tpLvl <= 0) {
+                MBModelDispSet(mdlId, FALSE);
+                obj->work[1]++;
+            }
+            break;
+        
+        case 4:
+            MBPlayerLayerSet(playerNo, 0);
+            MBModelDispSet(mdlId, FALSE);
+            omDelObjEx(mbObjMan, obj);
+            return;
+    }
+    if(MBKillCheck() || capsuleObj == NULL) {
+        omDelObjEx(mbObjMan, obj);
+    }
 }
 
 BOOL MBCapsuleMiracleGlowCheck(OMOBJ *obj)
 {
-    
+    if(obj->work[1] < 3 || MBCapsuleGlowEffNumGet() > 0) {
+        return FALSE;
+    } else {
+        return TRUE;
+    }
 }
+
+static void MiracleGlowEffCreate(int mdlId, int charNo)
+{
+    HSFMATERIAL *matP; //r31
+    HSFDATA *hsfP; //r30
+    int i; //r29
+    HSFBITMAP *bmp; //r28
+    GXColor *colorP; //r27
+    int j; //r26
+    HSFATTRIBUTE *attrP; //r25
+    HSFBUFFER *colBufP; //r24
+    HSFPALETTE *pal; //r23
+    HU3DMODEL *modelP; //r21
+    int rawMdlId; //r20
+    HSFBUFFER *faceP;
+    
+    MBModelAlphaSet(mdlId, 254);
+    MBModelLayerSet(mdlId, 2);
+    MBModelAttrSet(mdlId, HU3D_ATTR_MOT_EXEC|HU3D_ATTR_CULL_FRONT);
+    MBModelAttrReset(mdlId, HU3D_ATTR_ZWRITE_OFF);
+    rawMdlId = MBModelIdGet(mdlId);
+    modelP = &Hu3DData[rawMdlId];
+    hsfP = modelP->hsf;
+    attrP = hsfP->attribute;
+    matP = hsfP->material;
+    bmp = hsfP->bitmap;
+    pal = hsfP->palette;
+    faceP = hsfP->face;
+    for(colBufP=hsfP->color, i=0; i<hsfP->colorNum; i++, colBufP++) {
+        for(colorP=colBufP->data, j=0; j<colBufP->count; j++, colorP++) {
+            colorP->r = colorP->g = colorP->b = colorP->a = 255;
+        }
+    }
+    for(i=0; i<hsfP->materialNum; i++, matP++) {
+        matP->litColor[0] = 255;
+        matP->litColor[1] = 255;
+        matP->litColor[2] = 255;
+        matP->color[0] = 255;
+        matP->color[1] = 255;
+        matP->color[2] = 255;
+        matP->shadowColor[0] = 255;
+        matP->shadowColor[1] = 255;
+        matP->shadowColor[2] = 255;
+        if(charNo == CHARNO_KINOPIO) {
+            matP->flags |= HSF_MATERIAL_ADDCOL;
+            matP->flags &= ~(HSF_MATERIAL_NEAR|HSF_MATERIAL_DISABLE_ZWRITE|HSF_MATERIAL_NOCULL);
+        } else {
+            matP->flags |= HSF_MATERIAL_ADDCOL;
+            matP->flags &= ~(HSF_MATERIAL_NEAR|HSF_MATERIAL_DISABLE_ZWRITE|HSF_MATERIAL_NOCULL);
+        }
+    }
+    for(i=0; i<hsfP->paletteNum; i++, pal++) {
+        memset(pal->data, 0xFF, pal->palSize*sizeof(u16));
+    }
+    for(i=0; i<hsfP->attributeNum; i++, attrP++) {
+        for(bmp=attrP->bitmap, j=0; j<attrP->maxLod; j++, bmp++) {
+            bmp->tint.r = 255;
+            bmp->tint.g = 255;
+            bmp->tint.b = 255;
+            bmp->tint.a = 255;
+        }
+    }
+}
+
+#define CAPSULE_EFF_ATTR_NONE 0
+#define CAPSULE_EFF_ATTR_COUNTER_RESET (1 << 0)
+#define CAPSULE_EFF_ATTR_COUNTER_UPDATE (1 << 1)
+
+#define CAPSULE_EFF_DISPATTR_NONE 0
+#define CAPSULE_EFF_DISPATTR_ZBUF_OFF (1 << 0)
+#define CAPSULE_EFF_DISPATTR_NOANIM (1 << 1)
+#define CAPSULE_EFF_DISPATTR_CAMERA_ROT (1 << 2)
+#define CAPSULE_EFF_DISPATTR_ROT3D (1 << 3)
+#define CAPSULE_EFF_DISPATTR_ALL 15
+
+typedef struct CapsuleEffect_s CAPSULE_EFFECT;
+typedef void (*CAPSULE_EFFHOOK)(HU3DMODEL *modelP, CAPSULE_EFFECT *effP, Mtx *matrix);
+
+typedef struct CapsuleEffData_s {
+    s16 time;
+    s16 maxTime;
+    s16 mode;
+    s16 cameraBit;
+    HuVecF vel;
+    float baseAlpha;
+    float tpLvl;
+    float speed;
+    float unk20;
+    float gravity;
+    float rotSpeed;
+    float animTime;
+    float animSpeed;
+    float scale;
+    HuVecF rot;
+    HuVecF pos;
+    GXColor color;
+    int no;
+} CAPSULE_EFFDATA;
+
+struct CapsuleEffect_s {
+    s16 mode;
+    s16 time;
+    HuVecF vel;
+    s16 work[8];
+    u8 blendMode;
+    u8 attr;
+    u8 dispAttr;
+    u8 unk23;
+    HU3DMODELID modelId;
+    s16 num;
+    u32 count;
+    u32 prevCounter;
+    u32 prevCount;
+    u32 dlSize;
+    ANIMDATA *anim;
+    CAPSULE_EFFDATA *data;
+    HuVecF *vertex;
+    HuVec2F *st;
+    void *dl;
+    CAPSULE_EFFHOOK hook;
+    HU3DMODEL *hookMdlP;
+};
+
+static HU3DMODELID CapsuleEffCreate(ANIMDATA *animP, int max);
+
+typedef struct ExplodeEffWork_s {
+    int mdlId;
+    int num;
+    int no;
+    ANIMDATA *animP;
+} EXPLODE_EFF_WORK;
 
 void MBCapsuleExplodeEffCreate(int no)
 {
+    EXPLODE_EFF_WORK *work;
+    OMOBJ *obj;
+    CAPSULE_EFFECT *effP;
+    HU3DMODEL *modelP;
+    ANIMDATA *animP;
+    int effMdlId;
     
+    obj = explodeEffObj[no] = MBAddObj(32768, 0, 0, MBCapsuleExplodeEffExec);
+    work = obj->data = HuMemDirectMallocNum(HEAP_HEAP, sizeof(EXPLODE_EFF_WORK), HU_MEMNUM_OVL);
+    memset(work, 0, sizeof(EXPLODE_EFF_WORK));
+    work->animP = animP = HuSprAnimRead(HuDataReadNum(CAPSULE_ANM_effExplode, HU_MEMNUM_OVL));
+    work->mdlId = effMdlId = CapsuleEffCreate(animP, 256);
+    Hu3DModelLayerSet(work->mdlId, 3);
+    work->num = 0;
+    work->no = no;
+    modelP = &Hu3DData[work->mdlId];
+    effP = modelP->hookData;
+    effP->blendMode = HU3D_PARTICLE_BLEND_NORMAL;
+}
+
+void MBCapsuleExplodeEffExec(OMOBJ *obj)
+{
+    CAPSULE_EFFDATA *effDataP; //r31
+    EXPLODE_EFF_WORK *work; //r30
+    CAPSULE_EFFECT *effP; //r29
+    int i; //r28
+    HU3DMODEL *modelP; //r27
+    
+    work = obj->data;
+    if(MBKillCheck() || explodeEffObj[work->no] == NULL) {
+        Hu3DModelKill(work->mdlId);
+        work->mdlId = HU3D_MODELID_NONE;
+        HuSprAnimKill(work->animP);
+        work->animP = NULL;
+        omDelObjEx(mbObjMan, obj);
+        explodeEffObj[work->no] = NULL;
+        return;
+    }
+    if(work->num <= 0) {
+        Hu3DModelDispOff(work->mdlId);
+    } else {
+        Hu3DModelDispOn(work->mdlId);
+        modelP = &Hu3DData[work->mdlId];
+        effP = modelP->hookData;
+        effDataP = effP->data;
+        effP->unk23 = 0;
+        for(i=0; i<effP->num; i++, effDataP++) {
+            if(effDataP->scale <= 0) {
+                continue;
+            }
+            effDataP->pos.x += effDataP->vel.x;
+            effDataP->pos.y += effDataP->vel.y;
+            effDataP->pos.z += effDataP->vel.z;
+            effDataP->rot.z += effDataP->speed;
+            if(effDataP->rot.z >= 360) {
+                effDataP->rot.z -= 360;
+            }
+            effDataP->no = effDataP->animTime;
+            effDataP->animTime += effDataP->animSpeed;
+            if(effDataP->no >= 16) {
+                effDataP->no = 0;
+                effDataP->time = 0;
+                effDataP->scale  = 0;
+                work->num--;
+            }
+        }
+    }
 }
 
 void MBCapsuleExplodeEffKill(int no)
 {
-    
+    explodeEffObj[no] = NULL;
 }
 
-int MBCapsuleExplodeEffCheck(int no)
+int MBCapsuleExplodeEffNumGet(int no)
 {
-    
+    OMOBJ *obj;
+    EXPLODE_EFF_WORK *work;
+    obj = explodeEffObj[no];
+    if(explodeEffObj[no] == NULL) {
+        return 0;
+    } else {
+        work = obj->data;
+        return work->num;
+    }
 }
 
-int MBCapsuleExplodeEffAdd(int no, HuVecF pos, HuVecF rot, float size, float speed, float animSpeed, GXColor color)
+int MBCapsuleExplodeEffAdd(int no, HuVecF pos, HuVecF vel, float scale, float speed, float animSpeed, GXColor color)
 {
-    
+    CAPSULE_EFFDATA *effDataP;
+    CAPSULE_EFFECT *effP;
+    int i;
+    EXPLODE_EFF_WORK *work;
+    OMOBJ *obj;
+    HU3DMODEL *modelP;
+    obj = explodeEffObj[no];
+    if(explodeEffObj[no] == NULL) {
+        return -1;
+    } else {
+        work = obj->data;
+        modelP = &Hu3DData[work->mdlId];
+        effP = modelP->hookData;
+        for(effDataP=effP->data, i=0; i<effP->num; i++, effDataP++) {
+            if(effDataP->scale <= 0) {
+                break;
+            }
+        }
+        if(i >= effP->num) {
+            return -1;
+        }
+        effDataP->time = effDataP->maxTime = 0;
+        effDataP->pos.x = pos.x;
+        effDataP->pos.y = pos.y;
+        effDataP->pos.z = pos.z;
+        effDataP->vel.x = vel.x;
+        effDataP->vel.y = vel.y;
+        effDataP->vel.z = vel.z;
+        effDataP->speed = speed;
+        effDataP->scale = scale;
+        effDataP->color = color;
+        effDataP->rot.z = 0;
+        effDataP->no = 0;
+        effDataP->time = 0;
+        effDataP->animTime = 0;
+        effDataP->animSpeed = animSpeed;
+        work->num++;
+        return i;
+    }
 }
 
-int MBCapsuleExplodeEffLineAdd(int no, HuVecF pos, HuVecF rot, float size, float speed, float radius, float animSpeed, GXColor color)
+int MBCapsuleExplodeEffLineAdd(int no, HuVecF pos, HuVecF vel, float size, float speed, float radius, float animSpeed, GXColor color)
 {
-    
+    int effId1, effId2;
+    HuVecF effPos;
+    HuVecF effDir;
+    float effOfs;
+    effDir.x = vel.z;
+    effDir.z = vel.x;
+    effDir.y = 0;
+    VECNormalize(&effDir, &effDir);
+    effOfs = 0.5f*radius;
+    effPos.x = pos.x+(effDir.x*effOfs);
+    effPos.y = pos.y+(effDir.y*effOfs);
+    effPos.z = pos.z+(effDir.z*effOfs);
+    effId1 = MBCapsuleExplodeEffAdd(no, effPos, vel, size, speed, animSpeed, color);
+    effPos.x = pos.x-(effDir.x*effOfs);
+    effPos.y = pos.y-(effDir.y*effOfs);
+    effPos.z = pos.z-(effDir.z*effOfs);
+    effId2 = MBCapsuleExplodeEffAdd(no, effPos, vel, size, -speed, animSpeed, color);
+    return (effId1 << 16) | effId2;
 }
 
 void MBCapsuleExplodeEffCircleAdd(int no, HuVecF pos, float radius, float scale, float angle)
 {
+    HuVecF effPos; //sp+0x8C
+    HuVecF effVel; //sp+0x80
+    GXColor color; //sp+0x1C
     
+    float intensity; //f30
+    float speed; //f28
+    
+    effPos.x = pos.x+(radius*(scale*HuCos(angle)));
+    effPos.y = pos.y+50;
+    effPos.z = pos.z+(radius*(scale*HuSin(angle)));
+    speed = ((MBCapsuleEffRandF()*0.04f)+0.005f)*100;
+    effVel.x = speed*HuCos(angle);
+    effVel.y = speed*HuSin(angle);
+    effVel.z = 0;
+    intensity = MBCapsuleEffRandF();
+    color.r = 64+(intensity*32);
+    color.g = 64+(intensity*32);
+    color.b = 64+(intensity*32);
+    color.a = 64+(MBCapsuleEffRandF()*63);
+    MBCapsuleExplodeEffLineAdd(no, effPos, effVel,
+        ((MBCapsuleEffRandF()*0.5f)+1)*100,
+        2.5f,
+        ((MBCapsuleEffRandF()*0.5f)+0.5f)*100,
+        (MBCapsuleEffRandF()*0.2f)+0.33f,
+        color);
 }
 
 void MBCapsuleDustCloudAdd(int no, HuVecF pos)
 {
+    int i;
+    HuVecF effPos;
+    HuVecF effVel;
+    GXColor color;
     
+    float t;
+    float angle;
+    for(i=0; i<32; i++) {
+        angle = i*11.25f;
+        t = (MBCapsuleEffRandF()*100)*0.33f;
+        
+        effPos.x = pos.x+(t*HuCos(angle));
+        effPos.y = pos.y+(t*HuSin(angle))+100;
+        effPos.z = pos.z+50;
+        t = ((MBCapsuleEffRandF()*0.04f)+0.005f)*100;
+        effVel.x = t*HuCos(angle);
+        effVel.y = t*HuSin(angle);
+        effVel.z = 0;
+        t = MBCapsuleEffRandF();
+        color.r = 32+(t*32);
+        color.g = 32+(t*32);
+        color.b = 32+(t*32);
+        color.a = 192+(MBCapsuleEffRandF()*63);
+        MBCapsuleExplodeEffLineAdd(no, effPos, effVel,
+            ((MBCapsuleEffRandF()*0.5f)+1)*100,
+            0.5f,
+            ((MBCapsuleEffRandF()*0.5f)+0.5f)*100,
+            (MBCapsuleEffRandF()*0.66f)+0.33f,
+            color);
+    }
 }
 
 void MBCapsuleDustExplodeAdd(int no, HuVecF pos)
 {
+    int i;
+    HuVecF effPos;
+    HuVecF effVel;
+    GXColor color;
     
+    float t;
+    float angle;
+    for(i=0; i<32; i++) {
+        angle = i*11.25f;
+        t = (MBCapsuleEffRandF()*100)*0.33f;
+        
+        effPos.x = pos.x+(t*HuCos(angle));
+        effPos.y = pos.y+(t*HuSin(angle))+100;
+        effPos.z = pos.z+50;
+        t = ((MBCapsuleEffRandF()*0.04f)+0.005f)*100;
+        effVel.x = t*HuCos(angle);
+        effVel.y = t*HuSin(angle);
+        effVel.z = 0;
+        t = MBCapsuleEffRandF();
+        color.r = 192+(t*32);
+        color.g = 192+(t*32);
+        color.b = 192+(t*32);
+        color.a = 192+(MBCapsuleEffRandF()*63);
+        MBCapsuleExplodeEffLineAdd(no, effPos, effVel,
+            ((MBCapsuleEffRandF()*0.5f)+1)*100,
+            0.5f,
+            ((MBCapsuleEffRandF()*0.5f)+0.5f)*100,
+            (MBCapsuleEffRandF()*0.66f)+0.33f,
+            color);
+    }
 }
 
 void MBCapsuleDustHeavyAdd(int no, HuVecF pos)
 {
+    int i;
+    HuVecF effPos;
+    HuVecF effVel;
+    GXColor color;
     
+    float t;
+    float angle;
+    for(i=0; i<32; i++) {
+        angle = i*11.25f;
+        t = (MBCapsuleEffRandF()*100)*0.33f;
+        
+        effPos.x = pos.x+(t*HuCos(angle));
+        effPos.y = pos.y+50;
+        effPos.z = pos.z+(t*HuSin(angle));
+        t = ((MBCapsuleEffRandF()*0.04f)+0.05f)*100;
+        effVel.x = t*HuCos(angle);
+        effVel.y = 0;
+        effVel.z = t*HuSin(angle);
+        t = MBCapsuleEffRandF();
+        color.r = 192+(t*63);
+        color.g = 192+(t*63);
+        color.b = 192+(t*63);
+        color.a = 64+(MBCapsuleEffRandF()*63);
+        MBCapsuleExplodeEffLineAdd(no, effPos, effVel,
+            ((MBCapsuleEffRandF()*0.5f)+1)*100,
+            0.5f,
+            ((MBCapsuleEffRandF()*0.5f)+0.5f)*100,
+            (MBCapsuleEffRandF()*0.66f)+0.33f,
+            color);
+    }
+    MBCameraQuakeSet(30, 50);
 }
+
+typedef struct NKinokoEffWork_s {
+    int mdlId;
+    int num;
+    ANIMDATA *animP;
+} NKINOKO_EFF_WORK;
 
 void MBCapsuleNKinokoEffCreate(void)
 {
+    NKINOKO_EFF_WORK *work;
+    CAPSULE_EFFECT *effP;
+    OMOBJ *obj;
+    HU3DMODEL *modelP;
+    ANIMDATA *animP;
+    int effMdlId;
     
+    obj = NKinokoEffObj = MBAddObj(32768, 0, 0, MBCapsuleNKinokoEffExec);
+    work = obj->data = HuMemDirectMallocNum(HEAP_HEAP, sizeof(NKINOKO_EFF_WORK), HU_MEMNUM_OVL);
+    memset(work, 0, sizeof(NKINOKO_EFF_WORK));
+    work->animP = animP = HuSprAnimRead(HuDataReadNum(CAPSULE_ANM_effDot2, HU_MEMNUM_OVL));
+    work->mdlId = effMdlId = CapsuleEffCreate(animP, 256);
+    Hu3DModelLayerSet(work->mdlId, 3);
+    work->num = 0;
+    modelP = &Hu3DData[work->mdlId];
+    effP = modelP->hookData;
+    effP->blendMode = HU3D_PARTICLE_BLEND_NORMAL;
+    effP->dispAttr = CAPSULE_EFF_DISPATTR_NOANIM;
+}
+
+void MBCapsuleNKinokoEffExec(OMOBJ *obj)
+{
+    CAPSULE_EFFDATA *effDataP; //r31
+    NKINOKO_EFF_WORK *work; //r30
+    CAPSULE_EFFECT *effP; //r29
+    int i; //r28
+    HU3DMODEL *modelP; //r27
+    float t;
+    
+    work = obj->data;
+    if(MBKillCheck() || NKinokoEffObj == NULL) {
+        Hu3DModelKill(work->mdlId);
+        work->mdlId = HU3D_MODELID_NONE;
+        HuSprAnimKill(work->animP);
+        work->animP = NULL;
+        omDelObjEx(mbObjMan, obj);
+        NKinokoEffObj = NULL;
+        return;
+    }
+    if(work->num <= 0) {
+        Hu3DModelDispOff(work->mdlId);
+    } else {
+        Hu3DModelDispOn(work->mdlId);
+        modelP = &Hu3DData[work->mdlId];
+        effP = modelP->hookData;
+        effDataP = effP->data;
+        for(i=0; i<effP->num; i++, effDataP++) {
+            if(effDataP->scale <= 0) {
+                continue;
+            }
+            effDataP->pos.x += effDataP->vel.x;
+            effDataP->pos.y += effDataP->vel.y;
+            effDataP->pos.z += effDataP->vel.z;
+            effDataP->rot.z += effDataP->speed;
+            if(effDataP->rot.z >= 360) {
+                effDataP->rot.z -= 360;
+            }
+            t = (float)effDataP->time/effDataP->maxTime;
+            effDataP->time--;
+            effDataP->color.a = effDataP->baseAlpha*HuSin(t*90);
+            if(effDataP->time < 0) {
+                effDataP->scale = 0;
+                work->num--;
+            }
+        }
+    }
 }
 
 void MBCapsuleNKinokoEffKill(void)
 {
-    
+    NKinokoEffObj = NULL;
 }
 
-int MBCapsuleNKinokoEffAdd(HuVecF pos, HuVecF vel, float scale, float rotSpeed, int maxTime, GXColor color)
+int MBCapsuleNKinokoEffAdd(HuVecF pos, HuVecF vel, float scale, float speed, int maxTime, GXColor color)
 {
-    
+    CAPSULE_EFFDATA *effDataP;
+    CAPSULE_EFFECT *effP;
+    int i;
+    NKINOKO_EFF_WORK *work;
+    OMOBJ *obj;
+    HU3DMODEL *modelP;
+    obj = NKinokoEffObj;
+    if(NKinokoEffObj == NULL) {
+        return -1;
+    } else {
+        work = obj->data;
+        modelP = &Hu3DData[work->mdlId];
+        effP = modelP->hookData;
+        for(effDataP=effP->data, i=0; i<effP->num; i++, effDataP++) {
+            if(effDataP->scale <= 0.0) {
+                break;
+            }
+        }
+        if(i >= effP->num) {
+            return -1;
+        }
+        effDataP->time = effDataP->maxTime = maxTime;
+        effDataP->vel.x = vel.x;
+        effDataP->vel.y = vel.y;
+        effDataP->vel.z = vel.z;
+        effDataP->baseAlpha = color.a;
+        effDataP->speed = speed;
+        effDataP->scale = scale;
+        effDataP->rot.z = MBCapsuleEffRandF()*360;
+        effDataP->pos.x = pos.x;
+        effDataP->pos.y = pos.y;
+        effDataP->pos.z = pos.z;
+        effDataP->color = color;
+        effDataP->no = 0;
+        work->num++;
+        return i;
+    }
 }
+
+typedef struct SnowEffWork_s {
+    int mdlId;
+    int num;
+    ANIMDATA *animP;
+} SNOW_EFF_WORK;
 
 void MBCapsuleSnowEffCreate(void)
 {
+    SNOW_EFF_WORK *work;
+    CAPSULE_EFFECT *effP;
+    OMOBJ *obj;
+    HU3DMODEL *modelP;
+    ANIMDATA *animP;
+    int effMdlId;
     
+    obj = snowEffObj = MBAddObj(32768, 0, 0, MBCapsuleSnowEffExec);
+    work = obj->data = HuMemDirectMallocNum(HEAP_HEAP, sizeof(SNOW_EFF_WORK), HU_MEMNUM_OVL);
+    memset(work, 0, sizeof(SNOW_EFF_WORK));
+    work->animP = animP = HuSprAnimRead(HuDataReadNum(CAPSULE_ANM_effDot2, HU_MEMNUM_OVL));
+    work->mdlId = effMdlId = CapsuleEffCreate(animP, 128);
+    Hu3DModelLayerSet(work->mdlId, 3);
+    work->num = 0;
+    modelP = &Hu3DData[work->mdlId];
+    effP = modelP->hookData;
+    effP->blendMode = HU3D_PARTICLE_BLEND_NORMAL;
+    effP->dispAttr = CAPSULE_EFF_DISPATTR_NOANIM;
+}
+
+void MBCapsuleSnowEffExec(OMOBJ *obj)
+{
+    CAPSULE_EFFDATA *effDataP; //r31
+    SNOW_EFF_WORK *work; //r30
+    CAPSULE_EFFECT *effP; //r29
+    int i; //r28
+    HU3DMODEL *modelP; //r27
+    float t;
+    
+    work = obj->data;
+    if(MBKillCheck() || snowEffObj == NULL) {
+        Hu3DModelKill(work->mdlId);
+        work->mdlId = HU3D_MODELID_NONE;
+        HuSprAnimKill(work->animP);
+        work->animP = NULL;
+        omDelObjEx(mbObjMan, obj);
+        snowEffObj = NULL;
+        return;
+    }
+    if(work->num <= 0) {
+        Hu3DModelDispOff(work->mdlId);
+    } else {
+        Hu3DModelDispOn(work->mdlId);
+        modelP = &Hu3DData[work->mdlId];
+        effP = modelP->hookData;
+        effDataP = effP->data;
+        for(i=0; i<effP->num; i++, effDataP++) {
+            if(effDataP->scale <= 0) {
+                continue;
+            }
+            if(++effDataP->time > 360) {
+                effDataP->time -= 360;
+            }
+            effDataP->pos.x += effDataP->vel.x*HuSin(effDataP->time*2.0f);
+            effDataP->pos.y += effDataP->vel.y;
+            effDataP->baseAlpha -= effDataP->tpLvl;
+            effDataP->color.a = effDataP->baseAlpha*255;
+            if(effDataP->baseAlpha < 0) {
+                effDataP->scale = 0;
+            }
+        }
+    }
 }
 
 void MBCapsuleSnowEffKill(void)
 {
-    
+    snowEffObj = NULL;
 }
 
 int MBCapsuleSnowEffAdd(HuVecF *pos, int maxTime)
 {
-    
+    CAPSULE_EFFDATA *effDataP;
+    CAPSULE_EFFECT *effP;
+    int i;
+    SNOW_EFF_WORK *work;
+    OMOBJ *obj;
+    HU3DMODEL *modelP;
+    obj = snowEffObj;
+    if(snowEffObj == NULL) {
+        return -1;
+    } else {
+        work = obj->data;
+        modelP = &Hu3DData[work->mdlId];
+        effP = modelP->hookData;
+        for(effDataP=effP->data, i=0; i<effP->num; i++, effDataP++) {
+            if(effDataP->scale <= 0.0) {
+                break;
+            }
+        }
+        if(i >= effP->num) {
+            return -1;
+        }
+        effDataP->pos = *pos;
+        effDataP->vel.x = ((MBCapsuleEffRandF()*0.2f)+1.5f)*0.5f;
+        effDataP->vel.z = (MBCapsuleEffRandF()*0.2f)+1.5f;
+        effDataP->vel.y = -((MBCapsuleEffRandF()*0.2f)+1.5f)*2.0f;
+        effDataP->baseAlpha = 1;
+        effDataP->tpLvl = 1.0f/maxTime;
+        effDataP->time = frand()%360;
+        effDataP->scale = ((MBCapsuleEffRandF()*0.5f)+1)*20;
+        effDataP->color.r = effDataP->color.g = effDataP->color.b = effDataP->color.a = 255;
+        work->num++;
+        return i;
+    }
 }
+
+typedef struct GlowEffWork_s {
+    int mdlId;
+    int num;
+    ANIMDATA *animP;
+} GLOW_EFF_WORK;
 
 void MBCapsuleGlowEffCreate(void)
 {
+    GLOW_EFF_WORK *work;
+    CAPSULE_EFFECT *effP;
+    OMOBJ *obj;
+    HU3DMODEL *modelP;
+    ANIMDATA *animP;
+    int effMdlId;
     
+    obj = glowEffObj = MBAddObj(32768, 0, 0, MBCapsuleGlowEffExec);
+    work = obj->data = HuMemDirectMallocNum(HEAP_HEAP, sizeof(GLOW_EFF_WORK), HU_MEMNUM_OVL);
+    memset(work, 0, sizeof(GLOW_EFF_WORK));
+    work->animP = animP = HuSprAnimRead(HuDataReadNum(CAPSULE_ANM_effCoin, HU_MEMNUM_OVL));
+    work->mdlId = effMdlId = CapsuleEffCreate(animP, 512);
+    Hu3DModelLayerSet(work->mdlId, 3);
+    work->num = 0;
+    modelP = &Hu3DData[work->mdlId];
+    effP = modelP->hookData;
+    effP->blendMode = HU3D_PARTICLE_BLEND_ADDCOL;
+    effP->dispAttr = CAPSULE_EFF_DISPATTR_NOANIM;
+}
+
+void MBCapsuleGlowEffExec(OMOBJ *obj)
+{
+    CAPSULE_EFFDATA *effDataP; //r31
+    GLOW_EFF_WORK *work; //r30
+    CAPSULE_EFFECT *effP; //r29
+    int i; //r28
+    HU3DMODEL *modelP; //r27
+    float t;
+    
+    work = obj->data;
+    if(MBKillCheck() || glowEffObj == NULL) {
+        Hu3DModelKill(work->mdlId);
+        work->mdlId = HU3D_MODELID_NONE;
+        HuSprAnimKill(work->animP);
+        work->animP = NULL;
+        omDelObjEx(mbObjMan, obj);
+        glowEffObj = NULL;
+        return;
+    }
+    if(work->num <= 0) {
+        Hu3DModelDispOff(work->mdlId);
+    } else {
+        Hu3DModelDispOn(work->mdlId);
+        modelP = &Hu3DData[work->mdlId];
+        effP = modelP->hookData;
+        effDataP = effP->data;
+        effP->unk23 = 0;
+        for(i=0; i<effP->num; i++, effDataP++) {
+            if(effDataP->scale <= 0) {
+                continue;
+            }
+            effDataP->pos.x += effDataP->vel.x;
+            effDataP->pos.y += effDataP->vel.y;
+            effDataP->pos.z += effDataP->vel.z;
+            if(effDataP->gravity) {
+                effDataP->vel.y -= effDataP->gravity;
+            }
+            effDataP->scale = effDataP->baseAlpha*effDataP->tpLvl;
+            effDataP->tpLvl -= effDataP->speed;
+            effDataP->rot.z += effDataP->rotSpeed;
+            if(effDataP->tpLvl <= 0) {
+                effDataP->no = 0;
+                effDataP->time = 0;
+                effDataP->scale = 0;
+                work->num--;
+            }
+        }
+    }
 }
 
 void MBCapsuleGlowEffKill(void)
 {
-    
+    glowEffObj = NULL;
 }
 
-int MBCapsuleGlowEffCheck(void)
+int MBCapsuleGlowEffNumGet(void)
 {
-    
+    OMOBJ *obj;
+    GLOW_EFF_WORK *work;
+    obj = glowEffObj;
+    if(glowEffObj == NULL) {
+        return 0;
+    } else {
+        work = obj->data;
+        return work->num;
+    }
 }
 
 void MBCapsuleGlowEffBlendModeSet(int blendMode)
 {
-    
+    OMOBJ *obj;
+    GLOW_EFF_WORK *work;
+    CAPSULE_EFFECT *effP;
+    HU3DMODEL *modelP;
+    obj = glowEffObj;
+    if(glowEffObj == NULL) {
+        return;
+    }
+    work = obj->data;
+    modelP = &Hu3DData[work->mdlId];
+    effP = modelP->hookData;
+    effP->blendMode = blendMode;
 }
 
 void MBCapsuleGlowEffAnimSet(int dataNum)
 {
-    
+    OMOBJ *obj;
+    GLOW_EFF_WORK *work;
+    CAPSULE_EFFECT *effP;
+    HU3DMODEL *modelP;
+    obj = glowEffObj;
+    if(glowEffObj == NULL) {
+        return;
+    }
+    work = obj->data;
+    modelP = &Hu3DData[work->mdlId];
+    effP = modelP->hookData;
+    HuSprAnimKill(work->animP);
+    work->animP = effP->anim = HuSprAnimRead(HuDataReadNum(dataNum, HU_MEMNUM_OVL));
 }
 
 int MBCapsuleGlowEffAdd(HuVecF pos, HuVecF vel, float scale, float fadeSpeed, float rotSpeed, float gravity, GXColor color)
 {
-    
+    CAPSULE_EFFDATA *effDataP; //r31
+    CAPSULE_EFFECT *effP; //r30
+    int i; //r29
+    GLOW_EFF_WORK *work; //r26
+    OMOBJ *obj; //r25
+    HU3DMODEL *modelP; //r24
+    if(glowEffObj == NULL) {
+        return -1;
+    }
+    obj = glowEffObj;
+    work = obj->data;
+    modelP = &Hu3DData[work->mdlId];
+    effP = modelP->hookData;
+    for(effDataP=effP->data, i=0; i<effP->num; i++, effDataP++) {
+        if(effDataP->scale <= 0.0f) {
+            break;
+        }
+    }
+    if(i >= effP->num) {
+        return -1;
+    }
+    effDataP->time = effDataP->maxTime = 0;
+    effDataP->pos.x = pos.x;
+    effDataP->pos.y = pos.y;
+    effDataP->pos.z = pos.z;
+    effDataP->vel.x = vel.x;
+    effDataP->vel.y = vel.y;
+    effDataP->vel.z = vel.z;
+    effDataP->baseAlpha = scale;
+    effDataP->tpLvl = 1;
+    effDataP->speed = fadeSpeed;
+    effDataP->gravity = gravity;
+    effDataP->rotSpeed = rotSpeed;
+    effDataP->scale = scale;
+    effDataP->color = color;
+    effDataP->rot.z = MBCapsuleEffRandF()*360;
+    effDataP->no = 0;
+    effDataP->time = 0;
+    work->num++;
+    return i;
 }
 
-void MBCapsuleHanachanGlowEffAdd(HuVecF pos, float scale, float fadeSpeed, float radiusX, float radiusY, float radiusZ, int mode)
+int MBCapsuleHanachanGlowEffAdd(HuVecF pos, float scale, float fadeSpeed, float radiusX, float radiusY, float radiusZ, int mode)
 {
+    HuVecF effPos; //sp+0x4C
+    HuVecF effVel; //sp+0x40
+    GXColor color; //sp+0x24
+    float rotSpeed; //f31
+    float power; //f30
     
+    if(glowEffObj == NULL) {
+        return -1;
+    }
+    effPos.x = pos.x+(radiusX*(-0.5f+MBCapsuleEffRandF()));
+    effPos.y = pos.y+(radiusY*(-0.5f+MBCapsuleEffRandF()));
+    effPos.z = pos.z+radiusZ;
+    effVel.x = 0;
+    effVel.z = 0;
+    switch(mode) {
+        case 1:
+            effVel.y = -1*((MBCapsuleEffRandF()*0.2f)+1);
+            rotSpeed = 0;
+            break;
+        
+        case 2:
+            effVel.y = (MBCapsuleEffRandF()*0.2f)+1;
+            rotSpeed = (MBCapsuleEffRandF()*0.02f)+0.05f;
+            if(frand() & 0x1) {
+                rotSpeed *= -1;
+            }
+            break;
+        
+        default:
+            effVel.y = 0;
+            rotSpeed = 0;
+            break;
+    }
+    power = MBCapsuleEffRandF();
+    color.r = 192+(power*63);
+    color.g = 192+(power*63);
+    color.b = 192+(power*63);
+    color.a = 192+(MBCapsuleEffRandF()*63);
+    return MBCapsuleGlowEffAdd(effPos, effVel, scale, fadeSpeed, rotSpeed, 0, color);
 }
 
 int MBCapsuleMiracleGlowEffAdd(HuVecF pos, float scale, float fadeSpeed, float radiusX, float radiusY, float radiusZ, int mode)
 {
+    HuVecF effPos; //sp+0x4C
+    HuVecF effVel; //sp+0x40
+    GXColor color; //sp+0x24
+    float rotSpeed; //f31
+    float power; //f30
     
+    if(glowEffObj == NULL) {
+        return -1;
+    }
+    effPos.x = pos.x+(radiusX*(-0.5f+MBCapsuleEffRandF()));
+    effPos.y = pos.y+(radiusY*(-0.5f+MBCapsuleEffRandF()));
+    effPos.z = pos.z+radiusZ;
+    effVel.x = 0;
+    effVel.z = 0;
+    switch(mode) {
+        case 1:
+            effVel.y = -1*((MBCapsuleEffRandF()*0.2f)+1);
+            rotSpeed = 0;
+            break;
+        
+        case 2:
+            effVel.y = (MBCapsuleEffRandF()*0.2f)+1;
+            rotSpeed = (MBCapsuleEffRandF()*0.02f)+0.05f;
+            if(frand() & 0x1) {
+                rotSpeed *= -1;
+            }
+            break;
+        
+        default:
+            effVel.y = 0;
+            rotSpeed = 0;
+            break;
+    }
+    color = kinokoGlowColorTbl[MBCapsuleEffRand(7)];
+    color.a = (MBCapsuleEffRandF()*63)+192;
+    return MBCapsuleGlowEffAdd(effPos, effVel, scale, fadeSpeed, rotSpeed, 0, color);
 }
+
+typedef struct RingEffWork_s {
+    int mdlId[3];
+    int num;
+    ANIMDATA *animP[3];
+} RING_EFF_WORK;
 
 void MBCapsuleRingEffCreate(void)
 {
+    RING_EFF_WORK *work; //r31
+    int i; //r30
+    CAPSULE_EFFECT *effP; //r29
+    OMOBJ *obj; //r28
+    HU3DMODEL *modelP; //r27
+    int effMdlId; //r26
+    ANIMDATA *animP; //r25
+    static int fileTbl[3] = {
+        CAPSULE_ANM_effSun,
+        CAPSULE_ANM_effLens,
+        CAPSULE_ANM_effLensDark
+    };
     
+    obj = ringEffObj = MBAddObj(32768, 0, 0, MBCapsuleGlowEffExec);
+    work = obj->data = HuMemDirectMallocNum(HEAP_HEAP, sizeof(RING_EFF_WORK), HU_MEMNUM_OVL);
+    memset(work, 0, sizeof(RING_EFF_WORK));
+    for(i=0; i<3; i++) {
+        work->animP[i] = animP = HuSprAnimRead(HuDataReadNum(fileTbl[i], HU_MEMNUM_OVL));
+        work->mdlId[i] = effMdlId = CapsuleEffCreate(animP, 32);
+        Hu3DModelLayerSet(effMdlId, 3);
+        work->num = 0;
+        modelP = &Hu3DData[effMdlId];
+        effP = modelP->hookData;
+        effP->blendMode = HU3D_PARTICLE_BLEND_ADDCOL;
+        effP->dispAttr = CAPSULE_EFF_DISPATTR_ALL;
+    }
+}
+
+void MBCapsuleRingEffUpdate(OMOBJ *obj)
+{
+    CAPSULE_EFFDATA *effDataP; //r31
+    RING_EFF_WORK *work; //r30
+    int i; //r29
+    CAPSULE_EFFECT *effP; //r28
+    int j; //r27
+    HU3DMODEL *modelP; //r26
+    float t;
+    
+    work = obj->data;
+    if(MBKillCheck() || ringEffObj == NULL) {
+        for(i=0; i<3; i++) {
+            Hu3DModelKill(work->mdlId[i]);
+            work->mdlId[i] = HU3D_MODELID_NONE;
+        }
+        for(i=0; i<3; i++) {
+            HuSprAnimKill(work->animP[i]);
+            work->animP[i] = NULL;
+        }
+        omDelObjEx(mbObjMan, obj);
+        ringEffObj = NULL;
+        return;
+    }
+    for(i=0; i<3; i++) {
+        if(work->num <= 0) {
+            Hu3DModelDispOff(work->mdlId[i]);
+        } else {
+            Hu3DModelDispOn(work->mdlId[i]);
+            modelP = &Hu3DData[work->mdlId[i]];
+            effP = modelP->hookData;
+            effDataP = effP->data;
+            effP->unk23 = 0;
+            for(j=0; j<effP->num; j++, effDataP++) {
+                if(effDataP->scale <= 0) {
+                    continue;
+                }
+                switch(effDataP->time) {
+                    case 0:
+                        t = ++effDataP->maxTime/effDataP->baseAlpha;
+                        t = HuSin(t*90);
+                        effDataP->scale = effDataP->vel.z*(effDataP->vel.x+(t*(1-effDataP->vel.x)));
+                        effDataP->color.a = effDataP->speed*t;
+                        if(t >= 1) {
+                            effDataP->scale = effDataP->vel.z;
+                            effDataP->color.a = effDataP->speed;
+                            effDataP->time++;
+                            effDataP->maxTime = 0;
+                        }
+                        break;
+                    
+                    case 1:
+                        t = ++effDataP->maxTime/effDataP->tpLvl;
+                        t = HuSin(t*90);
+                        effDataP->scale = effDataP->vel.z*(1+(t*(effDataP->vel.y-1)));
+                        effDataP->color.a = effDataP->speed*(1-t);
+                        if(t >= 1) {
+                            effDataP->scale = 0;
+                            work->num--;
+                        }
+                        break;
+                }
+            }
+        }
+    }
 }
 
 void MBCapsuleRingEffKill(void)
 {
-    
+    ringEffObj = NULL;
 }
 
 int MBCapsuleRingEffNumGet(void)
 {
-    
+    OMOBJ *obj;
+    RING_EFF_WORK *work;
+    obj = ringEffObj;
+    if(ringEffObj == NULL) {
+        return 0;
+    } else {
+        work = obj->data;
+        return work->num;
+    }
 }
 
 int MBCapsuleRingEffAdd(HuVecF pos, HuVecF rot, HuVecF vel, int inTime, int rotTime, int no, GXColor color)
 {
-    
+    CAPSULE_EFFDATA *effDataP; //r31
+    CAPSULE_EFFECT *effP; //r30
+    int i; //r29
+    RING_EFF_WORK *work; //r28
+    OMOBJ *obj; //r27
+    HU3DMODEL *modelP; //r26
+    if(ringEffObj == NULL) {
+        return -1;
+    }
+    obj = ringEffObj;
+    work = obj->data;
+    modelP = &Hu3DData[work->mdlId[no%3]];
+    effP = modelP->hookData;
+    for(effDataP=effP->data, i=0; i<effP->num; i++, effDataP++) {
+        if(effDataP->scale <= 0.0f) {
+            break;
+        }
+    }
+    if(i >= effP->num) {
+        return -1;
+    }
+    effDataP->time = effDataP->maxTime = 0;
+    effDataP->pos.x = pos.x;
+    effDataP->pos.y = pos.y;
+    effDataP->pos.z = pos.z;
+    effDataP->vel.x = vel.x;
+    effDataP->vel.y = vel.y;
+    effDataP->vel.z = vel.z;
+    effDataP->baseAlpha = inTime;
+    effDataP->tpLvl = rotTime;
+    effDataP->speed = color.a;
+    effDataP->scale = vel.z;
+    effDataP->color = color;
+    effDataP->rot.x = rot.x;
+    effDataP->rot.y = rot.y;
+    effDataP->rot.z = rot.z;
+    effDataP->no = 0;
+    effDataP->time = 0;
+    work->num++;
+    return i;
 }
+
+typedef struct RayEffData_s {
+    BOOL flag;
+    int time;
+    int maxTime;
+    HuVecF vtx[4];
+    HuVecF pos;
+    HuVecF scale;
+    HuVecF dir;
+    HuVecF rot;
+    GXColor color;
+    GXColor baseColor;
+} RAY_EFF_DATA;
+
+typedef struct RayEffWork_s {
+    int mdlId;
+    int max;
+    int num;
+    RAY_EFF_DATA *data;
+    HuVecF *pos;
+    GXColor *color;
+    ANIMDATA *animP;
+    void *dl;
+    u32 dlSize;
+} RAY_EFF_WORK;
 
 void MBCapsuleRayEffCreate(void)
 {
+    RAY_EFF_WORK *work; //r31
+    int i; //r30
+    HU3DMODEL *modelP; //r29
+    RAY_EFF_DATA *data; //r28
+    void *dlBuf; //r27
+    OMOBJ *obj; //r26
+    void *dlBegin; //r25
     
+    obj = rayEffObj = MBAddObj(32768, 0, 0, MBCapsuleRayEffUpdate);
+    work = obj->data = HuMemDirectMallocNum(HEAP_HEAP, sizeof(RAY_EFF_WORK), HU_MEMNUM_OVL);
+    memset(work, 0, sizeof(RAY_EFF_WORK));
+    work->mdlId = Hu3DHookFuncCreate(MBCapsuleRayEffDraw);
+    Hu3DModelCameraSet(work->mdlId, HU3D_CAM0);
+    modelP = &Hu3DData[work->mdlId];
+    modelP->hookData = work;
+    work->max = 64;
+    work->num = 0;
+    data = work->data = HuMemDirectMallocNum(HEAP_MODEL, sizeof(RAY_EFF_DATA)*work->max, modelP->mallocNo);
+    for(i=0; i<work->max; i++, data++) {
+        data->flag = FALSE;
+        data->time = 0;
+        data->maxTime = 0;
+    }
+    work->pos = HuMemDirectMallocNum(HEAP_MODEL, sizeof(HuVecF)*work->max*4, modelP->mallocNo);
+    work->color = HuMemDirectMallocNum(HEAP_MODEL, sizeof(GXColor)*work->max*4, modelP->mallocNo);
+    work->animP = HuSprAnimRead(HuDataReadNum(CAPSULE_ANM_effRay, HU_MEMNUM_OVL));
+    dlBegin = dlBuf = HuMemDirectMallocNum(HEAP_MODEL, 0x10000, modelP->mallocNo);
+    DCFlushRange(dlBuf, 0x10000);
+    GXBeginDisplayList(dlBegin, 0x10000);
+    GXBegin(GX_QUADS, GX_VTXFMT0, work->max*4);
+    for(i=0; i<work->max; i++) {
+        GXPosition1x16(i*4);
+        GXColor1x16(i*4);
+        GXTexCoord1x16(0);
+        
+        GXPosition1x16((i*4)+1);
+        GXColor1x16((i*4)+1);
+        GXTexCoord1x16(1);
+        
+        GXPosition1x16((i*4)+2);
+        GXColor1x16((i*4)+2);
+        GXTexCoord1x16(2);
+        
+        GXPosition1x16((i*4)+3);
+        GXColor1x16((i*4)+3);
+        GXTexCoord1x16(3);
+    }
+    GXEnd();
+    work->dlSize = GXEndDisplayList();
+    work->dl = HuMemDirectMallocNum(HEAP_MODEL, work->dlSize, modelP->mallocNo);
+    memcpy(work->dl, dlBuf, work->dlSize);
+    DCFlushRange(work->dl, work->dlSize);
+    HuMemDirectFree(dlBuf);
+}
+
+void MBCapsuleRayEffUpdate(OMOBJ *obj)
+{
+    RAY_EFF_DATA *effDataP;
+    RAY_EFF_WORK *work;
+    int i;
+    float t;
+    work = obj->data;
+    if(MBKillCheck() || rayEffObj == NULL) {
+        Hu3DModelKill(work->mdlId);
+        work->mdlId = HU3D_MODELID_NONE;
+        HuSprAnimKill(work->animP);
+        work->animP = NULL;
+        omDelObjEx(mbObjMan, obj);
+        rayEffObj = NULL;
+        return;
+    }
+    for(effDataP=work->data, i=0; i<work->max; i++, effDataP++) {
+        if(effDataP->flag) {
+            t = ++effDataP->time/(float)effDataP->maxTime;
+            effDataP->scale.x = HuCos(t*90);
+            effDataP->scale.y = 1+HuSin(t*90);
+            effDataP->color.a = effDataP->baseColor.a*HuSin((1-t)*90);
+            if(t >= 1) {
+                effDataP->flag = FALSE;
+            }
+        }
+    }
 }
 
 void MBCapsuleRayEffKill(void)
 {
-    
+    rayEffObj = NULL;
 }
 
 int MBCapsuleRayEffNumGet(void)
 {
-    
+    RAY_EFF_WORK *work;
+    RAY_EFF_DATA *effDataP;
+    int i;
+    int num;
+    OMOBJ *obj;
+    if(rayEffObj == NULL) {
+        return 0;
+    }
+    obj = rayEffObj;
+    work = obj->data;
+    for(effDataP=work->data, i=0, num=0; i<work->max; i++, effDataP++) {
+        if(effDataP->flag) {
+            num++;
+        }
+    }
+    return num;
 }
 
-int MBCapsuleRayEffAdd(HuVecF pos, HuVecF rot, HuVecF moveDir, int speed, GXColor color)
+int MBCapsuleRayEffAdd(HuVecF pos, HuVecF rot, HuVecF moveDir, int maxTime, GXColor color)
 {
+    RAY_EFF_DATA *effDataP;
+    RAY_EFF_WORK *work;
+    int i;
+    OMOBJ *obj;
+    int num;
     
+    if(rayEffObj == NULL) {
+        return -1;
+    }
+    obj = rayEffObj;
+    work = obj->data;
+    for(effDataP=work->data, i=0, num=0; i<work->max; i++, effDataP++) {
+        if(!effDataP->flag) {
+            break;
+        }
+    }
+    if(i >= work->max) {
+        return -1;
+    }
+    effDataP->flag = TRUE;
+    effDataP->time = 0;
+    effDataP->maxTime = maxTime;
+    effDataP->vtx[0].x = -0.5f*moveDir.x;
+    effDataP->vtx[0].y = 0;
+    effDataP->vtx[0].z = 0;
+    effDataP->vtx[1].x = 0.5f*moveDir.x;
+    effDataP->vtx[1].y = 0;
+    effDataP->vtx[1].z = 0;
+    effDataP->vtx[2].x = 0.5f*moveDir.z;
+    effDataP->vtx[2].y = -moveDir.y;
+    effDataP->vtx[2].z = 0;
+    effDataP->vtx[3].x = -0.5f*moveDir.z;
+    effDataP->vtx[3].y = -moveDir.y;
+    effDataP->vtx[3].z = 0;
+    effDataP->scale.x = effDataP->scale.y = 1;
+    effDataP->pos = pos;
+    effDataP->dir = moveDir;
+    effDataP->rot = rot;
+    effDataP->baseColor = effDataP->color = color;
+    work->num++;
+    return i;
 }
+
+void MBCapsuleRayEffDraw(HU3DMODEL *modelP, Mtx *mtx)
+{
+    RAY_EFF_DATA *effDataP; //r31
+    HuVecF *vtx; //r30
+    RAY_EFF_WORK *work; //r29
+    GXColor *color; //r28
+    s16 i; //r27
+    s16 bmpFmt; //r26
+    
+    Mtx mtxInv; //sp+0x68
+    Mtx mtxPos; //sp+0x38
+    ROMtx basePosMtx; //sp+0x38
+    
+    static HuVec2F stTbl[4] = {
+        { 0, 1 },
+        { 1, 1 },
+        { 1, 0 },
+        { 0, 0 },
+    };
+    
+    work = modelP->hookData;
+    effDataP = work->data;
+    if(shadowModelDrawF) {
+        return;
+    }
+    GXLoadPosMtxImm(*mtx, GX_PNMTX0);
+    GXSetNumTevStages(1);
+    GXSetNumTexGens(1);
+    GXSetTexCoordGen(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, GX_IDENTITY);
+    GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR0A0);
+    if(shadowModelDrawF) {
+        GXSetTevColorIn(GX_TEVSTAGE0, GX_CC_ONE, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO);
+        GXSetZMode(GX_FALSE, GX_LEQUAL, GX_FALSE);
+    } else {
+        bmpFmt = (work->animP->bmp->dataFmt & 0xF);
+        if(bmpFmt == ANIM_BMP_I8 || bmpFmt == ANIM_BMP_I4) {
+            GXSetTevColorIn(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_ONE, GX_CC_RASC, GX_CC_ZERO);
+        } else {
+            GXSetTevColorIn(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_TEXC, GX_CC_RASC, GX_CC_ZERO);
+        }
+        GXSetZMode(GX_FALSE, GX_LEQUAL, GX_FALSE);
+    }
+    GXSetTevColorOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+    GXSetTevAlphaIn(GX_TEVSTAGE0, GX_CA_ZERO, GX_CA_TEXA, GX_CA_RASA, GX_CA_ZERO);
+    GXSetTevAlphaOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+    GXSetNumChans(1);
+    GXSetChanCtrl(GX_COLOR0A0, GX_FALSE, GX_SRC_REG, GX_SRC_VTX, 0, GX_DF_CLAMP, GX_AF_NONE);
+    HuSprTexLoad(work->animP, 0, GX_TEXMAP0, GX_REPEAT, GX_REPEAT, GX_LINEAR);
+    GXSetAlphaCompare(GX_GEQUAL, 1, GX_AOP_AND, GX_GEQUAL, 1);
+    GXSetZCompLoc(GX_FALSE);
+    GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_ONE, GX_LO_NOOP);
+    GXSetCullMode(GX_CULL_NONE);
+    if(HmfInverseMtxF3X3(*mtx, mtxInv) == FALSE) {
+        PSMTXIdentity(mtxInv);
+    }
+    PSMTXReorder(mtxInv, basePosMtx);
+    for(vtx=work->pos, color=work->color, i=0, effDataP=work->data; i<work->max; i++, effDataP++) {
+        if(!effDataP->flag) {
+            vtx->x = vtx->y = vtx->z = 0;
+            vtx++;
+            vtx->x = vtx->y = vtx->z = 0;
+            vtx++;
+            vtx->x = vtx->y = vtx->z = 0;
+            vtx++;
+            vtx->x = vtx->y = vtx->z = 0;
+            vtx++;
+            color += 4;
+        } else {
+            mtxRot(mtxPos, effDataP->rot.x, effDataP->rot.y, effDataP->rot.z);
+            effDataP->vtx[0].x = -0.5f*effDataP->dir.x*effDataP->scale.x;
+            effDataP->vtx[0].y = 0;
+            effDataP->vtx[0].z = 0;
+            
+            effDataP->vtx[1].x = 0.5f*effDataP->dir.x*effDataP->scale.x;
+            effDataP->vtx[1].y = 0;
+            effDataP->vtx[1].z = 0;
+            
+            effDataP->vtx[2].x = 0.5f*effDataP->dir.z*effDataP->scale.x;
+            effDataP->vtx[2].y = -effDataP->dir.y*effDataP->scale.y;
+            effDataP->vtx[2].z = 0;
+            
+            effDataP->vtx[3].x = -0.5f*effDataP->dir.z*effDataP->scale.x;
+            effDataP->vtx[3].y = -effDataP->dir.y*effDataP->scale.y;
+            effDataP->vtx[3].z = 0;
+            MTXMultVecArray(mtxPos, &effDataP->vtx[0], vtx, 4);
+            VECAdd(&vtx[0], &effDataP->pos, &vtx[0]);
+            VECAdd(&vtx[1], &effDataP->pos, &vtx[1]);
+            VECAdd(&vtx[2], &effDataP->pos, &vtx[2]);
+            VECAdd(&vtx[3], &effDataP->pos, &vtx[3]);
+            color[0] = effDataP->color;
+            color[1] = effDataP->color;
+            color[2] = effDataP->color;
+            color[3] = effDataP->color;
+            vtx += 4;
+            color += 4;
+        }
+    }
+    DCFlushRangeNoSync(work->pos, work->max*sizeof(HuVecF)*4);
+    DCFlushRangeNoSync(work->color, work->max*sizeof(GXColor)*4);
+    PPCSync();
+    GXClearVtxDesc();
+    GXSetVtxDesc(GX_VA_POS, GX_INDEX16);
+    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XYZ, GX_F32, 0);
+    GXSetArray(GX_VA_POS, work->pos, sizeof(HuVecF));
+    GXSetVtxDesc(GX_VA_CLR0, GX_INDEX16);
+    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_CLR0, GX_CLR_RGBA, GX_RGBA8, 0);
+    GXSetArray(GX_VA_CLR0, work->color, sizeof(GXColor));
+    GXSetVtxDesc(GX_VA_TEX0, GX_INDEX16);
+    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX0, GX_TEX_ST, GX_F32, 0);
+    GXSetArray(GX_VA_TEX0, stTbl, sizeof(HuVec2F));
+    GXCallDisplayList(work->dl, work->dlSize);
+}
+
+typedef struct HanachanRingData_s {
+    BOOL flag;
+    int mode;
+    int inTime;
+    int holdTime;
+    int outTime;
+    int time;
+    float angle;
+    float rotOfs;
+    float angleSpeed;
+    HuVecF pos;
+    HuVecF rot;
+    GXColor color;
+    HuVecF scaleVel;
+    float scale;
+} HANANCHAN_RING_DATA;
+
+typedef struct HanachanRingWork_s {
+    int mdlId;
+    int num;
+    HANANCHAN_RING_DATA *data;
+    HuVecF *pos;
+    HuVec2F *st;
+    ANIMDATA *animP;
+    void *dl;
+    u32 dlSize;
+} HANANCHAN_RING_WORK;
 
 void MBCapsuleHanachanRingCreate(void)
 {
+    HANANCHAN_RING_DATA *effDataP; //r31
+    HANANCHAN_RING_WORK *work; //r30
+    HuVecF *pos; //r29
+    int i; //r28
+    HuVec2F *st; //r27
+    HU3DMODEL *modelP; //r26
+    int vtxNum; //r25
+    int vtx1; //r24
+    void *dlBuf; //r23
+    OMOBJ *obj; //r22
+    int vtx2; //r21
+    int vtx3; //r20
+    int vtx4; //r19
+    void *dlBegin; //r18
     
+    float angle; //f31
+    float uvX; //f30
+    
+    obj = hanachanRingObj = MBAddObj(32768, 0, 0, MBCapsuleHanachanRingExec);
+    work = obj->data = HuMemDirectMallocNum(HEAP_HEAP, sizeof(HANANCHAN_RING_WORK), HU_MEMNUM_OVL);
+    memset(work, 0, sizeof(HANANCHAN_RING_WORK));
+    work->mdlId = Hu3DHookFuncCreate(MBCapsuleHanachanRingDraw);
+    Hu3DModelCameraSet(work->mdlId, HU3D_CAM0);
+    Hu3DModelLayerSet(work->mdlId, 3);
+    modelP = &Hu3DData[work->mdlId];
+    modelP->hookData = work;
+    work->animP = HuSprAnimRead(HuDataReadNum(CAPSULE_ANM_effWind, HU_MEMNUM_OVL));
+    work->num = 0;
+    effDataP = work->data = HuMemDirectMallocNum(HEAP_MODEL, 64*sizeof(HANANCHAN_RING_DATA), modelP->mallocNo);
+    memset(effDataP, 0, 64*sizeof(HANANCHAN_RING_DATA));
+    for(i=0; i<64; i++, effDataP++) {
+        effDataP->flag = FALSE;
+        effDataP->mode = 0;
+        effDataP->inTime = 0;
+        effDataP->holdTime = 0;
+        effDataP->outTime = 0;
+        effDataP->time = 0;
+        effDataP->pos.x = effDataP->pos.y = effDataP->pos.z = 0;
+        effDataP->rot.x = effDataP->rot.y = effDataP->rot.z = 0;
+        effDataP->color.r = effDataP->color.g = effDataP->color.b = effDataP->color.a = 0;
+        effDataP->scaleVel.x = 2;
+        effDataP->scaleVel.y = 2;
+        effDataP->scaleVel.z = 3;
+        effDataP->scale = 1;
+    }
+    vtxNum = 64;
+    work->pos = pos = HuMemDirectMallocNum(HEAP_MODEL, vtxNum*sizeof(HuVecF), modelP->mallocNo);
+    memset(pos, 0, vtxNum*sizeof(HuVecF));
+    work->st = st = HuMemDirectMallocNum(HEAP_MODEL, vtxNum*sizeof(HuVec2F), modelP->mallocNo);
+    memset(st, 0, vtxNum*sizeof(HuVec2F));
+    for(i=0; i<vtxNum/2; i++) {
+        angle = i*(720.0f/64);
+        uvX = (float)i/(vtxNum/2);
+        
+        pos->x = 100*HuSin(angle);
+        pos->z = 100*HuCos(angle);
+        pos->y = 0;
+        st->x = uvX;
+        st->y = 0;
+        pos++;
+        st++;
+        
+        pos->x = 100*HuSin(angle);
+        pos->z = 100*HuCos(angle);
+        pos->y = 30.000002f;
+        st->x = uvX;
+        st->y = 1;
+        pos++;
+        st++;
+    }
+    DCFlushRangeNoSync(work->pos, vtxNum*sizeof(HuVecF));
+    DCFlushRangeNoSync(work->st, vtxNum*sizeof(HuVec2F));
+    dlBegin = dlBuf = HuMemDirectMallocNum(HEAP_MODEL, 0x10000, modelP->mallocNo);
+    DCFlushRange(dlBuf, 0x10000);
+    GXBeginDisplayList(dlBegin, 0x10000);
+    GXBegin(GX_QUADS, GX_VTXFMT0, 128);
+    for(i=0; i<33; i++) {
+        vtx1 = (i*2)%vtxNum;
+        vtx2 = (vtx1+1)%vtxNum;
+        vtx3 = (vtx1+3)%vtxNum;
+        vtx4 = (vtx1+2)%vtxNum;
+        GXPosition1x16(vtx1);
+        GXColor1x16(0);
+        GXTexCoord1x16(vtx1);
+        
+        GXPosition1x16(vtx2);
+        GXColor1x16(0);
+        GXTexCoord1x16(vtx2);
+        
+        GXPosition1x16(vtx3);
+        GXColor1x16(0);
+        GXTexCoord1x16(vtx3);
+        
+        GXPosition1x16(vtx4);
+        GXColor1x16(0);
+        GXTexCoord1x16(vtx4);
+    }
+    GXEnd();
+    work->dlSize = GXEndDisplayList();
+    work->dl = HuMemDirectMallocNum(HEAP_MODEL, work->dlSize, modelP->mallocNo);
+    memcpy(work->dl, dlBuf, work->dlSize);
+    DCFlushRange(work->dl, work->dlSize);
+    HuMemDirectFree(dlBuf);
+}
+
+void MBCapsuleHanachanRingExec(OMOBJ *obj)
+{
+    HANANCHAN_RING_DATA *effDataP;
+    HANANCHAN_RING_WORK *work;
+    int i;
+    float t;
+    
+    work = obj->data;
+    if(MBKillCheck() || hanachanRingObj == NULL) {
+        Hu3DModelKill(work->mdlId);
+        work->mdlId = HU3D_MODELID_NONE;
+        HuSprAnimKill(work->animP);
+        work->animP = NULL;
+        omDelObjEx(mbObjMan, obj);
+        hanachanRingObj = NULL;
+        return;
+    }
+    for(effDataP=work->data, i=0; i<64; i++, effDataP++) {
+        if(!effDataP->flag) {
+            continue;
+        }
+        effDataP->rot.y += 2*effDataP->angleSpeed;
+        effDataP->angle += effDataP->angleSpeed;
+        effDataP->rot.x = effDataP->rotOfs*HuSin(effDataP->angle);
+        effDataP->rot.z = effDataP->rotOfs*HuCos(effDataP->angle);
+        switch(effDataP->mode) {
+            case 0:
+                t = ++effDataP->time/(float)effDataP->inTime;
+                effDataP->color.a = 255*t;
+                effDataP->scale = effDataP->scaleVel.x*(effDataP->scaleVel.y+(t*(1-effDataP->scaleVel.y)));
+                if(t >= 1) {
+                    effDataP->time = 0;
+                    effDataP->mode++;
+                }
+                break;
+            
+            case 1:
+                if(effDataP->holdTime > 0) {
+                    if(++effDataP->time >= effDataP->holdTime) {
+                        effDataP->time = 0;
+                        effDataP->mode++;
+                    }
+                }
+                break;
+            
+            case 2:
+                t = ++effDataP->time/(float)effDataP->outTime;
+                effDataP->color.a = 255*(1-t);
+                effDataP->scale = effDataP->scaleVel.x*(1+(t*(effDataP->scaleVel.z-1)));
+                if(t >= 1) {
+                    effDataP->flag = FALSE;
+                    effDataP->time = 0;
+                    effDataP->mode++;
+                }
+                break;
+        }
+    }
 }
 
 void MBCapsuleHanachanRingKill(void)
 {
-    
+    OMOBJ *obj;
+    HANANCHAN_RING_WORK *work;
+    obj = hanachanRingObj;
+    if(obj != NULL) {
+        work = obj->data;
+        Hu3DModelKill(work->mdlId);
+        work->mdlId = HU3D_MODELID_NONE;
+        HuSprAnimKill(work->animP);
+        work->animP = NULL;
+        HuMemDirectFree(obj->data);
+        obj->data = NULL;
+        omDelObjEx(mbObjMan, obj);
+        hanachanRingObj = NULL;
+    }
 }
 
-int MBCapsuleHanachanRingAdd(HuVecF *pos, HuVecF *dir, int inTime, int holdTime, int outTime, GXColor color)
+int MBCapsuleHanachanRingAdd(HuVecF *pos, HuVecF *scaleVel, int inTime, int holdTime, int outTime, GXColor color)
 {
+    HANANCHAN_RING_DATA *effDataP; //r31
+    int i;
+    OMOBJ *obj; //r28
+    HANANCHAN_RING_WORK *work; //r27
     
+    obj = hanachanRingObj;
+    if(obj == NULL) {
+        return;
+    }
+    work = obj->data;
+    for(effDataP=work->data, i=0; i<32; i++, effDataP++) {
+        if(!effDataP->flag) {
+            break;
+        }
+    }
+    if(i >= 32) {
+        return -1;
+    }
+    effDataP->flag = TRUE;
+    effDataP->mode = 0;
+    effDataP->inTime = inTime;
+    effDataP->holdTime = holdTime;
+    effDataP->outTime = outTime;
+    effDataP->time = 0;
+    effDataP->angle = MBCapsuleEffRandF()*360;
+    effDataP->rotOfs = (MBCapsuleEffRandF()+3)*2;
+    effDataP->angleSpeed = (MBCapsuleEffRandF()+4)*2;
+    if(frand() & 0x1) {
+        effDataP->angleSpeed *= -1;
+    }
+    effDataP->pos = *pos;
+    effDataP->color = color;
+    effDataP->rot.x = effDataP->rot.y = effDataP->rot.z = 0;
+    effDataP->scaleVel.x = scaleVel->x;
+    effDataP->scaleVel.y = scaleVel->y;
+    effDataP->scaleVel.z = scaleVel->z;
+    effDataP->scale = effDataP->scaleVel.x*effDataP->scaleVel.y;
+    return i;
 }
 
 void MBCapsuleHanachanRingClear(void)
 {
-    
+    HANANCHAN_RING_DATA *effDataP;
+    OMOBJ *obj;
+    int i;
+    HANANCHAN_RING_WORK *work;
+    obj = hanachanRingObj;
+    if(obj == NULL) {
+        return;
+    }
+    work = obj->data;
+    for(effDataP=work->data, i=0; i<32; i++, effDataP++) {
+        if(effDataP->flag) {
+            effDataP->time = 0;
+            effDataP->mode = 2;
+        }
+    }
 }
 
+void MBCapsuleHanachanRingDraw(HU3DMODEL *modelP, Mtx *mtx)
+{
+    HANANCHAN_RING_DATA *effDataP;
+    HANANCHAN_RING_WORK *work;
+    s16 i;
+    s16 bmpFmt;
+    
+    Mtx modelview;
+    Mtx model;
+    
+    work = modelP->hookData;
+    effDataP = work->data;
+    GXLoadPosMtxImm(*mtx, GX_PNMTX0);
+    GXSetNumTevStages(1);
+    GXSetNumTexGens(1);
+    GXSetTexCoordGen(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, GX_IDENTITY);
+    GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR0A0);
+    bmpFmt = (work->animP->bmp->dataFmt & 0xF);
+    if(bmpFmt == ANIM_BMP_I8 || bmpFmt == ANIM_BMP_I4) {
+        GXSetTevColorIn(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_ONE, GX_CC_RASC, GX_CC_ZERO);
+    } else {
+        GXSetTevColorIn(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_TEXC, GX_CC_RASC, GX_CC_ZERO);
+    }
+    GXSetZMode(GX_TRUE, GX_LEQUAL, GX_TRUE);
+    GXSetTevColorOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+    GXSetTevAlphaIn(GX_TEVSTAGE0, GX_CA_ZERO, GX_CA_TEXA, GX_CA_RASA, GX_CA_ZERO);
+    GXSetTevAlphaOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+    GXSetNumChans(1);
+    GXSetChanCtrl(GX_COLOR0A0, GX_FALSE, GX_SRC_REG, GX_SRC_VTX, 0, GX_DF_CLAMP, GX_AF_NONE);
+    HuSprTexLoad(work->animP, 0, GX_TEXMAP0, GX_REPEAT, GX_REPEAT, GX_LINEAR);
+    GXSetAlphaCompare(GX_GEQUAL, 1, GX_AOP_AND, GX_GEQUAL, 1);
+    GXSetZCompLoc(GX_FALSE);
+    GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_ONE, GX_LO_NOOP);
+    GXSetCullMode(GX_CULL_NONE);
+    DCFlushRangeNoSync(work->data, 32*sizeof(HANANCHAN_RING_DATA));
+    PPCSync();
+    GXClearVtxDesc();
+    GXSetVtxDesc(GX_VA_POS, GX_INDEX16);
+    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XYZ, GX_F32, 0);
+    GXSetArray(GX_VA_POS, work->pos, sizeof(HuVecF));
+    GXSetVtxDesc(GX_VA_CLR0, GX_INDEX16);
+    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_CLR0, GX_CLR_RGBA, GX_RGBA8, 0);
+    GXSetVtxDesc(GX_VA_TEX0, GX_INDEX16);
+    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX0, GX_TEX_ST, GX_F32, 0);
+    GXSetArray(GX_VA_TEX0, work->st, sizeof(HuVec2F));
+    for(i=0; i<32; i++, effDataP++) {
+        if(effDataP->flag) {
+            GXSetArray(GX_VA_CLR0, &effDataP->color, sizeof(HANANCHAN_RING_DATA));
+            mtxRot(model, effDataP->rot.x, effDataP->rot.y, effDataP->rot.z);
+            mtxScaleCat(model, effDataP->scale, effDataP->scale, effDataP->scale);
+            mtxTransCat(model, effDataP->pos.x, effDataP->pos.y, effDataP->pos.z);
+            MTXConcat(Hu3DCameraMtx, model, modelview);
+            MTXConcat(modelview, modelP->mtx, modelview);
+            GXLoadPosMtxImm(modelview, GX_PNMTX0);
+            GXCallDisplayList(work->dl, work->dlSize);
+        }
+    }
+    
+}
 
 void MBCapsuleCoinEffCreate(void)
 {
@@ -15174,6 +16797,11 @@ int MBCapsuleStarNumCreate(int playerNo, int num)
 }
 
 int MBCapsuleStarNumCheck(int id)
+{
+    
+}
+
+static HU3DMODELID CapsuleEffCreate(ANIMDATA *animP, int max)
 {
     
 }
