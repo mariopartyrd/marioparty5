@@ -292,11 +292,13 @@ void MBCapsuleSprClose(s16 sprId);
 void *MBCapsuleMalloc(int size);
 
 void MBCapsuleExplodeEffCreate(int no);
+void MBCapsuleExplodeEffExec(OMOBJ *obj);
 void MBCapsuleGlowEffCreate(void);
-int MBCapsuleExplodeEffAdd(int no, HuVecF pos, HuVecF rot, float size, float speed, float animSpeed, GXColor color);
-int MBCapsuleExplodeEffLineAdd(int no, HuVecF pos, HuVecF rot, float size, float speed, float radius, float animSpeed, GXColor color);
+void MBCapsuleGlowEffExec(OMOBJ *obj);
+int MBCapsuleExplodeEffAdd(int no, HuVecF pos, HuVecF vel, float size, float speed, float animSpeed, GXColor color);
+int MBCapsuleExplodeEffLineAdd(int no, HuVecF pos, HuVecF vel, float size, float speed, float radius, float animSpeed, GXColor color);
 void MBCapsuleExplodeEffCircleAdd(int no, HuVecF pos, float radius, float scale, float angle);
-int MBCapsuleExplodeEffCheck(int no);
+int MBCapsuleExplodeEffNumGet(int no);
 
 void MBCapsuleDustExplodeAdd(int no, HuVecF pos);
 void MBCapsuleDustCloudAdd(int no, HuVecF pos);
@@ -304,17 +306,18 @@ void MBCapsuleDustHeavyAdd(int no, HuVecF pos);
 
 int MBCapsuleGlowEffAdd(HuVecF pos, HuVecF vel, float scale, float fadeSpeed, float rotSpeed, float gravity, GXColor color);
 int MBCapsuleMiracleGlowEffAdd(HuVecF pos, float scale, float fadeSpeed, float radiusX, float radiusY, float radiusZ, int mode);
-void MBCapsuleHanachanGlowEffAdd(HuVecF pos, float scale, float fadeSpeed, float radiusX, float radiusY, float radiusZ, int mode);
+int MBCapsuleHanachanGlowEffAdd(HuVecF pos, float scale, float fadeSpeed, float radiusX, float radiusY, float radiusZ, int mode);
 
-int MBCapsuleGlowEffCheck(void);
+int MBCapsuleGlowEffNumGet(void);
 void MBCapsuleExplodeEffKill(int no);
 void MBCapsuleGlowEffKill(void);
 void MBCapsuleGlowEffBlendModeSet(int blendMode);
 void MBCapsuleGlowEffAnimSet(int dataNum);
 
 void MBCapsuleNKinokoEffCreate(void);
+void MBCapsuleNKinokoEffExec(OMOBJ *obj);
 void MBCapsuleNKinokoEffKill(void);
-int MBCapsuleNKinokoEffAdd(HuVecF pos, HuVecF vel, float scale, float rotSpeed, int maxTime, GXColor color);
+int MBCapsuleNKinokoEffAdd(HuVecF pos, HuVecF vel, float scale, float speed, int maxTime, GXColor color);
 int MBCapsulePlayerAliveFind(int playerNo);
 void MBCapsulePlayerMotSet(int playerNo, int motNo, u32 attr, BOOL shiftF);
 void MBCapsulePlayerIdleWait(void);
@@ -346,25 +349,33 @@ void MBPlayerMoveObjKill(int playerNo);
 void MBPlayerMoveObjClose(void);
 
 void MBCapsuleRingEffCreate(void);
+void MBCapsuleRingEffExec(OMOBJ *obj);
 void MBCapsuleRingEffKill(void);
 void MBCapsuleRayEffCreate(void);
+void MBCapsuleRayEffExec(OMOBJ *obj);
+void MBCapsuleRayEffDraw(HU3DMODEL *modelP, Mtx *mtx);
 void MBCapsuleRayEffKill(void);
+int MBCapsuleRayEffAdd(HuVecF pos, HuVecF rot, HuVecF moveDir, int maxTime, GXColor color);
+
 int MBCapsuleRayEffNumGet(void);
 int MBCapsuleRingEffNumGet(void);
 
 void MBCapsuleHanachanRingCreate(void);
+void MBCapsuleHanachanRingExec(OMOBJ *obj);
+void MBCapsuleHanachanRingDraw(HU3DMODEL *modelP, Mtx *mtx);
+
 void MBCapsuleHanachanRingKill(void);
-int MBCapsuleHanachanRingAdd(HuVecF *pos, HuVecF *dir, int inTime, int holdTime, int outTime, GXColor color);
+int MBCapsuleHanachanRingAdd(HuVecF *pos, HuVecF *scale, int inTime, int holdTime, int outTime, GXColor color);
 void MBCapsuleHanachanRingClear(void);
 void MBCapsuleChoiceSet(int choice);
 int MBCapsuleRingEffAdd(HuVecF pos, HuVecF rot, HuVecF vel, int inTime, int rotTime, int no, GXColor color);
-int MBCapsuleRayEffAdd(HuVecF pos, HuVecF rot, HuVecF moveDir, int speed, GXColor color);
 
 void MBCapsuleCoinEffCreate(void);
+void MBCapsuleCoinEffExec(OMOBJ *obj);
 void MBCapsuleCoinEffKill(void);
 int MBCapsuleCoinEffNumGet(void);
-int MBCapsuleCoinEffAdd(HuVecF *pos, HuVecF *rot, float scale, float gravity, int maxTime, int mode);
-int MBCapsuleCoinEffMaxYSet(int id, float maxY);
+int MBCapsuleCoinEffAdd(HuVecF *pos, HuVecF *vel, float scale, float gravity, int maxTime, int mode);
+int MBCapsuleCoinEffMinYSet(int id, float minY);
 
 void MBCapsuleModelMtxSet(MBMODELID mdlId, Mtx *matrix);
 int MBCapsuleCoinDispExec(int playerNo, int coinNum, BOOL winMotF, BOOL waitF);
@@ -377,19 +388,23 @@ BOOL MBCapsuleSaiHiddenInCheck(OMOBJ *obj);
 BOOL MBCapsuleSaiHiddenHitCheck(OMOBJ *obj, HuVecF *pos);
 void MBCapsuleSeDelayPlay(int seId, int delay);
 
-void MBCapsuleCoinManCreate(void);
-void MBCapsuleCoinManKill(void);
-int MBCapsuleCoinManAdd(BOOL downF, int playerNo, int num);
-int MBCapsuleCoinManNumGet(void);
+void MBCapsuleCoinTradeCreate(void);
+void MBCapsuleCoinTradeExec(OMOBJ *obj);
+void MBCapsuleCoinTradeKill(void);
+int MBCapsuleCoinTradeAdd(BOOL downF, int playerNo, int coinNum);
+int MBCapsuleCoinTradeNumGet(void);
 
-void MBCapsuleStarManCreate(void);
-void MBCapsuleStarManKill(void);
-int MBCapsuleStarManAdd(BOOL downF, int playerNo, int num);
-int MBCapsuleStarManNumGet(void);
+void MBCapsuleStarTradeCreate(void);
+void MBCapsuleStarTradeExec(OMOBJ *obj);
+
+void MBCapsuleStarTradeKill(void);
+int MBCapsuleStarTradeAdd(BOOL downF, int playerNo, int starNum);
+int MBCapsuleStarTradeNumGet(void);
 
 void MBCapsuleStatusCapsulePosGet(int playerNo, int capsuleNo, HuVecF *pos);
 
 void MBCapsuleSnowEffCreate(void);
+void MBCapsuleSnowEffExec(OMOBJ *obj);
 void MBCapsuleSnowEffKill(void);
 int MBCapsuleSnowEffAdd(HuVecF *pos, int maxTime);
 
