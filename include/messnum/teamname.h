@@ -1,0 +1,11 @@
+#ifndef MESSNUM_MESS_TEAMNAME_H
+#define MESSNUM_MESS_TEAMNAME_H
+
+#include "messdir_enum.h"
+
+enum {
+    MESS_TEAMNAME_START = MESSNUM(MESS_TEAMNAME, 0),
+    MESS_TEAMNAME_UNKNOWN = MESSNUM(MESS_TEAMNAME, 45),
+};
+
+#endif
