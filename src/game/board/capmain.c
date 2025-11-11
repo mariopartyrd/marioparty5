@@ -19420,17 +19420,96 @@ float MBCaspuleAngleRotCamera(float angle)
     return HuAtan(dir.x, dir.z);
 }
 
+static void GetCoef(float t, float *out)
+{
+    float temp_f25 = t*t;
+    float temp_f19 = t*temp_f25;
+    float sp18 = ((3.0*temp_f25)-temp_f19)-temp_f19;
+    out[0] = 1.0-sp18;
+    out[1] = sp18;
+    out[2] = t+((temp_f19-temp_f25)-temp_f25);
+    out[3] = temp_f19-temp_f25;
+}
+
+static float HermiteCalc(float t, float a, float b, float c, float d)
+{
+    float temp_f25;
+    float temp_f22;
+    float temp_f19;
+    int spB0;
+    float spAC;
+    float spA8;
+    float spA4;
+    float spA0;
+    float sp9C;
+    float sp8C[4];
+    float sp18;
+    
+    temp_f22 = c-b;
+    spB0 = c-b;
+    if(b == c) {
+        spA8 = temp_f22;
+    } else {
+        spA0 = 0.5f;
+        spA8 = spA0*(temp_f22+(b-a));
+    }
+    if(b == d) {
+        spAC = temp_f22;
+    } else {
+        spA4 = 0.5f;
+        spAC = spA4*(temp_f22+(d-c));
+    }
+    GetCoef(t, sp8C);
+    return sp9C = (sp8C[0]*b)+(sp8C[1]*c)+(sp8C[2]*spA8)+(sp8C[3]*spAC);
+}
+
+//Stack Ordering issues related to inlines
 void MBCapsuleHermiteGetV(float t, HuVecF *a, HuVecF *b, HuVecF *c, HuVecF *d, HuVecF *out)
 {
-    
+    out->x = HermiteCalc(t, a->x, b->x, c->x, d->x);
+    out->y = HermiteCalc(t, a->y, b->y, c->y, d->y);
+    out->z = HermiteCalc(t, a->z, b->z, c->z, d->z);
+}
+
+static float GetBezierValue(float a, float b, float c, float t)
+{
+    float temp = 1.0-t;
+    float result = (a*(temp*temp))+(temp*t*b*2.0)+(t*t*c);
+    return result;
 }
 
 void MBCapsuleBezierGetV(float t, float *a, float *b, float *c, float *out)
 {
-    
+    int i;
+    for(i=0; i<3; i++) {
+        *out++ = GetBezierValue(*a++, *b++, *c++, t);
+    }
 }
+
+static float GetBezierNormValue(float a, float b, float c, float t)
+{
+    float result = 2.0*(((t-1.0)*a)+((1.0-(2.0*t))*b)+(t*c));
+    return result;
+}
+
 
 void MBCapsuleBezierNormGetV(float t, float *a, float *b, float *c, float *out)
 {
-    
+    int i;
+    float temp[3];
+    float mag;
+    for(i=0; i<3; i++) {
+        temp[i] = GetBezierNormValue(*a++, *b++, *c++, t);
+    }
+    mag = HuMagPoint3D(temp[0], temp[1], temp[2]);
+    if(mag) {
+        mag = 1.0/mag;
+        for(i=0; i<3; i++) {
+            *out++ = temp[i]*mag;
+        }
+    } else {
+        *out++ = 0;
+        *out++ = 0;
+        *out++ = 1;
+    }
 }

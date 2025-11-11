@@ -460,7 +460,7 @@ config.libs = [
             Object(Matching, "game/board/roulette.c"),
             Object(Matching, "game/board/capmachine.c"),
             Object(NonMatching, "game/board/capsule.c"),
-            Object(NonMatching, "game/board/capmain.c"),
+            Object(Equivalent, "game/board/capmain.c"),
             Object(Matching, "game/board/guide.c"),
             Object(Matching, "game/board/branch.c"),
             Object(Matching, "game/board/mgcall.c"),
