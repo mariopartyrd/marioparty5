@@ -258,7 +258,7 @@ void MBCapsuleStatusTradeOutSet(int leftPlayer, int rightPlayer, BOOL waitF);
 
 
 void MBCapsuleCameraViewPlayerSet(int playerNo);
-void MBCapsuleCameraViewSet(int playerNo, int viewNo, BOOL masuF);
+void MBCapsuleCameraViewSet(int playerNo, int viewNo, BOOL highViewF);
 void MBCapsuleCameraViewNoSet(int playerNo, int viewNo);
 BOOL MBCapsuleTeamCheck(int player1, int player2);
 void MBCapsuleDataDirRead(int capsuleNo);
@@ -328,19 +328,20 @@ void MBCapsulePlayerStunSet(int *playerNo, int playerNum, int type);
 BOOL MBCapsulePlayerMotShiftCheck(int playerNo);
 void MBCapsuleModelMotSet(int mdlId, int motNo, u32 attr, BOOL shiftF);
 BOOL MBCapsulePlayerMasuCheck(int playerNo, HuVecF *a, HuVecF *b, HuVecF *out);
-void MBCapsuleTimingHookCreate(HU3DMODELID modelId, HU3DMOTID motId, BOOL lagF);
+void MBCapsuleGrabSoundHook(HU3DMODELID modelId, HU3DMOTID motId, BOOL lagF);
 void MBCapsuleBezierGetV(float t, float *a, float *b, float *c, float *out);
 void MBCapsuleBezierNormGetV(float t, float *a, float *b, float *c, float *out);
 void MBCapsuleHermiteGetV(float t, HuVecF *a, HuVecF *b, HuVecF *c, HuVecF *d, HuVecF *out);
-float MBCapsuleAngleLerp(float a, float b, float t);
+float MBCapsuleAngleAdd(float a, float b, float t);
 float MBCapsuleAngleWrap(float a, float b);
-float MBCapsuleAngleSumLerp(float t, float a, float b);
+float MBCapsuleAngleLerp(float t, float a, float b);
 float MBCaspuleAngleRotCamera(float angle);
 
 void MBCapsuleLoseEffCreate(void);
+void MBCapsuleLoseEffExec(OMOBJ *obj);
 void MBCapsuleLoseEffKill(void);
 int MBCapsuleLoseEffAdd(HuVecF *pos, HuVecF *vel, float scale, int maxTime, int capsuleNo);
-void MBCapsuleLoseEffAddMulti(int playerNo, int max, float scale);
+void MBCapsuleLoseEffAddMulti(int playerNo, int max, float radius);
 int MBCapsuleLoseEffNumGet(void);
 
 s16 MBCapsuleMasuNextRegularGet(s16 masuId, HuVecF *pos);
@@ -381,6 +382,7 @@ void MBCapsuleModelMtxSet(MBMODELID mdlId, Mtx *matrix);
 int MBCapsuleCoinDispExec(int playerNo, int coinNum, BOOL winMotF, BOOL waitF);
 
 OMOBJ *MBCapsuleSaiHiddenCreate(int playerNo, int mdlId, int effDelay, BOOL rotF, BOOL skipF);
+void MBCapsuleSaiHiddenExec(OMOBJ *obj);
 void MBCapsuleSaiHiddenStartSet(OMOBJ *obj, BOOL startF);
 void MBCapsuleSaiHiddenKill(OMOBJ *obj);
 BOOL MBCapsuleSaiHiddenKillCheck(OMOBJ *obj);
@@ -412,9 +414,11 @@ int MBCapsulePlayerRandGet(int playerNo, int type);
 int MBCapsulePlayerSameRandGet(int playerNo, int type, BOOL sameF);
 
 int MBCapsuleStarNumCreate(int playerNo, int num);
+void MBCapsuleStarNumExec(OMOBJ *obj);
 int MBCapsuleStarNumCheck(int id);
 
 OMOBJ *MBCapsuleHoneObjCreate(HuVecF *pos, int mdlId, int masuId, int dispDelay, BOOL stompF);
+void MBCapsuleHoneObjExec(OMOBJ *obj);
 
 void MBCapsuleVibrate(int type);
 u32 MBCapsuleTeamNameGet(s16 charNo1, s16 charNo2);
@@ -422,6 +426,7 @@ u32 MBCapsuleTeamNameGet(s16 charNo1, s16 charNo2);
 void MBCapsuleSpriteShow(int file, int xPos, int yPos, BOOL slowF);
 
 void MBCapsuleChanceSprCreate(void);
+void MBCapsuleChanceSprExec(OMOBJ *obj);
 void MBCapsuleChanceSprKill(void);
 void MBCapsuleChanceSprAdd(HuVecF *pos, int no);
 void MBCapsuleChanceSprRotStart(void);

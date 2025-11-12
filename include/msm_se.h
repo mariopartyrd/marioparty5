@@ -15,6 +15,7 @@
 #define MSM_SE_CMN_17 16
 #define MSM_SE_CMN_19 18
 #define MSM_SE_CMN_25 24
+#define MSM_SE_CMN_51 50
 
 #define MSM_SE_MARIO 142
 #define MSM_SE_LUIGI 112
@@ -119,6 +120,7 @@
 #define MSM_SE_BOARD_39 797
 #define MSM_SE_BOARD_40 798
 #define MSM_SE_BOARD_41 799
+#define MSM_SE_BOARD_42 800
 #define MSM_SE_BOARD_43 801
 #define MSM_SE_BOARD_44 802
 #define MSM_SE_BOARD_45 803
@@ -129,6 +131,7 @@
 #define MSM_SE_BOARD_50 808
 #define MSM_SE_BOARD_51 809
 #define MSM_SE_BOARD_52 810
+#define MSM_SE_BOARD_53 811
 #define MSM_SE_BOARD_54 812
 #define MSM_SE_BOARD_55 813
 #define MSM_SE_BOARD_56 814
@@ -205,6 +208,9 @@
 #define MSM_SE_BOARD_129 887
 #define MSM_SE_BOARD_130 888
 #define MSM_SE_BOARD_131 889
+#define MSM_SE_BOARD_132 890
+#define MSM_SE_BOARD_133 891
+#define MSM_SE_BOARD_134 892
 
 #define MSM_SE_BOARD_136 894
 #define MSM_SE_BOARD_137 895

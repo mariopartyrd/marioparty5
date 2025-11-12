@@ -47,6 +47,7 @@
 #include "messnum/storyevent.h"
 #include "messnum/board_star.h"
 #include "messnum/boardope.h"
+#include "messnum/teamname.h"
 
 //Fake Board Prototypes
 extern BOOL MBCircuitGoalCheck(int playerNo);
@@ -2314,7 +2315,7 @@ void MBCapsuleJangoExec(void)
     mdlRot.z = 0;
     MBAudFXPlay(MSM_SE_BOARD_41);
     capsuleObj = NULL;
-    Hu3DMotionTimingHookSet(MBModelIdGet(mdlId), MBCapsuleTimingHookCreate);
+    Hu3DMotionTimingHookSet(MBModelIdGet(mdlId), MBCapsuleGrabSoundHook);
     bezierA = ofs;
     bezierB.x = startPos.x;
     bezierB.y = playerPos.y;
@@ -2332,8 +2333,8 @@ void MBCapsuleJangoExec(void)
             mdlRotEnd.x = 0;
             mdlRotEnd.y = 180;
         }
-        mdlRot.x = MBCapsuleAngleLerp(mdlRotEnd.x, mdlRot.x, 2.5f);
-        mdlRot.y = MBCapsuleAngleLerp(mdlRotEnd.y, mdlRot.y, 2.5f);
+        mdlRot.x = MBCapsuleAngleAdd(mdlRotEnd.x, mdlRot.x, 2.5f);
+        mdlRot.y = MBCapsuleAngleAdd(mdlRotEnd.y, mdlRot.y, 2.5f);
         mdlRot.z = 0;
         MBModelPosSet(mdlId, mdlPos.x, mdlPos.y, mdlPos.z);
         MBModelRotSet(mdlId, -mdlRot.x, mdlRot.y, mdlRot.z);
@@ -2350,9 +2351,9 @@ void MBCapsuleJangoExec(void)
     mdlPos = ofs;
     MBModelPosSet(mdlId, mdlPos.x, mdlPos.y, mdlPos.z);
     for(i=0; i<45.0f; i++) {
-        mdlRot.x = MBCapsuleAngleLerp(0, mdlRot.x, 2.5f);
-        mdlRot.y = MBCapsuleAngleLerp(0, mdlRot.y, 5.0f);
-        mdlRot.z = MBCapsuleAngleLerp(0, mdlRot.z, 2.5f);
+        mdlRot.x = MBCapsuleAngleAdd(0, mdlRot.x, 2.5f);
+        mdlRot.y = MBCapsuleAngleAdd(0, mdlRot.y, 5.0f);
+        mdlRot.z = MBCapsuleAngleAdd(0, mdlRot.z, 2.5f);
         MBModelRotSet(mdlId, mdlRot.x, mdlRot.y, mdlRot.z);
         HuPrcVSleep();
     }
@@ -2418,8 +2419,8 @@ void MBCapsuleJangoExec(void)
                     mdlRotEnd.x = 0;
                     mdlRotEnd.y = 180;
                 }
-                mdlRot.x = MBCapsuleAngleLerp(mdlRotEnd.x, mdlRot.x, 2.5f);
-                mdlRot.y = MBCapsuleAngleLerp(mdlRotEnd.y, mdlRot.y, 2.5f);
+                mdlRot.x = MBCapsuleAngleAdd(mdlRotEnd.x, mdlRot.x, 2.5f);
+                mdlRot.y = MBCapsuleAngleAdd(mdlRotEnd.y, mdlRot.y, 2.5f);
                 mdlRot.z = 0;
                 MBModelPosSet(mdlId, mdlPos.x, mdlPos.y, mdlPos.z);
                 MBModelRotSet(mdlId, -mdlRot.x, mdlRot.y, mdlRot.z);
@@ -2686,7 +2687,7 @@ void MBCapsuleBobleExec(void)
             pos.y += bounceHeight*HuSin(t*180);
             MBPlayerPosSetV(capsulePlayer, &pos);
             MBPlayerRotGet(capsulePlayer, &rot);
-            rot.x = MBCapsuleAngleLerp(rotEnd.x, rot.x, 5.0f);
+            rot.x = MBCapsuleAngleAdd(rotEnd.x, rot.x, 5.0f);
             if(bounceSpeed <= 0) {
                 rot.y = rotEnd.y;
             } else {
@@ -3224,7 +3225,7 @@ void MBCapsuleHanachanExec(void)
         mdlPos.x += (0.1f*(endPos.x-mdlPos.x));
         mdlPos.y += (0.1f*(endPos.y-mdlPos.y));
         mdlPos.z += (0.1f*(endPos.z-mdlPos.z));
-        angle = MBCapsuleAngleLerp(-90, angle, 1);
+        angle = MBCapsuleAngleAdd(-90, angle, 1);
         MBModelPosSet(mdlId, mdlPos.x, mdlPos.y, mdlPos.z);
         MBModelRotSet(mdlId, 0, angle, 0);
         HuPrcVSleep();
@@ -3830,7 +3831,7 @@ void MBCapsuleTogezoExec(void)
     }
     MBModelRotSet(mdlId, 0, 0, 0);
     for(mdlRotX=0, i=0; i<15.0f; i++) {
-        mdlRotX = MBCapsuleAngleLerp(179, mdlRotX, 15);
+        mdlRotX = MBCapsuleAngleAdd(179, mdlRotX, 15);
         MBModelRotSet(mdlId, mdlRotX, 0, 0);
         HuPrcVSleep();
     }
@@ -3877,7 +3878,7 @@ void MBCapsuleTogezoExec(void)
         }
         VECAdd(&mdlPos, &mdlVel, &mdlPos);
         mdlVel.y -= 1.633333357671897;
-        mdlRotX = MBCapsuleAngleLerp(179, mdlRotX, 15);
+        mdlRotX = MBCapsuleAngleAdd(179, mdlRotX, 15);
         MBModelPosSet(mdlId, mdlPos.x, mdlPos.y, mdlPos.z);
         MBModelRotSet(mdlId, mdlRotX, 0, 0);
         HuPrcVSleep();
@@ -3890,7 +3891,7 @@ void MBCapsuleTogezoExec(void)
         }
         VECAdd(&mdlPos, &mdlVel, &mdlPos);
         mdlVel.y -= 1.633333357671897;
-        mdlRotX = MBCapsuleAngleLerp(180, mdlRotX, 5);
+        mdlRotX = MBCapsuleAngleAdd(180, mdlRotX, 5);
         MBModelPosSet(mdlId, mdlPos.x, mdlPos.y, mdlPos.z);
         MBModelRotSet(mdlId, mdlRotX, 0, 0);
         MBModelAlphaSet(mdlId, 255*t);
@@ -4001,7 +4002,7 @@ void MBCapsulePatapataExec(void)
     MBPlayerPosGet(capsulePlayer, &playerPos);
     MBAudFXPlay(MSM_SE_BOARD_32);
     capsuleObj = NULL;
-    Hu3DMotionTimingHookSet(MBModelIdGet(mdlId), MBCapsuleTimingHookCreate);
+    Hu3DMotionTimingHookSet(MBModelIdGet(mdlId), MBCapsuleGrabSoundHook);
     MBPlayerPosGet(capsulePlayer, &basePos);
     mdlPos = basePos;
     mdlPos.y += 600;
@@ -4344,7 +4345,7 @@ static void CapsuleKillerMain(void)
         rotEnd = HuAtan(effPos.x, effPos.z);
         if(t > 0.9f) {
             if(rotEnd <= 0 || rotEnd > 180) {
-                rot = MBCapsuleAngleLerp(rotEnd, rot, t*60);
+                rot = MBCapsuleAngleAdd(rotEnd, rot, t*60);
             }
         } else {
             rot = rotEnd;
@@ -4572,7 +4573,7 @@ void MBCapsuleKillerMoveExec(int playerNo, BOOL flag)
         VECScale(&dir, &dir, t);
         VECAdd(&masuPosFirst, &dir, &playerPos);
         playerPos.y += (HuSin(t*180)*100)*2;
-        playerRot.y = MBCapsuleAngleSumLerp(t, playerRot.y, mdlRot.y);
+        playerRot.y = MBCapsuleAngleLerp(t, playerRot.y, mdlRot.y);
         MBPlayerPosSetV(playerNo, &playerPos);
         MBPlayerRotSetV(playerNo, &playerRot);
         HuPrcVSleep();
@@ -4640,8 +4641,8 @@ void MBCapsuleKillerMoveExec(int playerNo, BOOL flag)
                 VECSubtract(&tempVec, &dir, &dir);
                 mdlEndRot.y = HuAtan(dir.x, dir.z);
             }
-            mdlRot.x = MBCapsuleAngleLerp(mdlEndRot.x, mdlRot.x, 3.5f);
-            mdlRot.y = MBCapsuleAngleLerp(mdlEndRot.y, mdlRot.y, 3.5f);
+            mdlRot.x = MBCapsuleAngleAdd(mdlEndRot.x, mdlRot.x, 3.5f);
+            mdlRot.y = MBCapsuleAngleAdd(mdlEndRot.y, mdlRot.y, 3.5f);
             MBModelPosSet(mdlId, mdlPos.x, mdlPos.y, mdlPos.z);
             MBModelRotSet(mdlId, -mdlRot.x, mdlRot.y, mdlRot.z);
             mtxRot(rotMtx, -mdlRot.x, mdlRot.y, mdlRot.z);
@@ -4764,9 +4765,9 @@ void MBCapsuleKillerMoveExec(int playerNo, BOOL flag)
         VECScale(&dir, &dir, t);
         VECAdd(&masuPosFirst, &dir, &playerPos);
         playerPos.y += (HuSin(t*180)*100)*2;
-        playerRot.x = MBCapsuleAngleSumLerp(t, playerRot.x, 0);
-        playerRot.y = MBCapsuleAngleSumLerp(t, playerRot.y, 0);
-        playerRot.z = MBCapsuleAngleSumLerp(t, playerRot.z, 0);
+        playerRot.x = MBCapsuleAngleLerp(t, playerRot.x, 0);
+        playerRot.y = MBCapsuleAngleLerp(t, playerRot.y, 0);
+        playerRot.z = MBCapsuleAngleLerp(t, playerRot.z, 0);
         MBPlayerPosSetV(playerNo, &playerPos);
         MBPlayerRotSetV(playerNo, &playerRot);
         HuPrcVSleep();
@@ -6772,7 +6773,7 @@ void MBCapsuleUkkiExec(void)
             mdlPos.x = startPos.x+(t*(endPos.x-startPos.x));
             mdlPos.z = startPos.z+(t*(endPos.z-startPos.z));
             mdlPos.y = startPos.y+(t*(endPos.y-startPos.y))+(200*HuSin(t*180));
-            mdlRot.y = MBCapsuleAngleLerp(180, mdlRot.y, 10);
+            mdlRot.y = MBCapsuleAngleAdd(180, mdlRot.y, 10);
             MBModelPosSetV(mdlId, &mdlPos);
             MBModelRotSetV(mdlId, &mdlRot);
             if(t > 0.7f) {
@@ -9388,8 +9389,8 @@ void MBCapsuleWanwanExec(void)
                         rotEndY = HuAtan(moveDir.x, moveDir.z);
                         for(j=0; j<moveTime; j++) {
                             t = (float)j/(float)moveTime;
-                            mdlRot.x = MBCapsuleAngleLerp(rotEndX, mdlRot.x, 5);
-                            mdlRot.y = MBCapsuleAngleLerp(rotEndY, mdlRot.y, 5);
+                            mdlRot.x = MBCapsuleAngleAdd(rotEndX, mdlRot.x, 5);
+                            mdlRot.y = MBCapsuleAngleAdd(rotEndY, mdlRot.y, 5);
                             mdlRot.z = 0;
                             mdlPos.x = masuPos.x+(t*moveDir.x);
                             mdlPos.y = masuPos.y+(t*moveDir.y)+((moveDist*0.5f)*HuSin(t*180));
@@ -9404,8 +9405,8 @@ void MBCapsuleWanwanExec(void)
                     for(i=0; i<30.0f; i++) {
                         MBMasuPosGet(MASU_LAYER_DEFAULT, GwPlayer[otherPlayer].masuId, &masuPosOther);
                         VECSubtract(&masuPosOther, &mdlPos, &moveDir);
-                        mdlRot.x = MBCapsuleAngleLerp(0, mdlRot.x, 5);
-                        mdlRot.y = MBCapsuleAngleLerp(HuAtan(moveDir.x, moveDir.z), mdlRot.y, 5);
+                        mdlRot.x = MBCapsuleAngleAdd(0, mdlRot.x, 5);
+                        mdlRot.y = MBCapsuleAngleAdd(HuAtan(moveDir.x, moveDir.z), mdlRot.y, 5);
                         MBModelRotSet(mdlId, mdlRot.x, mdlRot.y, mdlRot.z);
                         HuPrcVSleep();
                     }
@@ -9465,8 +9466,8 @@ void MBCapsuleWanwanExec(void)
                     MBMotionShiftSet(mdlId, 5, 0, 8, HU3D_MOTATTR_LOOP);
                     for(j=0; j<moveTime; j++) {
                         t = (float)j/(float)moveTime;
-                        mdlRot.x = MBCapsuleAngleLerp(rotEndX, mdlRot.x, 5);
-                        mdlRot.y = MBCapsuleAngleLerp(rotEndY, mdlRot.y, 5);
+                        mdlRot.x = MBCapsuleAngleAdd(rotEndX, mdlRot.x, 5);
+                        mdlRot.y = MBCapsuleAngleAdd(rotEndY, mdlRot.y, 5);
                         mdlRot.z = 0;
                         mdlPos.x = masuPos.x+(t*moveDir.x);
                         mdlPos.y = masuPos.y+(t*moveDir.y)+(200*HuSin(t*180));
@@ -9584,8 +9585,8 @@ void MBCapsuleWanwanExec(void)
                         rotEndY = HuAtan(moveDir.x, moveDir.z);
                         for(j=0; j<moveTime; j++) {
                             t = (float)j/moveTime;
-                            mdlRot.x = MBCapsuleAngleLerp(rotEndX, mdlRot.x, 5);
-                            mdlRot.y = MBCapsuleAngleLerp(rotEndY, mdlRot.y, 5);
+                            mdlRot.x = MBCapsuleAngleAdd(rotEndX, mdlRot.x, 5);
+                            mdlRot.y = MBCapsuleAngleAdd(rotEndY, mdlRot.y, 5);
                             mdlRot.z = 0;
                             mdlPos.x = masuPos.x+(t*moveDir.x);
                             mdlPos.y = masuPos.y+(t*moveDir.y)+((moveDist*0.5f)*HuSin(t*180));
@@ -9652,8 +9653,8 @@ void MBCapsuleWanwanExec(void)
                     rotEndY = HuAtan(moveDir.x, moveDir.z);
                     for(j=0; j<moveTime; j++) {
                         t = (float)j/moveTime;
-                        mdlRot.x = MBCapsuleAngleLerp(rotEndX, mdlRot.x, 5);
-                        mdlRot.y = MBCapsuleAngleLerp(rotEndY, mdlRot.y, 5);
+                        mdlRot.x = MBCapsuleAngleAdd(rotEndX, mdlRot.x, 5);
+                        mdlRot.y = MBCapsuleAngleAdd(rotEndY, mdlRot.y, 5);
                         mdlRot.z = 0;
                         mdlPos.x = masuPos.x+(t*moveDir.x);
                         mdlPos.y = masuPos.y+(t*moveDir.y)+((moveDist*0.5f)*HuSin(t*180));
@@ -9676,8 +9677,8 @@ void MBCapsuleWanwanExec(void)
                         rotEndY = HuAtan(moveDir.x, moveDir.z);
                         for(j=0; j<moveTime; j++) {
                             t = (float)j/moveTime;
-                            mdlRot.x = MBCapsuleAngleLerp(rotEndX, mdlRot.x, 5);
-                            mdlRot.y = MBCapsuleAngleLerp(rotEndY, mdlRot.y, 5);
+                            mdlRot.x = MBCapsuleAngleAdd(rotEndX, mdlRot.x, 5);
+                            mdlRot.y = MBCapsuleAngleAdd(rotEndY, mdlRot.y, 5);
                             mdlRot.z = 0;
                             mdlPos.x = masuPos.x+(t*moveDir.x);
                             mdlPos.y = masuPos.y+(t*moveDir.y)+((moveDist*0.5f)*HuSin(t*180));
@@ -11222,7 +11223,7 @@ static void KoopaMasuExec(int mdlId, BOOL partyF)
                 MBCapsuleModelMotSet(mdlId, 4, HU3D_MOTATTR_LOOP, TRUE);
                 do {
                     HuPrcVSleep();
-                    mdlRot.y = MBCapsuleAngleLerp(rotY, mdlRot.y, 5);
+                    mdlRot.y = MBCapsuleAngleAdd(rotY, mdlRot.y, 5);
                     MBModelRotSetV(mdlId, &mdlRot);
                 } while(fabs(MBCapsuleAngleWrap(rotY, mdlRot.y)) > 5);
                 MBCapsuleModelMotSet(mdlId, 1, HU3D_MOTATTR_LOOP, TRUE);
@@ -12763,7 +12764,7 @@ void MBCapsuleMiracleExec(void)
             mtxRotCat(capsuleP->matrix, 0, capsuleP->rot.y, 0);
             mtxRotCat(capsuleP->matrix, capsuleP->rot.x, 0, capsuleP->rot.z);
             capsuleP->rot.y += rotYSpeed;
-            capsuleP->rot.x = MBCapsuleAngleLerp(rotTbl[i], capsuleP->rot.x, rotSpeed);
+            capsuleP->rot.x = MBCapsuleAngleAdd(rotTbl[i], capsuleP->rot.x, rotSpeed);
             if((capsuleP->angle += 2.5f) > 360) {
                 capsuleP->angle -= 360;
             }
@@ -15062,7 +15063,7 @@ struct CapsuleEffect_s {
     HU3DMODEL *hookMdlP;
 };
 
-static HU3DMODELID CapsuleEffCreate(ANIMDATA *animP, int max);
+static HU3DMODELID CapsuleEffCreate(ANIMDATA *animP, s16 max);
 
 typedef struct ExplodeEffWork_s {
     int mdlId;
@@ -17212,257 +17213,2303 @@ int MBCapsuleStarTradeAdd(BOOL downF, int playerNo, int starNum)
     }
 }
 
+typedef struct CapsuleLoseEff_s {
+    BOOL flag;
+    int mdlId;
+    int capsuleNo;
+    int unkC;
+    int time;
+    int maxTime;
+    HuVecF pos;
+    HuVecF vel;
+} CAPSULE_LOSE_EFF;
+
 void MBCapsuleLoseEffCreate(void)
 {
+    CAPSULE_LOSE_EFF *work;
+    int i;
+    OMOBJ *obj;
     
+    obj = loseEffObj = MBAddObj(32768, 0, 0, MBCapsuleLoseEffExec);
+    work = obj->data = HuMemDirectMallocNum(HEAP_HEAP, 6*sizeof(CAPSULE_LOSE_EFF), HU_MEMNUM_OVL);
+    memset(work, 0, 6*sizeof(CAPSULE_LOSE_EFF));
+    for(i=0; i<6; i++, work++) {
+        work->flag = FALSE;
+        work->mdlId = HU3D_MODELID_NONE;
+        work->capsuleNo = CAPSULE_NULL;
+        work->unkC = -1;
+        work->time = 0;
+        work->maxTime = 0;
+        work->pos.x = work->pos.y = work->pos.z = 0;
+        work->vel.x = work->vel.x = work->vel.x = 0;
+    }
+}
+
+void MBCapsuleLoseEffExec(OMOBJ *obj)
+{
+    CAPSULE_LOSE_EFF *work;
+    int i;
+    work = obj->data;
+    if(MBKillCheck() || loseEffObj == NULL) {
+        for(i=0; i<6; i++, work++) {
+            if(work->mdlId != HU3D_MODELID_NONE) {
+                Hu3DModelKill(work->mdlId);
+            }
+            work->mdlId = HU3D_MODELID_NONE;
+        }
+        omDelObjEx(mbObjMan, obj);
+        loseEffObj = NULL;
+        return;
+    }
+    for(i=0; i<6; i++, work++) {
+        if(work->flag) {
+            VECAdd(&work->pos, &work->vel, &work->pos);
+            work->vel.y -= 4.9000006f;
+            work->time++;
+            Hu3DModelPosSet(work->mdlId, work->pos.x, work->pos.y, work->pos.z);
+            Hu3DModelTPLvlSet(work->mdlId, 1.0f-((float)work->time/work->maxTime));
+            if(work->time >= work->maxTime) {
+                if(work->mdlId != HU3D_MODELID_NONE) {
+                    Hu3DModelKill(work->mdlId);
+                }
+                work->mdlId = HU3D_MODELID_NONE;
+                work->flag = FALSE;
+            }
+        }
+    }
 }
 
 void MBCapsuleLoseEffKill(void)
 {
-    
+    loseEffObj = NULL;
 }
 
 int MBCapsuleLoseEffNumGet(void)
 {
-    
+    CAPSULE_LOSE_EFF *work;
+    int i;
+    int num;
+    OMOBJ *obj;
+    obj = loseEffObj;
+    if(loseEffObj == NULL) {
+        return 0;
+    }
+    for(work=obj->data, i=0, num=0; i<6; i++, work++) {
+        if(work->flag) {
+            num++;
+        }
+    }
+    return num;
 }
 
 int MBCapsuleLoseEffAdd(HuVecF *pos, HuVecF *vel, float scale, int maxTime, int capsuleNo)
 {
-    
+    CAPSULE_LOSE_EFF *work;
+    int i;
+    OMOBJ *obj;
+    obj = loseEffObj;
+    if(loseEffObj == NULL) {
+        return -1;
+    }
+    for(work=obj->data, i=0; i<6; i++, work++) {
+        if(!work->flag) {
+            break;
+        }
+    }
+    if(i >= 6) {
+        return -1;
+    }
+    work->flag = TRUE;
+    work->mdlId = Hu3DModelCreateData(MBCapsuleMdlGet(capsuleNo));
+    Hu3DModelAttrSet(work->mdlId, HU3D_MOTATTR_LOOP);
+    Hu3DModelCameraSet(work->mdlId, HU3D_CAM0);
+    work->capsuleNo = capsuleNo;
+    work->unkC = -1;
+    work->time = 0;
+    work->maxTime = maxTime;
+    work->pos = *pos;
+    work->vel = *vel;
+    Hu3DModelPosSet(work->mdlId, pos->x, pos->y, pos->z);
+    Hu3DModelScaleSet(work->mdlId, scale, scale, scale);
+    Hu3DModelLayerSet(work->mdlId, 2);
 }
 
-void MBCapsuleLoseEffAddMulti(int playerNo, int max, float scale)
+void MBCapsuleLoseEffAddMulti(int playerNo, int max, float radius)
 {
+    float angle;
+    float speed;
+    float angleX;
+    int i;
+    int capsuleNo;
     
+    HuVecF playerPos;
+    HuVecF pos;
+    HuVecF vel;
+    MBPlayerPosGet(playerNo, &playerPos);
+    if(max > MBPlayerCapsuleMaxGet()) {
+        max = MBPlayerCapsuleMaxGet();
+    }
+    angle = MBCapsuleEffRandF()*360;
+    for(i=0; i<max; i++) {
+        capsuleNo = MBPlayerCapsuleGet(playerNo, i);
+        if(capsuleNo == CAPSULE_NULL) {
+            continue;
+        }
+        speed = ((MBCapsuleEffRandF()*0.1f)+1)*65;
+        angleX = (MBCapsuleEffRandF()*15)+75;
+        angle += (360.0f/max)+(MBCapsuleEffRandF()*10);
+        pos.x = playerPos.x+(radius*HuSin(angle));
+        pos.z = playerPos.z+(radius*HuCos(angle));
+        pos.y = playerPos.y;
+        vel.x = HuSin(angle)*HuCos(angleX)*speed;
+        vel.z = HuCos(angle)*HuCos(angleX)*speed;
+        vel.y = HuSin(angleX)*speed;
+        MBCapsuleLoseEffAdd(&pos, &vel, 1, 60, capsuleNo);
+    }
 }
+
+typedef struct CapsuleHoneObj_s {
+    int mdlId;
+    int masuId;
+    int masuNextId;
+    int dispDelay;
+    HuVecF pos;
+    HuVecF masuPos;
+    HuVecF rot;
+    HuVecF scale;
+    HuVecF dir;
+    int time;
+    int maxTime;
+    float speed;
+    float height;
+} CAPSULE_HONE_OBJ;
 
 OMOBJ *MBCapsuleHoneObjCreate(HuVecF *pos, int mdlId, int masuId, int dispDelay, BOOL stompF)
 {
-    
+    CAPSULE_HONE_OBJ *work;
+    OMOBJ *obj;
+    float speed;
+    obj = MBAddObj(32768, 0, 0, MBCapsuleHoneObjExec);
+    work = obj->data = HuMemDirectMallocNum(HEAP_HEAP, sizeof(CAPSULE_HONE_OBJ), HU_MEMNUM_OVL);
+    memset(work, 0, sizeof(CAPSULE_HONE_OBJ));
+    work->mdlId = mdlId;
+    MBModelPosSetV(work->mdlId, pos);
+    work->masuId = masuId;
+    work->masuNextId = MBCapsuleMasuNextGet(masuId, &work->masuPos);
+    if(work->masuNextId <= 0) {
+        work->masuPos = *pos;
+    }
+    work->dispDelay = dispDelay;
+    work->pos = *pos;
+    work->rot.x = work->rot.y = work->rot.z = 0;
+    work->scale.x = work->scale.y = work->scale.z = 3;
+    if(work->masuNextId == MASU_NULL) {
+        work->masuNextId = work->masuId;
+        work->masuPos.x = work->pos.x;
+        work->masuPos.y = work->pos.y+500;
+        work->masuPos.z = work->pos.z;
+        VECSubtract(&work->masuPos, &work->pos, &work->dir);
+        speed = 200;
+        work->time = 0;
+        work->maxTime = speed/20;
+        work->speed = speed;
+        work->height = 0.33f*speed;
+    } else {
+        if(stompF) {
+            work->masuPos.y += 200;
+        }
+        VECSubtract(&work->masuPos, &work->pos, &work->dir);
+        speed = VECMag(&work->dir);
+        work->time = 0;
+        work->maxTime = speed/20;
+        work->speed = speed;
+        work->height = 0.33f*speed;
+    }
+    MBModelPosSet(work->mdlId, pos->x, pos->y, pos->z);
+    MBModelRotSet(work->mdlId, work->rot.x, work->rot.y, work->rot.z);
+    MBModelScaleSet(work->mdlId, work->scale.x, work->scale.y, work->scale.z);
+    return obj;
 }
+
+void MBCapsuleHoneObjExec(OMOBJ *obj)
+{
+    HuVecF pos;
+    CAPSULE_HONE_OBJ *work;
+    BOOL killF;
+    float speed;
+    float t;
+    
+    work = obj->data;
+    killF = FALSE;
+    work->time++;
+    t = work->time/(float)work->maxTime;
+    VECSubtract(&work->masuPos, &work->pos, &work->dir);
+    VECScale(&work->dir, &pos, t);
+    VECAdd(&work->pos, &pos, &pos);
+    pos.y += work->height*HuSin(t*180);
+    work->rot.x += 10;
+    work->rot.y += (MBCapsuleEffRandF()*3)+3;
+    MBModelPosSet(work->mdlId, pos.x, pos.y, pos.z);
+    MBModelRotSet(work->mdlId, work->rot.x, work->rot.y, work->rot.z);
+    MBModelScaleSet(work->mdlId, work->scale.x, work->scale.y, work->scale.z);
+    if(work->time >= work->maxTime) {
+        work->masuId = work->masuNextId;
+        work->pos = work->masuPos;
+        work->masuNextId = MBCapsuleMasuNextGet(work->masuNextId, &work->masuPos);
+        if(work->masuNextId <= 0) {
+            VECAdd(&work->pos, &work->dir, &work->masuPos);
+            if(work->dispDelay > 2) {
+                work->dispDelay = 2;
+            } else {
+                work->dispDelay = 0;
+            }
+            VECSubtract(&work->masuPos, &work->pos, &pos);
+            speed = VECMag(&pos);
+            work->time = 0;
+            work->maxTime = speed/20;
+            work->speed = speed;
+            work->height = 0.33f*speed;
+        } else {
+            VECSubtract(&work->masuPos, &work->pos, &pos);
+            speed = VECMag(&pos);
+            work->time = 0;
+            work->maxTime = speed/20;
+            work->speed = speed;
+            work->height = 0.33f*speed;
+        }
+        if(--work->dispDelay <= 0) {
+            MBModelDispSet(work->mdlId, FALSE);
+            killF = TRUE;
+        }
+    }
+    if(MBKillCheck() || killF) {
+        omDelObjEx(mbObjMan, obj);
+    }
+}
+
+typedef struct CapsuleSaiHidden_s {
+    int playerNo;
+    int motId;
+    int mdlId;
+    int effDelay;
+    BOOL rotF;
+    int mode;
+    int time;
+    int maxTime;
+    int comBtnTime;
+    int motTime;
+    int hideTime;
+    BOOL jumpF;
+    BOOL hitF;
+    BOOL skipF;
+    BOOL startF;
+    float baseScale;
+    float rotYSpeed;
+    float rotY;
+    float scale;
+    HuVecF playerPos;
+    HuVecF playerVel;
+    HuVecF pos;
+    HuVecF playerPosOld;
+    HuVecF posOld;
+} CAPSULE_SAI_HIDDEN;
 
 OMOBJ *MBCapsuleSaiHiddenCreate(int playerNo, int mdlId, int effDelay, BOOL rotF, BOOL skipF)
 {
+    CAPSULE_SAI_HIDDEN *work;
+    OMOBJ *obj;
     
+    obj = MBAddObj(32768, 0, 0, MBCapsuleSaiHiddenExec);
+    work = obj->data = HuMemDirectMallocNum(HEAP_HEAP, sizeof(CAPSULE_SAI_HIDDEN), HU_MEMNUM_OVL);
+    memset(work, 0, sizeof(CAPSULE_SAI_HIDDEN));
+    work->playerNo = playerNo;
+    work->mdlId = mdlId;
+    work->effDelay = effDelay;
+    work->rotF = rotF;
+    work->mode = 0;
+    work->time = 0;
+    work->maxTime = 30;
+    work->comBtnTime = MBCapsuleEffRandF()*60;
+    work->motTime = 0;
+    work->hideTime = 0;
+    work->jumpF = FALSE;
+    work->hitF = FALSE;
+    work->skipF = skipF;
+    work->startF = TRUE;
+    if(effDelay > 1) {
+        work->motId = MBPlayerMotionCreate(work->playerNo, CHARMOT_HSF_c000m1_312);
+    } else {
+        work->motId = MBPlayerMotionCreate(work->playerNo, CHARMOT_HSF_c000m1_311);
+    }
+    MBPlayerPosGet(work->playerNo, &work->playerPos);
+    work->pos = work->playerPos;
+    work->pos.y += 250;
+    work->playerPosOld = work->playerPos;
+    work->posOld = work->pos;
+    return obj;
+}
+
+void MBCapsuleSaiHiddenExec(OMOBJ *obj)
+{
+    CAPSULE_SAI_HIDDEN *work; //r31
+    BOOL btnF; //r30
+    int i; //r29
+    
+    float angle; //f31
+    float t; //f30
+    float speed; //f29
+    
+    HuVecF effPos; //sp+0x34
+    HuVecF effVel; //sp+0x28
+    GXColor color; //sp+0xC
+    
+    work = obj->data;
+    btnF = FALSE;
+    switch(work->mode) {
+        case 0:
+            work->baseScale = 0;
+            work->rotYSpeed = 30;
+            work->rotY = 0;
+            work->scale = 0;
+            work->time = 0;
+            work->mode++;
+            MBModelDispSet(work->mdlId, TRUE);
+
+        case 1:
+            if(work->rotY > 360) {
+                work->rotY -= 360;
+            }
+            work->rotY += work->rotYSpeed;
+            if(work->scale  >= 1 && work->rotYSpeed > 10) {
+                work->rotYSpeed -= 0.25f;
+            }
+            work->baseScale += 0.02f;
+            if(work->baseScale > 1) {
+                work->baseScale = 1;
+            }
+            work->scale = work->baseScale+HuSin(work->baseScale*180);
+            MBModelPosSetV(work->mdlId, &work->pos);
+            MBModelRotSet(work->mdlId, 0, work->rotY, 0);
+            MBModelScaleSet(work->mdlId, work->scale, work->scale, work->scale);
+            if(work->rotY >= 360 && work->baseScale >= 1) {
+                MBModelRotSet(work->mdlId, 0, 0, 0);
+                MBModelScaleSet(work->mdlId, 1, 1, 1);
+                work->rotY = 0;
+                work->time = 0;
+                work->mode++;
+            }
+            break;
+        
+        case 2:
+            if(++work->time >= work->maxTime) {
+                work->time = 0;
+                if(work->startF) {
+                    work->mode++;
+                }
+            }
+            break;
+
+        case 3:
+            if(work->rotF) {
+                if((work->rotY += 90.0f) >= 360) {
+                    work->rotY -= 360;
+                }
+            }
+            if(work->skipF) {
+                btnF = TRUE;
+            } else {
+                if(GwPlayer[work->playerNo].comF) {
+                    if(--work->comBtnTime <= 0) {
+                        btnF = TRUE;
+                    }
+                } else if(HuPadBtnDown[GwPlayer[work->playerNo].padNo] & PAD_BUTTON_A) {
+                    btnF = TRUE;
+                }
+            }
+            if(work->effDelay > 0 && !work->jumpF && btnF) {
+                MBPlayerMotionNoSet(work->playerNo, work->motId, HU3D_MOTATTR_NONE);
+                work->playerVel.x = work->playerVel.z = 0;
+                work->playerVel.y = 120.00001f;
+                work->jumpF = TRUE;
+                work->comBtnTime = MBCapsuleEffRandF()*60;
+                work->motTime = 0;
+            }
+            if(work->jumpF) {
+                VECAdd(&work->playerPos, &work->playerVel, &work->playerPos);
+                work->playerVel.y -= 8.166667f;
+                work->motTime++;
+                if(MBPlayerMotionEndCheck(work->playerNo)) {
+                    MBPlayerMotIdleSet(work->playerNo);
+                    work->jumpF = FALSE;
+                    work->playerPos.y = work->playerPosOld.y;
+                }
+            }
+            if(work->jumpF && !work->hitF && work->motTime == 7) {
+                if(work->effDelay) {
+                    work->effDelay--;
+                }
+                work->playerVel.y = 0;
+                work->hitF = TRUE;
+                work->hideTime = 1;
+                MBAudFXPlay(MSM_SE_BOARD_56);
+                omVibrate(work->playerNo, 12, 4, 2);
+                if(work->effDelay <= 0) {
+                    for(i=0, angle=0; i<128; i++) {
+                        angle += (MBCapsuleEffRandF()+1)*10;
+                        effPos.x = work->pos.x+((-0.5f+MBCapsuleEffRandF())*75);
+                        effPos.y = work->pos.y+((-0.5f+MBCapsuleEffRandF())*75);
+                        effPos.z = work->pos.z+50;
+                        speed = (MBCapsuleEffRandF()+1)*5;
+                        effVel.x = speed*HuSin(angle);
+                        effVel.y = speed*HuCos(angle);
+                        effVel.z = 0;
+                        t = MBCapsuleEffRandF();
+                        color = kinokoGlowColorTbl[MBCapsuleEffRand(7)];
+                        MBCapsuleGlowEffAdd(effPos, effVel, ((MBCapsuleEffRandF()*0.1f)+0.3f)*100,
+                            (MBCapsuleEffRandF()+1)*0.016666668f,
+                            0,
+                            0,
+                            color);
+                    }
+                }
+            }
+            if(work->hideTime) {
+                t = ++work->hideTime/10.0f;
+                work->pos.y = work->posOld.y+(100*HuSin(t*180));
+                if(work->effDelay <= 0) {
+                    MBModelDispSet(work->mdlId, FALSE);
+                    work->pos = work->posOld;
+                    work->hideTime = 0;
+                } else if(t >= 1) {
+                    work->pos = work->posOld;
+                    work->hideTime = 0;
+                }
+            }
+            MBModelPosSetV(work->mdlId, &work->pos);
+            MBModelRotSet(work->mdlId, work->rotY, 0, 0);
+            MBModelScaleSet(work->mdlId, work->scale, work->scale, work->scale);
+            if(!work->jumpF && work->effDelay <= 0 && work->hideTime == 0) {
+                work->time = 0;
+                work->mode++;
+            }
+            break;
+        
+        case 4:
+            MBPlayerMotIdleSet(work->playerNo);
+            if(MBMotionShiftIDGet(MBPlayerModelGet(work->playerNo)) == HU3D_MOTID_NONE) {
+                work->time = 0;
+                work->mode++;
+            }
+            break;
+        
+        case 5:
+            break;
+    }
+    if(MBKillCheck()) {
+        MBCapsuleSaiHiddenKill(obj);
+    }
 }
 
 void MBCapsuleSaiHiddenKill(OMOBJ *obj)
 {
-    
+    CAPSULE_SAI_HIDDEN *work;
+    work = obj->data;
+    if(work->motId != MB_MOT_NONE && !MBKillCheck()) {
+        MBPlayerMotionNoSet(work->playerNo, MB_PLAYER_MOT_IDLE, HU3D_MOTATTR_LOOP);
+        MBPlayerMotionKill(work->playerNo, work->motId);
+    }
+    HuMemDirectFree(obj->data);
+    obj->data = NULL;
+    omDelObjEx(mbObjMan, obj);
 }
 
 BOOL MBCapsuleSaiHiddenKillCheck(OMOBJ *obj)
 {
-    
+    CAPSULE_SAI_HIDDEN *work;
+    work = obj->data;
+    if(MBKillCheck()) {
+        return TRUE;
+    }
+    if(work->mode < 5) {
+        return FALSE;
+    } else {
+        return TRUE;
+    }
 }
 
 BOOL MBCapsuleSaiHiddenHitCheck(OMOBJ *obj, HuVecF *pos)
 {
-    
+    CAPSULE_SAI_HIDDEN *work;
+    work = obj->data;
+    if(pos != NULL) {
+        *pos = work->pos;
+    }
+    if(MBKillCheck()) {
+        return FALSE;
+    }
+    if(work->hitF) {
+        work->hitF = FALSE;
+        return TRUE;
+    } else {
+        return FALSE;
+    }
 }
 
 BOOL MBCapsuleSaiHiddenInCheck(OMOBJ *obj)
 {
-    
+    CAPSULE_SAI_HIDDEN *work;
+    work = obj->data;
+    if(MBKillCheck()) {
+        return FALSE;
+    }
+    if(work->mode < 2) {
+        return FALSE;
+    } else {
+        return TRUE;
+    }
 }
 
 void MBCapsuleSaiHiddenStartSet(OMOBJ *obj, BOOL startF)
 {
-    
+    CAPSULE_SAI_HIDDEN *work;
+    work = obj->data;
+    if(MBKillCheck()) {
+        return;
+    }
+    work->startF = startF;
 }
+
+typedef struct CapsuleChanceSpr_s {
+    BOOL flag;
+    int sprId;
+    int backSprId;
+    int mode;
+    int time;
+    BOOL removeF;
+    float unk18;
+    float unk1C;
+    HuVecF pos;
+} CAPSULE_CHANCE_SPR;
+
+#define CAPSULE_CHANCE_SPR_MAX 6
 
 void MBCapsuleChanceSprCreate(void)
 {
-    
+    CAPSULE_CHANCE_SPR *work;
+    int i;
+    OMOBJ *obj;
+    chanceSprObj = obj = MBAddObj(32768, 0, 0, MBCapsuleChanceSprExec);
+    work = obj->data = HuMemDirectMallocNum(HEAP_HEAP, CAPSULE_CHANCE_SPR_MAX*sizeof(CAPSULE_CHANCE_SPR), HU_MEMNUM_OVL);
+    memset(work, 0, CAPSULE_CHANCE_SPR_MAX*sizeof(CAPSULE_CHANCE_SPR));
+    for(i=0; i<CAPSULE_CHANCE_SPR_MAX; i++, work++) {
+        work->flag = FALSE;
+        work->sprId = -1;
+        work->backSprId = -1;
+        work->mode = 0;
+        work->time = 0;
+        work->removeF = FALSE;
+        work->unk18 = 0;
+        work->unk1C = 0;
+    }
+}
+
+void MBCapsuleChanceSprExec(OMOBJ *obj)
+{
+    CAPSULE_CHANCE_SPR *work;
+    int i;
+    float scale;
+    float t;
+    work = obj->data;
+    if(chanceSprObj == NULL) {
+        for(i=0; i<CAPSULE_CHANCE_SPR_MAX; i++, work++) {
+            if(!work->flag) {
+                continue;
+            }
+            if(work->sprId != -1) {
+                espDispOff(work->sprId);
+            }
+            if(work->backSprId != -1) {
+                espDispOff(work->backSprId);
+            }
+            work->sprId = -1;
+            work->backSprId = -1;
+        }
+        omDelObjEx(mbObjMan, obj);
+        chanceSprObj = NULL;
+        return;
+    }
+    for(i=0; i<CAPSULE_CHANCE_SPR_MAX; i++, work++) {
+        if(!work->flag) {
+            continue;
+        }
+        switch(work->mode) {
+            case 0:
+                t = ++work->time/30.0f;
+                if(t < 1) {
+                    scale = (HuCos(t*90)*5)+1;
+                    espScaleSet(work->sprId, scale, scale);
+                    espTPLvlSet(work->sprId, t);
+                    espZRotSet(work->sprId, t*360);
+                    scale = t+(HuSin(t*180)*0.5f);
+                    espScaleSet(work->backSprId, scale, scale);
+                } else {
+                    switch(i) {
+                        case 0:
+                            MBAudFXPlay(MSM_SE_BOARD_132);
+                            break;
+                        
+                        case 1:
+                            MBAudFXPlay(MSM_SE_BOARD_133);
+                            break;
+                        
+                        default:
+                            MBAudFXPlay(MSM_SE_BOARD_134);
+                            break;
+                    }
+                    scale = 1;
+                    espTPLvlSet(work->sprId, 1);
+                    espZRotSet(work->sprId, 0);
+                    espScaleSet(work->sprId, scale, scale);
+                    espScaleSet(work->backSprId, scale, scale);
+                    work->mode++;
+                    work->time = 0;
+                }
+                break;
+            
+            case 1:
+                t = ++work->time/60.0f;
+                scale = (HuSin(t*720)*0.2f)+1;
+                if(t < 1) {
+                    espScaleSet(work->sprId, scale, scale);
+                } else {
+                    scale = 1;
+                    espScaleSet(work->sprId, scale, scale);
+                    espScaleSet(work->backSprId, scale, scale);
+                    work->mode++;
+                    work->time = 0;
+                }
+                break;
+            
+            case 2:
+                if(work->removeF) {
+                    scale = 1;
+                    espScaleSet(work->sprId, scale, scale);
+                    espScaleSet(work->backSprId, scale, scale);
+                    work->mode = 64;
+                    work->time = 0;
+                }
+                break;
+            
+            case 32:
+                t = ++work->time/240.0f;
+                if(t >= 1 && !work->removeF) {
+                    t = fmod(t, 1);
+                    work->time -= 240.0f;
+                }
+                scale = (HuSin(t*1440)*0.2f)+1;
+                if(t < 1) {
+                    espScaleSet(work->sprId, scale, scale);
+                    espZRotSet(work->backSprId, HuSin(t*1440)*30);
+                } else {
+                    scale = 1;
+                    espScaleSet(work->sprId, scale, scale);
+                    espScaleSet(work->backSprId, scale, scale);
+                    work->mode = 64;
+                    work->time = 0;
+                }
+                break;
+            
+            case 64:
+                t = ++work->time/30.0f;
+                scale = HuCos(t*90);
+                if(t < 1) {
+                    espScaleSet(work->sprId, scale, scale);
+                    espScaleSet(work->backSprId, scale, scale);
+                } else {
+                    espDispOff(work->sprId);
+                    espDispOff(work->backSprId);
+                    work->mode++;
+                    work->time = 0;
+                }
+                break;
+        }
+    }
 }
 
 void MBCapsuleChanceSprKill(void)
 {
-    
+    chanceSprObj = NULL;
 }
 
 void MBCapsuleChanceSprAdd(HuVecF *pos, int no)
 {
-    
+    CAPSULE_CHANCE_SPR *work;
+    int i;
+    OMOBJ *obj;
+    int file;
+    static int charSprFileTbl[10] = {
+        CAPSULECHAR4_ANM_chance_char_mario,
+        CAPSULECHAR4_ANM_chance_char_luigi,
+        CAPSULECHAR4_ANM_chance_char_peach,
+        CAPSULECHAR4_ANM_chance_char_yoshi,
+        CAPSULECHAR4_ANM_chance_char_wario,
+        CAPSULECHAR4_ANM_chance_char_daisy,
+        CAPSULECHAR4_ANM_chance_char_waluigi,
+        CAPSULECHAR4_ANM_chance_char_kinopio,
+        CAPSULECHAR4_ANM_chance_char_teresa,
+        CAPSULECHAR4_ANM_chance_char_minikoopa
+    };
+    static int tradeSprFileTbl[7] = {
+        CAPSULECHAR4_ANM_chance_trade_20coin_left,
+        CAPSULECHAR4_ANM_chance_trade_20coin_right,
+        CAPSULECHAR4_ANM_chance_trade_coin_swap,
+        CAPSULECHAR4_ANM_chance_trade_star1_left,
+        CAPSULECHAR4_ANM_chance_trade_star2_left,
+        CAPSULECHAR4_ANM_chance_trade_star_swap,
+        CAPSULECHAR4_ANM_chance_trade_coin_star_swap
+    };
+    static int chanceBackFile = CAPSULECHAR4_ANM_chance_back;
+    obj = chanceSprObj;
+    if(chanceSprObj == NULL) {
+        return;
+    }
+    for(work=obj->data, i=0; i<CAPSULE_CHANCE_SPR_MAX; i++, work++) {
+        if(!work->flag) {
+            break;
+        }
+    }
+    if(i >= CAPSULE_CHANCE_SPR_MAX) {
+        return;
+    }
+    work->flag = TRUE;
+    work->mode = 0;
+    work->time = 0;
+    work->unk18 = 0;
+    work->unk1C = 0;
+    work->pos = *pos;
+    if(no & 0x8000) {
+        no &= 0x7FFF;
+        if(no < 0) {
+            no = 0;
+        } else if(no > 9) {
+            no = 9;
+        }
+        file = charSprFileTbl[no];
+    } else {
+        if(no < 0) {
+            no = 0;
+        } else if(no > 6) {
+            no = 6;
+        }
+        file = tradeSprFileTbl[no];
+    }
+    work->sprId = espEntry(file, 100, 0);
+    espPosSet(work->sprId, pos->x, pos->y);
+    espScaleSet(work->sprId, 0, 0);
+    espAttrSet(work->sprId, HUSPR_ATTR_LINEAR);
+    work->backSprId = espEntry(chanceBackFile, 120, 0);
+    espPosSet(work->backSprId, pos->x, pos->y);
+    espScaleSet(work->backSprId, 0, 0);
+    espAttrSet(work->backSprId, HUSPR_ATTR_LINEAR);
 }
 
 void MBCapsuleChanceSprRotStart(void)
 {
-    
+    CAPSULE_CHANCE_SPR *work;
+    int i;
+    OMOBJ *obj;
+    obj = chanceSprObj;
+    if(chanceSprObj == NULL) {
+        return;
+    }
+    for(work=obj->data, i=0; i<CAPSULE_CHANCE_SPR_MAX; i++, work++) {
+        if(work->flag) {
+            work->mode = 32;
+            work->time = 0;
+        }
+    }
 }
 
 void MBCapsuleChanceSprRemove(void)
 {
-    
+    CAPSULE_CHANCE_SPR *work;
+    int i;
+    OMOBJ *obj;
+    obj = chanceSprObj;
+    if(chanceSprObj == NULL) {
+        return;
+    }
+    for(work=obj->data, i=0; i<CAPSULE_CHANCE_SPR_MAX; i++, work++) {
+        if(work->flag) {
+            work->removeF =TRUE;
+        }
+    }
 }
+
+typedef struct StarNumWork_s {
+    int mdlId[4];
+    int playerNo;
+    int num;
+    int mode;
+    int unk1C;
+    u16 angle;
+    u16 delay;
+    HuVecF basePos;
+    HuVecF mdlPos[4];
+} STAR_NUM_WORK;
+
+static void StarNumMdlUpdate(STAR_NUM_WORK *work, int no, float x, float y, float z, float scale);
+
+static OMOBJ *capsuleStarNumObj[GW_PLAYER_MAX];
 
 int MBCapsuleStarNumCreate(int playerNo, int num)
 {
+    STAR_NUM_WORK *work;
+    OMOBJ *obj; //r30
+    int i; //r29
+    int tens; //r28
+    int ones; //r26
+    int sign; //r24
+    float time; //f31
+    HuVecF pos; //sp+0x8
     
+    static const int signFile[2] = {
+        BOARD_HSF_numPlus,
+        BOARD_HSF_numMinus
+    };
+    static int numberFile[10] = {
+        BOARD_HSF_num0,
+        BOARD_HSF_num1,
+        BOARD_HSF_num2,
+        BOARD_HSF_num3,
+        BOARD_HSF_num4,
+        BOARD_HSF_num5,
+        BOARD_HSF_num6,
+        BOARD_HSF_num7,
+        BOARD_HSF_num8,
+        BOARD_HSF_num9
+    };
+    sign = (num < 0) ? 1 : 0;
+    tens = abs(num)/10;
+    ones = abs(num)-(tens*10);
+    if(tens > 9) {
+        tens = 9;
+    }
+    if(ones > 9) {
+        ones = 9;
+    }
+    MBPlayerPosGet(playerNo, &pos);
+    pos.y += 250;
+    if(sign) {
+        time = 2.5f;
+    } else {
+        time = 1.5f;
+    }
+    obj = capsuleStarNumObj[playerNo] = MBAddObj(32768, 0, 0, MBCapsuleStarNumExec);
+    work = obj->data = HuMemDirectMallocNum(HEAP_HEAP, sizeof(STAR_NUM_WORK), HU_MEMNUM_OVL);
+    memset(work, 0, sizeof(STAR_NUM_WORK));
+    work->mdlId[0] = MBModelCreate(signFile[sign], NULL, FALSE);
+    work->mdlId[1] = MBModelCreate(numberFile[ones], NULL, FALSE);
+    work->mdlId[2] = MBModelCreate(numberFile[tens], NULL, FALSE);
+    work->mdlId[3] = MBModelCreate(BOARD_HSF_star, NULL, FALSE);
+    for(i=0; i<3; i++) {
+        MBModelPosSetV(work->mdlId[i], &pos);
+        MBModelScaleSet(work->mdlId[i], 0.001f, 0.001f, 0.001f);
+        MBMotionNoSet(work->mdlId[i], 0, HU3D_MOTATTR_NONE);
+        MBMotionTimeSet(work->mdlId[i], time);
+        MBMotionSpeedSet(work->mdlId[i], 0);
+        work->mdlPos[i] = pos;
+        MBModelLayerSet(work->mdlId[i], 3);
+    }
+    MBModelPosSetV(work->mdlId[3], &pos);
+    work->mdlPos[3] = pos;
+    MBModelScaleSet(work->mdlId[3], 0.001f, 0.001f, 0.001f);
+    MBMotionNoSet(work->mdlId[3], 0, HU3D_MOTATTR_NONE);
+    MBMotionTimeSet(work->mdlId[3], MBMotionMaxTimeGet(work->mdlId[3]));
+    MBMotionSpeedSet(work->mdlId[3], 0);
+    MBModelLayerSet(work->mdlId[3], 3);
+    if(tens == 0) {
+        MBModelDispSet(work->mdlId[2], FALSE);
+    }
+    if(num) {
+        if(num >= 0) {
+            MBAudFXPlay(MSM_SE_BOARD_123);
+        } else {
+            MBAudFXPlay(MSM_SE_CMN_51);
+        }
+    }
+    work->playerNo = playerNo;
+    work->num = num;
+    work->mode = 0;
+    work->unk1C = 0;
+    work->angle = 0;
+    work->delay = 0;
+    work->basePos = pos;
+    obj->trans.x = work->basePos.x;
+    obj->trans.y = work->basePos.y;
+    obj->trans.z = work->basePos.z;
+    obj->rot.x = 0;
+    obj->rot.y = 0;
+    obj->rot.z = 0;
+    obj->scale.x = 0.01f;
+    obj->scale.y = 0.01f;
+    obj->scale.z = 0.01f;
+    return playerNo;
 }
 
 int MBCapsuleStarNumCheck(int id)
 {
-    
+    if(capsuleStarNumObj[id] != NULL) {
+        return FALSE;
+    } else {
+        return TRUE;
+    }
 }
 
-static HU3DMODELID CapsuleEffCreate(ANIMDATA *animP, int max)
+void MBCapsuleStarNumExec(OMOBJ *obj)
 {
+    STAR_NUM_WORK *work; //r28
+    u16 i; //r26
     
+    float angle; //f28
+    float yOfs; //f27
+    float radius; //f26
+    float objAngle; //f25
+    float scale; //f24
+    float starPosX; //f23
+    float onesPosX; //f22
+    float tensPosX; //f21
+    float signPosX; //f20
+    float t; //f19
+    float baseAngle; //f18
+    
+    HuVecF pos; //sp+0x14
+    
+    work = obj->data;
+    if(work->delay) {
+        work->delay--;
+        return;
+    }
+    if(MBKillCheck()) {
+        work->mode = 4;
+    }
+    switch(work->mode) {
+        case 0:
+            OSu16tof32(&work->angle, &angle);
+            angle = HuSin(angle);
+            scale = angle;
+            obj->rot.y = angle*405;
+            StarNumMdlUpdate(work, 3, obj->trans.x, obj->trans.y, obj->trans.z, scale);
+            MBModelRotYSet(work->mdlId[3], obj->rot.y);
+            if(work->angle < 90) {
+                work->angle += 6;
+            } else {
+                work->mode++;
+                work->angle = 0;
+                for(i=0; i<4; i++) {
+                    StarNumMdlUpdate(work, i, obj->trans.x, obj->trans.y, obj->trans.z, scale);
+                }
+            }
+            break;
+        
+        case 1:
+            OSu16tof32(&work->angle, &angle);
+            if(work->num >= 10) {
+                radius = 140;
+            } else {
+                radius = 105;
+            }
+            yOfs = 200*HuSin(angle*2);
+            angle = HuSin(angle);
+            obj->rot.y = 45+(315*angle);
+            if(work->num >= 10) {
+                starPosX = obj->trans.x+(angle*-radius);
+                signPosX = obj->trans.x+((angle*-radius)/3);
+                onesPosX = obj->trans.x+(angle*radius);
+                tensPosX = obj->trans.x+((angle*radius)/3);
+            } else {
+                signPosX = obj->trans.x;
+                tensPosX = obj->trans.x;
+                onesPosX = obj->trans.x+(angle*radius);
+                starPosX = obj->trans.x+(angle*-radius);
+            }
+            StarNumMdlUpdate(work, 3, starPosX, obj->trans.y+yOfs, obj->trans.z, 1);
+            StarNumMdlUpdate(work, 0, signPosX, obj->trans.y+yOfs, obj->trans.z, 1);
+            StarNumMdlUpdate(work, 1, onesPosX, obj->trans.y+yOfs, obj->trans.z, 1);
+            StarNumMdlUpdate(work, 2, tensPosX, obj->trans.y+yOfs, obj->trans.z, 1);
+            MBModelRotYSet(work->mdlId[3], obj->rot.y);
+            MBModelRotYSet(work->mdlId[0], obj->rot.y);
+            MBModelRotYSet(work->mdlId[1], obj->rot.y);
+            MBModelRotYSet(work->mdlId[2], obj->rot.y);
+            if(work->angle < 90) {
+                work->angle += 6;
+            } else {
+                obj->trans.y += yOfs;
+                work->mode++;
+                work->angle = 0;
+            }
+            break;
+        
+        case 2:
+            OSu16tof32(&work->angle, &angle);
+            angle = HuSin(angle);
+            if(work->num >= 10) {
+                yOfs = (-50*angle)+obj->trans.y;
+            } else {
+                yOfs = (50*angle)+obj->trans.y;
+            }
+            for(i=0; i<4; i++) {
+                pos = work->mdlPos[i];
+                StarNumMdlUpdate(work, i, pos.x, yOfs, pos.z, 1);
+            }
+            if(work->angle < 90) {
+                work->angle += 6;
+            } else {
+                work->mode++;
+                work->angle = 0;
+                work->delay = 18;
+                obj->scale.x = 1;
+                obj->scale.y = 1;
+                obj->trans.y = yOfs;
+            }
+            break;
+        
+        case 3:
+            t = work->angle/24.0f;
+            obj->rot.y = 90+(270*HuSin(t*90));
+            baseAngle = t*180;
+            for(i=0; i<4; i++) {
+                objAngle = baseAngle-(30.0f*i);
+                if(objAngle < 0) {
+                    objAngle = 0;
+                } else if(objAngle > 90) {
+                    objAngle = 90;
+                }
+                if(i != 3) {
+                    scale = 1;
+                } else {
+                    scale = HuCos(objAngle);
+                }
+                angle = HuSin(objAngle);
+                if(work->num >= 0) {
+                    StarNumMdlUpdate(work, i, work->mdlPos[i].x, obj->trans.y+(angle*100), work->mdlPos[i].z, scale);
+                } else {
+                    StarNumMdlUpdate(work, i, work->mdlPos[i].x, obj->trans.y+(angle*-100), work->mdlPos[i].z, scale);
+                }
+                if(i != 3) {
+                    MBModelAlphaSet(work->mdlId[i], HuCos(objAngle)*255);
+                }
+                MBModelRotYSet(work->mdlId[i], obj->rot.y);
+            }
+            if(++work->angle > 24.0f) {
+                for(i=0; i<4; i++) {
+                    MBModelDispSet(work->mdlId[i], FALSE);
+                }
+                work->mode++;
+                work->angle = 0;
+            }
+            break;
+        
+        case 4:
+            capsuleStarNumObj[work->playerNo] = NULL;
+            for(i=0; i<4; i++) {
+                MBModelKill(work->mdlId[i]);
+            }
+            HuMemDirectFree(obj->data);
+            obj->data = NULL;
+            omDelObjEx(mbObjMan, obj);
+            break;
+    }
 }
 
+static void StarNumMdlUpdate(STAR_NUM_WORK *work, int no, float x, float y, float z, float scale)
+{
+    float baseScale;
+    float depth;
+    float dist;
+    
+    Mtx lookat;
+    Mtx modelview;
+    HuVecF pos3D;
+    HuVecF pos2D;
+    HuVecF cameraPos;
+    
+    work->mdlPos[no].x = x;
+    work->mdlPos[no].y = y;
+    work->mdlPos[no].z = z;
+    pos3D = work->mdlPos[no];
+    Hu3D3Dto2D(pos3D, HU3D_CAM0, &pos2D);
+    Hu3DCameraSet(0, lookat);
+    MTXIdentity(modelview);
+    modelview[0][3] = pos3D.x;
+    modelview[1][3] = pos3D.y;
+    modelview[2][3] = pos3D.z;
+    MTXConcat(lookat, modelview, modelview);
+    cameraPos.x = modelview[0][3];
+    cameraPos.y = modelview[1][3];
+    cameraPos.z = modelview[2][3];
+    dist = VECMag(&cameraPos);
+    depth = 800;
+    baseScale = depth/dist;
+    pos2D.z = depth;
+    Hu3D2Dto3D(pos2D, HU3D_CAM0, &pos3D);
+    MBModelScaleSet(work->mdlId[no], scale*baseScale, scale*baseScale, scale*baseScale);
+    MBModelPosSet(work->mdlId[no], pos3D.x, pos3D.y, pos3D.z);
+}
+
+static char lbl_801CBE24[] = "%3.3f %3.3f %3.3f \n";
+
+static void CapsuleEffDraw(HU3DMODEL *modelP, Mtx *mtx);
+
+static HU3DMODELID CapsuleEffCreate(ANIMDATA *anim, s16 num)
+{
+    CAPSULE_EFFECT *effP;
+    CAPSULE_EFFDATA *effDataP;
+    s16 i;
+    HuVec2F *st;
+    HU3DMODEL *modelP;
+    HuVecF *vtx;
+    HU3DMODELID modelId;
+    void *dlBuf;
+    void *dlBegin;
+    modelId = Hu3DHookFuncCreate(CapsuleEffDraw);
+    Hu3DModelCameraSet(modelId, HU3D_CAM0);
+    modelP = &Hu3DData[modelId];
+    modelP->hookData = effP = HuMemDirectMallocNum(HEAP_MODEL, sizeof(CAPSULE_EFFECT), modelP->mallocNo);
+    effP->anim = anim;
+    effP->num = num;
+    effP->blendMode = HU3D_PARTICLE_BLEND_NORMAL;
+    effP->dispAttr = CAPSULE_EFF_DISPATTR_NONE;
+    effP->hook = NULL;
+    effP->hookMdlP = NULL;
+    effP->count = 0;
+    effP->attr = CAPSULE_EFF_ATTR_NONE;
+    effP->unk23 = 0;
+    effP->prevCount = 0;
+    effP->mode = effP->time = 0;
+    effP->data = effDataP = HuMemDirectMallocNum(HEAP_MODEL, num*sizeof(CAPSULE_EFFDATA), modelP->mallocNo);
+    memset(effDataP, 0, num*sizeof(CAPSULE_EFFDATA));
+    for(i=0; i<num; i++, effDataP++) {
+        effDataP->scale = 0;
+        effDataP->rot.x = effDataP->rot.y = effDataP->rot.z = 0;
+        effDataP->animTime = 0;
+        effDataP->animSpeed = 1;
+        effDataP->pos.x = ((frand() & 0x7F)-64)*20;
+        effDataP->pos.y = ((frand() & 0x7F)-64)*30;
+        effDataP->pos.z = ((frand() & 0x7F)-64)*20;
+        effDataP->color.r = effDataP->color.g = effDataP->color.b = effDataP->color.a = 255;
+        effDataP->no = 0;
+    }
+    effP->vertex = vtx = HuMemDirectMallocNum(HEAP_MODEL, num*sizeof(HuVecF)*4, modelP->mallocNo);
+    for(i=0; i<num*4; i++, vtx++) {
+        vtx->x = vtx->y = vtx->z = 0;
+    }
+    effP->st = st = HuMemDirectMallocNum(HEAP_MODEL, num*sizeof(HuVec2F)*4, modelP->mallocNo);
+    for(i=0; i<num; i++) {
+        st->x = 0;
+        st->y = 0;
+        st++;
+        
+        st->x = 1;
+        st->y = 0;
+        st++;
+        
+        st->x = 1;
+        st->y = 1;
+        st++;
+        
+        st->x = 0;
+        st->y = 1;
+        st++;
+    }
+    dlBegin = dlBuf = HuMemDirectMallocNum(HEAP_MODEL, 0x10000, modelP->mallocNo);
+    DCFlushRange(dlBuf, 0x10000);
+    GXBeginDisplayList(dlBegin, 0x10000);
+    GXBegin(GX_QUADS, GX_VTXFMT0, num*4);
+    for(i=0; i<num; i++) {
+        GXPosition1x16(i*4);
+        GXColor1x16(i);
+        GXTexCoord1x16(i*4);
+        
+        GXPosition1x16((i*4)+1);
+        GXColor1x16(i);
+        GXTexCoord1x16((i*4)+1);
+        
+        GXPosition1x16((i*4)+2);
+        GXColor1x16(i);
+        GXTexCoord1x16((i*4)+2);
+        
+        GXPosition1x16((i*4)+3);
+        GXColor1x16(i);
+        GXTexCoord1x16((i*4)+3);
+    }
+    GXEnd();
+    effP->dlSize = GXEndDisplayList();
+    effP->dl = HuMemDirectMallocNum(HEAP_MODEL, effP->dlSize, modelP->mallocNo);
+    memcpy(effP->dl, dlBuf, effP->dlSize);
+    DCFlushRange(effP->dl, effP->dlSize);
+    HuMemDirectFree(dlBuf);
+    return modelId;
+}
+
+static void CapsuleEffDraw(HU3DMODEL *modelP, Mtx *mtx)
+{
+    CAPSULE_EFFECT *effP;
+    CAPSULE_EFFDATA *effDataP;
+    HuVecF *vtx;
+    HuVec2F *st;
+    HuVecF *scaleVtxP;
+    s16 i;
+    s16 j;
+    HuVecF *initVtxP;
+    s16 bmpFmt;
+    s16 row;
+    s16 col;
+    CAPSULE_EFFHOOK hook;
+    static HuVecF basePos[] = {
+        { -0.5f,  0.5f, 0.0f },
+        {  0.5f,  0.5f, 0.0f },
+        {  0.5f, -0.5f, 0.0f },
+        { -0.5f, -0.5f, 0.0f }
+    };
+
+    static HuVec2F baseST[] = {
+        { 0.0f, 0.0f },
+        { 0.25f, 0.0f },
+        { 0.25f, 0.25f },
+        { 0.0f, 0.25f },
+    };
+
+    Mtx mtxInv;
+    Mtx mtxPos;
+    Mtx mtxRotZ;
+    HuVecF scaleVtx[4];
+    HuVecF finalVtx[4];
+    HuVecF initVtx[4];
+    ROMtx basePosMtx;
+    
+    effP = modelP->hookData;
+    if(effP->prevCounter != GlobalCounter || shadowModelDrawF) {
+        if(effP->hookMdlP && effP->hookMdlP != modelP){
+            CapsuleEffDraw(effP->hookMdlP, mtx);
+        }
+        GXLoadPosMtxImm(*mtx, GX_PNMTX0);
+        GXSetNumTevStages(1);
+        GXSetNumTexGens(1);
+        GXSetTexCoordGen(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, GX_IDENTITY);
+        GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR0A0);
+        if(shadowModelDrawF) {
+            GXSetTevColorIn(GX_TEVSTAGE0, GX_CC_ONE, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO);
+            GXSetZMode(GX_FALSE, GX_LEQUAL, GX_FALSE);
+        } else {
+            bmpFmt = (effP->anim->bmp->dataFmt & 0xF);
+            if(bmpFmt == ANIM_BMP_I8 || bmpFmt == ANIM_BMP_I4) {
+                GXSetTevColorIn(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_ONE, GX_CC_RASC, GX_CC_ZERO);
+            } else {
+                GXSetTevColorIn(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_TEXC, GX_CC_RASC, GX_CC_ZERO);
+            }
+            if(effP->dispAttr & CAPSULE_EFF_DISPATTR_ZBUF_OFF) {
+                GXSetZMode(GX_FALSE, GX_LEQUAL, GX_FALSE);
+            } else if(modelP->attr & HU3D_ATTR_ZWRITE_OFF) {
+                GXSetZMode(GX_TRUE, GX_LEQUAL, GX_TRUE);
+            } else {
+                GXSetZMode(GX_TRUE, GX_LEQUAL, GX_FALSE);
+            }
+        }
+        GXSetTevColorOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+        GXSetTevAlphaIn(GX_TEVSTAGE0, GX_CA_ZERO, GX_CA_TEXA, GX_CA_RASA, GX_CA_ZERO);
+        GXSetTevAlphaOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+        GXSetNumChans(1);
+        GXSetChanCtrl(GX_COLOR0A0, GX_FALSE, GX_SRC_REG, GX_SRC_VTX, GX_LIGHT_NULL, GX_DF_CLAMP, GX_AF_NONE);
+        HuSprTexLoad(effP->anim, 0, GX_TEXMAP0, GX_REPEAT, GX_REPEAT, GX_LINEAR);
+        GXSetAlphaCompare(GX_GEQUAL, 1, GX_AOP_AND, GX_GEQUAL, 1);
+        GXSetZCompLoc(GX_FALSE);
+        switch (effP->blendMode) {
+            case HU3D_PARTICLE_BLEND_NORMAL:
+                GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_NOOP);
+                break;
+            case HU3D_PARTICLE_BLEND_ADDCOL:
+                GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_ONE, GX_LO_NOOP);
+                break;
+            case HU3D_PARTICLE_BLEND_INVCOL:
+                GXSetBlendMode(GX_BM_BLEND, GX_BL_ZERO, GX_BL_INVSRCALPHA, GX_LO_NOOP);
+                break;
+        }
+        if(HmfInverseMtxF3X3(*mtx, mtxInv) == FALSE) {
+            PSMTXIdentity(mtxInv);
+        }
+        PSMTXReorder(mtxInv, basePosMtx);
+        if(effP->hook) {
+            hook = effP->hook;
+            hook(modelP, effP, mtx);
+        }
+        effDataP = effP->data;
+        vtx = effP->vertex;
+        st = effP->st;
+        if(effP->dispAttr & CAPSULE_EFF_DISPATTR_CAMERA_ROT) {
+            MTXIdentity(mtxInv);
+            MTXIdentity(*(Mtx *)(&basePosMtx));
+            initVtx[0] = basePos[0];
+            initVtx[1] = basePos[1];
+            initVtx[2] = basePos[2];
+            initVtx[3] = basePos[3];
+        } else {
+            PSMTXROMultVecArray(basePosMtx, &basePos[0], initVtx, 4);
+        }
+        for(i=0; i<effP->num; i++, effDataP++) {
+            if(!effDataP->scale) {
+                vtx->x = vtx->y = vtx->z = 0;
+                vtx++;
+                vtx->x = vtx->y = vtx->z = 0;
+                vtx++;
+                vtx->x = vtx->y = vtx->z = 0;
+                vtx++;
+                vtx->x = vtx->y = vtx->z = 0;
+                vtx++;
+            } else if(effP->dispAttr & CAPSULE_EFF_DISPATTR_ROT3D) {
+                VECScale(&basePos[0], &scaleVtx[0], effDataP->scale);
+                VECScale(&basePos[1], &scaleVtx[1], effDataP->scale);
+                VECScale(&basePos[2], &scaleVtx[2], effDataP->scale);
+                VECScale(&basePos[3], &scaleVtx[3], effDataP->scale);
+                mtxRot(mtxPos, effDataP->rot.x, effDataP->rot.y, effDataP->rot.z);
+                PSMTXMultVecArray(mtxPos, scaleVtx, finalVtx, 4);
+                VECAdd(&finalVtx[0], &effDataP->pos, vtx++);
+                VECAdd(&finalVtx[1], &effDataP->pos, vtx++);
+                VECAdd(&finalVtx[2], &effDataP->pos, vtx++);
+                VECAdd(&finalVtx[3], &effDataP->pos, vtx++);
+            } else if(!effDataP->rot.z) {
+                scaleVtxP = scaleVtx;
+                initVtxP = initVtx;
+                VECScale(initVtxP++, scaleVtxP, effDataP->scale);
+                VECAdd(scaleVtxP++, &effDataP->pos, vtx++);
+                VECScale(initVtxP++, scaleVtxP, effDataP->scale);
+                VECAdd(scaleVtxP++, &effDataP->pos, vtx++);
+                VECScale(initVtxP++, scaleVtxP, effDataP->scale);
+                VECAdd(scaleVtxP++, &effDataP->pos, vtx++);
+                VECScale(initVtxP++, scaleVtxP, effDataP->scale);
+                VECAdd(scaleVtxP++, &effDataP->pos, vtx++);
+            } else {
+                VECScale(&basePos[0], &scaleVtx[0], effDataP->scale);
+                VECScale(&basePos[1], &scaleVtx[1], effDataP->scale);
+                VECScale(&basePos[2], &scaleVtx[2], effDataP->scale);
+                VECScale(&basePos[3], &scaleVtx[3], effDataP->scale);
+                MTXRotRad(mtxRotZ, 'Z', effDataP->rot.z);
+                PSMTXConcat(mtxInv, mtxRotZ, mtxPos);
+                PSMTXMultVecArray(mtxPos, scaleVtx, finalVtx, 4);
+                VECAdd(&finalVtx[0], &effDataP->pos, vtx++);
+                VECAdd(&finalVtx[1], &effDataP->pos, vtx++);
+                VECAdd(&finalVtx[2], &effDataP->pos, vtx++);
+                VECAdd(&finalVtx[3], &effDataP->pos, vtx++);
+
+            }
+        }
+        effDataP = effP->data;
+        st = effP->st;
+        if(!(effP->dispAttr & CAPSULE_EFF_DISPATTR_NOANIM)) {
+            for(i=0; i<effP->num; i++, effDataP++) {
+                row = effDataP->no & 0x3;
+                col = (effDataP->no >> 2) & 0x3;
+                for(j=0; j<4; j++, st++) {
+                    st->x = (0.25f*row)+baseST[j].x;
+                    st->y = (0.25f*col)+baseST[j].y;
+                }
+            }
+        } else {
+            for(i=0; i<effP->num; i++, effDataP++) {
+                for(j=0; j<4; j++, st++) {
+                    st->x = 4*baseST[j].x;
+                    st->y = 4*baseST[j].y;
+                }
+            }
+        }
+        DCFlushRangeNoSync(effP->vertex, effP->num*sizeof(HuVecF)*4);
+        DCFlushRangeNoSync(effP->st, effP->num*sizeof(HuVec2F)*4);
+        DCFlushRangeNoSync(effP->data, effP->num*sizeof(CAPSULE_EFFDATA));
+        PPCSync();
+        GXClearVtxDesc();
+        GXSetVtxDesc(GX_VA_POS, GX_INDEX16);
+        GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XYZ, GX_F32, 0);
+        GXSetArray(GX_VA_POS, effP->vertex, sizeof(HuVecF));
+        GXSetVtxDesc(GX_VA_CLR0, GX_INDEX16);
+        GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_CLR0, GX_CLR_RGBA, GX_RGBA8, 0);
+        GXSetArray(GX_VA_CLR0, &effP->data->color, sizeof(CAPSULE_EFFDATA));
+        GXSetVtxDesc(GX_VA_TEX0, GX_INDEX16);
+        GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX0, GX_TEX_ST, GX_F32, 0);
+        GXSetArray(GX_VA_TEX0, effP->st, sizeof(HuVec2F));
+        GXCallDisplayList(effP->dl, effP->dlSize);
+        if(shadowModelDrawF == FALSE) {
+            if(!(effP->attr & CAPSULE_EFF_ATTR_COUNTER_UPDATE)) {
+                effP->count++;
+            }
+            if(effP->prevCount != 0 && effP->prevCount <= effP->count) {
+                if(effP->attr & CAPSULE_EFF_ATTR_COUNTER_RESET) {
+                    effP->count = 0;
+                }
+                effP->count = effP->prevCount;
+            }
+            effP->prevCounter = GlobalCounter;
+        }
+
+    }
+    
+}
 static HU3DPARMANID CapsuleStarEffCreate(ANIMDATA *animP)
 {
-    
+    static HU3DPARMANPARAM param = {
+        30,
+        0,
+        3.3f,
+        70,
+        7,
+        { 0, -0.05f, 0 },
+        2,
+        1,
+        30,
+        0.98f,
+        2,
+        {
+            { 255, 255, 255, 255 },
+            { 255, 255, 64, 255 },
+        },
+        {
+            { 255, 128, 128, 0 },
+            { 255, 64, 32, 0 },
+        }
+    };
+    HU3DPARMANID parManId;
+    HU3DMODELID mdlId;
+    parManId = Hu3DParManCreate(animP, 100, &param);
+    Hu3DParManAttrSet(parManId, HU3D_PARMAN_ATTR_SCALEJITTER|HU3D_PARMAN_ATTR_RANDSCALE70|HU3D_PARMAN_ATTR_RANDSPEED70);
+    Hu3DParManRotSet(parManId, 90, 0, 0);
+    mdlId = Hu3DParManModelIDGet(parManId);
+    Hu3DParticleBlendModeSet(mdlId, HU3D_PARTICLE_BLEND_ADDCOL);
+    Hu3DModelLayerSet(mdlId, 2);
+    return parManId;
 }
 
 BOOL MBCapsulePlayerMotShiftCheck(int playerNo)
 {
-    
+    int model = MBPlayerModelGet(playerNo);
+    int mdlId = MBModelIdGet(model);
+    if(Hu3DMotionShiftIDGet(mdlId) == HU3D_MOTID_NONE) {
+        return TRUE;
+    } else {
+        return FALSE;
+    }
 }
 
 void MBCapsuleModelMotSet(int mdlId, int motNo, u32 attr, BOOL shiftF)
 {
-    
+    if(shiftF) {
+        MBMotionShiftSet(mdlId, motNo, 0, 8, attr);
+        if(attr & HU3D_MOTATTR_LOOP) {
+            do {
+                HuPrcVSleep();
+            } while(MBMotionShiftIDGet(mdlId) != HU3D_MOTID_NONE);
+        } else {
+            do {
+                HuPrcVSleep();
+            } while(MBMotionShiftIDGet(mdlId) != HU3D_MOTID_NONE);
+            do {
+                HuPrcVSleep();
+            } while(!MBMotionEndCheck(mdlId));
+        }
+    } else {
+        MBMotionNoSet(mdlId, motNo, attr);
+        if(!(attr & HU3D_MOTATTR_LOOP)) {
+            do {
+                HuPrcVSleep();
+            } while(MBMotionEndCheck(mdlId));
+        }
+    }
 }
 
 void MBCapsulePlayerMotSet(int playerNo, int motNo, u32 attr, BOOL shiftF)
 {
-    
-}
-
-int MBCapsulePlayerSquishSet(int *playerNo, int masuId)
-{
-    
-}
-
-int MBCapsulePlayerSquishVoiceSet(int *playerNo, int masuId, BOOL voiceF)
-{
-    
-}
-
-void MBCapsulePlayerStunSet(int *playerNo, int playerNum, int type)
-{
-    
+    int mdlId = MBPlayerModelGet(playerNo);
+    if(shiftF) {
+        MBPlayerMotionNoShiftSet(playerNo, motNo, 0, 8, attr);
+        if(attr & HU3D_MOTATTR_LOOP) {
+            do {
+                HuPrcVSleep();
+            } while(MBMotionShiftIDGet(mdlId) != HU3D_MOTID_NONE);
+        } else {
+            do {
+                HuPrcVSleep();
+            } while(MBMotionShiftIDGet(mdlId) != HU3D_MOTID_NONE);
+            do {
+                HuPrcVSleep();
+            } while(!MBMotionEndCheck(mdlId));
+        }
+    } else {
+        MBPlayerMotionNoSet(playerNo, motNo, attr);
+        if(!(attr & HU3D_MOTATTR_LOOP)) {
+            do {
+                HuPrcVSleep();
+            } while(MBMotionEndCheck(mdlId));
+        }
+    }
 }
 
 void MBCapsulePlayerIdleWait(void)
 {
-    
+    int i;
+    for(i=0; i<GW_PLAYER_MAX; i++) {
+        MBPlayerMotIdleSet(i);
+    }
+    while(1) {
+        for(i=0; i<GW_PLAYER_MAX; i++) {
+            if(!MBCapsulePlayerMotShiftCheck(i)) {
+                break;
+            }
+        }
+        HuPrcVSleep();
+        if(i >= GW_PLAYER_MAX) {
+            break;
+        }
+    }
+}
+
+int MBCapsulePlayerSquishSet(int *playerNo, int masuId)
+{
+    MBCapsulePlayerSquishVoiceSet(playerNo, masuId, FALSE);
+}
+
+int MBCapsulePlayerSquishVoiceSet(int *playerNo, int masuId, BOOL voiceF)
+{
+    int i;
+    int num;
+    num = 0;
+    for(i=0; i<GW_PLAYER_MAX; i++) {
+        if(MBPlayerAliveCheck(i) && masuId == GwPlayer[i].masuId) {
+            playerNo[num++] = i;
+        }
+    }
+    for(i=0; i<num; i++) {
+        if(voiceF) {
+            CharMotionVoiceOnSet(GwPlayer[playerNo[i]].charNo, CHAR_MOTNO(CHARMOT_HSF_c000m1_368), FALSE);
+        }
+        MBPlayerMotionNoSet(playerNo[i], MB_PLAYER_MOT_FLATTEN, HU3D_MOTATTR_NONE);
+        MBPlayerMotionTimeSet(playerNo[i], 20);
+        MBPlayerMotionSpeedSet(playerNo[i], 0);
+    }
+    return num;
+}
+
+void MBCapsulePlayerStunSet(int *playerNo, int playerNum, int type)
+{
+    int i;
+    for(i=0; i<playerNum; i++) {
+        MBPlayerMotionSpeedSet(playerNo[i], 1);
+    }
+    i=0;
+    while(1) {
+        HuPrcVSleep();
+        for(i=0; i<playerNum; i++) {
+            if(!MBPlayerMotionEndCheck(playerNo[i])) {
+                break;
+            }
+        }
+        if(i >= playerNum) {
+            break;
+        }
+    }
+    for(i=0; i<playerNum; i++) {
+        switch(type) {
+            case 0:
+                MBPlayerMotionNoShiftSet(playerNo[i], MB_PLAYER_MOT_DIZZY, 0, 8, HU3D_MOTATTR_LOOP);
+                break;
+            
+            case 1:
+                if(!MBPlayerStoryComCheck(playerNo[i])) {
+                    MBPlayerMotionNoShiftSet(playerNo[i], MB_PLAYER_MOT_DIZZY, 0, 8, HU3D_MOTATTR_LOOP);
+                } else {
+                    MBPlayerMotionNoShiftSet(playerNo[i], MB_PLAYER_MOT_IDLE, 0, 8, HU3D_MOTATTR_LOOP);
+                    MBPlayerMotionSpeedSet(playerNo[i], 1);
+                }
+                break;
+        }
+        CharMotionVoiceOnSet(GwPlayer[playerNo[i]].charNo, CHAR_MOTNO(CHARMOT_HSF_c000m1_368), TRUE);
+    }
 }
 
 void MBCapsuleCameraViewPlayerSet(int playerNo)
 {
-    
+    static HuVecF viewOfs = { 0, 100, 0 };
+    static HuVecF viewRot = { -33, 0, 0 };
+    MBCameraModelViewSet(MBPlayerModelGet(playerNo), &viewRot, &viewOfs, 2100, -1, 21);
 }
 
 void MBCapsuleCameraViewNoSet(int playerNo, int viewNo)
 {
-    
+    MBCapsuleCameraViewSet(playerNo, viewNo, FALSE);
 }
 
-void MBCapsuleCameraViewSet(int playerNo, int viewNo, BOOL masuF)
+void MBCapsuleCameraViewSet(int playerNo, int viewNo, BOOL highViewF)
 {
-    
+    int view;
+    static HuVecF viewRot = { -33, 0, 0 };
+    if(GwSystem.playerMode >= MB_PLAYER_MODE_WALKEND_EVENT) {
+        return;
+    }
+    if(viewNo != -1) {
+        view = viewNo;
+    } else {
+        view = MBCameraViewNoGet();
+    }
+    MBCameraSkipSet(TRUE);
+    switch(view) {
+        case 0:
+            if(!highViewF) {
+                MBCameraViewNoSet(playerNo, view);
+            } else {
+                MBCameraPlayerViewSet(playerNo, &viewRot, &capsuleViewOfs, 1800, -1, 21);
+            }
+            break;
+        
+        case 1:
+            if(!highViewF) {
+                MBCameraViewNoSet(playerNo, view);
+            } else {
+                MBCameraPlayerViewSet(playerNo, &viewRot, &capsuleViewOfs, 2100, -1, 21);
+            }
+            break;
+        
+        case 2:
+            if(!highViewF) {
+                MBCameraViewNoSet(playerNo, view);
+            } else {
+                MBCameraPlayerViewSet(playerNo, &viewRot, &capsuleViewOfs, 3200, -1, 21);
+            }
+            break;
+        
+        case 3:
+            MBCameraPointFocusSet(NULL, NULL, -1, 21);
+            break;
+    }
+    MBCameraMotionWait();
 }
 
 void MBCapsuleVibrate(int type)
 {
-    
+    int i;
+    for(i=0; i<GW_PLAYER_MAX; i++) {
+        switch(type) {
+            case 0:
+                omVibrate(i, 12, 6, 6);
+                break;
+            
+            case 1:
+                omVibrate(i, 12, 4, 2);
+                break;
+            
+            case 2:
+                omVibrate(i, 12, 12, 0);
+                break;
+        }
+    }
 }
 
 BOOL MBCapsuleTeamCheck(int player1, int player2)
 {
-    
+    if(MBPlayerGrpGet(player1) == MBPlayerGrpGet(player2)) {
+        return TRUE;
+    } else {
+        return FALSE;
+    }
 }
 
 u32 MBCapsuleTeamNameGet(s16 charNo1, s16 charNo2)
 {
+    static s8 teamNameTbl[9*10] = {
+        -1, 0, 1, 2, 3, 4, 5, 6, 7, 8,
+        -1, -1, 9, 10, 11, 12, 13, 14, 15, 16,
+        -1, -1, -1, 17, 18, 19, 20, 21, 22, 23,
+        -1, -1, -1, -1, 24, 25, 26, 27, 28, 29,
+        -1, -1, -1, -1, -1, 30, 31, 32, 33, 34,
+        -1, -1, -1, -1, -1, -1, 35, 36, 37, 38,
+        -1, -1, -1, -1, -1, -1, -1, 39, 40, 41,
+        -1, -1, -1, -1, -1, -1, -1, -1, 42, 43,
+        -1, -1, -1, -1, -1, -1, -1, -1, -1, 44
+    };
+    int teamName;
     
+    if(charNo1 > CHARNO_MINIKOOPA || charNo2 > CHARNO_MINIKOOPA) {
+        return MESS_TEAMNAME_UNKNOWN;
+    }
+    if(charNo1 < charNo2) {
+        teamName = teamNameTbl[(charNo1*10)+charNo2];
+    } else {
+        teamName = teamNameTbl[(charNo2*10)+charNo1];
+    }
+    if(teamName == -1) {
+        return MESS_TEAMNAME_UNKNOWN;
+    } else {
+        return MESS_TEAMNAME_START+teamName;
+    }
 }
 
 int MBCapsulePlayerAliveFind(int playerNo)
 {
-    
+    int i;
+    for(i=0; i<GW_PLAYER_MAX; i++) {
+        if(MBPlayerAliveCheck(i) && i != playerNo) {
+            return i;
+        }
+    }
+    return -1;
 }
 
 int MBCapsuleCoinDispExec(int playerNo, int coinNum, BOOL winMotF, BOOL waitF)
 {
+    int mdlId; //r30
+    int coinDisp; //r27
     
+    HuVecF pos;
+    MBPlayerPosGet(playerNo, &pos);
+    pos.y += 250;
+    coinDisp = MBCoinDispCreateSe(&pos, coinNum);
+    if(winMotF) {
+        if(coinNum > 0) {
+            MBPlayerWinLoseVoicePlay(playerNo, MB_PLAYER_MOT_COINWIN, CHARVOICEID(5));
+            MBCapsulePlayerMotSet(playerNo, MB_PLAYER_MOT_COINWIN, HU3D_MOTATTR_NONE, TRUE);
+        } else if(coinNum < 0) {
+            MBPlayerWinLoseVoicePlay(playerNo, MB_PLAYER_MOT_COINLOSE, CHARVOICEID(10));
+            MBCapsulePlayerMotSet(playerNo, MB_PLAYER_MOT_COINLOSE, HU3D_MOTATTR_NONE, TRUE);
+        }
+    }
+    if(waitF) {
+        do {
+            HuPrcVSleep();
+        } while(!MBCoinDispKillCheck(coinDisp));
+        if(winMotF) {
+            MBCapsulePlayerMotSet(playerNo, MB_PLAYER_MOT_IDLE, HU3D_MOTATTR_LOOP, TRUE);
+        }
+    }
+    return coinDisp;
 }
+
+static void CapsuleChoiceComHook(void);
 
 void MBCapsuleChoiceSet(int choice)
 {
+    capsuleChoice = choice;
+    MBTopWinComKeyHookSet(CapsuleChoiceComHook);
+}
+
+static void CapsuleChoiceComHook(void)
+{
+    int i;
+    int padNo;
+    s16 delay;
+    int stkBtn;
+    int playerNo;
     
+    int keyTbl[GW_PLAYER_MAX];
+    
+    keyTbl[0] = keyTbl[1] = keyTbl[2] = keyTbl[3] = 0;
+    playerNo = GwSystem.turnPlayerNo;
+    padNo = GwPlayer[playerNo].padNo;
+    delay = GWComKeyDelayGet();
+    stkBtn = PAD_BUTTON_DOWN;
+    keyTbl[padNo] = stkBtn;
+    for(i=0; i<capsuleChoice; i++) {
+        keyTbl[padNo] = stkBtn;
+        HuWinComKeyWait(keyTbl[0], keyTbl[1], keyTbl[2], keyTbl[3], delay);
+    }
+    keyTbl[padNo] = PAD_BUTTON_A;
+    HuWinComKeyWait(keyTbl[0], keyTbl[1], keyTbl[2], keyTbl[3], delay);
 }
 
 void MBCapsuleModelMtxSet(MBMODELID mdlId, Mtx *matrix)
 {
-    
+    HU3DMODEL *modelP;
+    int id;
+    id = MBModelIdGet(mdlId);
+    modelP = &Hu3DData[id];
+    MTXCopy(*matrix, modelP->mtx);
 }
 
 s16 MBCapsuleMasuNextGet(s16 masuId, HuVecF *pos)
 {
+    MASU *masuP; //r31
+    s16 i; //r30
+    s16 masuNext; //r28
+    s16 battanF; //r27
+    s16 dossunF; //r26
     
+    if(masuId <= 0) {
+        return -1;
+    }
+    masuP = MBMasuGet(MASU_LAYER_DEFAULT, masuId);
+    if(MBMasuFlagGet(MASU_LAYER_DEFAULT, masuId) & MASU_FLAG_BATTAN) {
+        battanF = TRUE;
+    } else {
+        battanF = FALSE;
+    }
+    if(MBMasuFlagGet(MASU_LAYER_DEFAULT, masuId) & MASU_FLAG_DOSSUN) {
+        dossunF = TRUE;
+    } else {
+        dossunF = FALSE;
+    }
+    for(i=0; i<masuP->linkNum; i++) {
+        if(MBMasuFlagGet(MASU_LAYER_DEFAULT, masuP->linkTbl[i]) & (MBBranchFlagGet()|(MASU_FLAG_BLOCKL|MASU_FLAG_BLOCKR))) {
+            continue;
+        }
+        if((!battanF || masuP->linkNum < 2 || i != 0) && (!dossunF || masuP->linkNum < 2 || i != 0)) {
+            masuNext = masuP->linkTbl[i];
+            break;
+        }
+    }
+    if(i >= masuP->linkNum) {
+        return -1;
+    }
+    if(pos != NULL) {
+        MBMasuPosGet(MASU_LAYER_DEFAULT, masuNext, pos);
+    }
+    return masuNext;
 }
 
 s16 MBCapsuleMasuNextRegularGet(s16 masuId, HuVecF *pos)
 {
+    MASU *masuP; //r31
+    s16 i; //r30
+    s16 validNum; //r29
+    s16 no; //r28
+    s16 battanF; //r26
+    s16 dossunF; //r25
     
+    s16 masuTbl[MASU_LINK_MAX];
+    if(masuId <= 0) {
+        return -1;
+    }
+    masuP = MBMasuGet(MASU_LAYER_DEFAULT, masuId);
+    if(MBMasuFlagGet(MASU_LAYER_DEFAULT, masuId) & MASU_FLAG_BATTAN) {
+        battanF = TRUE;
+    } else {
+        battanF = FALSE;
+    }
+    if(MBMasuFlagGet(MASU_LAYER_DEFAULT, masuId) & MASU_FLAG_DOSSUN) {
+        dossunF = TRUE;
+    } else {
+        dossunF = FALSE;
+    }
+    for(i=0, validNum=0; i<masuP->linkNum; i++) {
+        if(MBMasuFlagGet(MASU_LAYER_DEFAULT, masuP->linkTbl[i]) & (MBBranchFlagGet()|(MASU_FLAG_BLOCKL|MASU_FLAG_BLOCKR))) {
+            continue;
+        }
+        if((!battanF || masuP->linkNum < 2 || i != 0) && (!dossunF || masuP->linkNum < 2 || i != 0)) {
+            masuTbl[validNum] = masuP->linkTbl[i];
+            validNum++;
+        }
+    }
+    if(validNum <= 0) {
+        return -1;
+    }
+    if(validNum > 1) {
+        no = MBCapsuleEffRand(validNum);
+    } else {
+        no = 0;
+    }
+    if(pos != NULL) {
+        MBMasuPosGet(MASU_LAYER_DEFAULT, masuTbl[no], pos);
+    }
+    return masuTbl[no];
 }
 
 int MBCapsulePlayerRandGet(int playerNo, int type)
 {
-    
+    MBCapsulePlayerSameRandGet(playerNo, type, FALSE);
 }
 
 int MBCapsulePlayerSameRandGet(int playerNo, int type, BOOL sameF)
 {
+    int i; //r31
+    int playerNum; //r30
+    int j; //r29
+    int validNum; //r28
+    int temp; //r27
+    int srcIdx; //r26
+    int dstIdx; //r25
+    int chanceTotal; //r24
+    int chance; //r21
     
+    int playerTbl[GW_PLAYER_MAX]; //sp+0x10
+    static int chanceTbl[GW_PLAYER_MAX] = { 100, 60, 30, 10 };
+    for(i=0, playerNum=0; i<GW_PLAYER_MAX; i++) {
+        if((!GWTeamFGet() || !MBCapsuleTeamCheck(playerNo, i))
+            && (!_CheckFlag(FLAG_MG_CIRCUIT) || !MBCircuitGoalCheck(i))
+            && (!sameF || GwPlayer[playerNo].masuId == GwPlayer[i].masuId)
+            && i != playerNo
+            && MBPlayerAliveCheck(i)) {
+            playerTbl[playerNum] = i;
+            playerNum++;
+        }
+    }
+    if(playerNum <= 0) {
+        return -1;
+    }
+    if(playerNum == 1) {
+        return playerTbl[0];
+    }
+    if(GWPartyFGet() == FALSE && MBPlayerStoryComCheck(playerNo)) {
+        for(i=0; i<playerNum; i++) {
+            if(!MBPlayerStoryComCheck(playerTbl[i])) {
+                return playerTbl[i];
+            }
+        }
+    }
+    for(i=0; i<64; i++) {
+        srcIdx = MBCapsuleEffRand(playerNum);
+        dstIdx = MBCapsuleEffRand(playerNum);
+        if(srcIdx != dstIdx) {
+            temp = playerTbl[srcIdx];
+            playerTbl[srcIdx] = playerTbl[dstIdx];
+            playerTbl[dstIdx] = temp;
+        }
+    }
+    switch(type) {
+        case CAPSULE_PLAYERRAND_COIN:
+            for(i=0; i<playerNum-1; i++) {
+                for(j=i+1; j<playerNum; j++) {
+                    if(MBPlayerCoinGet(playerTbl[i]) < MBPlayerCoinGet(playerTbl[j])) {
+                        temp = playerTbl[i];
+                        playerTbl[i] = playerTbl[j];
+                        playerTbl[j] = temp;
+                    }
+                }
+            }
+            for(i=0, validNum=0; i<playerNum; i++) {
+                if(MBPlayerCoinGet(playerTbl[i]) > 0) {
+                    validNum++;
+                }
+            }
+            if(validNum <= 0) {
+                validNum = playerNum;
+            }
+            break;
+        
+        case CAPSULE_PLAYERRAND_STAR:
+            for(i=0; i<playerNum-1; i++) {
+                for(j=i+1; j<playerNum; j++) {
+                    if(MBPlayerStarGet(playerTbl[i]) < MBPlayerStarGet(playerTbl[j])) {
+                        temp = playerTbl[i];
+                        playerTbl[i] = playerTbl[j];
+                        playerTbl[j] = temp;
+                    }
+                }
+            }
+            for(i=0, validNum=0; i<playerNum; i++) {
+                if(MBPlayerStarGet(playerTbl[i]) > 0) {
+                    validNum++;
+                }
+            }
+            if(validNum <= 0) {
+                validNum = playerNum;
+            }
+            break;
+        
+        case CAPSULE_PLAYERRAND_CAPSULE:
+            for(i=0; i<playerNum-1; i++) {
+                for(j=i+1; j<playerNum; j++) {
+                    if(MBPlayerCapsuleNumGet(playerTbl[i]) < MBPlayerCapsuleNumGet(playerTbl[j])) {
+                        temp = playerTbl[i];
+                        playerTbl[i] = playerTbl[j];
+                        playerTbl[j] = temp;
+                    }
+                }
+            }
+            for(i=0, validNum=0; i<playerNum; i++) {
+                if(MBPlayerCapsuleNumGet(playerTbl[i]) > 0) {
+                    validNum++;
+                }
+            }
+            if(validNum <= 0) {
+                validNum = playerNum;
+            }
+            break;
+        
+        default:
+            if(playerNum > 0) {
+                return playerTbl[MBCapsuleEffRand(playerNum)];
+            } else {
+                return -1;
+            }
+            break;
+    }
+    if(validNum == 1) {
+        return playerTbl[0];
+    }
+    for(i=0, chanceTotal=0; i<validNum; i++) {
+        chanceTotal += chanceTbl[i];
+    }
+    chance = chanceTotal*MBCapsuleEffRandF();
+    for(i=0; i<validNum; i++) {
+        if(chance < chanceTbl[i]) {
+            break;
+        }
+    }
+    if(i >= validNum) {
+        return playerTbl[0];
+    }
+    return playerTbl[i];
 }
 
-void MBCapsuleTimingHookCreate(HU3DMODELID modelId, HU3DMOTID motId, BOOL lagF)
+static void GrabSoundObjExec(OMOBJ *obj);
+
+void MBCapsuleGrabSoundHook(HU3DMODELID modelId, HU3DMOTID motId, BOOL lagF)
 {
-    
+    if(capsuleObj != NULL) {
+        return;
+    }
+    switch(capsuleCurNo) {
+        case CAPSULE_JANGO:
+            if(lagF) {
+                MBAudFXPlay(MSM_SE_BOARD_42);
+            }
+            break;
+            
+        case CAPSULE_PATAPATA:
+            if(lagF) {
+                MBAudFXPlay(MSM_SE_BOARD_53);
+            }
+            break;
+    }
+    if(lagF) {
+        capsuleObj = MBAddObj(32768, 0, 0, GrabSoundObjExec);
+        capsuleObj->work[0] = 0;
+    }
 }
+
+static void GrabSoundObjExec(OMOBJ *obj)
+{
+    if(capsuleObj == NULL || ++obj->work[0] >= 12.0f) {
+        capsuleObj = NULL;
+        omDelObjEx(mbObjMan, obj);
+    }
+}
+
+typedef struct CapsuleSeDelay_s {
+    int seId;
+    int delay;
+} CAPSULE_SE_DELAY;
+
+static void CapsuleSeDelayExec(void);
+static void CapsuleSeDelayDestroy(void);
 
 void MBCapsuleSeDelayPlay(int seId, int delay)
 {
-    
+    HUPROCESS *process;
+    CAPSULE_SE_DELAY *work;
+    if(seDelayMax > 0) {
+        seDelayMax--;
+    } else {
+        return;
+    }
+    process = MBPrcCreate(CapsuleSeDelayExec, 8193, 8192);
+    if(process) {
+        MBPrcDestructorSet(process, CapsuleSeDelayDestroy);
+        process->property = work = HuMemDirectMallocNum(HEAP_HEAP, sizeof(CAPSULE_SE_DELAY), HU_MEMNUM_OVL);
+        work->seId = seId;
+        work->delay = delay;
+    }
+}
+
+static void CapsuleSeDelayExec(void)
+{
+    CAPSULE_SE_DELAY *work;
+    int i;
+    HUPROCESS *process;
+    process = HuPrcCurrentGet();
+    work = process->property;
+    for(i=0; i<work->delay; i++) {
+        HuPrcVSleep();
+    }
+    MBAudFXPlay(work->seId);
+    HuPrcEnd();
+}
+
+static void CapsuleSeDelayDestroy(void)
+{
+    HUPROCESS *process;
+    process = HuPrcCurrentGet();
+    if(process->property) {
+        HuMemDirectFree(process->property);
+        process->property = NULL;
+    }
 }
 
 float MBCapsuleAngleWrap(float a, float b)
 {
-    
+    float result;
+    if(a >= 360) {
+        a -= 360;
+    } else if(a < 0) {
+        a += 360;
+    }
+    if(b >= 360) {
+        b -= 360;
+    } else if(b < 0) {
+        b += 360;
+    }
+    result = a-b;
+    if(result <= -180.0f) {
+        result += 360;
+    } else if(result >= 180.0f) {
+        result -= 360;
+    }
+    return result;
 }
 
-float MBCapsuleAngleLerp(float a, float b, float t)
+float MBCapsuleAngleAdd(float a, float b, float t)
 {
-    
+    float result;
+    float delta;
+    if(a >= 360.0) {
+        a -= 360.0;
+    } else if(a < 0.0) {
+        a += 360.0;
+    }
+    if(b >= 360.0) {
+        b -= 360.0;
+    } else if(b < 0.0) {
+        b += 360.0;
+    }
+    delta = (a-b)+360.0;
+    if(fabs(delta) >= 360) {
+        delta = fmod(delta, 360);
+    }
+    if(delta < 180.0) {
+        if(delta <= t) {
+            result = delta;
+        } else {
+            result = t;
+        }
+    } else {
+        if((360.0-delta) <= t) {
+            result = -(360.0-delta);
+        } else {
+            result = -t;
+        }
+    }
+    result += b;
+    if(result >= 360.0) {
+        result -= 360.0;
+    } else if(result < 0.0) {
+        result += 360.0;
+    }
+    return result;
 }
 
-float MBCapsuleAngleSumLerp(float t, float a, float b)
+float MBCapsuleAngleLerp(float t, float a, float b)
 {
-    
+    float wrapAngle = MBCapsuleAngleWrap(b, a);
+    return MBCapsuleAngleAdd(b, a, fabs(wrapAngle*t));
 }
 
 float MBCaspuleAngleRotCamera(float angle)
 {
-    
+    MBCAMERA *cameraP = MBCameraGet();
+    Mtx rot;
+    HuVecF dir;
+    mtxRot(rot, cameraP->rot.x, cameraP->rot.y, cameraP->rot.z);
+    dir.x = HuSin(angle);
+    dir.y = 0;
+    dir.z = HuCos(angle);
+    MTXMultVec(rot, &dir, &dir);
+    return HuAtan(dir.x, dir.z);
 }
 
+static void GetCoef(float t, float *out)
+{
+    float temp_f25 = t*t;
+    float temp_f19 = t*temp_f25;
+    float sp18 = ((3.0*temp_f25)-temp_f19)-temp_f19;
+    out[0] = 1.0-sp18;
+    out[1] = sp18;
+    out[2] = t+((temp_f19-temp_f25)-temp_f25);
+    out[3] = temp_f19-temp_f25;
+}
+
+static float HermiteCalc(float t, float a, float b, float c, float d)
+{
+    float temp_f25;
+    float temp_f22;
+    float temp_f19;
+    int spB0;
+    float spAC;
+    float spA8;
+    float spA4;
+    float spA0;
+    float sp9C;
+    float sp8C[4];
+    float sp18;
+    
+    temp_f22 = c-b;
+    spB0 = c-b;
+    if(b == c) {
+        spA8 = temp_f22;
+    } else {
+        spA0 = 0.5f;
+        spA8 = spA0*(temp_f22+(b-a));
+    }
+    if(b == d) {
+        spAC = temp_f22;
+    } else {
+        spA4 = 0.5f;
+        spAC = spA4*(temp_f22+(d-c));
+    }
+    GetCoef(t, sp8C);
+    return sp9C = (sp8C[0]*b)+(sp8C[1]*c)+(sp8C[2]*spA8)+(sp8C[3]*spAC);
+}
+
+//Stack Ordering issues related to inlines
 void MBCapsuleHermiteGetV(float t, HuVecF *a, HuVecF *b, HuVecF *c, HuVecF *d, HuVecF *out)
 {
-    
+    out->x = HermiteCalc(t, a->x, b->x, c->x, d->x);
+    out->y = HermiteCalc(t, a->y, b->y, c->y, d->y);
+    out->z = HermiteCalc(t, a->z, b->z, c->z, d->z);
+}
+
+static float GetBezierValue(float a, float b, float c, float t)
+{
+    float temp = 1.0-t;
+    float result = (a*(temp*temp))+(temp*t*b*2.0)+(t*t*c);
+    return result;
 }
 
 void MBCapsuleBezierGetV(float t, float *a, float *b, float *c, float *out)
 {
-    
+    int i;
+    for(i=0; i<3; i++) {
+        *out++ = GetBezierValue(*a++, *b++, *c++, t);
+    }
 }
+
+static float GetBezierNormValue(float a, float b, float c, float t)
+{
+    float result = 2.0*(((t-1.0)*a)+((1.0-(2.0*t))*b)+(t*c));
+    return result;
+}
+
 
 void MBCapsuleBezierNormGetV(float t, float *a, float *b, float *c, float *out)
 {
-    
+    int i;
+    float temp[3];
+    float mag;
+    for(i=0; i<3; i++) {
+        temp[i] = GetBezierNormValue(*a++, *b++, *c++, t);
+    }
+    mag = HuMagPoint3D(temp[0], temp[1], temp[2]);
+    if(mag) {
+        mag = 1.0/mag;
+        for(i=0; i<3; i++) {
+            *out++ = temp[i]*mag;
+        }
+    } else {
+        *out++ = 0;
+        *out++ = 0;
+        *out++ = 1;
+    }
 }
