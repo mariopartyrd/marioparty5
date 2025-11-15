@@ -26,7 +26,7 @@ static MgSeqManWork seqWork;
 static HUPROCESS *seqProc;
 static unsigned int seqFrameNo;
 static s16 defModeDelayTbl[MGSEQ_MODE_MAX] = { -1, -1, 240, -1, -1, -1, -1, 240, 210, 60, -1, -1 };
-static GMESID seqGMesId;
+static GAMEMESID seqGameMesId;
 
 static void SeqExecProc();   
 static void SeqExit();
@@ -53,7 +53,7 @@ void MgSeqCreatePrio(MGSEQ_PARAM* param, s32 prio)
 
     seqProc = HuPrcChildCreate(SeqExecProc, prio, 0x3000, 0, HuPrcCurrentGet());
     HuPrcChildCreate(SeqExit, prio, 0x3000, 0, seqProc);
-    seqGMesId = GMES_ID_NONE;
+    seqGameMesId = GAMEMES_ID_NONE;
 }
 
 void MgSeqKill()
@@ -117,13 +117,13 @@ static void SeqExecProc()
         seqWork.statBit &= ~MGSEQ_STAT_MODECHANGE_OFF;
         if ((seqWork.mode == MGSEQ_MODE_FADEIN) || (seqWork.mode == MGSEQ_MODE_START)) {
             seqWork.mode = MGSEQ_MODE_START;
-            seqGMesId = GMesMgStartCreate();
+            seqGameMesId = GameMesMgStartCreate();
             if ((seqWork.param.maxTime != 0) && (seqWork.param.maxTime != 300)) {
                 seqWork.timer = MgTimerCreate(0);
                 MgTimerParamSet(seqWork.timer, seqWork.param.maxTime * 60, 0, 0);
                 SeqSetTimerPos(seqWork.param.timerPos, seqWork.timer);
             }
-            for (seqFrameNo = 0; GMesStatGet(seqGMesId); seqFrameNo++) {
+            for (seqFrameNo = 0; GameMesStatGet(seqGameMesId); seqFrameNo++) {
                 if (seqWork.param.startHook) {
                     hook = seqWork.param.startHook;
                     hook(seqWork.mode, seqFrameNo);
@@ -176,8 +176,8 @@ static void SeqExecProc()
         seqWork.statBit &= ~MGSEQ_STAT_MODECHANGE_OFF;
         if ((seqWork.mode == MGSEQ_MODE_MAIN) || (seqWork.mode == MGSEQ_MODE_FINISH)) {
             seqWork.mode = MGSEQ_MODE_FINISH;
-            seqGMesId = GMesMgFinishCreate();
-            for (seqFrameNo = 0; GMesStatGet(seqGMesId); seqFrameNo++) {
+            seqGameMesId = GameMesMgFinishCreate();
+            for (seqFrameNo = 0; GameMesStatGet(seqGameMesId); seqFrameNo++) {
                 if (seqWork.param.finishHook) {
                     hook = seqWork.param.finishHook;
                     hook(seqWork.mode, seqFrameNo);
@@ -212,7 +212,7 @@ static void SeqExecProc()
                     if (delay == defModeDelayTbl[MGSEQ_MODE_PREWIN]) {
                         delay = 270;
                     }
-                    GMesRecordCreate(seqWork.recordVal);
+                    GameMesRecordCreate(seqWork.recordVal);
                 }
                 if ((seqWork.statBit & MGSEQ_STAT_MODENEXT)) {
                     seqWork.statBit &= ~MGSEQ_STAT_MODENEXT;
@@ -225,11 +225,11 @@ static void SeqExecProc()
         if ((seqWork.mode == MGSEQ_MODE_PREWIN) || (seqWork.mode == MGSEQ_MODE_WINNER)) {
             seqWork.mode = MGSEQ_MODE_WINNER;
             if ((seqWork.statBit & MGSEQ_STAT_WINNER) != 0) {
-                if ((seqWork.winner[0] == GMES_MG_WINNER_NONE) && (seqWork.winner[1] == GMES_MG_WINNER_NONE) && (seqWork.winner[2] == GMES_MG_WINNER_NONE) && (seqWork.winner[3] == GMES_MG_WINNER_NONE)) {
-                    GMesMgDrawCreate();
+                if ((seqWork.winner[0] == GAMEMES_MG_WINNER_NONE) && (seqWork.winner[1] == GAMEMES_MG_WINNER_NONE) && (seqWork.winner[2] == GAMEMES_MG_WINNER_NONE) && (seqWork.winner[3] == GAMEMES_MG_WINNER_NONE)) {
+                    GameMesMgDrawCreate();
                     HuAudJinglePlay(MSM_STREAM_JNGL_MG_DRAW);
                 } else {
-                    GMesMgWinnerCreate(seqWork.winner[0], seqWork.winner[1], seqWork.winner[2], seqWork.winner[3]);
+                    GameMesMgWinnerCreate(seqWork.winner[0], seqWork.winner[1], seqWork.winner[2], seqWork.winner[3]);
                     if (omcurovl == DLL_sd00dll) {
                         HuAudJinglePlay(MSM_STREAM_JNGL_SD_WIN);
                     } else {
@@ -407,7 +407,7 @@ u16 MgSeqWinnerSet(s16 charNo1, s16 charNo2, s16 charNo3, s16 charNo4) {
 }
 
 u16 MgSeqDrawSet() {
-    seqWork.winner[0] = seqWork.winner[1] = seqWork.winner[2] = seqWork.winner[3] = GMES_MG_WINNER_NONE;
+    seqWork.winner[0] = seqWork.winner[1] = seqWork.winner[2] = seqWork.winner[3] = GAMEMES_MG_WINNER_NONE;
     seqWork.statBit |= MGSEQ_STAT_WINNER;
     return seqWork.statBit;
 }
@@ -443,8 +443,8 @@ u32 MgSeqFrameNoGet() {
     return seqFrameNo;
 }
 
-GMESID MgSeqGMesIdGet() {
-    return seqGMesId;
+GAMEMESID MgSeqGameMesIdGet() {
+    return seqGameMesId;
 }
 
 void MgSeqMaxTimeSet(s16 maxTime) {

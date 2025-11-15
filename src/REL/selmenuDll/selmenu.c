@@ -393,9 +393,9 @@ static void SMInit(OMOBJ *obj)
         }
     }
     SMPageNoAdd(1);
-    if (gMesOvlPrev != DLL_NONE) {
+    if (GameMesOvlPrev != DLL_NONE) {
         for (i = 0; i < SM_PAGE_MAX * SM_PAGE_SIZE; i++) {
-            if (gMesOvlPrev == smPageData[i].ovl && smPageData[i].on == 1) {
+            if (GameMesOvlPrev == smPageData[i].ovl && smPageData[i].on == 1) {
                 smPage = i / SM_PAGE_SIZE;
                 smCursorNo = i % SM_PAGE_SIZE;
                 smCursorNoPrev[smPage] = smCursorNo;
@@ -750,7 +750,7 @@ static void SMExit(OMOBJ *object)
     } else {
         omOvlCall(DLL_instdll, 0, 0);
     }
-    gMesOvlPrev = smPageData[(smPage * SM_PAGE_SIZE) + smCursorNo].ovl;
+    GameMesOvlPrev = smPageData[(smPage * SM_PAGE_SIZE) + smCursorNo].ovl;
     smChar1Prev = smCursorNo;
 }
 

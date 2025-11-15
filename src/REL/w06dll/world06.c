@@ -1389,7 +1389,7 @@ void MB6Ev_CakeThrow(int playerNo)
     int linkMasuId;
     int i;
     int score;
-    int timerGMesId;
+    int timerGameMesId;
     float zoom;
     HuVecF masuPos;
 
@@ -1439,8 +1439,8 @@ void MB6Ev_CakeThrow(int playerNo)
     mb6_Work.cakeThrowTimer = 900;
     mb6_Work.cakeThrowRotSpeed = 0.25f;
     mb6_Work.evPlayer[playerNo].mode = CAKETHROW_PLAYER_BALLINIT;
-    timerGMesId = GMesTimerCreate((mb6_Work.cakeThrowTimer+59)*0.016666668f);
-    GMesTimerValueSet(timerGMesId, (mb6_Work.cakeThrowTimer+59)*0.016666668f);
+    timerGameMesId = GameMesTimerCreate((mb6_Work.cakeThrowTimer+59)*0.016666668f);
+    GameMesTimerValueSet(timerGameMesId, (mb6_Work.cakeThrowTimer+59)*0.016666668f);
     for(i=0; i<30; i++) {
         mb6_Work.cakeThrowRotSpeed += 0.016666668f;
         HuPrcVSleep();
@@ -1451,11 +1451,11 @@ void MB6Ev_CakeThrow(int playerNo)
         if(mb6_Work.cakeThrowTimer > 0) {
             mb6_Work.cakeThrowTimer--;
         }
-        GMesTimerValueSet(timerGMesId, (mb6_Work.cakeThrowTimer+59)*0.016666668f);
+        GameMesTimerValueSet(timerGameMesId, (mb6_Work.cakeThrowTimer+59)*0.016666668f);
         HuPrcVSleep();
     }
     MB6Ev_CakeThrowPlayerUpdate(playerNo);
-    GMesTimerEnd(timerGMesId);
+    GameMesTimerEnd(timerGameMesId);
     for(i=0; i<120; i++) {
         if(i >= 60) {
             mb6_Work.cakeThrowRotSpeed -= 0.008333334f;

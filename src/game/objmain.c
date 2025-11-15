@@ -80,7 +80,7 @@ static void omWatchOverlayProc(void)
                 omovlstat = omnextovlstat;
                 omnextovl = DLL_NONE;
                 if(_CheckFlag(FLAG_MG_PRACTICE)) {
-                    GMesPracticeCreate();
+                    GameMesPracticeCreate();
                 }
                 omSysPauseEnable(TRUE);
                 MgActorInit();
@@ -143,7 +143,7 @@ void omOvlKill(s16 unlinkF)
 {
     MgActorClose();
     CharModelKill(CHARNO_NONE);
-    GMesClose();
+    GameMesClose();
     Hu3DAllKill();
     HuWinAllKill();
     HuSprClose();

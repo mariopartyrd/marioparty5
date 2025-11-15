@@ -79,7 +79,7 @@ MGTIMER* MgTimerCreate(int type) {
     timer->speed = 0;
     timer->pos.x = 288.0f;
     timer->pos.y = 64.0f;
-    timer->gMesId = GMES_ID_NONE;
+    timer->gameMesId = GAMEMES_ID_NONE;
     timer->winGrpId = HUSPR_GRP_NONE;
     timer->digitR = 255;
     timer->digitG = 255;
@@ -115,8 +115,8 @@ MGTIMER* MgTimerCreate(int type) {
 void MgTimerKill(MGTIMER* timer) {
     HuPrcKill(timer->proc);
     KillScoreSpr(timer);
-    if (timer->gMesId != GMES_ID_NONE) {
-        GMesKill(timer->gMesId);
+    if (timer->gameMesId != GAMEMES_ID_NONE) {
+        GameMesKill(timer->gameMesId);
     }
     HuMemDirectFree(timer);
 }
@@ -324,9 +324,9 @@ static void UpdateTimerSpr(MGTIMER* timer) {
     switch (timer->type) {
         case MGTIMER_TYPE_NORMAL:
             if ((timer->time % 60) == 0) {
-                GMesTimerValueSet(timer->gMesId, timer->time / 60);
+                GameMesTimerValueSet(timer->gameMesId, timer->time / 60);
             }
-            GMesPosSet(timer->gMesId, timer->pos.x, timer->pos.y);
+            GameMesPosSet(timer->gameMesId, timer->pos.x, timer->pos.y);
             break;
         
         case MGTIMER_TYPE_RECORD:
@@ -415,9 +415,9 @@ void MgTimerDispOn(MGTIMER* timer) {
 
     switch (timer->type) {
         case MGTIMER_TYPE_NORMAL:
-            if (timer->gMesId == GMES_ID_NONE) {
-                timer->gMesId = GMesTimerCreate(timer->time / 60);
-                GMesPosSet(timer->gMesId, timer->pos.x, timer->pos.y);
+            if (timer->gameMesId == GAMEMES_ID_NONE) {
+                timer->gameMesId = GameMesTimerCreate(timer->time / 60);
+                GameMesPosSet(timer->gameMesId, timer->pos.x, timer->pos.y);
             }
             break;
         
@@ -443,9 +443,9 @@ void MgTimerDispOff(MGTIMER* timer) {
 
     switch (timer->type) {
         case MGTIMER_TYPE_NORMAL:
-            if (timer->gMesId != GMES_ID_NONE) {
-                GMesTimerEnd(timer->gMesId);
-                timer->gMesId = GMES_ID_NONE;
+            if (timer->gameMesId != GAMEMES_ID_NONE) {
+                GameMesTimerEnd(timer->gameMesId);
+                timer->gameMesId = GAMEMES_ID_NONE;
             }
             break;
         
@@ -470,9 +470,9 @@ void MgTimerRecordDispOn(MGTIMER* timer) {
     
     switch (timer->type) {
         case MGTIMER_TYPE_NORMAL:
-            if (timer->gMesId == GMES_ID_NONE) {
-                timer->gMesId = GMesTimerCreate(timer->time / 60);
-                GMesPosSet(timer->gMesId, timer->pos.x, timer->pos.y);
+            if (timer->gameMesId == GAMEMES_ID_NONE) {
+                timer->gameMesId = GameMesTimerCreate(timer->time / 60);
+                GameMesPosSet(timer->gameMesId, timer->pos.x, timer->pos.y);
             }   
             break;
         
@@ -497,9 +497,9 @@ void MgTimerRecordDispOff(MGTIMER* timer) {
     
     switch (timer->type) {
         case MGTIMER_TYPE_NORMAL:
-            if(timer->gMesId != GMES_ID_NONE) {
-                GMesTimerEnd(timer->gMesId);
-                timer->gMesId = GMES_ID_NONE;
+            if(timer->gameMesId != GAMEMES_ID_NONE) {
+                GameMesTimerEnd(timer->gameMesId);
+                timer->gameMesId = GAMEMES_ID_NONE;
             }
             break;
             

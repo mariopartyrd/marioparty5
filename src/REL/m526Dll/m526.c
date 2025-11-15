@@ -784,7 +784,7 @@ static void M526GameFlowStart(M526_GAMEFLOW *gameflow)
     };
     int i;
     int side;
-    GMESID gmesId;
+    GAMEMESID GameMesId;
     
     HuVecF pos;
     M526GameFlowSplitSet(gameflow, 0);
@@ -829,8 +829,8 @@ static void M526GameFlowStart(M526_GAMEFLOW *gameflow)
     SLEEP_MODECHG(M526_GAMEFLOW, 60);
     M526GameFlowBombCull(gameflow);
     M526GameFlowBombFollow(gameflow);
-    gmesId = GMesMgStartCreate();
-    while(GMesStatGet(gmesId)) {
+    GameMesId = GameMesMgStartCreate();
+    while(GameMesStatGet(GameMesId)) {
         SLEEP_MODECHG(M526_GAMEFLOW, 1);
     }
     gameflow->mode = 3;
@@ -852,20 +852,20 @@ static void M526GameFlowFinish(M526_GAMEFLOW *gameflow)
     int side;
     int time;
     int i;
-    GMESID gmesId;
+    GAMEMESID GameMesId;
     
     float splitTime;
     float split;
     
     HuAudSStreamFadeOut(GameStreamNo, 100);
-    gmesId = GMesMgFinishCreate();
-    while(GMesStatGet(gmesId)) {
+    GameMesId = GameMesMgFinishCreate();
+    while(GameMesStatGet(GameMesId)) {
         SLEEP_MODECHG(M526_GAMEFLOW, 1);
     }
     if(!GameActiveF[0] && !GameActiveF[1]) {
         SLEEP_MODECHG(M526_GAMEFLOW, 90);
         HuAudJinglePlay(MSM_STREAM_JNGL_MG_DRAW);
-        gmesId = GMesMgDrawCreate();
+        GameMesId = GameMesMgDrawCreate();
     } else {
         side = (GameActiveF[0]) ? 0 : 1;
         GWMgCoinSet(PlayerObj[side][0]->playerNo, 10);
@@ -913,7 +913,7 @@ static void M526GameFlowFinish(M526_GAMEFLOW *gameflow)
         M526CameraMoveSet(CameraObj[side], &center, &rot, &zoom, 70);
         SLEEP_MODECHG(M526_GAMEFLOW, 70);
         HuAudJinglePlay(MSM_STREAM_JNGL_MG_WIN);
-        gmesId = GMesMgWinnerCreate(PlayerObj[side][0]->charNo, PlayerObj[side][1]->charNo, GMES_MG_WINNER_NONE, GMES_MG_WINNER_NONE);
+        GameMesId = GameMesMgWinnerCreate(PlayerObj[side][0]->charNo, PlayerObj[side][1]->charNo, GAMEMES_MG_WINNER_NONE, GAMEMES_MG_WINNER_NONE);
         M526PlayerWinnerSet(PlayerObj[side][0]);
         M526PlayerWinnerSet(PlayerObj[side][1]);
     }

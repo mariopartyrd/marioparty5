@@ -69,7 +69,7 @@ void main(void)
         HuPadRead();
         pfClsScr();
         HuPrcCall(1);
-        GMesExec();
+        GameMesExec();
         HuPerfBegin(1);
         Hu3DExec();
         HuDvdErrorWatch();

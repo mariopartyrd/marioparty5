@@ -123,7 +123,7 @@ void omSystemKeyCheck(OMOBJ *obj)
         }
         if(obj->work[0] & SYSKEY_ATTR_PAUSEKEY) {
             if(MgNoGet(omcurovl) != DLL_NONE) {
-                GMesPauseCancel();
+                GameMesPauseCancel();
             } else {
                 obj->work[0] |= SYSKEY_ATTR_UPAUSE;
             }
@@ -168,7 +168,7 @@ void omSystemKeyCheck(OMOBJ *obj)
             HuAudSeqPauseAll(TRUE);
             HuAudSStreamPauseAll(TRUE);
             if(MgNoGet(omcurovl) != DLL_NONE) {
-                GMesPauseCreate();
+                GameMesPauseCreate();
             }
             HuPadRumbleAllStop();
         }

@@ -13,30 +13,30 @@
 #include "messnum/mginst.h"
 #include "datanum/mgconst.h"
 
-typedef struct gMesTbl_s {
+typedef struct GameMesEntry_s {
     GAMEMESCREATE create;
     GAMEMESEXEC exec;
     HuVec2F pos;
 	HuVec2F scale;
     int timeMax;
-} GMESTBL;
+} GAMEMES_ENTRY;
 
-GAMEMES gMesData[GMES_MAX];
-s16 gMesTime;
-u8 gMesCloseF;
-static u8 gMesDebugF;
-unsigned int gMesVWait;
+GAMEMES GameMesData[GAMEMES_MAX];
+s16 GameMesTime;
+u8 GameMesCloseF;
+static u8 GameMesDebugF;
+unsigned int GameMesVWait;
 static ANIMDATA *scoreWinMaskAnim;
 static ANIMDATA *scoreWinAnim;
 static BOOL pauseWaitF;
 static BOOL pauseCancelF;
 static BOOL pauseEnableF;
 static HUPROCESS *pauseProc;
-int gMesLanguageNo;
+int GameMesLanguageNo;
 
-OMOVL gMesOvlPrev = DLL_NONE;
+OMOVL GameMesOvlPrev = DLL_NONE;
 
-GMESTBL gMesTbl[] = {
+GAMEMES_ENTRY GameMesTbl[] = {
     {
         NULL,
         NULL,
@@ -45,99 +45,99 @@ GMESTBL gMesTbl[] = {
         60
     },
     {
-        GMesTimerInit,
-        GMesTimerExec,
+        GameMesTimerInit,
+        GameMesTimerExec,
         { 292, 64 },
         { 1, 1 },
         60
     },
     {
-        GMesMgInit,
-        GMesMg4PExec,
+        GameMesMgInit,
+        GameMesMg4PExec,
         { 292, 240 },
         { 1, 1 },
         180
     },
     {
-        GMesMgInit,
-        GMesMg2Vs2Exec,
+        GameMesMgInit,
+        GameMesMg2Vs2Exec,
         { 292, 240 },
         { 1, 1 },
         180
     },
     {
-        GMesMgWinnerInit,
-        GMesMgWinnerExec,
+        GameMesMgWinnerInit,
+        GameMesMgWinnerExec,
         { 292, 240 },
         { 1, 1 },
         180
     },
     {
-        GMesMg1Vs3Init,
-        GMesMg1Vs3Exec,
+        GameMesMg1Vs3Init,
+        GameMesMg1Vs3Exec,
         { 292, 240 },
         { 1, 1 },
         180
     },
     {
-        GMesMgBattleInit,
-        GMesMgBattleExec,
+        GameMesMgBattleInit,
+        GameMesMgBattleExec,
         { 292, 240 },
         { 1, 1 },
         180
     },
     {
-        GMesMgInit,
-        GMesMg4PExec,
+        GameMesMgInit,
+        GameMesMg4PExec,
         { 292, 240 },
         { 1, 1 },
         180
     },
     {
-        GMesMgKupaInit,
-        GMesMgKupaExec,
+        GameMesMgKupaInit,
+        GameMesMgKupaExec,
         { 292, 240 },
         { 1, 1 },
         180
     },
     {
-        GMesMgInit,
-        GMesMgLastExec,
+        GameMesMgInit,
+        GameMesMgLastExec,
         { 292, 240 },
         { 1, 1 },
         180
     },
     {
-        GMesMgInit,
-        GMesMgKettouExec,
+        GameMesMgInit,
+        GameMesMgKettouExec,
         { 292, 240 },
         { 1, 1 },
         180
     },
     {
-        GMesMgSdInit,
-        GMesMgSdExec,
+        GameMesMgSdInit,
+        GameMesMgSdExec,
         { 292, 240 },
         { 1, 1 },
         180
     },
     {
-        GMesMgInit,
-        GMesMgDonkeyExec,
+        GameMesMgInit,
+        GameMesMgDonkeyExec,
         { 292, 240 },
         { 1, 1 },
         180
     },
     {
-        GMesMgDrawInit,
-        GMesMgDrawExec,
+        GameMesMgDrawInit,
+        GameMesMgDrawExec,
         { 292, 240 },
         { 1, 1 },
         60
     },
     {
-        GMesMgRecordInit,
-        GMesMgRecordExec,
+        GameMesMgRecordInit,
+        GameMesMgRecordExec,
         { 292, 240 },
         { 1, 1 },
         180
@@ -152,15 +152,15 @@ GMESTBL gMesTbl[] = {
 };
 
 static s16 startMesTbl[MG_TYPE_MAX] = {
-    GMES_MES_MG_4P,
-    GMES_MES_MG_1VS3,
-    GMES_MES_MG_2VS2,
-    GMES_MES_MG_BATTLE,
-    GMES_MES_MG_KUPA,
-    GMES_MES_MG_LAST,
-    GMES_MES_MG_KETTOU,
-    GMES_MES_MG_SD,
-    GMES_MES_MG_DONKEY
+    GAMEMES_MES_MG_4P,
+    GAMEMES_MES_MG_1VS3,
+    GAMEMES_MES_MG_2VS2,
+    GAMEMES_MES_MG_BATTLE,
+    GAMEMES_MES_MG_KUPA,
+    GAMEMES_MES_MG_LAST,
+    GAMEMES_MES_MG_KETTOU,
+    GAMEMES_MES_MG_SD,
+    GAMEMES_MES_MG_DONKEY
 };
 
 static char asciiTbl[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
@@ -171,241 +171,241 @@ static int *fontBufs[5] = {};
 
 static void CreateFontBuf(void);
 
-void GMesInit(void)
+void GameMesInit(void)
 {
-    GAMEMES *gMes = &gMesData[0];
+    GAMEMES *mes = &GameMesData[0];
     int i;
-    for(i=GMES_MAX; i; i--, gMes++) {
-        gMes->mesNo = GMES_MES_NULL;
-        gMes->buf = NULL;
+    for(i=GAMEMES_MAX; i; i--, mes++) {
+        mes->mesNo = GAMEMES_MES_NULL;
+        mes->buf = NULL;
     }
-    gMesCloseF = FALSE;
-    gMesDebugF = FALSE;
-    gMesTime = 30;
+    GameMesCloseF = FALSE;
+    GameMesDebugF = FALSE;
+    GameMesTime = 30;
     HuAR_DVDtoARAM(DATA_gamemes);
     HuAR_DVDtoARAM(DATA_mgconst);
     while(HuARDMACheck());
     CreateFontBuf();
-    gMesOvlPrev = DLL_NONE;
-    gMesLanguageNo = GWLanguageGet();
+    GameMesOvlPrev = DLL_NONE;
+    GameMesLanguageNo = GWLanguageGet();
     MgScoreWinInit();
 }
 
-void *GMesDataRead(unsigned int dataNum)
+void *GameMesDataRead(unsigned int dataNum)
 {
     return HuAR_ARAMtoMRAMFileRead(dataNum, HU_MEMNUM_OVL, HEAP_MODEL);
 }
 
-void GMesExec(void)
+void GameMesExec(void)
 {
-    GAMEMES *gMes;
-    GMESTBL *mesTbl;
+    GAMEMES *mes;
+    GAMEMES_ENTRY *mesTbl;
     int j;
     u8 stat;
     int i;
     BOOL result;
-    gMesVWait = HuSysVWaitGet(gMesVWait);
+    GameMesVWait = HuSysVWaitGet(GameMesVWait);
     if(!Hu3DPauseF) {
         result = FALSE;
-        stat = GMES_STAT_NONE;
-        gMes = &gMesData[0];
-        for(i=0; i<GMES_MAX; i++, gMes++) {
-            if(gMes->stat == GMES_STAT_NONE) {
+        stat = GAMEMES_STAT_NONE;
+        mes = &GameMesData[0];
+        for(i=0; i<GAMEMES_MAX; i++, mes++) {
+            if(mes->stat == GAMEMES_STAT_NONE) {
                 continue;
             }
-            if(gMes->exec) {
-                result = gMes->exec(gMes);
+            if(mes->exec) {
+                result = mes->exec(mes);
             } else {
-                mesTbl = &gMesTbl[gMes->mesNo];
-                if(gMes->mesNo != GMES_MES_NULL && NULL != mesTbl->exec) {
-                    result = mesTbl->exec(gMes);
+                mesTbl = &GameMesTbl[mes->mesNo];
+                if(mes->mesNo != GAMEMES_MES_NULL && NULL != mesTbl->exec) {
+                    result = mesTbl->exec(mes);
                 }
             }
             if(result == FALSE) {
-                gMes->stat = GMES_STAT_NONE;
-                if(!gMesDebugF) {
-                    for(j=0; j<GMES_MAX; j++) {
-                        if(gMesData[j].stat != GMES_STAT_NONE) {
+                mes->stat = GAMEMES_STAT_NONE;
+                if(!GameMesDebugF) {
+                    for(j=0; j<GAMEMES_MAX; j++) {
+                        if(GameMesData[j].stat != GAMEMES_STAT_NONE) {
                             break;
                         }
                     }
                 }
-                if(!gMes->buf) {
-                    HuMemDirectFree(gMes->buf);
-                    gMes->buf = NULL;
+                if(!mes->buf) {
+                    HuMemDirectFree(mes->buf);
+                    mes->buf = NULL;
                 }
             }
-            stat |= gMes->stat;
+            stat |= mes->stat;
         }
-        if(stat == GMES_STAT_NONE || (stat & GMES_STAT_TIMEEND)) {
-            if(gMesTime > 0) {
-                gMesTime -= gMesVWait;
+        if(stat == GAMEMES_STAT_NONE || (stat & GAMEMES_STAT_TIMEEND)) {
+            if(GameMesTime > 0) {
+                GameMesTime -= GameMesVWait;
             }
         }
     }
 }
 
-static GMESID InitGMes(s16 mesNo, va_list args)
+static GAMEMESID InitGameMes(s16 mesNo, va_list args)
 {
-    GAMEMES *gMes = &gMesData[0];
-    GMESTBL *mesTbl = &gMesTbl[(u8)mesNo];
+    GAMEMES *mes = &GameMesData[0];
+    GAMEMES_ENTRY *mesTbl = &GameMesTbl[(u8)mesNo];
     int i;
     int mesId;
     
-    for(mesId=0; mesId<GMES_MAX; mesId++, gMes++) {
-        if(gMes->stat == GMES_STAT_NONE) {
+    for(mesId=0; mesId<GAMEMES_MAX; mesId++, mes++) {
+        if(mes->stat == GAMEMES_STAT_NONE) {
             break;
         }
     }
-    if(mesId >= GMES_MAX) {
-        return GMES_ID_NONE;
+    if(mesId >= GAMEMES_MAX) {
+        return GAMEMES_ID_NONE;
     }
-    gMes->stat |= GMES_STAT_EXIST;
-    if(gMes->buf) {
-        HuMemDirectFree(gMes->buf);
+    mes->stat |= GAMEMES_STAT_EXIST;
+    if(mes->buf) {
+        HuMemDirectFree(mes->buf);
     }
-    gMes->buf = NULL;
-    gMes->mesNo = mesNo;
-    gMes->time = 0;
-    gMes->pos.x = mesTbl->pos.x;
-    gMes->pos.y = mesTbl->pos.y;
-    gMes->scale.x = mesTbl->scale.x;
-    gMes->scale.y = mesTbl->scale.y;
-    gMes->unk18 = 0;
-    gMes->color.g = 255;
-    gMes->timeMax = mesTbl->timeMax;
-    gMes->timerVal = gMes->subMode = gMes->work = gMes->charNum = 0;
-    gMes->angle = gMes->winScale = 0;
-    gMes->dispMode = gMes->dispValue = 0;
-    for(i=0; i<GMES_STRMAX; i++) {
-        gMes->strSprId[i] = gMes->strGId[i] = HUSPR_NONE;
+    mes->buf = NULL;
+    mes->mesNo = mesNo;
+    mes->time = 0;
+    mes->pos.x = mesTbl->pos.x;
+    mes->pos.y = mesTbl->pos.y;
+    mes->scale.x = mesTbl->scale.x;
+    mes->scale.y = mesTbl->scale.y;
+    mes->unk18 = 0;
+    mes->color.g = 255;
+    mes->timeMax = mesTbl->timeMax;
+    mes->timerVal = mes->subMode = mes->work = mes->charNum = 0;
+    mes->angle = mes->winScale = 0;
+    mes->dispMode = mes->dispValue = 0;
+    for(i=0; i<GAMEMES_STRMAX; i++) {
+        mes->strSprId[i] = mes->strGrpId[i] = HUSPR_NONE;
     }
     if(NULL != mesTbl->create) {
-        i = mesTbl->create(gMes, args);
+        i = mesTbl->create(mes, args);
         if(i == FALSE) {
-            gMes->stat = GMES_STAT_NONE;
-            return GMES_ID_NONE;
+            mes->stat = GAMEMES_STAT_NONE;
+            return GAMEMES_ID_NONE;
         }
     }
-    gMesTime = 30;
+    GameMesTime = 30;
     return mesId;
 }
 
-GMESID GMesCreate(s16 mesNo, ...)
+GAMEMESID GameMesCreate(s16 mesNo, ...)
 {
-    GMESID id;
+    GAMEMESID id;
     va_list args;
 	va_start(args, mesNo);
     
-    if(mesNo == GMES_MES_MG) {
+    if(mesNo == GAMEMES_MES_MG) {
         if(omcurovl == DLL_m433dll || omcurovl == DLL_m580dll) {
-            mesNo = GMES_MES_MG_2VS2;
+            mesNo = GAMEMES_MES_MG_2VS2;
         } else if(omcurovl == DLL_sd00dll) {
-            mesNo = GMES_MES_MG_SD;
+            mesNo = GAMEMES_MES_MG_SD;
         } else if(omcurovl == DLL_m562dll) {
-            mesNo = GMES_MES_MG_LAST;
+            mesNo = GAMEMES_MES_MG_LAST;
         } else if(GwSystem.mgNo == GW_MGNO_NONE) {
-            mesNo = GMES_MES_MG_4P;
+            mesNo = GAMEMES_MES_MG_4P;
         } else {
             mesNo = startMesTbl[mgDataTbl[GwSystem.mgNo].type];
         }
     }
-    id = InitGMes(mesNo, args);
+    id = InitGameMes(mesNo, args);
     va_end(args);
     return id;
 }
 
-u8 GMesStatGet(GMESID id)
+u8 GameMesStatGet(GAMEMESID id)
 {
-    GAMEMES *gMes;
+    GAMEMES *mes;
     u8 stat;
-    stat = GMES_STAT_NONE;
+    stat = GAMEMES_STAT_NONE;
     if(id < 0) {
         int i;
-        gMes = &gMesData[0]; 
-        for(i=GMES_MAX; i; i--, gMes++) {
-            stat |= gMes->stat;
+        mes = &GameMesData[0]; 
+        for(i=GAMEMES_MAX; i; i--, mes++) {
+            stat |= mes->stat;
         }
     } else {
-        if(id < GMES_MAX) {
-            stat = gMesData[id].stat;
+        if(id < GAMEMES_MAX) {
+            stat = GameMesData[id].stat;
         }
     }
     return stat;
 }
 
-void GMesPosSet(GMESID id, float posX, float posY)
+void GameMesPosSet(GAMEMESID id, float posX, float posY)
 {
     if(id < 0) {
         return;
     }
-    if(id >= GMES_MAX) {
+    if(id >= GAMEMES_MAX) {
         return;
     }
-    gMesData[id].pos.x = posX;
-    gMesData[id].pos.y = posY;
+    GameMesData[id].pos.x = posX;
+    GameMesData[id].pos.y = posY;
 }
 
-void GMesDispSet(GMESID id, s16 mode, s16 value)
+void GameMesDispSet(GAMEMESID id, s16 mode, s16 value)
 {
     if(id < 0) {
         return;
     }
-    if(id >= GMES_MAX) {
+    if(id >= GAMEMES_MAX) {
         return;
     }
-    gMesData[id].dispMode = mode;
-    gMesData[id].dispValue = value;
+    GameMesData[id].dispMode = mode;
+    GameMesData[id].dispValue = value;
 }
 
-void GMesKill(GMESID id)
+void GameMesKill(GAMEMESID id)
 {
     if(id < 0) {
         return;
     }
-    if(id >= GMES_MAX) {
+    if(id >= GAMEMES_MAX) {
         return;
     }
-    if(gMesData[id].stat == GMES_STAT_NONE) {
+    if(GameMesData[id].stat == GAMEMES_STAT_NONE) {
         return;
     }
-    gMesData[id].stat = GMES_STAT_KILL;
+    GameMesData[id].stat = GAMEMES_STAT_KILL;
 }
 
-void GMesClose(void)
+void GameMesClose(void)
 {
-    gMesCloseF = TRUE;
-    GMesExec();
-    gMesCloseF = FALSE;
-    GMesStub();
-    gMesDebugF = FALSE;
+    GameMesCloseF = TRUE;
+    GameMesExec();
+    GameMesCloseF = FALSE;
+    GameMesStub();
+    GameMesDebugF = FALSE;
 }
 
-BOOL GMesKillCheck(void)
+BOOL GameMesKillCheck(void)
 {
-    u8 stat = GMesStatGet(GMES_ID_NONE);
-    if(stat == GMES_STAT_NONE || (stat & (GMES_STAT_TIMEEND|GMES_STAT_KILL))) {
-        if(gMesTime <= 0 || (stat & GMES_STAT_KILL)) {
+    u8 stat = GameMesStatGet(GAMEMES_ID_NONE);
+    if(stat == GAMEMES_STAT_NONE || (stat & (GAMEMES_STAT_TIMEEND|GAMEMES_STAT_KILL))) {
+        if(GameMesTime <= 0 || (stat & GAMEMES_STAT_KILL)) {
             return TRUE;
         }
     }
     return FALSE;
 }
 
-void GMesStub(void)
+void GameMesStub(void)
 {
     
 }
 
-void GMesSprKill(GAMEMES *gMes)
+void GameMesSprKill(GAMEMES *mes)
 {
     int i;
-    for(i=0; i<GMES_STRMAX; i++) {
-        if(gMes->strGId[i] >= 0) {
-            HuSprGrpKill(gMes->strGId[i]);
+    for(i=0; i<GAMEMES_STRMAX; i++) {
+        if(mes->strGrpId[i] >= 0) {
+            HuSprGrpKill(mes->strGrpId[i]);
         }
-        if(gMes->strSprId[i] >= 0) {
-            HuSprKill(gMes->strSprId[i]);
+        if(mes->strSprId[i] >= 0) {
+            HuSprKill(mes->strSprId[i]);
         }
     }
 }
@@ -414,7 +414,7 @@ void GMesSprKill(GAMEMES *gMes)
 #define TIMER_SUBMODE_SHOW 2
 #define TIMER_SUBMODE_DIGITUP 3
 
-BOOL GMesTimerInit(GAMEMES *gMes, va_list args)
+BOOL GameMesTimerInit(GAMEMES *mes, va_list args)
 {
     HUSPRGRPID gid;
     ANIMDATA *anim;
@@ -428,20 +428,20 @@ BOOL GMesTimerInit(GAMEMES *gMes, va_list args)
     if(maxTime <= 0 && maxTime > 99) {
         maxTime = 99;
     }
-    gMes->timerVal = maxTime;
+    mes->timerVal = maxTime;
     if(posX >= 0) {
-        gMes->pos.x = posX;
+        mes->pos.x = posX;
     }
     if(posY >= 0) {
-        gMes->pos.y = posY;
+        mes->pos.y = posY;
     }
-    gMes->work = 0;
-    gMes->subMode = TIMER_SUBMODE_SHOW;
-    gMes->angle = 0;
+    mes->work = 0;
+    mes->subMode = TIMER_SUBMODE_SHOW;
+    mes->angle = 0;
     gid = HuSprGrpCreate(4);
-    gMes->strGId[0] = gid;
-    HuSprGrpScaleSet(gid, gMes->scale.x, gMes->scale.y);
-    anim = HuSprAnimRead(GMesDataRead(GAMEMES_ANM_timerDigit));
+    mes->strGrpId[0] = gid;
+    HuSprGrpScaleSet(gid, mes->scale.x, mes->scale.y);
+    anim = HuSprAnimRead(GameMesDataRead(GAMEMES_ANM_timerDigit));
     posX = 12;
     for(i=0; i<2; posX -= 24, i++) {
         sprid = HuSprCreate(anim, 5, 0);
@@ -450,13 +450,13 @@ BOOL GMesTimerInit(GAMEMES *gMes, va_list args)
         HuSprPosSet(gid, i, posX, 0);
         HuSprColorSet(gid, i, 112, 233, 255);
     }
-    anim = HuSprAnimRead(GMesDataRead(GAMEMES_ANM_timerBack));
+    anim = HuSprAnimRead(GameMesDataRead(GAMEMES_ANM_timerBack));
     sprid = HuSprCreate(anim, 7, 0);
     HuSprGrpMemberSet(gid, 2, sprid);
     HuSprPosSet(gid, 2, 0, 0);
     HuSprTPLvlSet(gid, 2, 0.5f);
     HuSprColorSet(gid, 2, 0, 0, 0);
-    anim = HuSprAnimRead(GMesDataRead(GAMEMES_ANM_timer));
+    anim = HuSprAnimRead(GameMesDataRead(GAMEMES_ANM_timer));
     sprid = HuSprCreate(anim, 6, 0);
     HuSprGrpMemberSet(gid, 3, sprid);
     HuSprPosSet(gid, 3, 0, 0);
@@ -464,50 +464,50 @@ BOOL GMesTimerInit(GAMEMES *gMes, va_list args)
     return TRUE;
 }
 
-BOOL GMesTimerExec(GAMEMES *gMes)
+BOOL GameMesTimerExec(GAMEMES *mes)
 {
-    HUSPRGRPID gid = gMes->strGId[0];
+    HUSPRGRPID gid = mes->strGrpId[0];
     s16 i;
     u8 digit[2];
     float scale, tpLvl;
-    if(gMes->dispMode != 0 && gMes->subMode != GMES_SUBMODE_NULL) {
-        switch(gMes->dispMode) {
-            case GMES_DISP_SET:
-                switch(gMes->dispValue) {
+    if(mes->dispMode != 0 && mes->subMode != GAMEMES_SUBMODE_NULL) {
+        switch(mes->dispMode) {
+            case GAMEMES_DISP_SET:
+                switch(mes->dispValue) {
                     case -1:
-                        gMes->stat |= GMES_STAT_TIMEEND;
-                        gMes->subMode = GMES_SUBMODE_NULL;
-                        gMes->angle = 0;
+                        mes->stat |= GAMEMES_STAT_TIMEEND;
+                        mes->subMode = GAMEMES_SUBMODE_NULL;
+                        mes->angle = 0;
                         break;
                     
                     case 0:
-                        gMes->subMode = TIMER_SUBMODE_SHOW;
-                        gMes->angle = 0;
+                        mes->subMode = TIMER_SUBMODE_SHOW;
+                        mes->angle = 0;
                         break;
                     
                     case 1:
-                        gMes->subMode = TIMER_SUBMODE_DIGITUP;
-                        gMes->angle = 0;
+                        mes->subMode = TIMER_SUBMODE_DIGITUP;
+                        mes->angle = 0;
                         break;
                 }
-                gMes->dispMode = GMES_DISP_NONE;
+                mes->dispMode = GAMEMES_DISP_NONE;
                 break;
             
-            case GMES_DISP_UPDATE:
-                if(gMes->dispValue < 0 && !(gMes->stat & GMES_STAT_TIMEEND)) {
-                    gMes->stat |= GMES_STAT_TIMEEND;
-                    gMes->subMode = GMES_SUBMODE_NULL;
-                    gMes->angle = 0;
+            case GAMEMES_DISP_UPDATE:
+                if(mes->dispValue < 0 && !(mes->stat & GAMEMES_STAT_TIMEEND)) {
+                    mes->stat |= GAMEMES_STAT_TIMEEND;
+                    mes->subMode = GAMEMES_SUBMODE_NULL;
+                    mes->angle = 0;
                 } else {
-                    if(gMes->dispValue > 99) {
-                        gMes->timerVal = 99;
+                    if(mes->dispValue > 99) {
+                        mes->timerVal = 99;
                     } else {
-                        if(gMes->timerVal != gMes->dispValue) {
-                            gMes->timerVal = gMes->dispValue;
-                            if(gMes->dispValue <= 5) {
+                        if(mes->timerVal != mes->dispValue) {
+                            mes->timerVal = mes->dispValue;
+                            if(mes->dispValue <= 5) {
                                 HuAudFXPlay(MSM_SE_CMN_07);
-                                gMes->subMode = TIMER_SUBMODE_DIGITUP;
-                                gMes->angle = 0;
+                                mes->subMode = TIMER_SUBMODE_DIGITUP;
+                                mes->angle = 0;
                                 HuSprColorSet(gid, 0, 255, 112, 160);
                                 HuSprColorSet(gid, 1, 255, 112, 160);
                             } else {
@@ -517,48 +517,48 @@ BOOL GMesTimerExec(GAMEMES *gMes)
                         }
                     }
                 }
-                gMes->dispMode = GMES_DISP_NONE;
+                mes->dispMode = GAMEMES_DISP_NONE;
                 break;
             
-            case GMES_DISP_HIDE:
+            case GAMEMES_DISP_HIDE:
                 for(i=0; i<2; i++) {
                     HuSprDispOn(gid, i);
                 }
-                gMes->subMode = TIMER_SUBMODE_DIGITUP;
-                gMes->dispMode = GMES_DISP_NONE;
+                mes->subMode = TIMER_SUBMODE_DIGITUP;
+                mes->dispMode = GAMEMES_DISP_NONE;
                 break;
             
             default:
-                gMes->dispMode = GMES_DISP_NONE;
+                mes->dispMode = GAMEMES_DISP_NONE;
                 break;
         }
     }
-    if(gMes->subMode == TIMER_SUBMODE_OFF) {
+    if(mes->subMode == TIMER_SUBMODE_OFF) {
         return TRUE;
     }
-    if(gMes->timerVal > 99) {
+    if(mes->timerVal > 99) {
         digit[0] = digit[1] = 9;
     } else {
-        int value = gMes->timerVal/10;
+        int value = mes->timerVal/10;
         digit[1] = value;
-        digit[0] = gMes->timerVal-(value*10);
+        digit[0] = mes->timerVal-(value*10);
     }
-    HuSprGrpPosSet(gid, gMes->pos.x, gMes->pos.y);
-    HuSprGrpScaleSet(gid, gMes->scale.x, gMes->scale.y);
+    HuSprGrpPosSet(gid, mes->pos.x, mes->pos.y);
+    HuSprGrpScaleSet(gid, mes->scale.x, mes->scale.y);
     for(i=0; i<2; i++) {
         HuSprBankSet(gid, i, digit[i]);
     }
-    if(gMes->subMode != GMES_SUBMODE_NONE) {
-        switch(gMes->subMode) {
+    if(mes->subMode != GAMEMES_SUBMODE_NONE) {
+        switch(mes->subMode) {
             case TIMER_SUBMODE_SHOW:
             {
                 float scaleX, scaleY;
-                scale = fabs(((5*HuSin(gMes->angle))+1)-(HuSin(130)*5));
-                scaleX = gMes->scale.x*scale;
-                scaleY = gMes->scale.y*scale;
-                gMes->angle += 5.0f*gMesVWait;
-                if(gMes->angle > 130) {
-                    gMes->subMode = GMES_SUBMODE_NONE;
+                scale = fabs(((5*HuSin(mes->angle))+1)-(HuSin(130)*5));
+                scaleX = mes->scale.x*scale;
+                scaleY = mes->scale.y*scale;
+                mes->angle += 5.0f*GameMesVWait;
+                if(mes->angle > 130) {
+                    mes->subMode = GAMEMES_SUBMODE_NONE;
                 } else {
                     HuSprGrpScaleSet(gid, scaleX, scaleY);
                 }
@@ -566,11 +566,11 @@ BOOL GMesTimerExec(GAMEMES *gMes)
                 break;
             
             case TIMER_SUBMODE_DIGITUP:
-                scale = 1+HuSin(gMes->angle);
-                tpLvl = 1-(0.5*HuSin(gMes->angle));
-                gMes->angle += 18.0f*gMesVWait;
-                if(gMes->angle > 180) {
-                    gMes->subMode = GMES_SUBMODE_NONE;
+                scale = 1+HuSin(mes->angle);
+                tpLvl = 1-(0.5*HuSin(mes->angle));
+                mes->angle += 18.0f*GameMesVWait;
+                if(mes->angle > 180) {
+                    mes->subMode = GAMEMES_SUBMODE_NONE;
                     scale = 1;
                     tpLvl = 1;
                 }
@@ -580,21 +580,21 @@ BOOL GMesTimerExec(GAMEMES *gMes)
                 }
                 break;
             
-            case GMES_SUBMODE_NULL:
-                HuSprGrpScaleSet(gid, gMes->scale.x, gMes->scale.y);
+            case GAMEMES_SUBMODE_NULL:
+                HuSprGrpScaleSet(gid, mes->scale.x, mes->scale.y);
                 for(i=0; i<2; i++) {
                     HuSprScaleSet(gid, i, 1, 1);
                     HuSprTPLvlSet(gid, i, 1);
                 }
-                gMes->angle++;
-                if(gMes->angle < 60) {
+                mes->angle++;
+                if(mes->angle < 60) {
                     break;
                 }
-                tpLvl = 1.0-((gMes->angle-60)/20);
+                tpLvl = 1.0-((mes->angle-60)/20);
                 if(tpLvl <= 0) {
                     tpLvl = 0;
-                    gMes->subMode = GMES_SUBMODE_NONE;
-                    gMes->stat |= GMES_STAT_KILL;
+                    mes->subMode = GAMEMES_SUBMODE_NONE;
+                    mes->stat |= GAMEMES_STAT_KILL;
                 }
                 for(i=0; i<4; i++) {
                     HuSprTPLvlSet(gid, i, tpLvl);
@@ -602,8 +602,8 @@ BOOL GMesTimerExec(GAMEMES *gMes)
                 break;
         }
     }
-    if(gMesCloseF || (gMes->stat & GMES_STAT_KILL)) {
-        GMesSprKill(gMes);
+    if(GameMesCloseF || (mes->stat & GAMEMES_STAT_KILL)) {
+        GameMesSprKill(mes);
         return FALSE;
     }
     return TRUE;
@@ -642,7 +642,7 @@ static ANIMDATA *CreateFontChar(char *str, s16 flag);
 
 #define STR_CHAR_MAX 100
 
-int GMesStrCreate(GAMEMES *gMes, char *str, s16 flag)
+int GameMesStrCreate(GAMEMES *mes, char *str, s16 flag)
 {
     s16 charNum;
     s16 x;
@@ -654,13 +654,13 @@ int GMesStrCreate(GAMEMES *gMes, char *str, s16 flag)
     s16 spaceNum;
     HUSPRGRPID gid;
     
-    for(strId=0; strId<GMES_STRMAX; strId++) {
-        if(gMes->strGId[strId] == HUSPR_GRP_NONE) {
+    for(strId=0; strId<GAMEMES_STRMAX; strId++) {
+        if(mes->strGrpId[strId] == HUSPR_GRP_NONE) {
             break;
         }
     }
-    if(strId == GMES_STRMAX) {
-        return GMES_STR_NONE;
+    if(strId == GAMEMES_STRMAX) {
+        return GAMEMES_STR_NONE;
     }
     charAnimTbl = HuMemDirectMalloc(HEAP_HEAP, STR_CHAR_MAX*sizeof(ANIMDATA *));
     charX = HuMemDirectMalloc(HEAP_HEAP, STR_CHAR_MAX*sizeof(s16));
@@ -679,31 +679,31 @@ int GMesStrCreate(GAMEMES *gMes, char *str, s16 flag)
         }
     }
     gid = HuSprGrpCreate(charNum+spaceNum);
-    gMes->strGId[strId] = gid;
+    mes->strGrpId[strId] = gid;
     x = (x/2)-28;
     for(i=0; i<charNum; i++) {
         HUSPRID sprid = HuSprCreate(charAnimTbl[i], 5, 0);
         HuSprGrpMemberSet(gid, i, sprid);
         HuSprPosSet(gid, i, charX[i]-x, 0);
     }
-    gMes->charNum = charNum;
+    mes->charNum = charNum;
     HuMemDirectFree(charAnimTbl);
     HuMemDirectFree(charX);
     return strId;
 }
 
-int GMesStrCopy(GAMEMES *gMes, s16 id)
+int GameMesStrCopy(GAMEMES *mes, s16 id)
 {
     s16 strId;
-    for(strId=0; strId<GMES_STRMAX; strId++) {
-        if(gMes->strGId[strId] == HUSPR_GRP_NONE) {
+    for(strId=0; strId<GAMEMES_STRMAX; strId++) {
+        if(mes->strGrpId[strId] == HUSPR_GRP_NONE) {
             break;
         }
     }
-    if(strId == GMES_STRMAX) {
-        return GMES_STR_NONE;
+    if(strId == GAMEMES_STRMAX) {
+        return GAMEMES_STR_NONE;
     }
-    gMes->strGId[strId] = HuSprGrpCopy(gMes->strGId[id]);
+    mes->strGrpId[strId] = HuSprGrpCopy(mes->strGrpId[id]);
     return strId;
 }
 
@@ -720,19 +720,19 @@ static ANIMDATA *CreateFontChar(char *str, s16 flag)
     for(i=0,tbl=asciiTbl; *tbl; i++, tbl++) {
         if(*tbl == c) {
             dataNum = GAMEMES_ANM_letterAUpper+i;
-            return HuSprAnimRead(GMesDataRead(dataNum));
+            return HuSprAnimRead(GameMesDataRead(dataNum));
         }
     }
     for(i=0,tbl=numberTbl; *tbl; i++, tbl++) {
         if(*tbl == c) {
             dataNum = GAMEMES_ANM_number0+i;
-            return HuSprAnimRead(GMesDataRead(dataNum));
+            return HuSprAnimRead(GameMesDataRead(dataNum));
         }
     }
     for(i=0,tbl=punctTbl; *tbl; i++, tbl++) {
         if(*tbl == c) {
             dataNum = GAMEMES_ANM_punctExcl+i;
-            return HuSprAnimRead(GMesDataRead(dataNum));
+            return HuSprAnimRead(GameMesDataRead(dataNum));
         }
     }
     return NULL;
@@ -740,9 +740,9 @@ static ANIMDATA *CreateFontChar(char *str, s16 flag)
 
 static void ExecPause(void);
 
-void GMesPauseCreate(void)
+void GameMesPauseCreate(void)
 {
-    GMesPauseEnable(FALSE);
+    GameMesPauseEnable(FALSE);
     HuWinInit(1);
     pauseProc = HuPrcCreate(ExecPause, 100, 4096, 0);
     HuPrcSetStat(pauseProc, HU_PRC_STAT_PAUSE_ON|HU_PRC_STAT_UPAUSE_ON);
@@ -768,7 +768,7 @@ static u32 m562CtrlMesTbl[] = {
 
 static void ExecPause(void)
 {
-    GAMEMES gMes;
+    GAMEMES mes;
     s16 charNo[GW_PLAYER_MAX][GW_PLAYER_MAX];
     s16 charNum[GW_PLAYER_MAX];
     HUWINID winId[3] = { HUWIN_NONE, HUWIN_NONE, HUWIN_NONE };
@@ -784,12 +784,12 @@ static void ExecPause(void)
     float time;
     
     HuAudFXPlay(MSM_SE_CMN_06);
-    for(i=0; i<GMES_STRMAX; i++) {
-        gMes.strSprId[i] = gMes.strGId[i] = HUSPR_NONE;
+    for(i=0; i<GAMEMES_STRMAX; i++) {
+        mes.strSprId[i] = mes.strGrpId[i] = HUSPR_NONE;
     }
-    GMesStrCreate(&gMes, pauseStr[(gMesLanguageNo == HUWIN_LANG_JAPAN) ? 0 : 1], FALSE);
-    for(i=0; i<gMes.charNum; i++) {
-        HuSprPriSet(gMes.strGId[0], i, 0);
+    GameMesStrCreate(&mes, pauseStr[(GameMesLanguageNo == HUWIN_LANG_JAPAN) ? 0 : 1], FALSE);
+    for(i=0; i<mes.charNum; i++) {
+        HuSprPriSet(mes.strGrpId[0], i, 0);
     }
     for(i=0; i<GW_PLAYER_MAX; i++) {
         charNum[i] = 0;
@@ -810,7 +810,7 @@ static void ExecPause(void)
     if(!instMes[1] && !instMes[2]) {
         for(i=1; i<=20; i++) {
             time = HuSin(i*(90.0f/20.0f));
-            HuSprGrpPosSet(gMes.strGId[0], 288, (290*time)-50);
+            HuSprGrpPosSet(mes.strGrpId[0], 288, (290*time)-50);
             HuPrcVSleep();
         }
     } else {
@@ -843,7 +843,7 @@ static void ExecPause(void)
             }
             for(i=1; i<=20; i++) {
                 time = HuSin(i*(90.0f/20.0f));
-                HuSprGrpPosSet(gMes.strGId[0], 288, (150*time)-50);
+                HuSprGrpPosSet(mes.strGrpId[0], 288, (150*time)-50);
                 HuWinPosSet(winId[0], (482*time)-400, 140);
                 HuWinPosSet(winId[1], (-318*time)+400, 272);
                 if(winId[2] != HUWIN_NONE) {
@@ -859,7 +859,7 @@ static void ExecPause(void)
             HuWinMesSet(winId[0], instMes[1]);
             for(i=1; i<=20; i++) {
                 time = HuSin(i*(90.0f/20.0f));
-                HuSprGrpPosSet(gMes.strGId[0], 288, (150*time)-50);
+                HuSprGrpPosSet(mes.strGrpId[0], 288, (150*time)-50);
                 HuWinPosSet(winId[0], (482*time)-400, 170);
                 if(winId[2] != HUWIN_NONE) {
                     HuWinPosSet(winId[2], (-318*time)+400, 404);
@@ -868,7 +868,7 @@ static void ExecPause(void)
             }
         }
     }
-    GMesPauseEnable(TRUE);
+    GameMesPauseEnable(TRUE);
     pauseWaitF = TRUE;
     while(!pauseCancelF) {
         HuPrcVSleep();
@@ -877,13 +877,13 @@ static void ExecPause(void)
     if(winId[0] == HUWIN_NONE && winId[1] == HUWIN_NONE) {
         for(i=1; i<=10; i++) {
             time = HuCos(i*(90.0f/10.0f));
-            HuSprGrpPosSet(gMes.strGId[0], 288, (290*time)-50);
+            HuSprGrpPosSet(mes.strGrpId[0], 288, (290*time)-50);
             HuPrcVSleep();
         }
     } else if(winId[1] != HUWIN_NONE) {
         for(i=1; i<=10; i++) {
             time = HuCos(i*(90.0f/10.0f));
-            HuSprGrpPosSet(gMes.strGId[0], 288, (150*time)-50);
+            HuSprGrpPosSet(mes.strGrpId[0], 288, (150*time)-50);
             HuWinPosSet(winId[0], (482*time)-400, 140);
             HuWinPosSet(winId[1], (-318*time)+400, 272);
             if(winId[2] != HUWIN_NONE) {
@@ -894,7 +894,7 @@ static void ExecPause(void)
     } else {
         for(i=1; i<=10; i++) {
             time = HuCos(i*(90.0f/10.0f));
-            HuSprGrpPosSet(gMes.strGId[0], 288, (150*time)-50);
+            HuSprGrpPosSet(mes.strGrpId[0], 288, (150*time)-50);
             HuWinPosSet(winId[0], (482*time)-400, 170);
             if(winId[2] != HUWIN_NONE) {
                 HuWinPosSet(winId[2], (-318*time)+400, 404);
@@ -912,7 +912,7 @@ static void ExecPause(void)
     if(winId[2] != HUWIN_NONE) {
         HuWinKill(winId[2]);
     }
-    HuSprGrpKill(gMes.strGId[0]);
+    HuSprGrpKill(mes.strGrpId[0]);
     pauseProc = FALSE;
     pauseEnableF = FALSE;
     HuPrcEnd();
@@ -921,12 +921,12 @@ static void ExecPause(void)
     }
 }
 
-void GMesPauseCancel(void)
+void GameMesPauseCancel(void)
 {
     pauseCancelF = TRUE;
 }
 
-void GMesPauseEnable(BOOL enable)
+void GameMesPauseEnable(BOOL enable)
 {
     if(!_CheckFlag(FLAG_MG_PAUSE_OFF)) {
         omSysPauseEnable(enable);
@@ -1024,7 +1024,7 @@ static PRACTICE practiceTbl[] = {
 
 static void ExecPractice(void);
 
-void GMesPracticeCreate(void)
+void GameMesPracticeCreate(void)
 {
     HUPROCESS *parent = HuPrcCurrentGet();
     s16 i;
@@ -1074,7 +1074,7 @@ static void ExecPractice(void)
     }
     gid = HuSprGrpCreate(1);
     HuSprGrpPosSet(gid, 0, 0);
-    anim = HuSprAnimRead(GMesDataRead(GAMEMES_ANM_practiceExit));
+    anim = HuSprAnimRead(GameMesDataRead(GAMEMES_ANM_practiceExit));
     sprid = HuSprCreate(anim, 1, 0);
     HuSprGrpMemberSet(gid, 0, sprid);
     HuSprPosSet(gid, 0, 288, posTbl[practiceP->posNo]);
@@ -1219,7 +1219,7 @@ static STARTSE startSeTbl[] = {
     DLL_NONE, 0
 };
 
-void GMesStartSePlay(void)
+void GameMesStartSePlay(void)
 {
     s16 i;
     for(i=0; startSeTbl[i].ovl != DLL_NONE; i++) {
@@ -1233,7 +1233,7 @@ void GMesStartSePlay(void)
     HuAudFXPlay(startSeTbl[i].seId);
 }
 
-void GMesExitCheck(OMOBJ *obj)
+void GameMesExitCheck(OMOBJ *obj)
 {
     mgExitStartF = FALSE;
     if(obj->work[0] == 0) {
@@ -1249,7 +1249,7 @@ void GMesExitCheck(OMOBJ *obj)
     }
     if(HuPadBtnDown[omDBGSysKeyObj->work[1]] & PAD_TRIGGER_Z) {
         HuAudFXPlay(MSM_SE_CMN_04);
-        GMesPauseCancel();
+        GameMesPauseCancel();
         omSysPauseCtrl(FALSE);
         omSysExitReq = TRUE;
         mgExitStartF = TRUE;
@@ -1634,7 +1634,7 @@ static unsigned int fontFileTbl[] = {
     GAMEMES_ANM_number0
 };
 
-GMESID GMesStrWinCreate(GAMEMES *gMes, u32 winMessId)
+GAMEMESID GameMesStrWinCreate(GAMEMES *mes, u32 winMessId)
 {
     char *mesPtr;
     s16 x;
@@ -1642,20 +1642,20 @@ GMESID GMesStrWinCreate(GAMEMES *gMes, u32 winMessId)
     unsigned int *fileTbl;
     s16 charNum;
     s16 i;
-    GMESID strId;
+    GAMEMESID strId;
     unsigned int dataNum;
     s16 *charX;
     ANIMDATA **charAnimTbl;
     HUSPRGRPID gid;
     HUSPRID sprid;
     HuWinInit(0);
-    for(strId=0; strId<GMES_STRMAX; strId++) {
-        if(gMes->strGId[strId] == HUSPR_GRP_NONE) {
+    for(strId=0; strId<GAMEMES_STRMAX; strId++) {
+        if(mes->strGrpId[strId] == HUSPR_GRP_NONE) {
             break;
         }
     }
-    if(strId == GMES_STRMAX) {
-        return GMES_STR_NONE;
+    if(strId == GAMEMES_STRMAX) {
+        return GAMEMES_STR_NONE;
     }
     fileTbl = fontFileTbl;
     charAnimTbl = HuMemDirectMalloc(HEAP_HEAP, STR_CHAR_MAX*sizeof(ANIMDATA *));
@@ -1694,7 +1694,7 @@ GMESID GMesStrWinCreate(GAMEMES *gMes, u32 winMessId)
         } else {
             dataNum = fileTbl[mesPtr[0]];
         }
-        charAnimTbl[charNum] = HuSprAnimRead(GMesDataRead(dataNum));
+        charAnimTbl[charNum] = HuSprAnimRead(GameMesDataRead(dataNum));
         charX[charNum] = x;
         if(mesPtr[0] >= 'a' && mesPtr[0] <= 'z') {
             charY[charNum] = 2;
@@ -1718,14 +1718,14 @@ GMESID GMesStrWinCreate(GAMEMES *gMes, u32 winMessId)
         charNum++;
     }
     gid = HuSprGrpCreate(charNum);
-    gMes->strGId[strId] = gid;
+    mes->strGrpId[strId] = gid;
     x = (x/2)-28;
     for(i=0; i<charNum; i++) {
         sprid = HuSprCreate(charAnimTbl[i], 0, 0);
         HuSprGrpMemberSet(gid, i, sprid);
         HuSprPosSet(gid, i, charX[i]-x, charY[i]);
     }
-    gMes->charNum = charNum;
+    mes->charNum = charNum;
     HuMemDirectFree(charAnimTbl);
     HuMemDirectFree(charX);
     HuMemDirectFree(charY);

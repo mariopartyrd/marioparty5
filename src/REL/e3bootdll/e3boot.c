@@ -141,7 +141,7 @@ void BootExec(void)
             tickPrev = OSGetTick();
             CharInit();
             HuWindowInit();
-            GMesInit();
+            GameMesInit();
             HuWinInit(1);
             TitleCreate();
             anim = HuSprAnimDataRead(E3BOOT_ANM_hudson);
