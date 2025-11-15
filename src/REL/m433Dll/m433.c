@@ -33,7 +33,7 @@ int gameMaxScore;
 int gameBallNumMax;
 int gameType;
 
-static GMESID startGMesId, finishGMesId, winGMesId;
+static GAMEMESID startGameMesId, finishGameMesId, winGameMesId;
 static int gameStartSeNo, gameFinishSeNo;
 static int gameMusNo, winMusNo;
 
@@ -100,7 +100,7 @@ void ObjectSetup(void)
     pos.z = 900.00006f;
     Hu3DGLightPosAimSetV(lightId, &pos, &aim);
     Hu3DShadowPosSet(&pos, &shadowUp, &aim);
-    startGMesId = finishGMesId = winGMesId = GMES_ID_NONE;
+    startGameMesId = finishGameMesId = winGameMesId = GAMEMES_ID_NONE;
     om = omInitObjMan(50, 8192);
     objman = om;
     omGameSysInit(om);
@@ -227,7 +227,7 @@ void M433GameExit(OMOBJ *obj)
     if(WipeCheckEnd() == FALSE) {
         M433PlayerClose();
         M433StageClose();
-        GMesClose();
+        GameMesClose();
         HuAudFadeOut(1);
         omOvlReturn(1);
     }
@@ -241,8 +241,8 @@ void M433GameStart(OMOBJ *obj)
         case M433_GAMEMES_INIT:
             work->second = 30;
             work->frame = 60;
-            startGMesId = GMesMgStartCreate();
-            GMesPosSet(startGMesId, 320, 240);
+            startGameMesId = GameMesMgStartCreate();
+            GameMesPosSet(startGameMesId, 320, 240);
             Center.x = 0;
             Center.y = 200;
             Center.z = 0;
@@ -255,10 +255,10 @@ void M433GameStart(OMOBJ *obj)
             break;
      
         case M433_GAMEMES_START:
-            if(gameMusNo < 0 && GMesFXPlayCheck(startGMesId)) {
+            if(gameMusNo < 0 && GameMesFXPlayCheck(startGameMesId)) {
                 gameMusNo = HuAudSStreamPlay(MSM_STREAM_MGMUS_4);
             }
-            if(!GMesStatGet(startGMesId) && !work->modeActive) {
+            if(!GameMesStatGet(startGameMesId) && !work->modeActive) {
                 work->gamemesMode = M433_GAMEMES_WAIT;
                 work->gamemesTimer = 0;
                 obj->objFunc = M433GameWait;
@@ -284,8 +284,8 @@ void M433GameWait(OMOBJ *obj)
         stopF = TRUE;
     }
     if(stopF) {
-        finishGMesId = GMesMgFinishCreate();
-        GMesPosSet(finishGMesId, 320, 240);
+        finishGameMesId = GameMesMgFinishCreate();
+        GameMesPosSet(finishGameMesId, 320, 240);
         HuAudSStreamFadeOut(gameMusNo, 100);
         work->gamemesMode = M433_GAMEMES_FINISH;
         work->gamemesTimer = 0;
@@ -299,7 +299,7 @@ void M433GameFinish(OMOBJ *obj)
 {
     M433_GAMEWORK *work = obj->data;
     M433ModeWatch(obj);
-    if(!GMesStatGet(finishGMesId) && work->winFlag == 0x11111) {
+    if(!GameMesStatGet(finishGameMesId) && work->winFlag == 0x11111) {
         work->gamemesMode = M433_GAMEMES_CLOSE;
         work->gamemesTimer = 0;
         M433ModeUpdate(obj);
@@ -329,7 +329,7 @@ void M433GameWin(OMOBJ *obj)
     if(winMusNo < 0) {
         winMusNo = HuAudJinglePlay(MSM_STREAM_JNGL_MG_WIN);
     }
-    if(winGMesId < 0) {
+    if(winGameMesId < 0) {
         int winTbl[GW_PLAYER_MAX] = { CHARNO_NONE, CHARNO_NONE, CHARNO_NONE, CHARNO_NONE };
         int i;
         int num;
@@ -341,15 +341,15 @@ void M433GameWin(OMOBJ *obj)
             }
         }
         if(winTbl[0] == CHARNO_NONE) {
-            winGMesId = GMesMgWinnerDrawCreate();
+            winGameMesId = GameMesMgWinnerDrawCreate();
         } else {
-            type = GMES_MG_TYPE_WIN;
+            type = GAMEMES_MG_TYPE_WIN;
             if(GWSubGameNoGet() == 0 && M433WinGroupCheck(0)) {
-                type = GMES_MG_TYPE_CHAMPION;
+                type = GAMEMES_MG_TYPE_CHAMPION;
             }
-            winGMesId = GMesMgWinnerTypeCreate(type, winTbl[0], winTbl[1], winTbl[2], winTbl[3]);
+            winGameMesId = GameMesMgWinnerTypeCreate(type, winTbl[0], winTbl[1], winTbl[2], winTbl[3]);
         }
-    } else if(!GMesStatGet(winGMesId) && work->winTimer >= 210.0f) {
+    } else if(!GameMesStatGet(winGameMesId) && work->winTimer >= 210.0f) {
         work->winMode = M433_WINMODE_NOSTOP;
         M433ModeUpdate(obj);
     }
@@ -400,7 +400,7 @@ void M433GameWinFlag2Set(int playerNo)
 
 BOOL M433GameFinishEndCheck(void)
 {
-    return GMesStatGet(finishGMesId) == 0;
+    return GameMesStatGet(finishGameMesId) == 0;
 }
 
 void M433CameraAimSetV(HuVecF *eye, HuVecF *pos)

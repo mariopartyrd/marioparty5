@@ -162,7 +162,7 @@ void BootExec(void)
             tickPrev = OSGetTick();
             CharInit();
             HuWindowInit();
-            GMesInit();
+            GameMesInit();
             HuWinInit(1);
             while(OSTicksToMilliseconds(OSGetTick()-tickPrev) < 1500) {
                 HuPrcVSleep();
