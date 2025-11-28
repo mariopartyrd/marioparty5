@@ -25,13 +25,14 @@ REL/m501Dll/gamemaster.cpp:
 	.ctors      start:0x00000008 end:0x0000000C
 	.rodata     start:0x00000098 end:0x000000D8
 	.data       start:0x00000238 end:0x00000268
+	.bss        start:0x00000058 end:0x00000070
 
 REL/m501Dll/aisu.cpp:
 	.text       start:0x000073C8 end:0x0000930C
 	.ctors      start:0x0000000C end:0x00000010
 	.rodata     start:0x000000D8 end:0x00000170
 	.data       start:0x00000268 end:0x00000350
-	.bss        start:0x00000058 end:0x000000C0
+	.bss        start:0x00000070 end:0x000000C0
 
 REL/m501Dll/joint.cpp:
 	.text       start:0x0000930C end:0x00009AA8
@@ -59,14 +60,14 @@ REL/m501Dll/stage.cpp:
 	.data       start:0x00000408 end:0x00000458
 
 REL/m501Dll/player.cpp:
-	.text       start:0x0000B340 end:0x00010158
+	.text       start:0x0000B340 end:0x000101B0
 	.ctors      start:0x00000014 end:0x00000018
 	.rodata     start:0x00000258 end:0x00000370
 	.data       start:0x00000458 end:0x0000058B
 	.bss        start:0x000000D8 end:0x00000100
 
 REL/m501Dll/random.cpp:
-	.text       start:0x00010158 end:0x000102B0
+	.text       start:0x000101B0 end:0x000102B0
 	.ctors      start:0x00000018 end:0x0000001C
 	.bss        start:0x00000100 end:0x00000AC8
 

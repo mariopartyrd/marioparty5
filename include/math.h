@@ -71,10 +71,7 @@ double fmod(double x, double y);
 double log(double x);
 double pow(double x, double y);
 float tanf(float x);
-float sinf(float x);
-float cosf(float x);
-float atan2f(float y, float x);
-float acosf(float x);
+
 
 extern inline double fabs(double x)
 {
