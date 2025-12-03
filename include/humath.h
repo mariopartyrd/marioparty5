@@ -6,7 +6,7 @@
 
 typedef Vec HuVecF;
 
-typedef struct huvec2f {
+typedef struct HuVec2f_s {
     float x;
     float y;
 } HuVec2F;
