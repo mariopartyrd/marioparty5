@@ -24,6 +24,7 @@
 #include "game/board/guide.h"
 #include "game/board/star.h"
 #include "game/board/telop.h"
+#include "game/board/mgcircuit.h"
 
 #include "datanum/capsule.h"
 #include "datanum/effect.h"
@@ -48,12 +49,6 @@
 #include "messnum/board_star.h"
 #include "messnum/boardope.h"
 #include "messnum/teamname.h"
-
-//Fake Board Prototypes
-extern BOOL MBCircuitGoalCheck(int playerNo);
-extern void MBCircuitCarInit(void);
-extern int MBCircuitKettouSaiExec(int playerNo);
-extern BOOL MBCircuitCarMoveExec(int playerNo);
 
 typedef void (*CAPSULE_FUNC)(void);
 
@@ -4989,7 +4984,7 @@ void MBCapsuleKuriboExec(void)
         MBTopWinKill();
     }
     MBMotionShiftSet(mdlId, 1, 0, 8, HU3D_MOTATTR_LOOP);
-    MBCapsuleStatusPosMoveWait(0, 1);
+    MBCapsuleStatusPosMoveWait(FALSE, TRUE);
     MBCapsuleStatusTradeInSet(capsulePlayer, swapPlayer, TRUE);
     if(coinTotal[0] > 0 || coinTotal[1] > 0) {
         do {

@@ -15,6 +15,7 @@
 #define MSM_GRP_SD 10
 #define MSM_GRP_STORY 11
 #define MSM_GRP_OPTION 12
+#define MSM_GRP_MGCIRCUIT 13
 #define MSM_GRP_BD1 14
 #define MSM_GRP_BD2 15
 #define MSM_GRP_BD3 16

@@ -123,13 +123,13 @@ void MBCameraFocusPlayerSet(int playerNo);
 void MBCameraFocusSet(MBMODELID modelId);
 void MBCameraFocusMasuAdd(int masuId);
 void MBCameraFocusMasuSet(int masuId);
-void MBCameraPosViewSet(HuVecF *pos, HuVecF *rot, HuVecF *offset, float zoom, float fov, s16 maxTime);
+void MBCameraPosViewSet(const HuVecF *pos, const HuVecF *rot, const HuVecF *offset, float zoom, float fov, s16 maxTime);
 
-void MBCameraPlayerViewSet(s16 playerNo, HuVecF *rot, HuVecF *offset, float zoom, float fov, s16 maxTime);
-void MBCameraModelViewSet(MBMODELID modelId, HuVecF *rot, HuVecF *offset, float zoom, float fov, s16 maxTime);
+void MBCameraPlayerViewSet(s16 playerNo, const HuVecF *rot, const HuVecF *offset, float zoom, float fov, s16 maxTime);
+void MBCameraModelViewSet(MBMODELID modelId, const HuVecF *rot, const HuVecF *offset, float zoom, float fov, s16 maxTime);
 
 void MBCameraModelKeySet(MBMODELID modelId, MBCAMERAVIEWKEY *key1, MBCAMERAVIEWKEY *key2, s16 maxTime);
-void MBCameraMasuViewSet(s16 masuId, HuVecF *rot, HuVecF *offset, float zoom, float fov, s16 maxTime);
+void MBCameraMasuViewSet(s16 masuId, const HuVecF *rot, const HuVecF *offset, float zoom, float fov, s16 maxTime);
 void MBCameraQuakeSet(int maxTime, float power);
 void MBCameraQuakeReset(void);
 BOOL MBCameraCullCheck(HuVecF *pos, float radius);
