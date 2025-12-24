@@ -626,9 +626,7 @@ void MBCameraFocusMasuSet(int masuId)
     }
 }
 
-//TODO: Wrong stack order in MBCameraPlayerViewSet and MBCameraModelViewSet (finalOfs must be allocated with high priority)
-
-void MBCameraPosViewSet(HuVecF *pos, HuVecF *rot, HuVecF *offset, float zoom, float fov, s16 maxTime)
+void MBCameraPosViewSet(const HuVecF *pos, const HuVecF *rot, const HuVecF *offset, float zoom, float fov, s16 maxTime)
 {
     MBCAMERA *cameraP = MBCameraGet();
     MBCAMERAMOTION *motP = &cameraP->motion;
@@ -636,8 +634,6 @@ void MBCameraPosViewSet(HuVecF *pos, HuVecF *rot, HuVecF *offset, float zoom, fl
     MBCAMERAVIEWKEY *key2 = &motP->viewKey[1];
     
     HuVecF finalOfs;
-    HuVecF newRot;
-    HuVecF newPos;
     
     if(cameraObj) {
         motP->curveType = MB_CAMERA_CURVE_LINEAR;
@@ -647,18 +643,8 @@ void MBCameraPosViewSet(HuVecF *pos, HuVecF *rot, HuVecF *offset, float zoom, fl
         key1->pos = cameraP->target;
         key2->fov = (fov < 0.0f) ? key1->fov : fov;
         key2->zoom = (zoom < 0.0f) ? key1->zoom : zoom;
-        if(rot == 0) {
-            newRot = key1->rot;
-        } else {
-            newRot = *rot;
-        }
-        key2->rot = newRot;
-        if(pos == 0) {
-            newPos = key1->pos;
-        } else {
-            newPos = *pos;
-        }
-        key2->pos = newPos;
+        key2->rot = (!rot) ? key1->rot : *rot;
+		key2->pos = (!pos) ? key1->pos : *pos;
         if(offset) {
             MBCameraOffsetSet(offset->x, offset->y, offset->z);
         }
@@ -670,7 +656,7 @@ void MBCameraPosViewSet(HuVecF *pos, HuVecF *rot, HuVecF *offset, float zoom, fl
     }
 }
 
-void MBCameraPlayerViewSet(s16 playerNo, HuVecF *rot, HuVecF *offset, float zoom, float fov, s16 maxTime)
+void MBCameraPlayerViewSet(s16 playerNo, const HuVecF *rot, const HuVecF *offset, float zoom, float fov, s16 maxTime)
 {
     if(playerNo == -1) {
         MBCameraPosViewSet(NULL, rot, offset, zoom, fov, maxTime);
@@ -682,7 +668,7 @@ void MBCameraPlayerViewSet(s16 playerNo, HuVecF *rot, HuVecF *offset, float zoom
     }
 }
 
-void MBCameraModelViewSet(MBMODELID modelId, HuVecF *rot, HuVecF *offset, float zoom, float fov, s16 maxTime)
+void MBCameraModelViewSet(MBMODELID modelId, const HuVecF *rot, const HuVecF *offset, float zoom, float fov, s16 maxTime)
 {
     if(modelId == MB_MODEL_NONE) {
         MBCameraPosViewSet(NULL, rot, offset, zoom, fov, maxTime);
@@ -735,7 +721,7 @@ void MBCameraModelKeySet(MBMODELID modelId, MBCAMERAVIEWKEY *key1, MBCAMERAVIEWK
     }
 }
 
-void MBCameraMasuViewSet(s16 masuId, HuVecF *rot, HuVecF *offset, float zoom, float fov, s16 maxTime)
+void MBCameraMasuViewSet(s16 masuId, const HuVecF *rot, const HuVecF *offset, float zoom, float fov, s16 maxTime)
 {
     if(masuId == MASU_NULL) {
         MBCameraPosViewSet(NULL, rot, offset, zoom, fov, maxTime);
@@ -828,16 +814,16 @@ void MBCameraLookAtGetInv(Mtx lookAtInv)
 void MBCameraFocusPlayerAddAll(void)
 {
     MBCAMERA *cameraP = MBCameraGet();
-    int comNum;
+    int aliveNum;
     MBCAMERAMOTION *motP;
-    int comPlayer[GW_PLAYER_MAX];
+    int alivePlayer[GW_PLAYER_MAX];
     int i;
     motP = &cameraP->motion;
-    comNum = MBPlayerAliveComGet(comPlayer);
-    if(comNum == 0) {
+    aliveNum = MBPlayerAlivePlayerGet(alivePlayer);
+    if(aliveNum == 0) {
         return;
     }
-    if(comNum >= 2) {
+    if(aliveNum >= 2) {
         motP->viewNo = MB_CAMERA_VIEW_FOCUSALL;
         MBCameraFocusPlayerSet(-1);
         MBCameraRotSet(-33, 0, 0);
@@ -847,7 +833,7 @@ void MBCameraFocusPlayerAddAll(void)
             }
         }
     } else {
-        MBCameraViewNoSet(comPlayer[0], MB_CAMERA_VIEW_WALK);
+        MBCameraViewNoSet(alivePlayer[0], MB_CAMERA_VIEW_WALK);
     }
 }
 
@@ -855,18 +841,18 @@ void MBCameraFocusPlayerAddAll(void)
 void MBCameraPointFocusSet(HuVecF *rot, HuVecF *offset, float fov, s16 maxTime)
 {
     MBCAMERA *cameraP = MBCameraGet();
-    int comNum;
+    int aliveNum;
     MBCAMERAMOTION *motP;
-    int comPlayer[GW_PLAYER_MAX];
+    int alivePlayer[GW_PLAYER_MAX];
     HuVecF pos;
     int i;
     float zoom;
     motP = &cameraP->motion;
-    comNum = MBPlayerAliveComGet(comPlayer);
-    if(comNum == 0) {
+    aliveNum = MBPlayerAlivePlayerGet(alivePlayer);
+    if(aliveNum == 0) {
         return;
     }
-    if(comNum >= 2) {
+    if(aliveNum >= 2) {
         static const HuVecF viewOfs = {};
         motP->viewNo = MB_CAMERA_VIEW_FOCUSALL;
         MBCameraFocusPlayerSet(-1);
@@ -876,9 +862,9 @@ void MBCameraPointFocusSet(HuVecF *rot, HuVecF *offset, float fov, s16 maxTime)
             }
         }
         zoom = CameraTargetCalc(rot, fov, &pos);
-        MBCameraPosViewSet(&pos, rot, (HuVecF *)&viewOfs, zoom, fov, maxTime);
+        MBCameraPosViewSet(&pos, rot, &viewOfs, zoom, fov, maxTime);
         MBCameraOffsetSet(0, 100, 0);
     } else {
-        MBCameraPlayerViewSet(comPlayer[0], rot, offset, viewTbl[2].zoom, fov, maxTime);
+        MBCameraPlayerViewSet(alivePlayer[0], rot, offset, viewTbl[2].zoom, fov, maxTime);
     }
 }

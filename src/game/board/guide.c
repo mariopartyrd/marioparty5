@@ -55,7 +55,7 @@ static BOOL GuideOutObjCheck(void);
 static void GuideExecScreen(OMOBJ *obj);
 static HU3DMODELID GuideEffCreate(void);
 
-MBMODELID MBGuideCreate(int guideNo, HuVecF *pos, HuVecF *rot, u32 attr)
+MBMODELID MBGuideCreate(int guideNo, const HuVecF *pos, const HuVecF *rot, u32 attr)
 {
     MBCAMERA *cameraP = MBCameraGet();
     Mtx lookAt;
@@ -120,7 +120,7 @@ MBMODELID MBGuideCreate(int guideNo, HuVecF *pos, HuVecF *rot, u32 attr)
     return guideWorkP->modelId;
 }
 
-MBMODELID MBGuideCreateFlag(int guideNo, HuVecF *pos, BOOL screenF, BOOL effInF, BOOL effOutF, BOOL modelOffF)
+MBMODELID MBGuideCreateFlag(int guideNo, const HuVecF *pos, BOOL screenF, BOOL effInF, BOOL effOutF, BOOL modelOffF)
 {
     HuVecF rot = { 0, 0, 0 };
     u32 attr = MB_GUIDE_ATTR_NONE;
@@ -132,7 +132,7 @@ MBMODELID MBGuideCreateFlag(int guideNo, HuVecF *pos, BOOL screenF, BOOL effInF,
 }
 
 
-MBMODELID MBGuideCreateIn(HuVecF *pos, BOOL screenF, BOOL effInF, BOOL modelOffF)
+MBMODELID MBGuideCreateIn(const HuVecF *pos, BOOL screenF, BOOL effInF, BOOL modelOffF)
 {
     int no = (GWPartyFGet() == TRUE) ? MB_GUIDE_CHORL : MB_GUIDE_NERL;
     return MBGuideCreateFlag(no, pos, screenF, effInF, FALSE, modelOffF);
@@ -195,7 +195,7 @@ void MBGuideMdlPosSet(MBMODELID modelId, float posX, float posY, float posZ)
     MBModelPosSet(modelId, posX, posY, posZ);
 }
 
-void MBGuideMdlPosSetV(MBMODELID modelId, HuVecF *pos)
+void MBGuideMdlPosSetV(MBMODELID modelId, const HuVecF *pos)
 {
     MBModelPosSet(modelId, pos->x, pos->y, pos->z);
 }

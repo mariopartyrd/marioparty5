@@ -10,16 +10,13 @@
 #include "game/board/branch.h"
 #include "game/board/scroll.h"
 #include "game/board/gate.h"
+#include "game/board/star.h"
 
 #include "game/flag.h"
 #include "game/wipe.h"
 
 #include "datanum/w20.h"
 #include "messnum/charaname.h"
-
-void MBStarDispSetAll(BOOL dispF);
-void MBStarMasuDispSet(int masuId, BOOL dispF);
-
 
 static MBPLAYERWORK playerWork[GW_PLAYER_MAX];
 static int startPlayerNo;

@@ -834,7 +834,7 @@ float MBModelRotYGet(MBMODELID modelId)
     return rot.y;
 }
 
-BOOL MBModelPosSetV(MBMODELID modelId, HuVecF *pos)
+BOOL MBModelPosSetV(MBMODELID modelId, const HuVecF *pos)
 {
     if(!pos) {
         return FALSE;
@@ -860,7 +860,7 @@ BOOL MBModelPosSet(MBMODELID modelId, float x, float y, float z)
     }
 }
 
-BOOL MBModelRotSetV(MBMODELID modelId, HuVecF *rot)
+BOOL MBModelRotSetV(MBMODELID modelId, const HuVecF *rot)
 {
     if(!rot) {
         return -1;
@@ -883,7 +883,7 @@ BOOL MBModelRotSet(MBMODELID modelId, float x, float y, float z)
     }
 }
 
-BOOL MBModelScaleSetV(MBMODELID modelId, HuVecF *scale)
+BOOL MBModelScaleSetV(MBMODELID modelId, const HuVecF *scale)
 {
     if(!scale) {
         return FALSE;
@@ -950,7 +950,7 @@ void MBModelOffsetSet(MBMODELID modelId, float x, float y, float z)
     MBModelPosSetV(modelId, &pos);
 }
 
-void MBModelOffsetSetV(MBMODELID modelId, HuVecF *offset)
+void MBModelOffsetSetV(MBMODELID modelId, const HuVecF *offset)
 {
     MBModelOffsetSet(modelId, offset->x, offset->y, offset->z);
 }

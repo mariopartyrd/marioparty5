@@ -19,6 +19,7 @@
 #include "game/board/telop.h"
 #include "game/board/window.h"
 #include "game/board/gate.h"
+#include "game/board/mgcircuit.h"
 
 #include "game/saveload.h"
 #include "game/sprite.h"
@@ -31,11 +32,6 @@
 #include "humath.h"
 
 #include "game/flag.h"
-
-//Prototypes for board functions
-void MBCircuitMgEndExec(int playerNo);
-void MBCircuitExec(BOOL turnIntrF);
-void MBCircuitReset(void);
 
 static MBTURNHOOK postTurnHook;
 static MBTURNHOOK preTurnHook;

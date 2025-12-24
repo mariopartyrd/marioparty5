@@ -19,14 +19,14 @@
 #define MB_GUIDE_ATTR_ALTMTX (1 << 4)
 
 void MBGuideInit(void);
-MBMODELID MBGuideCreate(int guideNo, HuVecF *pos, HuVecF *rot, u32 attr);
-MBMODELID MBGuideCreateFlag(int guideNo, HuVecF *pos, BOOL screenF, BOOL effInF, BOOL effOutF, BOOL modelOffF);
-MBMODELID MBGuideCreateIn(HuVecF *pos, BOOL screenF, BOOL effInF, BOOL modelOffF);
+MBMODELID MBGuideCreate(int guideNo, const HuVecF *pos, const HuVecF *rot, u32 attr);
+MBMODELID MBGuideCreateFlag(int guideNo, const HuVecF *pos, BOOL screenF, BOOL effInF, BOOL effOutF, BOOL modelOffF);
+MBMODELID MBGuideCreateIn(const HuVecF *pos, BOOL screenF, BOOL effInF, BOOL modelOffF);
 MBMODELID MBGuideCreateDirect(void);
 void MBGuideEnd(MBMODELID modelId);
 void MBGuideKill(void);
 void MBGuideMdlPosSet(MBMODELID modelId, float posX, float posY, float posZ);
-void MBGuideMdlPosSetV(MBMODELID modelId, HuVecF *pos);
+void MBGuideMdlPosSetV(MBMODELID modelId, const HuVecF *pos);
 void MBGuideMdlPosGet(MBMODELID modelId, HuVecF *pos);
 void MBGuideScreenPosSet(HuVecF *pos);
 void MBGuideScreenPosGet(HuVecF *pos);

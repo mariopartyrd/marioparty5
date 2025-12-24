@@ -111,14 +111,14 @@ BOOL MBModelMtxGet(MBMODELID modelId, Mtx *mtx);
 BOOL MBModelRotYSet(MBMODELID modelId, float rotY);
 float MBModelRotYGet(MBMODELID modelId);
 
-BOOL MBModelPosSetV(MBMODELID modelId, HuVecF *pos);
+BOOL MBModelPosSetV(MBMODELID modelId, const HuVecF *pos);
 BOOL MBModelPosSet(MBMODELID modelId, float x, float y, float z);
-BOOL MBModelRotSetV(MBMODELID modelId, HuVecF *rot);
+BOOL MBModelRotSetV(MBMODELID modelId, const HuVecF *rot);
 BOOL MBModelRotSet(MBMODELID modelId, float x, float y, float z);
-BOOL MBModelScaleSetV(MBMODELID modelId, HuVecF *scale);
+BOOL MBModelScaleSetV(MBMODELID modelId, const HuVecF *scale);
 BOOL MBModelScaleSet(MBMODELID modelId, float x, float y, float z);
 void MBModelOffsetSet(MBMODELID modelId, float x, float y, float z);
-void MBModelOffsetSetV(MBMODELID modelId, HuVecF *offset);
+void MBModelOffsetSetV(MBMODELID modelId, const HuVecF *offset);
 
 BOOL MBModelPosGet(MBMODELID modelId, HuVecF *pos);
 BOOL MBModelRotGet(MBMODELID modelId, HuVecF *rot);
