@@ -340,7 +340,7 @@ static BOOL DoScrollCol(HuVecF *target, HuVecF *pos, HuVecF *endPos)
     VECSubtract(pos, target, &dir);
     for(faceP = faceBufP->data, i=0; i<faceBufP->count; i++, faceP++) {
         if(faceP->type == HSF_FACE_TRI || faceP->type == HSF_FACE_QUAD) {
-            vtxP[0] = ((HuVecF *)vtxBufP->data)+faceP->indices[0][0];
+            vtxP[0] = ((HuVecF *)vtxBufP->data)+faceP->index[0].vertex;
             triArea = (faceP->nbt[0]*vtxP[0]->x)+(faceP->nbt[1]*vtxP[0]->y)+(faceP->nbt[2]*vtxP[0]->z);
             area = ((triArea-(faceP->nbt[0]*target->x))-(faceP->nbt[1]*target->y)-(faceP->nbt[2]*target->z))/((faceP->nbt[0]*dir.x)+(faceP->nbt[1]*dir.y)+(faceP->nbt[2]*dir.z));
             if(area < 0) {
@@ -353,8 +353,8 @@ static BOOL DoScrollCol(HuVecF *target, HuVecF *pos, HuVecF *endPos)
             out.y = target->y+(area*dir.y);
             out.z = target->z+(area*dir.z);
             if(faceP->type == HSF_FACE_TRI) {
-                vtxP[1] = ((HuVecF *)vtxBufP->data)+faceP->indices[1][0];
-                vtxP[2] = ((HuVecF *)vtxBufP->data)+faceP->indices[2][0];
+                vtxP[1] = ((HuVecF *)vtxBufP->data)+faceP->index[1].vertex;
+                vtxP[2] = ((HuVecF *)vtxBufP->data)+faceP->index[2].vertex;
                 VECSubtract(vtxP[1], vtxP[0], &edge);
                 VECSubtract(&out, vtxP[1], &up);
                 VECCrossProduct(&edge, &up, &cross);
@@ -374,9 +374,9 @@ static BOOL DoScrollCol(HuVecF *target, HuVecF *pos, HuVecF *endPos)
                     continue;
                 }
             } else {
-                vtxP[1] = ((HuVecF *)vtxBufP->data)+faceP->indices[1][0];
-                vtxP[2] = ((HuVecF *)vtxBufP->data)+faceP->indices[2][0];
-                vtxP[3] = ((HuVecF *)vtxBufP->data)+faceP->indices[3][0];
+                vtxP[1] = ((HuVecF *)vtxBufP->data)+faceP->index[1].vertex;
+                vtxP[2] = ((HuVecF *)vtxBufP->data)+faceP->index[2].vertex;
+                vtxP[3] = ((HuVecF *)vtxBufP->data)+faceP->index[3].vertex;
                 VECSubtract(vtxP[1], vtxP[0], &edge);
                 VECSubtract(&out, vtxP[1], &up);
                 VECCrossProduct(&edge, &up, &cross);
@@ -458,9 +458,9 @@ static void DoScrollColSmooth(HuVecF *dir, HuVecF *pos1, HuVecF *pos2, HuVecF *e
         }
         for(i=0; i<3; i++) {
             xzMag = HuMagXZVecF(dir); 
-            scaleY = (((HuVecF *)vtxBufP->data)+faceP->indices[i][0])->y/(dir->y/xzMag);
-            inVtx[i].x = (((HuVecF *)vtxBufP->data)+faceP->indices[i][0])->x-(scaleY*(dir->x/xzMag));
-            inVtx[i].z = (((HuVecF *)vtxBufP->data)+faceP->indices[i][0])->z-(scaleY*(dir->z/xzMag));
+            scaleY = (((HuVecF *)vtxBufP->data)+faceP->index[i].vertex)->y/(dir->y/xzMag);
+            inVtx[i].x = (((HuVecF *)vtxBufP->data)+faceP->index[i].vertex)->x-(scaleY*(dir->x/xzMag));
+            inVtx[i].z = (((HuVecF *)vtxBufP->data)+faceP->index[i].vertex)->z-(scaleY*(dir->z/xzMag));
             inVtx[i].y = 0;
         }
         for(i=0; i<3; i++) {
@@ -494,7 +494,7 @@ static void DoScrollColSmooth(HuVecF *dir, HuVecF *pos1, HuVecF *pos2, HuVecF *e
         HuVecF *vtxP;
         float dot;
         faceP = ((HSFFACE *)faceBufP->data)+faceNo;
-        vtxP = ((HuVecF *)vtxBufP->data)+faceP->indices[0][0];
+        vtxP = ((HuVecF *)vtxBufP->data)+faceP->index[0].vertex;
         dot = (faceP->nbt[0]*vtxP->x)+(faceP->nbt[1]*vtxP->y)+(faceP->nbt[2]*vtxP->z);
         scale = ((dot-(faceP->nbt[0]*outPos2.x))-(faceP->nbt[1]*outPos2.y)-(faceP->nbt[2]*outPos2.z))/((faceP->nbt[0]*dir->x)+(faceP->nbt[1]*dir->y)+(faceP->nbt[2]*dir->z));
         endPos->x = outPos2.x+(scale*dir->x);

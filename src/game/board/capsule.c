@@ -6862,9 +6862,9 @@ static BOOL CapsuleColCheck(HuVecF *posA, HuVecF *posB, HuVecF *out)
 
                 case HSF_FACE_TRI:
                     quadF = FALSE;
-                    faceVtx[0] = *(((HuVecF *)vtxBufP->data)+faceP->indices[0][0]);
-                    faceVtx[1] = *(((HuVecF *)vtxBufP->data)+faceP->indices[1][0]);
-                    faceVtx[2] = *(((HuVecF *)vtxBufP->data)+faceP->indices[2][0]);
+                    faceVtx[0] = *(((HuVecF *)vtxBufP->data)+faceP->index[0].vertex);
+                    faceVtx[1] = *(((HuVecF *)vtxBufP->data)+faceP->index[1].vertex);
+                    faceVtx[2] = *(((HuVecF *)vtxBufP->data)+faceP->index[2].vertex);
                     break;
                 
                 case HSF_FACE_QUAD:

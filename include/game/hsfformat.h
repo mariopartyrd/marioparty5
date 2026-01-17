@@ -231,6 +231,13 @@ typedef struct HsfBuffer_s {
     void *data;
 } HSFBUFFER;
 
+typedef struct HsfFaceIndex_s {
+    s16 vertex;
+    s16 normal;
+    s16 color;
+    s16 st;
+} HSFFACEINDEX;
+
 typedef struct HsfFace_s {
     union {
         s16 type;
@@ -239,11 +246,11 @@ typedef struct HsfFace_s {
     s16 mat;
     union {
         struct {
-            s16 indices[3][4];
+            HSFFACEINDEX index[3];
             u32 count;
-            s16 *data;
+            HSFFACEINDEX *data;
         } strip;
-        s16 indices[4][4];
+        HSFFACEINDEX index[4];
     };
     float nbt[3];
 } HSFFACE;

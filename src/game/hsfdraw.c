@@ -40,8 +40,8 @@ static void ObjDraw(HU3DDRAWOBJ *arg0);
 static void MDObjCall(HSFDATA *hsf, HSFOBJECT *objPtr);
 static void MDObjMesh(HSFDATA *hsf, HSFOBJECT *objPtr);
 static void MDFaceDraw(HSFOBJECT *objPtr, HSFFACE *face);
-static s32 MakeCalcNBT(HSFOBJECT *objPtr, HSFFACE *face, s16 vtx12, s16 vtx3);
-static s32 MakeNBT(HSFOBJECT *objPtr, HSFFACE *face, s16 vtx12, s16 vtx3);
+static s32 MakeCalcNBT(HSFOBJECT *objPtr, HSFFACE *face, s16 endVtx, s16 startVtx);
+static s32 MakeNBT(HSFOBJECT *objPtr, HSFFACE *face, s16 endVtx, s16 startVtx);
 static void MDFaceCnt(HSFOBJECT *objPtr, HSFFACE *face);
 
 void GXResetWriteGatherPipe(void);
@@ -2602,7 +2602,7 @@ HSFCONSTDATA *ObjConstantMake(HSFOBJECT *object, u32 no)
 static void MDFaceDraw(HSFOBJECT *objPtr, HSFFACE *face)
 {
     HSFMATERIAL *matP;
-    s16 *stripPtr;
+    HSFFACEINDEX *stripPtr;
     s16 nbtAttrIdx;
     s16 i;
     s16 nbtAttr;
@@ -2668,53 +2668,53 @@ static void MDFaceDraw(HSFOBJECT *objPtr, HSFFACE *face)
             case HSF_FACE_TRI:
                 GXBegin(GX_TRIANGLES, GX_VTXFMT0, faceNumBuf[drawCnt]);
                 for(i = 0; i < faceNumBuf[drawCnt] / 3; i++, face++) {
-                    GXPosition1x16(face->indices[0][0]);
+                    GXPosition1x16(face->index[0].vertex);
                     if(nbtAttrIdx == -1) {
-                        GXNormal1x16(face->indices[0][1]);
+                        GXNormal1x16(face->index[0].normal);
                     } else {
                         MakeCalcNBT(objPtr, face, 0, 1);
                     }
                     if(matP->vtxMode == 5) {
-                        colorIdx = face->indices[0][2];
+                        colorIdx = face->index[0].color;
                         GXColor1x16(colorIdx);
                         if(VTX_COLOR(objPtr, colorIdx)->a != 255) {
                             Hu3DObjInfoP->attr |= HU3D_CONST_XLUVERTEX|HU3D_CONST_XLU;
                         }
                     }
                     if(stF) {
-                        GXTexCoord1x16(face->indices[0][3]);
+                        GXTexCoord1x16(face->index[0].st);
                     }
-                    GXPosition1x16(face->indices[2][0]);
+                    GXPosition1x16(face->index[2].vertex);
                     if(nbtAttrIdx == -1) {
-                        GXNormal1x16(face->indices[2][1]);
+                        GXNormal1x16(face->index[2].normal);
                     } else {
                         MakeNBT(objPtr, face, 2, 0);
                     }
                     if(matP->vtxMode == 5) {
-                        colorIdx = face->indices[2][2];
+                        colorIdx = face->index[2].color;
                         GXColor1x16(colorIdx);
                         if(VTX_COLOR(objPtr, colorIdx)->a != 255) {
                             Hu3DObjInfoP->attr |= HU3D_CONST_XLUVERTEX|HU3D_CONST_XLU;
                         }
                     }
                     if(stF) {
-                        GXTexCoord1x16(face->indices[2][3]);
+                        GXTexCoord1x16(face->index[2].st);
                     }
-                    GXPosition1x16(face->indices[1][0]);
+                    GXPosition1x16(face->index[1].vertex);
                     if(nbtAttrIdx == -1) {
-                        GXNormal1x16(face->indices[1][1]);
+                        GXNormal1x16(face->index[1].normal);
                     } else {
                         MakeNBT(objPtr, face, 1, 2);
                     }
                     if(matP->vtxMode == 5) {
-                        colorIdx = face->indices[1][2];
+                        colorIdx = face->index[1].color;
                         GXColor1x16(colorIdx);
                         if(VTX_COLOR(objPtr, colorIdx)->a != 255) {
                             Hu3DObjInfoP->attr |= HU3D_CONST_XLUVERTEX|HU3D_CONST_XLU;
                         }
                     }
                     if(stF) {
-                        GXTexCoord1x16(face->indices[1][3]);
+                        GXTexCoord1x16(face->index[1].st);
                     }
                 }
                 faceCnt = faceNumBuf[drawCnt] / 3;
@@ -2722,140 +2722,140 @@ static void MDFaceDraw(HSFOBJECT *objPtr, HSFFACE *face)
             case HSF_FACE_QUAD:
                 GXBegin(GX_QUADS, GX_VTXFMT0, faceNumBuf[drawCnt]);
                 for(i = 0; i < faceNumBuf[drawCnt] / 4; i++, face++) {
-                    GXPosition1x16(face->indices[0][0]);
+                    GXPosition1x16(face->index[0].vertex);
                     if(nbtAttrIdx == -1) {
-                        GXNormal1x16(face->indices[0][1]);
+                        GXNormal1x16(face->index[0].normal);
                     } else {
                         MakeCalcNBT(objPtr, face, 0, 1);
                     }
                     if(matP->vtxMode == 5) {
-                        colorIdx = face->indices[0][2];
+                        colorIdx = face->index[0].color;
                         GXColor1x16(colorIdx);
                         if(VTX_COLOR(objPtr, colorIdx)->a != 255) {
                             Hu3DObjInfoP->attr |= HU3D_CONST_XLUVERTEX|HU3D_CONST_XLU;
                         }
                     }
                     if(stF) {
-                        GXTexCoord1x16(face->indices[0][3]);
+                        GXTexCoord1x16(face->index[0].st);
                     }
-                    GXPosition1x16(face->indices[2][0]);
+                    GXPosition1x16(face->index[2].vertex);
                     if(nbtAttrIdx == -1) {
-                        GXNormal1x16(face->indices[2][1]);
+                        GXNormal1x16(face->index[2].normal);
                     } else {
                         MakeNBT(objPtr, face, 2, 0);
                     }
                     if(matP->vtxMode == 5) {
-                        colorIdx = face->indices[2][2];
+                        colorIdx = face->index[2].color;
                         GXColor1x16(colorIdx);
                         if(VTX_COLOR(objPtr, colorIdx)->a != 255) {
                             Hu3DObjInfoP->attr |= HU3D_CONST_XLUVERTEX|HU3D_CONST_XLU;
                         }
                     }
                     if(stF) {
-                        GXTexCoord1x16(face->indices[2][3]);
+                        GXTexCoord1x16(face->index[2].st);
                     }
-                    GXPosition1x16(face->indices[3][0]);
+                    GXPosition1x16(face->index[3].vertex);
                     if(nbtAttrIdx == -1) {
-                        GXNormal1x16(face->indices[3][1]);
+                        GXNormal1x16(face->index[3].normal);
                     } else {
                         MakeNBT(objPtr, face, 3, 2);
                     }
                     if(matP->vtxMode == 5) {
-                        colorIdx = face->indices[3][2];
+                        colorIdx = face->index[3].color;
                         GXColor1x16(colorIdx);
                         if(VTX_COLOR(objPtr, colorIdx)->a != 255) {
                             Hu3DObjInfoP->attr |= HU3D_CONST_XLUVERTEX|HU3D_CONST_XLU;
                         }
                     }
                     if(stF) {
-                        GXPosition1x16(face->indices[3][3]);
+                        GXPosition1x16(face->index[3].st);
                     }
-                    GXPosition1x16(face->indices[1][0]);
+                    GXPosition1x16(face->index[1].vertex);
                     if(nbtAttrIdx == -1) {
-                        GXNormal1x16(face->indices[1][1]);
+                        GXNormal1x16(face->index[1].normal);
                     } else {
                         MakeNBT(objPtr, face, 1, 3);
                     }
                     if(matP->vtxMode == 5) {
-                        colorIdx = face->indices[1][2];
+                        colorIdx = face->index[1].color;
                         GXColor1x16(colorIdx);
                         if(VTX_COLOR(objPtr, colorIdx)->a != 255) {
                             Hu3DObjInfoP->attr |= HU3D_CONST_XLUVERTEX|HU3D_CONST_XLU;
                         }
                     }
                     if(stF) {
-                        GXTexCoord1x16(face->indices[1][3]);
+                        GXTexCoord1x16(face->index[1].st);
                     }
                 }
                 faceCnt = faceNumBuf[drawCnt] / 4;
                 break;
             case HSF_FACE_TRISTRIP:
                 GXBegin(GX_TRIANGLESTRIP, GX_VTXFMT0, faceNumBuf[drawCnt]);
-                GXPosition1x16(face->indices[0][0]);
+                GXPosition1x16(face->index[0].vertex);
                 if(nbtAttrIdx == -1) {
-                    GXNormal1x16(face->indices[0][1]);
+                    GXNormal1x16(face->index[0].normal);
                 } else {
                     MakeCalcNBT(objPtr, face, 0, 1);
                 }
                 if(matP->vtxMode == 5) {
-                    colorIdx = face->indices[0][2];
+                    colorIdx = face->index[0].color;
                     GXColor1x16(colorIdx);
                     if(VTX_COLOR(objPtr, colorIdx)->a != 255) {
                         Hu3DObjInfoP->attr |= HU3D_CONST_XLUVERTEX|HU3D_CONST_XLU;
                     }
                 }
                 if(stF) {
-                    GXTexCoord1x16(face->indices[0][3]);
+                    GXTexCoord1x16(face->index[0].st);
                 }
-                GXPosition1x16(face->indices[2][0]);
+                GXPosition1x16(face->index[2].vertex);
                 if(nbtAttrIdx == -1) {
-                    GXNormal1x16(face->indices[2][1]);
+                    GXNormal1x16(face->index[2].normal);
                 } else {
                     MakeNBT(objPtr, face, 2, 0);
                 }
                 if(matP->vtxMode == 5) {
-                    colorIdx = face->indices[2][2];
+                    colorIdx = face->index[2].color;
                     GXColor1x16(colorIdx);
                     if(VTX_COLOR(objPtr, colorIdx)->a != 255) {
                         Hu3DObjInfoP->attr |= HU3D_CONST_XLUVERTEX|HU3D_CONST_XLU;
                     }
                 }
                 if(stF) {
-                    GXTexCoord1x16(face->indices[2][3]);
+                    GXTexCoord1x16(face->index[2].st);
                 }
-                GXPosition1x16(face->indices[1][0]);
+                GXPosition1x16(face->index[1].vertex);
                 if(nbtAttrIdx == -1) {
-                    GXNormal1x16(face->indices[1][1]);
+                    GXNormal1x16(face->index[1].normal);
                 } else {
                     MakeNBT(objPtr, face, 1, 2);
                 }
                 if(matP->vtxMode == 5) {
-                    colorIdx = face->indices[1][2];
+                    colorIdx = face->index[1].color;
                     GXColor1x16(colorIdx);
                     if(VTX_COLOR(objPtr, colorIdx)->a != 255) {
                         Hu3DObjInfoP->attr |= HU3D_CONST_XLUVERTEX|HU3D_CONST_XLU;
                     }
                 }
                 if(stF) {
-                    GXTexCoord1x16(face->indices[1][3]);
+                    GXTexCoord1x16(face->index[1].st);
                 }
                 stripPtr = face->strip.data;
-                for(i = 0; i < face->strip.count; i++, stripPtr += 4) {
-                    GXPosition1x16(stripPtr[0]);
+                for(i = 0; i < face->strip.count; i++, stripPtr++) {
+                    GXPosition1x16(stripPtr->vertex);
                     if(nbtAttrIdx == -1) {
-                        GXNormal1x16(stripPtr[1]);
+                        GXNormal1x16(stripPtr->normal);
                     } else {
                         MakeCalcNBT(objPtr, face, 0, 1);
                     }
                     if(matP->vtxMode == 5) {
-                        colorIdx = stripPtr[2];
+                        colorIdx = stripPtr->color;
                         GXColor1x16(colorIdx);
                         if(VTX_COLOR(objPtr, colorIdx)->a != 255) {
                             Hu3DObjInfoP->attr |= HU3D_CONST_XLUVERTEX|HU3D_CONST_XLU;
                         }
                     }
                     if(stF) {
-                        GXTexCoord1x16(stripPtr[3]);
+                        GXTexCoord1x16(stripPtr->st);
                     }
                 }
                 faceCnt = face->strip.count + 1;
@@ -2872,34 +2872,34 @@ static void MDFaceDraw(HSFOBJECT *objPtr, HSFFACE *face)
 
 #undef VTX_COLOR
 
-static s32 MakeCalcNBT(HSFOBJECT *objPtr, HSFFACE *face, s16 vtx12, s16 vtx3) {
+static s32 MakeCalcNBT(HSFOBJECT *objPtr, HSFFACE *face, s16 endVtx, s16 startVtx) {
     HuVecF NBT;
     HuVecF *vertex;
     HuVecF *normal;
     HSFS8VEC *s8Normal;
-    s16 idx2;
-    s16 idx3;
-    s16 idx1;
+    s16 endVtxIdx;
+    s16 startVtxIdx;
+    s16 normalIdx;
 
     vertex = objPtr->mesh.vertex->data;
-    idx1 = face->indices[vtx12][1];
-    idx2 = face->indices[vtx12][0];
-    idx3 = face->indices[vtx3][0];
+    normalIdx = face->index[endVtx].normal;
+    endVtxIdx = face->index[endVtx].vertex;
+    startVtxIdx = face->index[startVtx].vertex;
     if(objPtr->mesh.cenvNum != 0) {
         normal = objPtr->mesh.normal->data;
-        NBT.x = normal[idx1].x;
-        NBT.y = normal[idx1].y;
-        NBT.z = normal[idx1].z;
+        NBT.x = normal[normalIdx].x;
+        NBT.y = normal[normalIdx].y;
+        NBT.z = normal[normalIdx].z;
     } else {
         s8Normal = objPtr->mesh.normal->data;
-        NBT.x = s8Normal[idx1].x;
-        NBT.y = s8Normal[idx1].y;
-        NBT.z = s8Normal[idx1].z;
+        NBT.x = s8Normal[normalIdx].x;
+        NBT.y = s8Normal[normalIdx].y;
+        NBT.z = s8Normal[normalIdx].z;
         VECNormalize(&NBT, &NBT);
     }
-    NBTB.x = vertex[idx2].x - vertex[idx3].x;
-    NBTB.y = vertex[idx2].y - vertex[idx3].y;
-    NBTB.z = vertex[idx2].z - vertex[idx3].z;
+    NBTB.x = vertex[endVtxIdx].x - vertex[startVtxIdx].x;
+    NBTB.y = vertex[endVtxIdx].y - vertex[startVtxIdx].y;
+    NBTB.z = vertex[endVtxIdx].z - vertex[startVtxIdx].z;
     VECNormalize(&NBTB, &NBTB);
     VECCrossProduct(&NBTB, &NBT, &NBTT);
     GXPosition3s16(NBT.x * 256.0f, NBT.y * 256.0f, NBT.z * 256.0f);
@@ -2907,25 +2907,25 @@ static s32 MakeCalcNBT(HSFOBJECT *objPtr, HSFFACE *face, s16 vtx12, s16 vtx3) {
     GXPosition3s16(NBTT.x * 256.0f, NBTT.y * 256.0f, NBTT.z * 256.0f);
 }
 
-static s32 MakeNBT(HSFOBJECT *arg0, HSFFACE *arg1, s16 vtx12, s16 vtx3) {
+static s32 MakeNBT(HSFOBJECT *objPtr, HSFFACE *face, s16 endVtx, s16 startVtx) {
     HuVecF NBT;
     HuVecF *vertex;
     HuVecF *normal;
     HSFS8VEC *s8Normal;
-    s16 idx;
+    s16 normalIdx;
 
-    vertex = arg0->mesh.vertex->data;
-    idx = arg1->indices[vtx12][1];
-    if(arg0->mesh.cenvNum != 0) {
-        normal = arg0->mesh.normal->data;
-        NBT.x = normal[idx].x;
-        NBT.y = normal[idx].y;
-        NBT.z = normal[idx].z;
+    vertex = objPtr->mesh.vertex->data;
+    normalIdx = face->index[endVtx].normal;
+    if(objPtr->mesh.cenvNum != 0) {
+        normal = objPtr->mesh.normal->data;
+        NBT.x = normal[normalIdx].x;
+        NBT.y = normal[normalIdx].y;
+        NBT.z = normal[normalIdx].z;
     } else {
-        s8Normal = arg0->mesh.normal->data;
-        NBT.x = s8Normal[idx].x;
-        NBT.y = s8Normal[idx].y;
-        NBT.z = s8Normal[idx].z;
+        s8Normal = objPtr->mesh.normal->data;
+        NBT.x = s8Normal[normalIdx].x;
+        NBT.y = s8Normal[normalIdx].y;
+        NBT.z = s8Normal[normalIdx].z;
         VECNormalize(&NBT, &NBT);
     }
     GXPosition3s16(NBT.x * 256.0f, NBT.y * 256.0f, NBT.z * 256.0f);
