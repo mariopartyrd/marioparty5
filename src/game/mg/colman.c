@@ -171,6 +171,36 @@ static void ColMtxRot(Mtx mtx, float x, float y, float z)
     }
 }
 
+static void MakeIndexBuf(int *out, HSFFACE *hsfFaceP, int idx)
+{
+    switch(hsfFaceP->type) {
+        case HSF_FACE_TRI:
+            out[0] = hsfFaceP->index[0].vertex;
+            out[1] = hsfFaceP->index[1].vertex;
+            out[2] = hsfFaceP->index[2].vertex;
+            break;
+           
+        case HSF_FACE_QUAD:
+            if(idx & 0x1) {
+                out[0] = hsfFaceP->index[0].vertex;
+                out[1] = hsfFaceP->index[1].vertex;
+                out[2] = hsfFaceP->index[3].vertex;
+            } else {
+                out[0] = hsfFaceP->index[0].vertex;
+                out[1] = hsfFaceP->index[3].vertex;
+                out[2] = hsfFaceP->index[2].vertex;
+            }
+            
+            break;
+        
+        case HSF_FACE_TRISTRIP:
+            out[0] = hsfFaceP->strip.data[idx].vertex;
+            out[1] = hsfFaceP->strip.data[idx+1].vertex;
+            out[2] = hsfFaceP->strip.data[idx+2].vertex;
+            break;
+    }
+}
+
 static u32 ColCodeGet(u32 matAttr)
 {
     switch(matAttr & 0x3F0000) {
@@ -585,7 +615,7 @@ static BOOL _ColCorrection(COLMAP_ACTOR *actorP)
     
     codeNo = ColCodeNoGet(colPointP->polyAttr);
     if(codeNo < 0) {
-        OSReport("( colman.c : _ColCorrection ) | マップとあたってるはずなのにアトリビュートがありません");
+        OSReport("( colman.c : _ColCorrection ) | マップとあたってるはずなのにアトリビュートがありません\n");
         return FALSE;
     }
     attrParam = (codeNo >= 7) ? (&colWork.attrParamHi[codeNo-7]) : (&colWork.attrParam[codeNo]);
@@ -687,6 +717,55 @@ static void _ActorMeshUpdate(int posNo)
 }
 
 
+static void MakeNormal(HuVecF *a, HuVecF *b, HuVecF *c, COLTRI *out)
+{
+    HuVecF ba;
+    HuVecF cb;
+    HuVecF ac;
+    
+    
+    VECSubtract(b, a, &ba);
+    VECSubtract(c, b, &cb);
+    VECSubtract(a, c, &ac);
+    VECCrossProduct(&out->norm, &ba, &out->edgeNorm1);
+    VECCrossProduct(&out->norm, &cb, &out->edgeNorm2);
+    VECCrossProduct(&out->norm, &ac, &out->edgeNorm3);
+    VECNormalize(&out->edgeNorm1, &out->edgeNorm1);
+    VECNormalize(&out->edgeNorm2, &out->edgeNorm2);
+    VECNormalize(&out->edgeNorm3, &out->edgeNorm3);
+}
+
+static void ColMakeTri(COLTRI *tri, Vec *vtxBuf, int *idx)
+{
+    HuVecF ba;
+    HuVecF cb;
+    HuVecF aCenter;
+    float dist;
+    VECSubtract(&vtxBuf[idx[1]], &vtxBuf[idx[0]], &ba);
+    VECSubtract(&vtxBuf[idx[2]], &vtxBuf[idx[1]], &cb);
+    VECCrossProduct(&ba, &cb, &tri->norm);
+    VECNormalize(&tri->norm, &tri->norm);
+    tri->d = -VECDotProduct(&tri->norm, &vtxBuf[idx[0]]);
+    MakeNormal(&vtxBuf[idx[0]], &vtxBuf[idx[1]], &vtxBuf[idx[2]], tri);
+    tri->center.x = (vtxBuf[idx[0]].x+vtxBuf[idx[1]].x+vtxBuf[idx[2]].x)/3;
+    tri->center.y = (vtxBuf[idx[0]].y+vtxBuf[idx[1]].y+vtxBuf[idx[2]].y)/3;
+    tri->center.z = (vtxBuf[idx[0]].z+vtxBuf[idx[1]].z+vtxBuf[idx[2]].z)/3;
+    VECSubtract(&vtxBuf[idx[0]], &tri->center, &aCenter);
+    tri->dist = VECMag(&aCenter);
+    VECSubtract(&vtxBuf[idx[1]], &tri->center, &aCenter);
+    dist = VECMag(&aCenter);
+    if(tri->dist < dist) {
+        tri->dist = dist;
+    }
+    VECSubtract(&vtxBuf[idx[2]], &tri->center, &aCenter);
+    dist = VECMag(&aCenter);
+    if(tri->dist < dist) {
+        tri->dist = dist;
+    }
+    tri->dist = (tri->dist*tri->dist);
+
+}
+
 COLMAP_ACTOR *ColMapActorGet(int no)
 {
     return &colWork.actor[no];
@@ -712,53 +791,6 @@ void ColMapClear(void)
     colMeshCount = 0;
 }
 
-static void MakeNormal(HuVecF *a, HuVecF *b, HuVecF *c, COLTRI *out)
-{
-    HuVecF ba;
-    HuVecF cb;
-    HuVecF ac;
-    
-    
-    VECSubtract(b, a, &ba);
-    VECSubtract(c, b, &cb);
-    VECSubtract(a, c, &ac);
-    VECCrossProduct(&out->norm, &ba, &out->edgeNorm1);
-    VECCrossProduct(&out->norm, &cb, &out->edgeNorm2);
-    VECCrossProduct(&out->norm, &ac, &out->edgeNorm3);
-    VECNormalize(&out->edgeNorm1, &out->edgeNorm1);
-    VECNormalize(&out->edgeNorm2, &out->edgeNorm2);
-    VECNormalize(&out->edgeNorm3, &out->edgeNorm3);
-}
-
-#define MAKE_TRI(a, b, c, out) \
-do { \
-    HuVecF aCenter; \
-    HuVecF cb; \
-    HuVecF ba; \
-    float dist; \
-    VECSubtract(b, a, &ba); \
-    VECSubtract(c, b, &cb); \
-    VECCrossProduct(&ba, &cb, &(out)->norm); \
-    VECNormalize(&(out)->norm, &(out)->norm); \
-    (out)->d = -VECDotProduct(&(out)->norm, a); \
-    MakeNormal(a, b, c, out); \
-    (out)->center.x = ((a)->x+(b)->x+(c)->x)/3; \
-    (out)->center.y = ((a)->y+(b)->y+(c)->y)/3; \
-    (out)->center.z = ((a)->z+(b)->z+(c)->z)/3; \
-    VECSubtract(a, &(out)->center, &aCenter); \
-    (out)->dist = VECMag(&aCenter); \
-    VECSubtract(b, &(out)->center, &aCenter); \
-    dist = VECMag(&aCenter); \
-    if((out)->dist < dist) { \
-        (out)->dist = dist; \
-    } \
-    VECSubtract(c, &(out)->center, &aCenter); \
-    dist = VECMag(&aCenter); \
-    if((out)->dist < dist) { \
-        (out)->dist = dist; \
-    } \
-    (out)->dist = ((out)->dist*(out)->dist); \
-} while(0)
 
 void ColMapInit(HU3DMODELID *mdlId, s16 mdlNum, int actorNum)
 {
@@ -861,104 +893,25 @@ void ColMapInit(HU3DMODELID *mdlId, s16 mdlNum, int actorNum)
                 for(triNum=0, hsfFaceP=objP->mesh.face->data, faceNo=objP->mesh.face->count; faceNo--; hsfFaceP++) {
                     switch(hsfFaceP->type) {
                         case HSF_FACE_QUAD:
-                            switch(hsfFaceP->type) {
-                                case HSF_FACE_TRI:
-                                    index[0] = hsfFaceP->index[0].vertex;
-                                    index[1] = hsfFaceP->index[1].vertex;
-                                    index[2] = hsfFaceP->index[2].vertex;
-                                    break;
-                                   
-                                case HSF_FACE_QUAD:
-                                    index[0] = hsfFaceP->index[0].vertex;
-                                    index[1] = hsfFaceP->index[3].vertex;
-                                    index[2] = hsfFaceP->index[2].vertex;
-                                    break;
-                                
-                                case HSF_FACE_TRISTRIP:
-                                    index[0] = hsfFaceP->strip.data[0].vertex;
-                                    index[1] = hsfFaceP->strip.data[1].vertex;
-                                    index[2] = hsfFaceP->strip.data[2].vertex;
-                                    break;
-                            }
-                            MAKE_TRI(&vtxBuf[index[0]], &vtxBuf[index[1]], &vtxBuf[index[2]], &triP[triNum]);
+                            MakeIndexBuf(index, hsfFaceP, 0);
+                            ColMakeTri(&triP[triNum], vtxBuf, index);
                             triNum++;
-                            switch(hsfFaceP->type) {
-                                case HSF_FACE_TRI:
-                                    index[0] = hsfFaceP->index[0].vertex;
-                                    index[1] = hsfFaceP->index[1].vertex;
-                                    index[2] = hsfFaceP->index[2].vertex;
-                                    break;
-                                   
-                                case HSF_FACE_QUAD:
-                                    index[0] = hsfFaceP->index[0].vertex;
-                                    index[1] = hsfFaceP->index[1].vertex;
-                                    index[2] = hsfFaceP->index[3].vertex;
-                                    break;
-                                
-                                case HSF_FACE_TRISTRIP:
-                                    index[0] = hsfFaceP->strip.data[1].vertex;
-                                    index[1] = hsfFaceP->strip.data[2].vertex;
-                                    index[2] = hsfFaceP->strip.data[3].vertex;
-                                    break;
-                            }
-                            MAKE_TRI(&vtxBuf[index[0]], &vtxBuf[index[1]], &vtxBuf[index[2]], &triP[triNum]);
+                            MakeIndexBuf(index, hsfFaceP, 1);
+                            ColMakeTri(&triP[triNum], vtxBuf, index);
                             triNum++;
                             break;
                       
                         case HSF_FACE_TRI:
-                            switch(hsfFaceP->type) {
-                                case HSF_FACE_TRI:
-                                    index[0] = hsfFaceP->index[0].vertex;
-                                    index[1] = hsfFaceP->index[1].vertex;
-                                    index[2] = hsfFaceP->index[2].vertex;
-                                    break;
-                                   
-                                case HSF_FACE_QUAD:
-                                    index[0] = hsfFaceP->index[0].vertex;
-                                    index[1] = hsfFaceP->index[3].vertex;
-                                    index[2] = hsfFaceP->index[2].vertex;
-                                    break;
-                                
-                                case HSF_FACE_TRISTRIP:
-                                    index[0] = hsfFaceP->strip.data[0].vertex;
-                                    index[1] = hsfFaceP->strip.data[1].vertex;
-                                    index[2] = hsfFaceP->strip.data[2].vertex;
-                                    break;
-                            }
-                            MAKE_TRI(&vtxBuf[index[0]], &vtxBuf[index[1]], &vtxBuf[index[2]], &triP[triNum]);
+                            MakeIndexBuf(index, hsfFaceP, 0);
+                            ColMakeTri(&triP[triNum], vtxBuf, index);
                             triNum++;
                             break;
                        
                         case HSF_FACE_TRISTRIP:
                             for(i=0; i<hsfFaceP->strip.count; i++) {
-                                switch(hsfFaceP->type) {
-                                    case HSF_FACE_TRI:
-                                        index[0] = hsfFaceP->index[0].vertex;
-                                        index[1] = hsfFaceP->index[1].vertex;
-                                        index[2] = hsfFaceP->index[2].vertex;
-                                        break;
-                                       
-                                    case HSF_FACE_QUAD:
-                                        if(i & 0x1) {
-                                            index[0] = hsfFaceP->index[0].vertex;
-                                            index[1] = hsfFaceP->index[1].vertex;
-                                            index[2] = hsfFaceP->index[3].vertex;
-                                        } else {
-                                            index[0] = hsfFaceP->index[0].vertex;
-                                            index[1] = hsfFaceP->index[3].vertex;
-                                            index[2] = hsfFaceP->index[2].vertex;
-                                        }
-                                        
-                                        break;
-                                    
-                                    case HSF_FACE_TRISTRIP:
-                                        index[0] = hsfFaceP->strip.data[i].vertex;
-                                        index[1] = hsfFaceP->strip.data[i+1].vertex;
-                                        index[2] = hsfFaceP->strip.data[i+2].vertex;
-                                        break;
-                                }
+                                MakeIndexBuf(index, hsfFaceP, i);
                                 triOther = &triP[triNum];
-                                MAKE_TRI(&vtxBuf[index[0]], &vtxBuf[index[1]], &vtxBuf[index[2]], triOther);
+                                ColMakeTri(triOther, vtxBuf, index);
                                 if(i & 0x1) {
                                     VECScale(&triOther->norm, &triOther->norm, -1);
                                 }
@@ -995,18 +948,6 @@ void ColMapInit(HU3DMODELID *mdlId, s16 mdlNum, int actorNum)
         memcpy(meshP->mtxInvOld, meshP->mtxInv, sizeof(Mtx));
     }
     colMapInitF = TRUE;
-    (void)hsfFaceP;
-    (void)hsfFaceP;
-    (void)hsfFaceP;
-    (void)hsfFaceP;
-    (void)hsfFaceP;
-    (void)hsfFaceP;
-    (void)hsfFaceP;
-    (void)hsfFaceP;
-    (void)hsfFaceP;
-    (void)hsfFaceP;
-    (void)hsfFaceP;
-    (void)hsfFaceP;
 }
 
 void ColMapMaskSet(int mdlNo, u32 mask)
