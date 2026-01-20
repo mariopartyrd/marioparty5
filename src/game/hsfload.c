@@ -420,8 +420,8 @@ static void FaceLoad(void)
         for(i=0; i<head.face.num; i++, newFace++) {
             fileFaceStrip = newFaceStrip = newFace->data;
             for(j=0; j<newFace->count; j++, newFaceStrip++, fileFaceStrip++) {
-                if(fileFaceStrip->typeSrc == 4) {
-                    newFaceStrip->strip.data = (s16 *)(strip+(u32)fileFaceStrip->strip.data*(sizeof(s16)*4));
+                if(fileFaceStrip->typeSrc == HSF_FACE_TRISTRIP) {
+                    newFaceStrip->strip.data = (HSFFACEINDEX *)(strip+(u32)fileFaceStrip->strip.data*(sizeof(HSFFACEINDEX)));
                 }
             }
         }
