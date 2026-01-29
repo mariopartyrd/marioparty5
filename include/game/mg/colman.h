@@ -12,12 +12,13 @@ typedef struct ColMapNarrowParam_s {
     int type;
     HuVecF point;
     HuVecF normPos;
+    int colResult;
 } COLMAP_NARROW_PARAM;
 
 typedef struct ColMapActor_s COLMAP_ACTOR;
 
 typedef int (*COLMAP_NARROW_HOOK)(COLMAP_NARROW_PARAM *a, COLMAP_NARROW_PARAM *b);
-typedef int (*COLMAP_ACTORCOL_HOOK)(COLMAP_ACTOR *actor, void *user);
+typedef void (*COLMAP_CORRECT_HOOK)(COLMAP_ACTOR *actor, void *user);
 
 
 typedef struct ColMapAttrParam_s {
@@ -38,7 +39,7 @@ typedef struct ColMapActorParam_s {
     u32 mask;
     COLMAP_NARROW_HOOK narrowHook;
     COLMAP_NARROW_HOOK narrowHook2;
-    COLMAP_ACTORCOL_HOOK actorColHook;
+    COLMAP_CORRECT_HOOK colCorrectHook;
     void *user;
     u32 attr;
 } COLMAP_ACTOR_PARAM;
@@ -61,9 +62,9 @@ struct ColMapActor_s {
     HuVecF oldPos;
     HuVecF moveDir;
     u32 paramAttr;
-    float unk130;
-    float unk134;
-    u32 colBit[(COLMAP_ACTOR_MAX+31)/32];
+    float colT;
+    float oldColT;
+    s32 colBit[(COLMAP_ACTOR_MAX+31)/32];
 };
 
 COLMAP_ACTOR *ColMapActorGet(int no);
