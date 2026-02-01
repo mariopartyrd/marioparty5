@@ -472,7 +472,7 @@ static int PlayerColHook(COL_NARROW_PARAM *a, COL_NARROW_PARAM *b)
             up.z = 0;
             dot = VECDotProduct(&up, &dir);
             if(dot > cos(M_PI/3)) {
-                if(MgPlayerModeAttrCheck(playerP2, MGPLAYER_MODE_ATTR_AIR)) {
+                if(MgPlayerModeAttrCheck(playerP2, MGPLAYER_MODEATTR_AIR)) {
                     if(fabsf2(playerP1->actor->velY) <= 1000.0f) {
                         if(playerP2->actor->velY < 0 || MgPlayerVibAttrCheck(playerP2, MGPLAYER_VIBATTR_HEADJUMP)) {
                             if(MgPlayerStunSet(playerP1, MGPLAYER_STUN_SQUISH, 0, -1)) {
@@ -492,13 +492,13 @@ static int PlayerColHook(COL_NARROW_PARAM *a, COL_NARROW_PARAM *b)
                     if(playerP1->actor->velY > 0) {
                         break;
                     }
-                    if(!MgPlayerModeAttrCheck(playerP1, MGPLAYER_MODE_ATTR_AIR)) {
+                    if(!MgPlayerModeAttrCheck(playerP1, MGPLAYER_MODEATTR_AIR)) {
                         break;
                     }
                     norm.y = 0;
                     playerP1->actor->velY = GET_ACTOR_VELY(playerP1->actor, 15000);
                     playerP1->actor->rotY += frandmod(90)-45;
-                    if(!MgPlayerModeAttrCheck(playerP1, MGPLAYER_MODE_ATTR_HEADJUMP)) {
+                    if(!MgPlayerModeAttrCheck(playerP1, MGPLAYER_MODEATTR_HEADJUMP)) {
                         forceZ = VECMag(&norm)/2;
                     } else {
                         forceZ = VECMag(&playerP1->actor->forceB);
@@ -511,7 +511,7 @@ static int PlayerColHook(COL_NARROW_PARAM *a, COL_NARROW_PARAM *b)
                     MTXRotDeg(rotMtx, 'Y', playerP1->actor->rotY);
                     MTXMultVec(rotMtx, &playerP1->actor->forceB, &playerP1->actor->forceB);
                     MgPlayerAttrSet(playerP1, MGPLAYER_ATTR_ANGLELOCK|MGPLAYER_ATTR_MOVEOFF);
-                    MgPlayerModeAttrSet(playerP1, MGPLAYER_MODE_ATTR_HEADJUMP);
+                    MgPlayerModeAttrSet(playerP1, MGPLAYER_MODEATTR_HEADJUMP);
                     MgPlayerVibAttrSet(playerP1, MGPLAYER_VIBATTR_HEADJUMP);
                     
                 } else {
@@ -951,7 +951,7 @@ static void PlayerModeJump(MGPLAYER *playerP)
         case 0:
             PlayerSetMotion(playerP, 3, 0, 1, HU3D_MOTATTR_NONE);
             playerP->actor->velY = GET_ACTOR_VELY(playerP->actor, 25000);
-            MgPlayerModeAttrSet(playerP, MGPLAYER_MODE_ATTR_AIR);
+            MgPlayerModeAttrSet(playerP, MGPLAYER_MODEATTR_AIR);
             playerP->timer = 1;
             playerP->subMode = 1;
             break;
@@ -1010,7 +1010,7 @@ static void PlayerModeJump(MGPLAYER *playerP)
             } else {
                 if(playerP->motNo == 3) {
                     if(!MgPlayerAttrCheck(playerP, MGPLAYER_ATTR_COMSTK)
-                        && !MgPlayerModeAttrCheck(playerP, MGPLAYER_MODE_ATTR_HEADJUMP)
+                        && !MgPlayerModeAttrCheck(playerP, MGPLAYER_MODEATTR_HEADJUMP)
                         && ((HuPadBtnDown[playerP->padNo] & PAD_BUTTON_A)
                         || (HuPadBtnDown[playerP->padNo] & PAD_TRIGGER_L))) {
                         if(playerP->actionFlag & MGPLAYER_ACTFLAG_HIPDROP) {
@@ -1027,14 +1027,14 @@ static void PlayerModeJump(MGPLAYER *playerP)
             break;
         
         case 3:
-            if(playerP->timer <= 9 && !MgPlayerModeAttrCheck(playerP, MGPLAYER_MODE_ATTR_SQUISH_HARD)) {
+            if(playerP->timer <= 9 && !MgPlayerModeAttrCheck(playerP, MGPLAYER_MODEATTR_SQUISH_HARD)) {
                 MgPlayerAttrReset(playerP, MGPLAYER_ATTR_ANGLELOCK|MGPLAYER_ATTR_MOVEOFF);
             }
             if(playerP->timer > 0) {
                 if(!MgPlayerAttrCheck(playerP, MGPLAYER_ATTR_COMSTK)
                     && (HuPadBtnDown[playerP->padNo] & PAD_BUTTON_A)) {
                     playerP->subMode = 0;
-                    if(!MgPlayerModeAttrCheck(playerP, MGPLAYER_MODE_ATTR_SQUISH_HARD)) {
+                    if(!MgPlayerModeAttrCheck(playerP, MGPLAYER_MODEATTR_SQUISH_HARD)) {
                         MgPlayerAttrReset(playerP, MGPLAYER_ATTR_ANGLELOCK|MGPLAYER_ATTR_MOVEOFF);
                     }
                     if(playerP->timer >= 6.0f) {
@@ -1055,7 +1055,7 @@ static void PlayerModeFall(MGPLAYER *playerP)
     switch(playerP->subMode) {
         case 0:
             PlayerSetMotion(playerP, 3, 0, 1, HU3D_MOTATTR_NONE);
-            MgPlayerModeAttrSet(playerP, MGPLAYER_MODE_ATTR_AIR);
+            MgPlayerModeAttrSet(playerP, MGPLAYER_MODEATTR_AIR);
             if(playerP->actor->colGroundAttr & 0x407F) {
                 float speed;
                 GET_STICK_SPEED(playerP, speed);
@@ -1088,13 +1088,13 @@ static void PlayerModeFall(MGPLAYER *playerP)
             break;
       
         case 1:
-            if(playerP->timer <= 9 && !MgPlayerModeAttrCheck(playerP, MGPLAYER_MODE_ATTR_SQUISH_HARD)) {
+            if(playerP->timer <= 9 && !MgPlayerModeAttrCheck(playerP, MGPLAYER_MODEATTR_SQUISH_HARD)) {
                 MgPlayerAttrReset(playerP, MGPLAYER_ATTR_ANGLELOCK|MGPLAYER_ATTR_MOVEOFF);
             }
             if(playerP->timer > 0) {
                 if(!MgPlayerAttrCheck(playerP, MGPLAYER_ATTR_COMSTK)
                     && (HuPadBtnDown[playerP->padNo] & PAD_BUTTON_A)) {
-                    if(!MgPlayerModeAttrCheck(playerP, MGPLAYER_MODE_ATTR_SQUISH_HARD)) {
+                    if(!MgPlayerModeAttrCheck(playerP, MGPLAYER_MODEATTR_SQUISH_HARD)) {
                         MgPlayerAttrReset(playerP, MGPLAYER_ATTR_ANGLELOCK|MGPLAYER_ATTR_MOVEOFF);
                     }
                     if(playerP->timer >= 6.0f) {
@@ -1310,7 +1310,7 @@ static void PlayerModeHipDrop(MGPLAYER *playerP)
             if(playerP->timer > 0) {
                 playerP->timer--;
             } else {
-                if(!MgPlayerModeAttrCheck(playerP, MGPLAYER_MODE_ATTR_SQUISH_HARD)) {
+                if(!MgPlayerModeAttrCheck(playerP, MGPLAYER_MODEATTR_SQUISH_HARD)) {
                     MgPlayerAttrReset(playerP, MGPLAYER_ATTR_ANGLELOCK|MGPLAYER_ATTR_MOVEOFF);
                 }
                 MgPlayerModeSet(playerP, MGPLAYER_MODE_WALK);
@@ -1461,8 +1461,8 @@ static void PlayerModeSquish(MGPLAYER *playerP)
             body = ColBodyGetRaw(playerP->actor->no);
             MgPlayerAttrSet(playerP, MGPLAYER_ATTR_ANGLELOCK|MGPLAYER_ATTR_MOVEOFF);
             playerP->timer = 8;
-            if(!MgPlayerModeAttrCheck(playerP, MGPLAYER_MODE_ATTR_SQUISH)) {
-                MgPlayerModeAttrSet(playerP, MGPLAYER_MODE_ATTR_SQUISH);
+            if(!MgPlayerModeAttrCheck(playerP, MGPLAYER_MODEATTR_SQUISH)) {
+                MgPlayerModeAttrSet(playerP, MGPLAYER_MODEATTR_SQUISH);
                 playerP->squishOldHeight = body->param.height;
                 body->param.height = playerP->squishOldHeight*0.5f;
             }
@@ -1500,11 +1500,11 @@ static void PlayerModeSquishHard(MGPLAYER *playerP)
     switch(playerP->subMode) {
         case 0:
             MgActorBodyColOff(playerP->actor);
-            MgPlayerModeAttrSet(playerP, MGPLAYER_MODE_ATTR_SQUISH_HARD);
+            MgPlayerModeAttrSet(playerP, MGPLAYER_MODEATTR_SQUISH_HARD);
             MgPlayerAttrSet(playerP, MGPLAYER_ATTR_ANGLELOCK|MGPLAYER_ATTR_MOVEOFF);
-            if(MgPlayerModeAttrCheck(playerP, MGPLAYER_MODE_ATTR_SQUISH)) {
+            if(MgPlayerModeAttrCheck(playerP, MGPLAYER_MODEATTR_SQUISH)) {
                 body = ColBodyGetRaw(playerP->actor->no);
-                MgPlayerModeAttrReset(playerP, MGPLAYER_MODE_ATTR_SQUISH);
+                MgPlayerModeAttrReset(playerP, MGPLAYER_MODEATTR_SQUISH);
                 body->param.height = playerP->squishOldHeight;
             }
             playerP->timer = 5;
@@ -1567,7 +1567,7 @@ static void PlayerModeSquishHard(MGPLAYER *playerP)
             } else {
                 Hu3DModelDispOff(playerP->actor->mdlId);
             }
-            MgPlayerModeAttrReset(playerP, MGPLAYER_MODE_ATTR_SQUISH_HARD);
+            MgPlayerModeAttrReset(playerP, MGPLAYER_MODEATTR_SQUISH_HARD);
             MgPlayerAttrReset(playerP, MGPLAYER_ATTR_ANGLELOCK|MGPLAYER_ATTR_MOVEOFF);
             playerP->stunType = MGPLAYER_STUN_BLINK;
             MgPlayerModeSet(playerP, MGPLAYER_MODE_WALK);
@@ -1580,7 +1580,7 @@ static void PlayerModeJumpAlt(MGPLAYER *playerP)
 {
     switch(playerP->subMode) {
         case 0:
-            MgPlayerModeAttrSet(playerP, MGPLAYER_MODE_ATTR_AIR);
+            MgPlayerModeAttrSet(playerP, MGPLAYER_MODEATTR_AIR);
             PlayerSetMotion(playerP, 3, 0, 1, HU3D_MOTATTR_NONE);
             playerP->actor->velY = GET_ACTOR_VELY(playerP->actor, 25000);
             playerP->subMode = 1;
@@ -1609,14 +1609,14 @@ static void PlayerModeJumpAlt(MGPLAYER *playerP)
             break;
         
         case 3:
-            if(playerP->timer <= 9 && !MgPlayerModeAttrCheck(playerP, MGPLAYER_MODE_ATTR_SQUISH_HARD)) {
+            if(playerP->timer <= 9 && !MgPlayerModeAttrCheck(playerP, MGPLAYER_MODEATTR_SQUISH_HARD)) {
                 MgPlayerAttrReset(playerP, MGPLAYER_ATTR_ANGLELOCK|MGPLAYER_ATTR_MOVEOFF);
             }
             if(playerP->timer > 0) {
                 if(!MgPlayerAttrCheck(playerP, MGPLAYER_ATTR_COMSTK)
                     && (HuPadBtnDown[playerP->padNo] & PAD_BUTTON_A)) {
                         playerP->subMode = 0;
-                        if(!MgPlayerModeAttrCheck(playerP, MGPLAYER_MODE_ATTR_SQUISH_HARD)) {
+                        if(!MgPlayerModeAttrCheck(playerP, MGPLAYER_MODEATTR_SQUISH_HARD)) {
                            MgPlayerAttrReset(playerP, MGPLAYER_ATTR_ANGLELOCK|MGPLAYER_ATTR_MOVEOFF);
                         }
                     }
@@ -1714,13 +1714,13 @@ void MgActorExec(void)
                 playerP->actor->vel.x = playerP->actor->vel.y = playerP->actor->vel.z = 0;
             }
             playerP->vibAttr = 0;
-            if(MgPlayerModeAttrCheck(playerP, MGPLAYER_MODE_ATTR_SQUISH)) {
+            if(MgPlayerModeAttrCheck(playerP, MGPLAYER_MODEATTR_SQUISH)) {
                 if(playerP->stunType == MGPLAYER_STUN_BLINK || playerP->stunType == MGPLAYER_STUN_NONE) {
                     playerP->squishTime--;
                     if(playerP->squishTime < 0) {
                         if(playerP->squishTime < -20) {
                             colBody = ColBodyGetRaw(playerP->actor->no);
-                            MgPlayerModeAttrReset(playerP, MGPLAYER_MODE_ATTR_SQUISH);
+                            MgPlayerModeAttrReset(playerP, MGPLAYER_MODEATTR_SQUISH);
                             Hu3DModelScaleSet(playerP->actor->mdlId, 1, 1, 1);
                             colBody->param.height = playerP->squishOldHeight;
                             playerP->squishTime = 0;
@@ -1743,16 +1743,16 @@ void MgActorExec(void)
                     }
                 }
             }
-            if(MgPlayerModeAttrCheck(playerP, MGPLAYER_MODE_ATTR_SQUISH)) {
+            if(MgPlayerModeAttrCheck(playerP, MGPLAYER_MODEATTR_SQUISH)) {
                 VECScale(&playerP->actor->vel, &playerP->actor->vel, 0.5f);
             }
-            if(MgPlayerModeAttrCheck(playerP, MGPLAYER_MODE_ATTR_HEADJUMP)) {
-                if(MgPlayerModeAttrCheck(playerP, MGPLAYER_MODE_ATTR_STKLOCK)) {
+            if(MgPlayerModeAttrCheck(playerP, MGPLAYER_MODEATTR_HEADJUMP)) {
+                if(MgPlayerModeAttrCheck(playerP, MGPLAYER_MODEATTR_STKLOCK)) {
                     if(playerP->actor->velY <= 0) {
-                        if(!MgPlayerModeAttrCheck(playerP, MGPLAYER_MODE_ATTR_SQUISH_HARD)
+                        if(!MgPlayerModeAttrCheck(playerP, MGPLAYER_MODEATTR_SQUISH_HARD)
                             && playerP->stunType == MGPLAYER_STUN_NONE
                             && playerP->mode != MGPLAYER_MODE_HIPDROP) {
-                            MgPlayerModeAttrReset(playerP, MGPLAYER_MODE_ATTR_STKLOCK);
+                            MgPlayerModeAttrReset(playerP, MGPLAYER_MODEATTR_STKLOCK);
                             MgPlayerAttrReset(playerP, MGPLAYER_ATTR_ANGLELOCK|MGPLAYER_ATTR_MOVEOFF);
                         }
                     } else {
@@ -1760,8 +1760,8 @@ void MgActorExec(void)
                     }
                 }
                 if(playerP->actor->colGroundAttr & 0x407F) {
-                    MgPlayerModeAttrReset(playerP, MGPLAYER_MODE_ATTR_HEADJUMP);
-                    if(!MgPlayerModeAttrCheck(playerP, MGPLAYER_MODE_ATTR_SQUISH_HARD)
+                    MgPlayerModeAttrReset(playerP, MGPLAYER_MODEATTR_HEADJUMP);
+                    if(!MgPlayerModeAttrCheck(playerP, MGPLAYER_MODEATTR_SQUISH_HARD)
                         && playerP->mode != MGPLAYER_MODE_HIPDROP
                         && (playerP->stunType == MGPLAYER_STUN_NONE || playerP->stunType == MGPLAYER_STUN_BLINK)) {
                             MgPlayerAttrReset(playerP, MGPLAYER_ATTR_ANGLELOCK|MGPLAYER_ATTR_MOVEOFF);
@@ -1770,9 +1770,9 @@ void MgActorExec(void)
                 }
             }
             if(playerP->actor->colGroundAttr & 0x407F) {
-                MgPlayerModeAttrReset(playerP, MGPLAYER_MODE_ATTR_AIR);
+                MgPlayerModeAttrReset(playerP, MGPLAYER_MODEATTR_AIR);
             } else if(playerP->actor->velY < -((playerP->actor->gravity*5)+(playerP->actor->gravity*5))) {
-                MgPlayerModeAttrSet(playerP, MGPLAYER_MODE_ATTR_AIR);
+                MgPlayerModeAttrSet(playerP, MGPLAYER_MODEATTR_AIR);
             }
             if(playerP->actionFlag & MGPLAYER_ACTFLAG_STUN) {
                 switch(playerP->stunType) {
