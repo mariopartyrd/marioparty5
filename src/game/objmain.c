@@ -10,17 +10,12 @@
 #include "game/saveload.h"
 #include "game/charman.h"
 #include "game/gamemes.h"
+#include "game/mg/actman.h"
 
 #include "game/esprite.h"
 #include "game/flag.h"
 
 #define OMOVLHIS_MAX 16
-
-//External definitions that should be cleaned up later
-
-extern void MgActorInit(void);
-extern void MgActorClose(void);
-extern void MgScoreWinKill(void);
 
 OMOBJ *omDBGSysKeyObj;
 static HUPROCESS *omwatchproc;

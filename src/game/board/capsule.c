@@ -6001,8 +6001,8 @@ static void RayEffDraw(HU3DMODEL *modelP, Mtx *mtx)
     HuVecF basePos;
     HuVecF ofs;
     
-    static GXColor matColor = { 255, 255, 255, 255 };
-    static GXColor ambColor = { 255, 255, 255, 255 };
+    static GXColor matColor = { 0, 255, 0, 255 };
+    static GXColor ambColor = { 0, 255, 0, 255 };
     
     effP = modelP->hookData;
     effDataP = effP->data;

@@ -437,7 +437,7 @@ config.libs = [
             Object(Matching, "game/mg/score.c"),
             Object(Matching, "game/mg/seqman.c"),
             Object(Matching, "game/mg/colman.c"),
-            Object(NonMatching, "game/mg/actman.c"),
+            Object(Matching, "game/mg/actman.c"),
             Object(NonMatching, "game/mg/mess.c"),
             Object(Matching, "game/board/pausewatch.c"),
             Object(Matching, "game/board/main.c"),

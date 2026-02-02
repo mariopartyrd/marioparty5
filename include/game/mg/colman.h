@@ -4,85 +4,92 @@
 #include <dolphin.h>
 #include "game/hu3d.h"
 
-#define COLMAP_ACTOR_MAX 256
+#define COLBODY_MAX 256
+#define COLBODY_ATTR_ACTIVE (1 << 0)
+#define COLBODY_ATTR_MESHCOL_OFF (1 << 1)
+#define COLBODY_ATTR_BODYCOL_OFF (1 << 2)
+#define COLBODY_ATTR_COL_OFF (1 << 4)
 
-typedef struct ColMapNarrowParam_s {
+#define COLBODY_ATTR_RESET (1 << 24)
+
+typedef struct ColNarrowParam_s {
     int paramA;
     int paramB;
     int type;
     HuVecF point;
     HuVecF normPos;
     int colResult;
-} COLMAP_NARROW_PARAM;
+} COL_NARROW_PARAM;
 
-typedef struct ColMapActor_s COLMAP_ACTOR;
+typedef struct ColBody_s COLBODY;
 
-typedef int (*COLMAP_NARROW_HOOK)(COLMAP_NARROW_PARAM *a, COLMAP_NARROW_PARAM *b);
-typedef void (*COLMAP_CORRECT_HOOK)(COLMAP_ACTOR *actor, void *user);
+typedef int (*COL_NARROW_HOOK)(COL_NARROW_PARAM *a, COL_NARROW_PARAM *b);
+typedef void (*COL_CORRECT_HOOK)(COLBODY *body, void *user);
 
 
-typedef struct ColMapAttrParam_s {
+typedef struct ColAttrParam_s {
     int type;
     float speed;
     float yDeviate;
     float maxDot;
     u32 attr;
-} COLMAP_ATTR_PARAM;
+} COL_ATTRPARAM;
 
 
-typedef struct ColMapActorParam_s {
+typedef struct ColBodyParam_s {
     float height;
     float radius;
     int paramA;
     int paramB;
     int type;
     u32 mask;
-    COLMAP_NARROW_HOOK narrowHook;
-    COLMAP_NARROW_HOOK narrowHook2;
-    COLMAP_CORRECT_HOOK colCorrectHook;
+    COL_NARROW_HOOK narrowHook;
+    COL_NARROW_HOOK narrowHook2;
+    COL_CORRECT_HOOK colCorrectHook;
     void *user;
     u32 attr;
-} COLMAP_ACTOR_PARAM;
+} COLBODY_PARAM;
 
-typedef struct ColMapColPoint_s {
+typedef struct ColBodyPoint_s {
     HuVecF colOfs;
     HuVecF normal;
     u32 polyAttr;
     u16 meshNo;
     HSFOBJECT *obj;
     s16 faceNo;
-} COLMAP_COLPOINT;
+} COLBODY_POINT;
 
-struct ColMapActor_s {
-    COLMAP_ACTOR_PARAM param;
+struct ColBody_s {
+    COLBODY_PARAM param;
     u32 groundAttr;
     HuVecF pos[2];
     s16 colPointNum;
-    COLMAP_COLPOINT colPoint[5];
+    COLBODY_POINT colPoint[5];
     HuVecF oldPos;
     HuVecF moveDir;
     u32 paramAttr;
     float colT;
     float oldColT;
-    s32 colBit[(COLMAP_ACTOR_MAX+31)/32];
+    s32 colBit[(COLBODY_MAX+31)/32];
 };
 
-COLMAP_ACTOR *ColMapActorGet(int no);
+COLBODY *ColBodyGetRaw(int no);
 void ColMapClear(void);
 void ColMapInit(HU3DMODELID *mdlId, s16 mdlNum, int actorMax);
 void ColMapMaskSet(int mdlNo, u32 mask);
 u32 ColMapMaskGet(int mdlNo);
-BOOL ColMapAltColReset(void);
-BOOL ColMapAltColSet(void);
+BOOL ColCylReset(void);
+BOOL ColCylSet(void);
 void ColMapKill(void);
 BOOL ColMapInitCheck(void);
-void ColMapDirtyClear(void);
-void ColMapAttrParamSet(COLMAP_ATTR_PARAM *param, u32 polyAttr);
-void ColMapAttrParamGet(COLMAP_ATTR_PARAM *param, u32 polyAttr);
-void ColMapActorPosSet(HuVecF *pos, int no);
-void ColMapActorPosGet(HuVecF *pos, int no);
-void ColMapActorParamSet(COLMAP_ACTOR_PARAM *param, int no);
-COLMAP_ACTOR *ColMapActorGetSafe(int no);
-BOOL ColMapPolyGet(HuVecF *pos1, HuVecF *pos2, u32 mask, HuVecF *outPos, u32 *outCode, int *outMdlNo, HSFOBJECT **outObj, int *outTriNo);
+void ColDirtyClear(void);
+void ColAttrParamSet(COL_ATTRPARAM *param, u32 polyAttr);
+void ColAttrParamGet(COL_ATTRPARAM *param, u32 polyAttr);
+void ColBodyPosSet(HuVecF *pos, int no);
+void ColBodyPosGet(HuVecF *pos, int no);
+void ColBodyParamSet(COLBODY_PARAM *param, int no);
+COLBODY *ColBodyGet(int no);
+BOOL ColPolyGet(HuVecF *pos1, HuVecF *pos2, u32 mask, HuVecF *outPos, u32 *outCode, int *outMdlNo, HSFOBJECT **outObj, int *outTriNo);
+void ColBodyExec(void);
 
 #endif

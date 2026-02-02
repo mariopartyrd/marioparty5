@@ -4,10 +4,10 @@
 
 typedef struct ColBroad_s {
     float t;
-    COLMAP_ACTOR *actor1;
-    COLMAP_ACTOR *actor2;
-    s16 actor1Idx;
-    s16 actor2Idx;
+    COLBODY *body1;
+    COLBODY *body2;
+    s16 body1Idx;
+    s16 body2Idx;
     int colResult;
 } COLBROAD;
 
@@ -22,10 +22,10 @@ typedef struct ColWork_s {
     s16 attr;
     COLBROAD *broadCol;
     int broadColNum;
-    COLMAP_ATTR_PARAM attrParam[7];
-    COLMAP_ATTR_PARAM attrParamHi[7];
-    COLMAP_ACTOR *actor;
-    int actorNum;
+    COL_ATTRPARAM attrParam[7];
+    COL_ATTRPARAM attrParamHi[7];
+    COLBODY *body;
+    int bodyNum;
     COLNARROW *narrowCol;
     s16 *colOrder1;
     s16 *colOrder2;
@@ -44,8 +44,8 @@ typedef struct ColTri_s {
 typedef struct ColMesh_s {
     HSFOBJECT *obj;
     COLTRI *tri;
-    HuVecF *actorPos;
-    HuVecF *actorMove;
+    HuVecF *bodyPos;
+    HuVecF *bodyMove;
     u8 mdlNo;
     u32 mask;
     Mtx mtx;
@@ -737,7 +737,7 @@ static float _GetColLineTime(COLLINE *a, COLLINE *b, float t, BOOL *result)
     return ret;
 }
 
-static BOOL _EdgeSphereColInline(HuVecF *startPos, HuVecF *endPos, HuVecF *vtxStart, HuVecF *vtxEnd, HuVecF *dir, float *arg5, float *arg6)
+static BOOL _EdgeCylColInline(HuVecF *startPos, HuVecF *endPos, HuVecF *vtxStart, HuVecF *vtxEnd, HuVecF *dir, float *arg5, float *arg6)
 {
     float scale;
     float endMag2;
@@ -770,7 +770,7 @@ static inline double GetVecDot(HuVecF a, HuVecF b)
     
 }
 
-static BOOL _EdgeSphereCol(HuVecF *startPos, HuVecF *endPos, float radius, HuVecF vtxStart, HuVecF vtxEnd, float *colT, BOOL *validColF)
+static BOOL _EdgeCylCol(HuVecF *startPos, HuVecF *endPos, float radius, HuVecF vtxStart, HuVecF vtxEnd, float *colT, BOOL *validColF)
 {
     BOOL endZero;
     BOOL vtxDeltaZero;
@@ -812,7 +812,7 @@ static BOOL _EdgeSphereCol(HuVecF *startPos, HuVecF *endPos, float radius, HuVec
     VECSubtract(&vtxEnd, &vtxStart, &vtxDelta);
     r2 = radius*radius;
     
-    if(_EdgeSphereColInline(startPos, endPos, &vtxStart, &vtxEnd, &vtxDelta, &sp58, &sp54)) {
+    if(_EdgeCylColInline(startPos, endPos, &vtxStart, &vtxEnd, &vtxDelta, &sp58, &sp54)) {
         VECScale(endPos, &sp274, sp58);
         VECAdd(startPos, &sp274, &sp274);
         VECScale(&vtxDelta, &sp268, sp54);
@@ -961,7 +961,7 @@ static BOOL _EdgeSphereCol(HuVecF *startPos, HuVecF *endPos, float radius, HuVec
     return TRUE;
 }
 
-static BOOL _ActorEdgeSphereCol(HuVecF *startPos, HuVecF *endPos, COLMAP_ACTOR *actorP, HuVecF *vtxStart, HuVecF *vtxEnd, float *colT, BOOL *colValidF, HuVecF *out)
+static BOOL _BodyEdgeCylCol(HuVecF *startPos, HuVecF *endPos, COLBODY *bodyP, HuVecF *vtxStart, HuVecF *vtxEnd, float *colT, BOOL *colValidF, HuVecF *out)
 {
     BOOL lineValid;
 
@@ -993,7 +993,7 @@ static BOOL _ActorEdgeSphereCol(HuVecF *startPos, HuVecF *endPos, COLMAP_ACTOR *
     if(VECSquareMag(&vtxDelta) < 0.0001f) {
         return FALSE;
     }
-    halfH = actorP->param.height/2;
+    halfH = bodyP->param.height/2;
     lineA.endA = startPos->y+halfH;
     lineA.startA = startPos->y-halfH;
     lineA.endB = startPos->y+halfH;
@@ -1019,7 +1019,7 @@ static BOOL _ActorEdgeSphereCol(HuVecF *startPos, HuVecF *endPos, COLMAP_ACTOR *
         }
     } else {
         VECNormalize(&dir, &dir);
-        VECScale(&dir, &ejectVec, actorP->param.radius);
+        VECScale(&dir, &ejectVec, bodyP->param.radius);
         VECAdd(startPos, &ejectVec, &ejectPos);
         start = *vtxStart;
         delta = vtxDelta;
@@ -1088,7 +1088,7 @@ static BOOL _ActorEdgeSphereCol(HuVecF *startPos, HuVecF *endPos, COLMAP_ACTOR *
     endPos2 = *endPos;
     ejectPos.y = 0;
     endPos2.y = 0;
-    if(!_EdgeSphereCol(&ejectPos, &endPos2, actorP->param.radius, *vtxStart, *vtxEnd, &edgeColT, &edgeColF)) {
+    if(!_EdgeCylCol(&ejectPos, &endPos2, bodyP->param.radius, *vtxStart, *vtxEnd, &edgeColT, &edgeColF)) {
         return FALSE;
     }
     *colT = (edgeColT > t) ? edgeColT : t;
@@ -1109,7 +1109,7 @@ static BOOL _ActorEdgeSphereCol(HuVecF *startPos, HuVecF *endPos, COLMAP_ACTOR *
     return TRUE;
 }
 
-static BOOL _ActorTriSphereCol(HuVecF *startPos, HuVecF *delta, COLMAP_ACTOR *actorP, HuVecF *vtxBuf, int *index, float *colT, HuVecF *out)
+static BOOL _BodyTriCylCol(HuVecF *startPos, HuVecF *delta, COLBODY *bodyP, HuVecF *vtxBuf, int *index, float *colT, HuVecF *out)
 {
     HuVecF temp;
     HuVecF *outP;
@@ -1120,7 +1120,7 @@ static BOOL _ActorTriSphereCol(HuVecF *startPos, HuVecF *delta, COLMAP_ACTOR *ac
 
     int i;
     
-    result = _ActorEdgeSphereCol(startPos, delta, actorP, &vtxBuf[index[2]], &vtxBuf[index[0]], colT, &sp44, out);
+    result = _BodyEdgeCylCol(startPos, delta, bodyP, &vtxBuf[index[2]], &vtxBuf[index[0]], colT, &sp44, out);
     if(result) {
         ret = 2;
     } else {
@@ -1128,7 +1128,7 @@ static BOOL _ActorTriSphereCol(HuVecF *startPos, HuVecF *delta, COLMAP_ACTOR *ac
     }
     outP = (out) ? &temp : NULL;
     for(i=0; i<2; i++) {
-        result = _ActorEdgeSphereCol(startPos, delta, actorP, &vtxBuf[index[i]], &vtxBuf[index[i+1]], &t, &sp44, outP);
+        result = _BodyEdgeCylCol(startPos, delta, bodyP, &vtxBuf[index[i]], &vtxBuf[index[i+1]], &t, &sp44, outP);
         if(result) {
             if(ret < 0 || sp44 || (t >= 0 && *colT > t)) {
                 if(out) {
@@ -1142,7 +1142,7 @@ static BOOL _ActorTriSphereCol(HuVecF *startPos, HuVecF *delta, COLMAP_ACTOR *ac
     return ret;
 }
 
-static BOOL _ColCylEdgeCalc(HuVecF *pos, HuVecF *posNew, HuVecF *posDelta, float radius, float startT, float colT, HuVecF *vtxBuf, int *index, float *outT, HuVecF *adjust)
+static BOOL _ColCapsuleEdgeCalc(HuVecF *pos, HuVecF *posNew, HuVecF *posDelta, float radius, float startT, float colT, HuVecF *vtxBuf, int *index, float *outT, HuVecF *adjust)
 {
     HuVecF *vtx; //r29
     int no; //r28
@@ -1252,7 +1252,7 @@ static BOOL _ColCylEdgeCalc(HuVecF *pos, HuVecF *posNew, HuVecF *posDelta, float
     return *outT < startT;
 }
 
-static BOOL _ColCylVtxCalc(HuVecF *pos, HuVecF *posDelta, float radius, float startT, float colT, HuVecF *vtxBuf, int *index, float *outT, HuVecF *adjust)
+static BOOL _ColCapsuleVtxCalc(HuVecF *pos, HuVecF *posDelta, float radius, float startT, float colT, HuVecF *vtxBuf, int *index, float *outT, HuVecF *adjust)
 {
     HuVecF *vtx;
     int no;
@@ -1378,9 +1378,9 @@ static void UpdateMeshMtx(void)
     }
 }
 
-static void ClearColPoint(COLMAP_ACTOR *actorP)
+static void ClearColPoint(COLBODY *bodyP)
 {
-    COLMAP_COLPOINT *colPointP = &actorP->colPoint[actorP->colPointNum];
+    COLBODY_POINT *colPointP = &bodyP->colPoint[bodyP->colPointNum];
     
     memset(&colPointP->colOfs, 0, sizeof(colPointP->colOfs));
     memset(&colPointP->normal, 0, sizeof(colPointP->normal));
@@ -1388,13 +1388,13 @@ static void ClearColPoint(COLMAP_ACTOR *actorP)
     colPointP->meshNo = -1;
     colPointP->obj = NULL;
     colPointP->faceNo = -1;
-    actorP->param.attr &= ~0x04000000;
+    bodyP->param.attr &= ~0x04000000;
 }
 
-#define InitColPoint(actorP, actorNo, norm, hsfFaceP, meshP, face) \
+#define InitColPoint(bodyP, bodyNo, norm, hsfFaceP, meshP, face) \
 do { \
-    COLMAP_COLPOINT *colPointP = &actorP->colPoint[actorP->colPointNum]; \
-    colPointP->colOfs = meshP->actorMove[actorNo]; \
+    COLBODY_POINT *colPointP = &bodyP->colPoint[bodyP->colPointNum]; \
+    colPointP->colOfs = meshP->bodyMove[bodyNo]; \
     colPointP->normal = norm; \
     colPointP->polyAttr = ColCodeGet(meshP->obj->mesh.material[hsfFaceP->mat & 0xFFF].flags); \
     colPointP->meshNo = meshP->mdlNo; \
@@ -1403,12 +1403,12 @@ do { \
 } while(0)
 
 
-static BOOL _ActorApplyColAttr(COLMAP_ACTOR *actorP, COLMAP_ATTR_PARAM *attrParam, int code);
+static BOOL _BodyApplyColAttr(COLBODY *bodyP, COL_ATTRPARAM *attrParam, int code);
 
-static BOOL _ColCorrection(COLMAP_ACTOR *actorP)
+static BOOL _ColCorrection(COLBODY *bodyP)
 {
-    COLMAP_COLPOINT *colPointP = &actorP->colPoint[actorP->colPointNum];
-    COLMAP_ATTR_PARAM *attrParam;
+    COLBODY_POINT *colPointP = &bodyP->colPoint[bodyP->colPointNum];
+    COL_ATTRPARAM *attrParam;
     int codeNo;
     BOOL ret;
     u32 attr;
@@ -1420,11 +1420,11 @@ static BOOL _ColCorrection(COLMAP_ACTOR *actorP)
         return FALSE;
     }
     attrParam = (codeNo >= 7) ? (&colWork.attrParamHi[codeNo-7]) : (&colWork.attrParam[codeNo]);
-    actorP->groundAttr |= colPointP->polyAttr;
+    bodyP->groundAttr |= colPointP->polyAttr;
     colPointP->polyAttr = 0;
-    ret = _ActorApplyColAttr(actorP, attrParam, codeNo);
-    if(ret && actorP->param.colCorrectHook) {
-        actorP->param.colCorrectHook(actorP, actorP->param.user);
+    ret = _BodyApplyColAttr(bodyP, attrParam, codeNo);
+    if(ret && bodyP->param.colCorrectHook) {
+        bodyP->param.colCorrectHook(bodyP, bodyP->param.user);
     }
     return ret;
 }
@@ -1438,7 +1438,7 @@ typedef struct ColCylinder_s {
     HuVecF outPos;
 } COLCYLINDER;
 
-static float _ColSphereTest(COLCYLINDER *a, COLCYLINDER *b, int *result)
+static float _ColCylTest(COLCYLINDER *a, COLCYLINDER *b, int *result)
 {
     HuVecF endVec;
     HuVecF relVel;
@@ -1538,7 +1538,7 @@ static float _ColSphereTest(COLCYLINDER *a, COLCYLINDER *b, int *result)
     return ret;
 }
 
-static float _ColCylinderTest(COLCYLINDER *a, COLCYLINDER *b, int *result)
+static float _ColCapsuleTest(COLCYLINDER *a, COLCYLINDER *b, int *result)
 {
     HuVecF endVec;
     HuVecF relVel;
@@ -1670,32 +1670,34 @@ static void CalcMeshNorm(COLMESH *meshP, HuVecF a, HuVecF b, HuVecF c, HuVecF *o
     VECNormalize(out, out);
 }
 
-static BOOL CheckPoint(COLMAP_ACTOR *actorP, COLMESH *meshP, float arg, int *index, HuVecF *vtxBuf, HuVecF *out)
+static BOOL CheckPoint(COLBODY *bodyP, COLMESH *meshP, float arg, int *index, HuVecF *vtxBuf, HuVecF *out)
 {
     int posNo;
     HuVecF temp;
     posNo = (colWork.attr & 0x4) ? 1 : 0;
-    if(actorP->colT != 0) {
+    if(bodyP->colT != 0) {
         (void)arg;
         return FALSE;
     }
     CalcMeshNorm(meshP, vtxBuf[index[0]], vtxBuf[index[1]], vtxBuf[index[2]], out);
     VECScale(out, &temp, arg-0.0001f);
-    VECSubtract(&actorP->oldPos, &temp, &actorP->pos[posNo]);
-    actorP->oldPos = actorP->pos[posNo];
-    actorP->oldColT = 1;
-    actorP->param.attr &= ~0x10000000;
+    VECSubtract(&bodyP->oldPos, &temp, &bodyP->pos[posNo]);
+    bodyP->oldPos = bodyP->pos[posNo];
+    bodyP->oldColT = 1;
+    bodyP->param.attr &= ~0x10000000;
     return TRUE;
 }
 
-static void _ActorMeshCol(void)
+#define MESHCOL_ATTR (0x80000000|COLBODY_ATTR_MESHCOL_OFF|COLBODY_ATTR_COL_OFF)
+
+static void _BodyMeshCol(void)
 {
-    COLMAP_ACTOR *actorP; //r31
+    COLBODY *bodyP; //r31
     COLMESH *meshP; //r30
     HSFFACE *hsfFaceP; //r29
     HuVecF *vtxBuf; //r28
     COLTRI *triP; //r27
-    COLMAP_ACTOR *actorP2; //r24
+    COLBODY *body2; //r24
     int triNo; //r23
     BOOL doneF; //r22
     int colResult; //r21
@@ -1731,17 +1733,17 @@ static void _ActorMeshCol(void)
     meshP = colMesh;
     posNo = (colWork.attr & 0x4) ? 1 : 0;
     for(no=colMeshCount; no--; meshP++) {
-        for(actorP=colWork.actor, i=0; i<colWork.actorNum; i++, actorP++) {
-            actorP2 = actorP;
-            if((actorP->param.attr & 0x1) && (actorP->param.attr & 0x80000012) == 0) {
-                if(!(actorP2->param.mask & meshP->mask)) {
+        for(bodyP=colWork.body, i=0; i<colWork.bodyNum; i++, bodyP++) {
+            body2 = bodyP;
+            if((bodyP->param.attr & COLBODY_ATTR_ACTIVE) && (bodyP->param.attr & MESHCOL_ATTR) == 0) {
+                if(!(body2->param.mask & meshP->mask)) {
                     continue;
                 } else {
                     doneF = TRUE;
                     while(doneF) {
                         doneF = FALSE;
-                        pos = actorP->oldPos;
-                        VECAdd(&pos, &actorP->moveDir, &posNew);
+                        pos = bodyP->oldPos;
+                        VECAdd(&pos, &bodyP->moveDir, &posNew);
                         MTXMultVec(meshP->mtxInvOld, &pos, &pos);
                         MTXMultVec(meshP->mtxInv, &posNew, &posNew);
                         VECSubtract(&posNew, &pos, &posDelta);
@@ -1769,16 +1771,16 @@ static void _ActorMeshCol(void)
                             for(triNo=0; triNo<triNum; triNo++, triP++) {
                                 if(triP->norm.x || triP->norm.y || triP->norm.z) {
                                     MakeIndexBuf(index, hsfFaceP, triNo);
-                                    colT = actorP->oldColT;
-                                    radius = actorP2->param.radius;
-                                    maxDist = radius+(actorP2->param.height/2);
+                                    colT = bodyP->oldColT;
+                                    radius = body2->param.radius;
+                                    maxDist = radius+(body2->param.height/2);
                                     maxDist = temp_f26+(maxDist*maxDist);
                                     (void)temp_f26;
                                     if(CheckFacePoint(triP, &pos, maxDist)) {
-                                        colResult = ColPlaneDistGet(&pos, &posNew, &posDelta, radius, colT, actorP->colT, vtxBuf, index, triP, &colT);
+                                        colResult = ColPlaneDistGet(&pos, &posNew, &posDelta, radius, colT, bodyP->colT, vtxBuf, index, triP, &colT);
                                         if(colResult == -6) {
-                                            temp_f29 = actorP2->param.radius;
-                                            temp_f28 = actorP2->param.radius;
+                                            temp_f29 = body2->param.radius;
+                                            temp_f28 = body2->param.radius;
                                             norm = triP->norm;
                                             sp1EC.x = norm.x;
                                             sp1EC.y = 0;
@@ -1817,41 +1819,41 @@ static void _ActorMeshCol(void)
                                                 if(VECSquareMag(&posDelta) < 0.0001f) {
                                                     break;
                                                 } else {
-                                                    COLMAP_COLPOINT *colPointP;
+                                                    COLBODY_POINT *colPointP;
                                                     int no;
                                                     BOOL ret;
                                                     
                                                     ret = FALSE;
-                                                    for(no=actorP->colPointNum; no--;) {
-                                                        colPointP = &actorP->colPoint[no];
+                                                    for(no=bodyP->colPointNum; no--;) {
+                                                        colPointP = &bodyP->colPoint[no];
                                                         if(colPointP->obj == meshP->obj &&  colPointP->faceNo == j) {
                                                             ret = TRUE;
                                                             break;
                                                         }
                                                     }
                                                     if(!ret) {
-                                                        if(!_ColCylEdgeCalc(&pos, &posNew, &posDelta, radius, actorP->oldColT, actorP->colT, vtxBuf, index, &colT, &posAdjust)
-                                                            && !_ColCylVtxCalc(&pos, &posDelta, radius, actorP->oldColT, actorP->colT, vtxBuf, index, &colT, &posAdjust)) {
+                                                        if(!_ColCapsuleEdgeCalc(&pos, &posNew, &posDelta, radius, bodyP->oldColT, bodyP->colT, vtxBuf, index, &colT, &posAdjust)
+                                                            && !_ColCapsuleVtxCalc(&pos, &posDelta, radius, bodyP->oldColT, bodyP->colT, vtxBuf, index, &colT, &posAdjust)) {
                                                             if(colResult == -6) {
-                                                                if(CheckPoint(actorP, meshP, colT, index, vtxBuf, &sp21C)) {
+                                                                if(CheckPoint(bodyP, meshP, colT, index, vtxBuf, &sp21C)) {
                                                                     doneF = TRUE;
                                                                     goto colPoint;
                                                                 }
                                                             }
                                                         } else {
-                                                            VECScale(&actorP->moveDir, &sp1E0, colT);
-                                                            VECAdd(&sp1E0, &actorP->oldPos, &sp1E0);
-                                                            actorP->pos[posNo] = sp1E0;
+                                                            VECScale(&bodyP->moveDir, &sp1E0, colT);
+                                                            VECAdd(&sp1E0, &bodyP->oldPos, &sp1E0);
+                                                            bodyP->pos[posNo] = sp1E0;
                                                             if(VECSquareMag(&posAdjust) > 0.001f) {
                                                                 VECNormalize(&posAdjust, &sp21C);
                                                             } else {
                                                                 CalcMeshNorm(meshP, vtxBuf[index[0]], vtxBuf[index[1]], vtxBuf[index[2]], &sp21C);
                                                             }
-                                                            actorP->oldColT = colT;
-                                                            if(actorP->oldColT < 0) {
-                                                                actorP->oldColT = actorP->colT;
+                                                            bodyP->oldColT = colT;
+                                                            if(bodyP->oldColT < 0) {
+                                                                bodyP->oldColT = bodyP->colT;
                                                             }
-                                                            actorP->param.attr |= 0x10000000;
+                                                            bodyP->param.attr |= 0x10000000;
                                                             goto colPoint;
                                                         }
                                                     }
@@ -1860,27 +1862,27 @@ static void _ActorMeshCol(void)
                                             
                                             case 0:
                                                 CalcMeshNorm(meshP, vtxBuf[index[0]], vtxBuf[index[1]], vtxBuf[index[2]], &sp21C);
-                                                VECScale(&actorP->moveDir, &actorP->pos[posNo], colT);
-                                                VECAdd(&actorP->pos[posNo], &actorP->oldPos, &actorP->pos[posNo]);
-                                                actorP->oldColT = colT;
-                                                actorP->param.attr &= ~0x10000000;
+                                                VECScale(&bodyP->moveDir, &bodyP->pos[posNo], colT);
+                                                VECAdd(&bodyP->pos[posNo], &bodyP->oldPos, &bodyP->pos[posNo]);
+                                                bodyP->oldColT = colT;
+                                                bodyP->param.attr &= ~0x10000000;
                                                 goto colPoint;
 
                                             case -5:
-                                                if(CheckPoint(actorP, meshP, colT, index, vtxBuf, &sp21C)) {
+                                                if(CheckPoint(bodyP, meshP, colT, index, vtxBuf, &sp21C)) {
                                                     doneF = TRUE;
                                                     default:
                                                     colPoint:
-                                                    InitColPoint(actorP, i, sp21C, hsfFaceP, meshP, j);
-                                                    actorP->param.attr |= 0x04000000;
+                                                    InitColPoint(bodyP, i, sp21C, hsfFaceP, meshP, j);
+                                                    bodyP->param.attr |= 0x04000000;
                                                     if(doneF) {
-                                                        actorP->param.attr |= 0x20000000;
-                                                        actorP->param.attr &= ~0x14000000;
-                                                        _ColCorrection(actorP);
+                                                        bodyP->param.attr |= 0x20000000;
+                                                        bodyP->param.attr &= ~0x14000000;
+                                                        _ColCorrection(bodyP);
                                                         goto skipTri;
                                                     }
                                                     
-                                                    actorP->param.attr &= ~0x20000000;
+                                                    bodyP->param.attr &= ~0x20000000;
                                                 }
                                                 break;
                                             
@@ -1895,7 +1897,7 @@ static void _ActorMeshCol(void)
                                 }
                             }
                             skipTri:
-                            (void)actorP;
+                            (void)bodyP;
                         }
                     }
                 }
@@ -1905,14 +1907,14 @@ static void _ActorMeshCol(void)
 }
 
 
-static void _ActorMeshSphereCol(void)
+static void _BodyMeshCylCol(void)
 {
-    COLMAP_ACTOR *actorP; //r31
+    COLBODY *bodyP; //r31
     HSFFACE *hsfFaceP; //r30
     COLMESH *meshP; //r29
     COLTRI *triP; //r28
     HuVecF *vtxBuf; //r27
-    COLMAP_ACTOR *actorP2; //r24
+    COLBODY *body2; //r24
     int triNo; //r23
     int posNo; //r22
     BOOL doneF; //r19
@@ -1943,22 +1945,22 @@ static void _ActorMeshSphereCol(void)
     int colResult; //sp+0x78
     float colT; //sp+0x74
     int triNum; //sp+0x70
-    int sphereColResult; //sp+0xC
+    int capsuleColResult; //sp+0xC
     
     meshP = colMesh;
     posNo = (colWork.attr & 0x4) ? 1 : 0;
     for(no=colMeshCount; no--; meshP++) {
-        for(actorP=colWork.actor, i=0; i<colWork.actorNum; i++, actorP++) {
-            actorP2 = actorP;
-            if((actorP->param.attr & 0x1) && (actorP->param.attr & 0x80000012) == 0) {
-                if(!(actorP2->param.mask & meshP->mask)) {
+        for(bodyP=colWork.body, i=0; i<colWork.bodyNum; i++, bodyP++) {
+            body2 = bodyP;
+            if((bodyP->param.attr & COLBODY_ATTR_ACTIVE) && (bodyP->param.attr & MESHCOL_ATTR) == 0) {
+                if(!(body2->param.mask & meshP->mask)) {
                     continue;
                 } else {
                     doneF = TRUE;
                     while(doneF) {
                         doneF = FALSE;
-                        pos = actorP->oldPos;
-                        VECAdd(&pos, &actorP->moveDir, &posNew);
+                        pos = bodyP->oldPos;
+                        VECAdd(&pos, &bodyP->moveDir, &posNew);
                         MTXMultVec(meshP->mtxInvOld, &pos, &pos);
                         MTXMultVec(meshP->mtxInv, &posNew, &posNew);
                         VECSubtract(&posNew, &pos, &posDelta);
@@ -1986,9 +1988,9 @@ static void _ActorMeshSphereCol(void)
                             for(triNo=0; triNo<triNum; triNo++, triP++) {
                                 if(triP->norm.x || triP->norm.y || triP->norm.z) {
                                     MakeIndexBuf(index, hsfFaceP, triNo);
-                                    colT = actorP->oldColT;
-                                    height = actorP2->param.height;
-                                    radius = actorP2->param.radius;
+                                    colT = bodyP->oldColT;
+                                    height = body2->param.height;
+                                    radius = body2->param.radius;
                                     norm = triP->norm;
                                     ejectDir.x = norm.x;
                                     ejectDir.y = 0;
@@ -2010,12 +2012,12 @@ static void _ActorMeshSphereCol(void)
                                     }
                                     ejectDir.z *= radius;
                                     ejectDot = VECDotProduct(&triP->norm, &ejectDir);
-                                    maxDist = ejectDot+(actorP2->param.height/2);
+                                    maxDist = ejectDot+(body2->param.height/2);
                                     maxDist = deltaMag2+(maxDist*maxDist);
                                     (void)deltaMag2;
                                     (void)axisLen;
                                     if(CheckFacePoint(triP, &pos, maxDist)) {
-                                        colResult = ColEjectDistGet(&pos, &posNew, &posDelta, &ejectDir, ejectDot, colT, actorP->colT, vtxBuf, index, triP, &colT);
+                                        colResult = ColEjectDistGet(&pos, &posNew, &posDelta, &ejectDir, ejectDot, colT, bodyP->colT, vtxBuf, index, triP, &colT);
                                         switch(colResult) {
                                             case -6:
                                                 if(ColPlaneYCheck(&pos, &ejectDir, triP, &axisVec, FALSE)) {
@@ -2027,13 +2029,13 @@ static void _ActorMeshSphereCol(void)
                                                     if(ColPlaneEdgeCheck(planeA, vtxBuf[index[0]], vtxBuf[index[1]], triP, FALSE)) {
                                                         case -4:
                                                         {
-                                                            COLMAP_COLPOINT *colPointP;
+                                                            COLBODY_POINT *colPointP;
                                                             int no;
                                                             BOOL ret;
                                                             
                                                             ret = FALSE;
-                                                            for(no=actorP->colPointNum; no--;) {
-                                                                colPointP = &actorP->colPoint[no];
+                                                            for(no=bodyP->colPointNum; no--;) {
+                                                                colPointP = &bodyP->colPoint[no];
                                                                 if(colPointP->obj == meshP->obj &&  colPointP->faceNo == j) {
                                                                     ret = TRUE;
                                                                     break;
@@ -2042,14 +2044,14 @@ static void _ActorMeshSphereCol(void)
                                                             if(ret || VECSquareMag(&posDelta) < 0.0001f) {
                                                                 break;
                                                             }
-                                                            sphereColResult = _ActorTriSphereCol(&pos, &posDelta, actorP2, vtxBuf, index, &colT, NULL);
-                                                            if(!(sphereColResult < 0 || colT < actorP->colT || actorP->oldColT < colT)){
-                                                                VECScale(&actorP->moveDir, &finalPos, colT);
-                                                                VECAdd(&finalPos, &actorP->oldPos, &finalPos);
-                                                                actorP->pos[posNo] = finalPos;
+                                                            capsuleColResult = _BodyTriCylCol(&pos, &posDelta, body2, vtxBuf, index, &colT, NULL);
+                                                            if(!(capsuleColResult < 0 || colT < bodyP->colT || bodyP->oldColT < colT)){
+                                                                VECScale(&bodyP->moveDir, &finalPos, colT);
+                                                                VECAdd(&finalPos, &bodyP->oldPos, &finalPos);
+                                                                bodyP->pos[posNo] = finalPos;
                                                                 CalcMeshNorm(meshP, vtxBuf[index[0]], vtxBuf[index[1]], vtxBuf[index[2]], &meshNorm);
-                                                                actorP->oldColT = colT;
-                                                                actorP->param.attr |= 0x10000000;
+                                                                bodyP->oldColT = colT;
+                                                                bodyP->param.attr |= 0x10000000;
                                                                 goto colPoint;
                                                             }
                                                         }
@@ -2060,32 +2062,32 @@ static void _ActorMeshSphereCol(void)
                                             
                                             case 0:
                                                 CalcMeshNorm(meshP, vtxBuf[index[0]], vtxBuf[index[1]], vtxBuf[index[2]], &meshNorm);
-                                                VECScale(&actorP->moveDir, &actorP->pos[posNo], colT);
-                                                VECAdd(&actorP->pos[posNo], &actorP->oldPos, &actorP->pos[posNo]);
-                                                actorP->oldColT = colT;
-                                                actorP->param.attr &= ~0x10000000;
+                                                VECScale(&bodyP->moveDir, &bodyP->pos[posNo], colT);
+                                                VECAdd(&bodyP->pos[posNo], &bodyP->oldPos, &bodyP->pos[posNo]);
+                                                bodyP->oldColT = colT;
+                                                bodyP->param.attr &= ~0x10000000;
                                                 goto colPoint;
                                             
                                             case -5:
-                                                if(actorP->colT == 0.0f) {
+                                                if(bodyP->colT == 0.0f) {
                                                     CalcMeshNorm(meshP, vtxBuf[index[0]], vtxBuf[index[1]], vtxBuf[index[2]], &meshNorm);
                                                     VECScale(&meshNorm, &posAdjust, colT-0.0001f);
-                                                    VECSubtract(&actorP->oldPos, &posAdjust, &actorP->pos[posNo]);
-                                                    actorP->oldPos = actorP->pos[posNo];
-                                                    actorP->oldColT = 1;
+                                                    VECSubtract(&bodyP->oldPos, &posAdjust, &bodyP->pos[posNo]);
+                                                    bodyP->oldPos = bodyP->pos[posNo];
+                                                    bodyP->oldColT = 1;
                                                     doneF = TRUE;
-                                                    actorP->param.attr &= ~0x10000000;
+                                                    bodyP->param.attr &= ~0x10000000;
                                                     default:
                                                     colPoint:
-                                                    InitColPoint(actorP, i, meshNorm, hsfFaceP, meshP, j);
-                                                    actorP->param.attr |= 0x04000000;
+                                                    InitColPoint(bodyP, i, meshNorm, hsfFaceP, meshP, j);
+                                                    bodyP->param.attr |= 0x04000000;
                                                     if(doneF) {
-                                                        actorP->param.attr |= 0x20000000;
-                                                        actorP->param.attr &= ~0x14000000;
-                                                        _ColCorrection(actorP);
+                                                        bodyP->param.attr |= 0x20000000;
+                                                        bodyP->param.attr &= ~0x14000000;
+                                                        _ColCorrection(bodyP);
                                                         goto skipTri;
                                                     }
-                                                    actorP->param.attr &= ~0x20000000;
+                                                    bodyP->param.attr &= ~0x20000000;
                                                 }
                                                 break;
 
@@ -2098,7 +2100,7 @@ static void _ActorMeshSphereCol(void)
                                 }
                             }
                             skipTri:
-                            (void)actorP;
+                            (void)bodyP;
                         }
                     }
                 }
@@ -2107,10 +2109,14 @@ static void _ActorMeshSphereCol(void)
     }
 }
 
-static int _ActorColSphereBroad(void)
+#undef MESHCOL_ATTR
+
+#define BODYCOL_ATTR (COLBODY_ATTR_BODYCOL_OFF|COLBODY_ATTR_COL_OFF)
+
+static int _BodyColCylBroad(void)
 {
-    COLMAP_ACTOR *actorP; //r31
-    COLMAP_ACTOR *actorP2; //r30
+    COLBODY *bodyP; //r31
+    COLBODY *body2; //r30
     COLBROAD *broadP; //r29
     int i; //r26
     int j; //r25
@@ -2132,55 +2138,55 @@ static int _ActorColSphereBroad(void)
     colWork.broadColNum = 0;
     posIdx = (colWork.attr & 0x4) ? 1 : 0;
     
-    for(actorP=colWork.actor, i=0; i<colWork.actorNum; i++, actorP++) {
-        if((actorP->param.attr & 0x1) && (actorP->param.attr & 0x14) == 0) {
-            cylA.startPos = actorP->oldPos;
-            cylA.vel = actorP->moveDir;
-            cylA.t = actorP->colT;
-            cylA.radius = actorP->param.radius;
-            cylA.height = actorP->param.height;
-            for(actorP2=actorP+1, j=i+1; j<colWork.actorNum; j++, actorP2++) {
-                if((actorP2->param.attr & 0x1) && (actorP2->param.attr & 0x14) == 0 && (actorP->param.mask & actorP2->param.mask)) {
-                    if(!(actorP->colBit[j >> 5] & (1 << (j & 0x1F))) || !(actorP2->colBit[i >> 5] & (1 << (i & 0x1F)))) {
-                        cylB.startPos = actorP2->oldPos;
-                        cylB.vel = actorP2->moveDir;
-                        cylB.t = actorP2->colT;
-                        cylB.radius = actorP2->param.radius;
-                        cylB.height = actorP2->param.height;
-                        t = _ColSphereTest(&cylA, &cylB, &colResult);
+    for(bodyP=colWork.body, i=0; i<colWork.bodyNum; i++, bodyP++) {
+        if((bodyP->param.attr & COLBODY_ATTR_ACTIVE) && (bodyP->param.attr & BODYCOL_ATTR) == 0) {
+            cylA.startPos = bodyP->oldPos;
+            cylA.vel = bodyP->moveDir;
+            cylA.t = bodyP->colT;
+            cylA.radius = bodyP->param.radius;
+            cylA.height = bodyP->param.height;
+            for(body2=bodyP+1, j=i+1; j<colWork.bodyNum; j++, body2++) {
+                if((body2->param.attr & COLBODY_ATTR_ACTIVE) && (body2->param.attr & BODYCOL_ATTR) == 0 && (bodyP->param.mask & body2->param.mask)) {
+                    if(!(bodyP->colBit[j >> 5] & (1 << (j & 0x1F))) || !(body2->colBit[i >> 5] & (1 << (i & 0x1F)))) {
+                        cylB.startPos = body2->oldPos;
+                        cylB.vel = body2->moveDir;
+                        cylB.t = body2->colT;
+                        cylB.radius = body2->param.radius;
+                        cylB.height = body2->param.height;
+                        t = _ColCylTest(&cylA, &cylB, &colResult);
                         if(colResult != 4) {
                             if(colResult == 2 || colResult == 3) {
-                                if(actorP->colT > actorP2->colT) {
-                                    t = actorP->colT;
+                                if(bodyP->colT > body2->colT) {
+                                    t = bodyP->colT;
                                 } else {
-                                    t = actorP2->colT;
+                                    t = body2->colT;
                                 }
                             } else {
-                                if(t < actorP->colT && (actorP->colT-t) >0.001f) {
+                                if(t < bodyP->colT && (bodyP->colT-t) >0.001f) {
                                     continue;
                                 }
-                                if(t < actorP2->colT && (actorP2->colT-t) >0.001f) {
+                                if(t < body2->colT && (body2->colT-t) >0.001f) {
                                     continue;
                                 }
                                 resetPoint = FALSE;
                                 clearPoint1 = FALSE;
                                 clearPoint2 = FALSE;
-                                if(t > actorP->oldColT && (t-actorP->oldColT) > 0.001f) {
+                                if(t > bodyP->oldColT && (t-bodyP->oldColT) > 0.001f) {
                                     resetPoint = TRUE;
                                 } else {
                                     clearPoint1 = TRUE;
                                 }
-                                if(t > actorP2->oldColT && (t-actorP2->oldColT) > 0.001f) {
+                                if(t > body2->oldColT && (t-body2->oldColT) > 0.001f) {
                                     resetPoint = TRUE;
                                 } else {
                                     clearPoint2 = TRUE;
                                 }
                                 if(resetPoint) {
                                     if(clearPoint1) {
-                                        ClearColPoint(actorP);
+                                        ClearColPoint(bodyP);
                                     }
                                     if(clearPoint2) {
-                                        ClearColPoint(actorP2);
+                                        ClearColPoint(body2);
                                     }
                                     ret = TRUE;
                                     continue;
@@ -2188,15 +2194,15 @@ static int _ActorColSphereBroad(void)
                             }
                             broadP = &colWork.broadCol[colWork.broadColNum];
                             broadP->t = t;
-                            broadP->actor1 = actorP;
-                            broadP->actor2 = actorP2;
+                            broadP->body1 = bodyP;
+                            broadP->body2 = body2;
                             broadP->colResult = colResult;
-                            broadP->actor1Idx = i;
-                            broadP->actor2Idx = j;
+                            broadP->body1Idx = i;
+                            broadP->body2Idx = j;
                             
                             colWork.broadColNum++;
-                            actorP->param.attr |= 0x08000000;
-                            actorP2->param.attr |= 0x08000000;
+                            bodyP->param.attr |= 0x08000000;
+                            body2->param.attr |= 0x08000000;
                         }
                     }
                 }
@@ -2206,10 +2212,10 @@ static int _ActorColSphereBroad(void)
     return ret;
 }
 
-static int _ActorColBroad(void)
+static int _BodyColBroad(void)
 {
-    COLMAP_ACTOR *actorP; //r31
-    COLMAP_ACTOR *actorP2; //r30
+    COLBODY *bodyP; //r31
+    COLBODY *body2; //r30
     COLBROAD *broadP; //r29
     int i; //r26
     int j; //r25
@@ -2231,55 +2237,55 @@ static int _ActorColBroad(void)
     colWork.broadColNum = 0;
     posIdx = (colWork.attr & 0x4) ? 1 : 0;
     
-    for(actorP=colWork.actor, i=0; i<colWork.actorNum; i++, actorP++) {
-        if((actorP->param.attr & 0x1) && (actorP->param.attr & 0x14) == 0) {
-            cylA.startPos = actorP->oldPos;
-            cylA.vel = actorP->moveDir;
-            cylA.t = actorP->colT;
-            cylA.radius = actorP->param.radius;
-            cylA.height = actorP->param.height;
-            for(actorP2=actorP+1, j=i+1; j<colWork.actorNum; j++, actorP2++) {
-                if((actorP2->param.attr & 0x1) && (actorP2->param.attr & 0x14) == 0 && (actorP->param.mask & actorP2->param.mask)) {
-                    if(!(actorP->colBit[j >> 5] & (1 << (j & 0x1F))) || !(actorP2->colBit[i >> 5] & (1 << (i & 0x1F)))) {
-                        cylB.startPos = actorP2->oldPos;
-                        cylB.vel = actorP2->moveDir;
-                        cylB.t = actorP2->colT;
-                        cylB.radius = actorP2->param.radius;
-                        cylB.height = actorP2->param.height;
-                        t = _ColCylinderTest(&cylA, &cylB, &colResult);
+    for(bodyP=colWork.body, i=0; i<colWork.bodyNum; i++, bodyP++) {
+        if((bodyP->param.attr & COLBODY_ATTR_ACTIVE) && (bodyP->param.attr & BODYCOL_ATTR) == 0) {
+            cylA.startPos = bodyP->oldPos;
+            cylA.vel = bodyP->moveDir;
+            cylA.t = bodyP->colT;
+            cylA.radius = bodyP->param.radius;
+            cylA.height = bodyP->param.height;
+            for(body2=bodyP+1, j=i+1; j<colWork.bodyNum; j++, body2++) {
+                if((body2->param.attr & COLBODY_ATTR_ACTIVE) && (body2->param.attr & BODYCOL_ATTR) == 0 && (bodyP->param.mask & body2->param.mask)) {
+                    if(!(bodyP->colBit[j >> 5] & (1 << (j & 0x1F))) || !(body2->colBit[i >> 5] & (1 << (i & 0x1F)))) {
+                        cylB.startPos = body2->oldPos;
+                        cylB.vel = body2->moveDir;
+                        cylB.t = body2->colT;
+                        cylB.radius = body2->param.radius;
+                        cylB.height = body2->param.height;
+                        t = _ColCapsuleTest(&cylA, &cylB, &colResult);
                         if(colResult != 4) {
                             if(colResult == 2 || colResult == 3) {
-                                if(actorP->colT > actorP2->colT) {
-                                    t = actorP->colT;
+                                if(bodyP->colT > body2->colT) {
+                                    t = bodyP->colT;
                                 } else {
-                                    t = actorP2->colT;
+                                    t = body2->colT;
                                 }
                             } else {
-                                if(t < actorP->colT && (actorP->colT-t) >0.001f) {
+                                if(t < bodyP->colT && (bodyP->colT-t) >0.001f) {
                                     continue;
                                 }
-                                if(t < actorP2->colT && (actorP2->colT-t) >0.001f) {
+                                if(t < body2->colT && (body2->colT-t) >0.001f) {
                                     continue;
                                 }
                                 resetPoint = FALSE;
                                 clearPoint1 = FALSE;
                                 clearPoint2 = FALSE;
-                                if(t > actorP->oldColT && (t-actorP->oldColT) >0.001f) {
+                                if(t > bodyP->oldColT && (t-bodyP->oldColT) >0.001f) {
                                     resetPoint = TRUE;
                                 } else {
                                     clearPoint1 = TRUE;
                                 }
-                                if(t > actorP2->oldColT && (t-actorP2->oldColT) >0.001f) {
+                                if(t > body2->oldColT && (t-body2->oldColT) >0.001f) {
                                     resetPoint = TRUE;
                                 } else {
                                     clearPoint2 = TRUE;
                                 }
                                 if(resetPoint) {
                                     if(clearPoint1) {
-                                        ClearColPoint(actorP);
+                                        ClearColPoint(bodyP);
                                     }
                                     if(clearPoint2) {
-                                        ClearColPoint(actorP2);
+                                        ClearColPoint(body2);
                                     }
                                     ret = TRUE;
                                     continue;
@@ -2287,15 +2293,15 @@ static int _ActorColBroad(void)
                             }
                             broadP = &colWork.broadCol[colWork.broadColNum];
                             broadP->t = t;
-                            broadP->actor1 = actorP;
-                            broadP->actor2 = actorP2;
+                            broadP->body1 = bodyP;
+                            broadP->body2 = body2;
                             broadP->colResult = colResult;
-                            broadP->actor1Idx = i;
-                            broadP->actor2Idx = j;
+                            broadP->body1Idx = i;
+                            broadP->body2Idx = j;
                             
                             colWork.broadColNum++;
-                            actorP->param.attr |= 0x08000000;
-                            actorP2->param.attr |= 0x08000000;
+                            bodyP->param.attr |= 0x08000000;
+                            body2->param.attr |= 0x08000000;
                         }
                     }
                 }
@@ -2305,10 +2311,12 @@ static int _ActorColBroad(void)
     return ret;
 }
 
-static int _ActorColNarrow(void)
+#undef BODYCOL_ATTR
+
+static int _BodyColNarrow(void)
 {
-    COLMAP_ACTOR *actorP1; //r31
-    COLMAP_ACTOR *actorP2; //r30
+    COLBODY *body1; //r31
+    COLBODY *body2; //r30
     COLBROAD *broadP; //r29
     int colResult; //r28
     int i; //r25
@@ -2325,8 +2333,8 @@ static int _ActorColNarrow(void)
     float r2; //f28
     float dot; //f27
     
-    COLMAP_NARROW_PARAM col1;
-    COLMAP_NARROW_PARAM col2;
+    COL_NARROW_PARAM col1;
+    COL_NARROW_PARAM col2;
     HuVecF fixDir;
     HuVecF pointOfs;
     HuVecF colDeltaNorm;
@@ -2350,69 +2358,69 @@ static int _ActorColNarrow(void)
     SortCollisions(narrowP, colWork.broadColNum);
     for(narrow=narrowP, i=0; i<colWork.broadColNum; i++, narrow++) {
         broadP = narrow->broadP;
-        actorP1 = broadP->actor1;
-        actorP2 = broadP->actor2;
-        if(!(actorP1->param.attr & 0x40000000) && !(actorP2->param.attr & 0x40000000)) {
-            actorP1->colBit[broadP->actor2Idx >> 5] |= (1 << (broadP->actor2Idx & 0x1F));
-            actorP2->colBit[broadP->actor1Idx >> 5] |= (1 << (broadP->actor1Idx & 0x1F));
-            r1 = broadP->actor1->param.radius;
-            r2 = broadP->actor2->param.radius;
-            h1 = broadP->actor1->param.height/2;
-            h2 = broadP->actor2->param.height/2;
-            norm1 = actorP1->moveDir;
-            col1.paramA = actorP1->param.paramA;
-            col1.paramB = actorP1->param.paramB;
-            col1.type = actorP1->param.type;
+        body1 = broadP->body1;
+        body2 = broadP->body2;
+        if(!(body1->param.attr & 0x40000000) && !(body2->param.attr & 0x40000000)) {
+            body1->colBit[broadP->body2Idx >> 5] |= (1 << (broadP->body2Idx & 0x1F));
+            body2->colBit[broadP->body1Idx >> 5] |= (1 << (broadP->body1Idx & 0x1F));
+            r1 = broadP->body1->param.radius;
+            r2 = broadP->body2->param.radius;
+            h1 = broadP->body1->param.height/2;
+            h2 = broadP->body2->param.height/2;
+            norm1 = body1->moveDir;
+            col1.paramA = body1->param.paramA;
+            col1.paramB = body1->param.paramB;
+            col1.type = body1->param.type;
             col1.normPos = norm1;
             col1.colResult = broadP->colResult;
-            VECScale(&actorP1->moveDir, &col1.point, broadP->t);
-            VECAdd(&col1.point, &actorP1->oldPos, &col1.point);
-            norm2 = actorP2->moveDir;
-            col2.paramA = actorP2->param.paramA;
-            col2.paramB = actorP2->param.paramB;
-            col2.type = actorP2->param.type;
+            VECScale(&body1->moveDir, &col1.point, broadP->t);
+            VECAdd(&col1.point, &body1->oldPos, &col1.point);
+            norm2 = body2->moveDir;
+            col2.paramA = body2->param.paramA;
+            col2.paramB = body2->param.paramB;
+            col2.type = body2->param.type;
             col2.normPos = norm2;
             col2.colResult = broadP->colResult;
             
-            VECScale(&actorP2->moveDir, &col2.point, broadP->t);
-            VECAdd(&col2.point, &actorP2->oldPos, &col2.point);
+            VECScale(&body2->moveDir, &col2.point, broadP->t);
+            VECAdd(&col2.point, &body2->oldPos, &col2.point);
             if(!(colWork.attr & 0x20)) {
-                col1.point.y = (actorP1->param.height*0.5f)+(col1.point.y-actorP1->param.radius);
-                col2.point.y = (actorP2->param.height*0.5f)+(col2.point.y-actorP2->param.radius);
+                col1.point.y = (body1->param.height*0.5f)+(col1.point.y-body1->param.radius);
+                col2.point.y = (body2->param.height*0.5f)+(col2.point.y-body2->param.radius);
             }
             cbResult1 = 0;
-            if(actorP1->param.narrowHook) {
-                cbResult1 = actorP1->param.narrowHook(&col1, &col2);
+            if(body1->param.narrowHook) {
+                cbResult1 = body1->param.narrowHook(&col1, &col2);
             }
-            if(actorP1->param.narrowHook2) {
-                cbResult1 |= actorP1->param.narrowHook2(&col1, &col2);
+            if(body1->param.narrowHook2) {
+                cbResult1 |= body1->param.narrowHook2(&col1, &col2);
             }
             newMove1 = col1.normPos;
             col1.normPos = norm1;
             col2.normPos = norm2;
             cbResult2 = 0;
-            if(actorP2->param.narrowHook) {
-                cbResult2 = actorP2->param.narrowHook(&col2, &col1);
+            if(body2->param.narrowHook) {
+                cbResult2 = body2->param.narrowHook(&col2, &col1);
             }
-            if(actorP2->param.narrowHook2) {
-                cbResult2 |= actorP2->param.narrowHook2(&col2, &col1);
+            if(body2->param.narrowHook2) {
+                cbResult2 |= body2->param.narrowHook2(&col2, &col1);
             }
             newMove2 = col2.normPos;
             col1.normPos = norm1;
             col2.normPos = norm2;
-            if(actorP1->colPointNum >= 4) {
-                actorP1->moveDir.x = 0;
-                actorP1->moveDir.y = 0;
-                actorP1->moveDir.z = 0;
-                actorP1->oldPos = col1.point;
+            if(body1->colPointNum >= 4) {
+                body1->moveDir.x = 0;
+                body1->moveDir.y = 0;
+                body1->moveDir.z = 0;
+                body1->oldPos = col1.point;
                 cbResult1 = 0;
             }
-            if(actorP2->colPointNum >= 4) {
-                actorP2->param.attr |= 0x02000000;
-                actorP2->moveDir.x = 0;
-                actorP2->moveDir.y = 0;
-                actorP2->moveDir.z = 0;
-                actorP2->oldPos = col2.point;
+            if(body2->colPointNum >= 4) {
+                body2->param.attr |= 0x02000000;
+                body2->moveDir.x = 0;
+                body2->moveDir.y = 0;
+                body2->moveDir.z = 0;
+                body2->oldPos = col2.point;
                 cbResult2 = 0;
             }
             VECSubtract(&col2.point, &col1.point, &colDelta);
@@ -2428,18 +2436,18 @@ static int _ActorColNarrow(void)
                 VECNormalize(&colXZDelta, &colXZDelta);
             }
             if(!(colWork.attr & 0x20)) {
-                col1.point.y = actorP1->param.radius+(col1.point.y-(0.5f*actorP1->param.height));
-                col2.point.y = actorP2->param.radius+(col2.point.y-(0.5f*actorP2->param.height));
+                col1.point.y = body1->param.radius+(col1.point.y-(0.5f*body1->param.height));
+                col2.point.y = body2->param.radius+(col2.point.y-(0.5f*body2->param.height));
             }
             if(cbResult1) {
                 ret = TRUE;
                 colResult = broadP->colResult;
-                if((actorP1->param.attr & 0x40) && colResult == 3) {
+                if((body1->param.attr & 0x40) && colResult == 3) {
                     colResult = 2;
-                } else if((actorP1->param.attr & 0x80) && colResult == 2) {
+                } else if((body1->param.attr & 0x80) && colResult == 2) {
                     colResult = 3;
                 }
-                if(!(actorP1->param.attr & 0x8)) {
+                if(!(body1->param.attr & 0x8)) {
                     if(colResult == 2 && r1+r2 > 0.0001f) {
                         if(cbResult2) {
                             VECScale(&colDelta, &fixDir, r1/(r1+r2));
@@ -2510,8 +2518,8 @@ static int _ActorColNarrow(void)
                         if(dot > 0) {
                             VECScale(&colXZDelta, &fixDir, dot);
                         }
-                        if(actorP2->param.attr & 0x20) {
-                            actorP1->groundAttr |= 0x8000;
+                        if(body2->param.attr & 0x20) {
+                            body1->groundAttr |= 0x8000;
                         }
                         break;
                     
@@ -2520,8 +2528,8 @@ static int _ActorColNarrow(void)
                         if((colDeltaNorm.y < 0 && col1.normPos.y < 0) || (colDeltaNorm.y > 0 && col1.normPos.y > 0)) {
                             fixDir.y = col1.normPos.y;
                         }
-                        if(actorP2->param.attr & 0x20) {
-                            actorP1->groundAttr |= 0x4000;
+                        if(body2->param.attr & 0x20) {
+                            body1->groundAttr |= 0x4000;
                         }
                         break;
                 }
@@ -2533,14 +2541,14 @@ static int _ActorColNarrow(void)
                 }
                 VECScale(&fixDir, &fixDir, 0.002f);
                 VECScale(&newMove1, &pointOfs, broadP->t);
-                VECSubtract(&col1.point, &pointOfs, &actorP1->oldPos);
-                VECSubtract(&actorP1->oldPos, &fixDir, &actorP1->oldPos);
-                actorP1->moveDir = newMove1;
-                actorP1->pos[posNo] = col1.point;
-                actorP1->param.attr |= 0x40000000;
-                actorP1->colT = broadP->t;
-                actorP1->oldColT = 1;
-                ClearColPoint(actorP1);
+                VECSubtract(&col1.point, &pointOfs, &body1->oldPos);
+                VECSubtract(&body1->oldPos, &fixDir, &body1->oldPos);
+                body1->moveDir = newMove1;
+                body1->pos[posNo] = col1.point;
+                body1->param.attr |= 0x40000000;
+                body1->colT = broadP->t;
+                body1->oldColT = 1;
+                ClearColPoint(body1);
             }
             VECScale(&colDeltaNorm, &colDeltaNorm, -1);
             VECScale(&colXZDelta, &colXZDelta, -1);
@@ -2548,12 +2556,12 @@ static int _ActorColNarrow(void)
             if(cbResult2) {
                 ret = TRUE;
                 colResult = broadP->colResult;
-                if((actorP1->param.attr & 0x40) && colResult == 3) {
+                if((body1->param.attr & 0x40) && colResult == 3) {
                     colResult = 2;
-                } else if((actorP1->param.attr & 0x80) && colResult == 2) {
+                } else if((body1->param.attr & 0x80) && colResult == 2) {
                     colResult = 3;
                 }
-                if(!(actorP2->param.attr & 0x8)) {
+                if(!(body2->param.attr & 0x8)) {
                     if(colResult == 2 && r1+r2 > 0.0001f) {
                         if(cbResult1) {
                             VECScale(&colDelta, &fixDir, r2/(r1+r2));
@@ -2625,8 +2633,8 @@ static int _ActorColNarrow(void)
                         if(dot > 0) {
                             VECScale(&colXZDelta, &fixDir, dot);
                         }
-                        if(actorP1->param.attr & 0x20) {
-                            actorP2->groundAttr |= 0x8000;
+                        if(body1->param.attr & 0x20) {
+                            body2->groundAttr |= 0x8000;
                         }
                         break;
                     
@@ -2635,8 +2643,8 @@ static int _ActorColNarrow(void)
                         if((colDeltaNorm.y < 0 && col2.normPos.y < 0) || (colDeltaNorm.y > 0 && col2.normPos.y > 0)) {
                             fixDir.y = col2.normPos.y;
                         }
-                        if(actorP1->param.attr & 0x20) {
-                            actorP2->groundAttr |= 0x4000;
+                        if(body1->param.attr & 0x20) {
+                            body2->groundAttr |= 0x4000;
                         }
                         break;
                 }
@@ -2648,14 +2656,14 @@ static int _ActorColNarrow(void)
                 }
                 VECScale(&fixDir, &fixDir, -0.002f);
                 VECScale(&newMove2, &pointOfs, broadP->t);
-                VECSubtract(&col2.point, &pointOfs, &actorP2->oldPos);
-                VECSubtract(&actorP2->oldPos, &fixDir, &actorP2->oldPos);
-                actorP2->moveDir = newMove2;
-                actorP2->pos[posNo] = col2.point;
-                actorP2->param.attr |= 0x40000000;
-                actorP2->colT = broadP->t;
-                actorP2->oldColT = 1;
-                ClearColPoint(actorP2);
+                VECSubtract(&col2.point, &pointOfs, &body2->oldPos);
+                VECSubtract(&body2->oldPos, &fixDir, &body2->oldPos);
+                body2->moveDir = newMove2;
+                body2->pos[posNo] = col2.point;
+                body2->param.attr |= 0x40000000;
+                body2->colT = broadP->t;
+                body2->oldColT = 1;
+                ClearColPoint(body2);
             }
         }
         
@@ -2663,11 +2671,11 @@ static int _ActorColNarrow(void)
     return ret;
 }
 
-static BOOL _ActorApplyColAttr(COLMAP_ACTOR *actorP, COLMAP_ATTR_PARAM *attrParam, int code)
+static BOOL _BodyApplyColAttr(COLBODY *bodyP, COL_ATTRPARAM *attrParam, int code)
 {
-    COLMAP_COLPOINT *point = &actorP->colPoint[actorP->colPointNum];
+    COLBODY_POINT *point = &bodyP->colPoint[bodyP->colPointNum];
     int posIdx = (colWork.attr & 0x4) ? 1 : 0;
-    BOOL result = (actorP->param.attr & 0x02000000) ? FALSE : TRUE;
+    BOOL result = (bodyP->param.attr & 0x02000000) ? FALSE : TRUE;
     Mtx normMtx;
     HuVecF posOfs;
     HuVecF moveDir;
@@ -2680,20 +2688,20 @@ static BOOL _ActorApplyColAttr(COLMAP_ACTOR *actorP, COLMAP_ATTR_PARAM *attrPara
     float dot;
     
     if(!result) {
-        actorP->moveDir.x = 0;
-        actorP->moveDir.y = 0;
-        actorP->moveDir.z = 0;
-        actorP->oldPos = actorP->pos[posIdx];
+        bodyP->moveDir.x = 0;
+        bodyP->moveDir.y = 0;
+        bodyP->moveDir.z = 0;
+        bodyP->oldPos = bodyP->pos[posIdx];
         if(VECSquareMag(&point->colOfs) > 0.0001f) {
-            actorP->moveDir = point->colOfs;
+            bodyP->moveDir = point->colOfs;
             result = TRUE;
         }
     } else {
-        moveDir = actorP->moveDir;
+        moveDir = bodyP->moveDir;
         up.x = 0;
         up.y = 1;
         up.z = 0;
-        if(!(actorP->param.attr & 0x10000000)) {
+        if(!(bodyP->param.attr & 0x10000000)) {
             moveDir.y *= attrParam->yDeviate;
             upDot = VECDotProduct(&up, &point->normal);
             if(upDot > 0 && upDot > attrParam->maxDot) {
@@ -2715,7 +2723,7 @@ static BOOL _ActorApplyColAttr(COLMAP_ACTOR *actorP, COLMAP_ATTR_PARAM *attrPara
                 normMtx[2][1] = ((1-c)*(normal.z*normal.y))+(normal.x*s);
                 normMtx[2][2] = ((1-c)*(normal.z*normal.z))+c;
                 normMtx[0][3] = normMtx[1][3] = normMtx[2][3] = 0;
-                MTXMultVec(normMtx, &actorP->moveDir, &moveDir);
+                MTXMultVec(normMtx, &bodyP->moveDir, &moveDir);
                 moveDir.x = -moveDir.x;
                 moveDir.y = -moveDir.y;
                 moveDir.z = -moveDir.z;
@@ -2729,46 +2737,46 @@ static BOOL _ActorApplyColAttr(COLMAP_ACTOR *actorP, COLMAP_ATTR_PARAM *attrPara
                 }
                 break;
         }
-        actorP->paramAttr = attrParam->attr;
-        VECScale(&moveDir, &actorP->moveDir, attrParam->speed);
-        if(!(actorP->param.attr & 0x100)) {
-            VECAdd(&actorP->moveDir, &point->colOfs, &actorP->moveDir);
+        bodyP->paramAttr = attrParam->attr;
+        VECScale(&moveDir, &bodyP->moveDir, attrParam->speed);
+        if(!(bodyP->param.attr & 0x100)) {
+            VECAdd(&bodyP->moveDir, &point->colOfs, &bodyP->moveDir);
         }
-        VECScale(&actorP->moveDir, &posOfs, actorP->colT);
-        VECSubtract(&actorP->pos[posIdx], &posOfs, &actorP->oldPos);
+        VECScale(&bodyP->moveDir, &posOfs, bodyP->colT);
+        VECSubtract(&bodyP->pos[posIdx], &posOfs, &bodyP->oldPos);
         VECScale(&point->normal, &posOfs, 0.002f);
-        VECAdd(&actorP->oldPos, &posOfs, &actorP->oldPos);
+        VECAdd(&bodyP->oldPos, &posOfs, &bodyP->oldPos);
     }
     return result;
 }
 
-static int _ActorColResponse(void)
+static int _BodyColResponse(void)
 {
-    COLMAP_ACTOR *actorP;
+    COLBODY *bodyP;
     int posNo;
     int result;
     int i;
-    actorP = colWork.actor;
+    bodyP = colWork.body;
     posNo = (colWork.attr & 0x4) ? 1 : 0;
     result = 0;
-    for(i=0; i<colWork.actorNum; i++, actorP++) {
-        if(!(actorP->param.attr & 0x1)) {
+    for(i=0; i<colWork.bodyNum; i++, bodyP++) {
+        if(!(bodyP->param.attr & COLBODY_ATTR_ACTIVE)) {
             continue;
         }
-        if(!(actorP->param.attr & 0x40000000)) {
-            if(actorP->param.attr & 0x04000000) {
-                actorP->colT = actorP->oldColT;
-                if((actorP->param.attr & 0x20000000) || _ColCorrection(actorP)) {
+        if(!(bodyP->param.attr & 0x40000000)) {
+            if(bodyP->param.attr & 0x04000000) {
+                bodyP->colT = bodyP->oldColT;
+                if((bodyP->param.attr & 0x20000000) || _ColCorrection(bodyP)) {
                     result = 1;
                 }
-                if(actorP->colPointNum >= 4) {
-                    actorP->param.attr |= 0x02000000;
+                if(bodyP->colPointNum >= 4) {
+                    bodyP->param.attr |= 0x02000000;
                 } else {
-                    actorP->colPointNum++;
+                    bodyP->colPointNum++;
                 }
             }
             
-            actorP->oldColT = 1;
+            bodyP->oldColT = 1;
         }
         
     }
@@ -2778,47 +2786,47 @@ static int _ActorColResponse(void)
 //Must be macro for stack ordering concerns
 #define _ColPointUpdate() \
 do { \
-    COLMAP_ACTOR *actorP; \
+    COLBODY *bodyP; \
     int no; \
-    actorP = colWork.actor; \
-    for(no=colWork.actorNum; no--; actorP++) { \
-        if(actorP->param.attr & 0x1) { \
-            if((actorP->param.attr & 0x0C000000) == 0) { \
-                actorP->param.attr |= 0x80000000; \
+    bodyP = colWork.body; \
+    for(no=colWork.bodyNum; no--; bodyP++) { \
+        if(bodyP->param.attr & COLBODY_ATTR_ACTIVE) { \
+            if((bodyP->param.attr & 0x0C000000) == 0) { \
+                bodyP->param.attr |= 0x80000000; \
             } else { \
-                actorP->param.attr &= ~0x80000000; \
+                bodyP->param.attr &= ~0x80000000; \
             } \
-            if(actorP->param.attr & 0x20000000) { \
-                if(actorP->colPointNum >= 4) { \
-                    actorP->param.attr |= 0x02000000; \
+            if(bodyP->param.attr & 0x20000000) { \
+                if(bodyP->colPointNum >= 4) { \
+                    bodyP->param.attr |= 0x02000000; \
                 } else { \
-                    actorP->colPointNum++; \
+                    bodyP->colPointNum++; \
                 } \
             } \
-            actorP->param.attr &= 0x83FFFFFF; \
+            bodyP->param.attr &= 0x83FFFFFF; \
         } \
     } \
 } while(0)
 
-static void _ActorMeshUpdate(int posNo)
+static void _BodyMeshUpdate(int posNo)
 {
-    COLMAP_ACTOR *actorP;
+    COLBODY *bodyP;
     COLMESH *meshP;
     int i;
     int no;
     meshP = colMesh;
-    actorP = colWork.actor;
-    for(no=colWork.actorNum; no--; actorP++) {
-        VECAdd(&actorP->oldPos, &actorP->moveDir, &actorP->pos[posNo]);
+    bodyP = colWork.body;
+    for(no=colWork.bodyNum; no--; bodyP++) {
+        VECAdd(&bodyP->oldPos, &bodyP->moveDir, &bodyP->pos[posNo]);
     }
     for(no=colMeshCount; no--; meshP++) {
-        for(actorP=colWork.actor, i=0; i<colWork.actorNum; i++, actorP++) {
-            meshP->actorPos[i] = actorP->pos[posNo];
-            MTXMultVec(meshP->mtxInv, &meshP->actorPos[i], &meshP->actorPos[i]);
+        for(bodyP=colWork.body, i=0; i<colWork.bodyNum; i++, bodyP++) {
+            meshP->bodyPos[i] = bodyP->pos[posNo];
+            MTXMultVec(meshP->mtxInv, &meshP->bodyPos[i], &meshP->bodyPos[i]);
             
         }
     }
-    (void)actorP;
+    (void)bodyP;
 }
 
 
@@ -2871,12 +2879,12 @@ static void ColMakeTri(COLTRI *tri, Vec *vtxBuf, int *idx)
 
 }
 
-COLMAP_ACTOR *ColMapActorGet(int no)
+COLBODY *ColBodyGetRaw(int no)
 {
-    return &colWork.actor[no];
+    return &colWork.body[no];
 }
 
-void ColMapClear(void)
+void ColInit(void)
 {
     CancelTRXF = FALSE;
     colMapInitF = FALSE;
@@ -2885,8 +2893,8 @@ void ColMapClear(void)
     colWork.attr = 0;
     colWork.broadCol = NULL;
     colWork.broadColNum = 0;
-    colWork.actorNum = 0;
-    colWork.actor = NULL;
+    colWork.bodyNum = 0;
+    colWork.body = NULL;
     colWork.narrowCol = NULL;
     colWork.colOrder1 = NULL;
     colWork.colOrder2 = NULL;
@@ -2897,7 +2905,7 @@ void ColMapClear(void)
 }
 
 
-void ColMapInit(HU3DMODELID *mdlId, s16 mdlNum, int actorNum)
+void ColMapInit(HU3DMODELID *mdlId, s16 mdlNum, int bodyNum)
 {
     COLTRI *triP; //r31
     HuVecF *vtxBuf; //r30
@@ -2905,7 +2913,7 @@ void ColMapInit(HU3DMODELID *mdlId, s16 mdlNum, int actorNum)
     int triNum; //r28
     COLTRI *triOther; //r27
     int no; //r26
-    COLMAP_ACTOR *actorP; //r25
+    COLBODY *bodyP; //r25
     int meshNum; //r24
     HSFOBJECT *objP; //r23
     int i; //r22
@@ -2921,14 +2929,14 @@ void ColMapInit(HU3DMODELID *mdlId, s16 mdlNum, int actorNum)
     colWork.mdlNum = mdlNum;
     colWork.mdlId = HuMemDirectMallocNum(HEAP_MODEL, mdlNum*sizeof(HU3DMODELID), HU_MEMNUM_OVL);
     colWork.attr = 1;
-    colWork.actorNum = actorNum;
-    if(!colWork.actor) {
-        colWork.actor = HuMemDirectMallocNum(HEAP_MODEL, COLMAP_ACTOR_MAX*sizeof(COLMAP_ACTOR), HU_MEMNUM_OVL);
-        memset(colWork.actor, 0, COLMAP_ACTOR_MAX*sizeof(COLMAP_ACTOR));
+    colWork.bodyNum = bodyNum;
+    if(!colWork.body) {
+        colWork.body = HuMemDirectMallocNum(HEAP_MODEL, COLBODY_MAX*sizeof(COLBODY), HU_MEMNUM_OVL);
+        memset(colWork.body, 0, COLBODY_MAX*sizeof(COLBODY));
     }
     if(!colWork.narrowCol) {
-        colWork.narrowCol = HuMemDirectMallocNum(HEAP_MODEL, COLMAP_ACTOR_MAX*4*sizeof(COLNARROW), HU_MEMNUM_OVL);
-        memset(colWork.narrowCol, 0, COLMAP_ACTOR_MAX*4*sizeof(COLNARROW));
+        colWork.narrowCol = HuMemDirectMallocNum(HEAP_MODEL, COLBODY_MAX*4*sizeof(COLNARROW), HU_MEMNUM_OVL);
+        memset(colWork.narrowCol, 0, COLBODY_MAX*4*sizeof(COLNARROW));
     }
     memcpy(colWork.mdlId, mdlId, mdlNum*sizeof(HU3DMODELID));
     for(no=7; no--;) {
@@ -2943,23 +2951,23 @@ void ColMapInit(HU3DMODELID *mdlId, s16 mdlNum, int actorNum)
         colWork.attrParamHi[no].maxDot = 1;
         colWork.attrParamHi[no].attr = 0;
     }
-    colWork.broadCol = HuMemDirectMallocNum(HEAP_MODEL, ((colWork.actorNum*(colWork.actorNum+1))/2.0f)*sizeof(COLBROAD), HU_MEMNUM_OVL);
-    colWork.colOrder1 = HuMemDirectMallocNum(HEAP_MODEL, COLMAP_ACTOR_MAX*4*sizeof(s16), HU_MEMNUM_OVL);
-    colWork.colOrder2 = HuMemDirectMallocNum(HEAP_MODEL, COLMAP_ACTOR_MAX*4*sizeof(s16), HU_MEMNUM_OVL);
-    for(no=actorNum; no--;) {
-        actorP = &colWork.actor[no];
-        actorP->param.paramB = 0;
-        actorP->param.paramA = 0;
-        actorP->param.type = 0;
-        actorP->param.narrowHook = NULL;
-        actorP->param.narrowHook2 = NULL;
-        actorP->param.mask = -1;
-        actorP->param.attr = 0;
-        actorP->param.height = 0;
-        actorP->param.radius = 0;
-        actorP->colT = 0;
-        actorP->oldColT = 1;
-        actorP->colPointNum = 0;
+    colWork.broadCol = HuMemDirectMallocNum(HEAP_MODEL, ((colWork.bodyNum*(colWork.bodyNum+1))/2.0f)*sizeof(COLBROAD), HU_MEMNUM_OVL);
+    colWork.colOrder1 = HuMemDirectMallocNum(HEAP_MODEL, COLBODY_MAX*4*sizeof(s16), HU_MEMNUM_OVL);
+    colWork.colOrder2 = HuMemDirectMallocNum(HEAP_MODEL, COLBODY_MAX*4*sizeof(s16), HU_MEMNUM_OVL);
+    for(no=bodyNum; no--;) {
+        bodyP = &colWork.body[no];
+        bodyP->param.paramB = 0;
+        bodyP->param.paramA = 0;
+        bodyP->param.type = 0;
+        bodyP->param.narrowHook = NULL;
+        bodyP->param.narrowHook2 = NULL;
+        bodyP->param.mask = -1;
+        bodyP->param.attr = 0;
+        bodyP->param.height = 0;
+        bodyP->param.radius = 0;
+        bodyP->colT = 0;
+        bodyP->oldColT = 1;
+        bodyP->colPointNum = 0;
     }
     for(meshNum=0, no=colWork.mdlNum; no--;) {
         HSFDATA *hsfP = Hu3DData[colWork.mdlId[no]].hsf;
@@ -3031,12 +3039,12 @@ void ColMapInit(HU3DMODELID *mdlId, s16 mdlNum, int actorNum)
                 memset(&colMesh[meshNum], 0, sizeof(COLMESH));
                 colMesh[meshNum].tri = triP;
                 colMesh[meshNum].obj = objP;
-                colMesh[meshNum].actorPos = HuMemDirectMallocNum(HEAP_MODEL, sizeof(HuVecF)*colWork.actorNum*2, HU_MEMNUM_OVL);
-                colMesh[meshNum].actorMove = colMesh[meshNum].actorPos+colWork.actorNum;
+                colMesh[meshNum].bodyPos = HuMemDirectMallocNum(HEAP_MODEL, sizeof(HuVecF)*colWork.bodyNum*2, HU_MEMNUM_OVL);
+                colMesh[meshNum].bodyMove = colMesh[meshNum].bodyPos+colWork.bodyNum;
                 colMesh[meshNum].mask = -1;
                 colMesh[meshNum].mdlNo = no;
-                memset(colMesh[meshNum].actorPos, 0, sizeof(HuVecF)*colWork.actorNum);
-                memset(colMesh[meshNum].actorMove, 0, sizeof(HuVecF)*colWork.actorNum);
+                memset(colMesh[meshNum].bodyPos, 0, sizeof(HuVecF)*colWork.bodyNum);
+                memset(colMesh[meshNum].bodyMove, 0, sizeof(HuVecF)*colWork.bodyNum);
                 memset(colMesh[meshNum].mtx, 0, sizeof(Mtx));
                 memset(colMesh[meshNum].mtxOld, 0, sizeof(Mtx));
                 memset(colMesh[meshNum].mtxInv, 0, sizeof(Mtx));
@@ -3084,21 +3092,21 @@ u32 ColMapMaskGet(int mdlNo)
     return 0;
 }
 
-BOOL ColMapAltColReset(void)
+BOOL ColCylReset(void)
 {
     BOOL ret = (colWork.attr & 0x20) ? TRUE : FALSE;
     colWork.attr &= ~0x20;
     return ret;
 }
 
-BOOL ColMapAltColSet(void)
+BOOL ColCylSet(void)
 {
     BOOL ret = (colWork.attr & 0x20) ? FALSE : TRUE;
     colWork.attr |= 0x20;
     return ret;
 }
 
-void ColMapKill(void)
+void ColKill(void)
 {
     int no;
     CancelTRXF = FALSE;
@@ -3109,8 +3117,8 @@ void ColMapKill(void)
     if(colWork.mdlId) {
         HuMemDirectFree(colWork.mdlId);
     }
-    if(colWork.actor) {
-        HuMemDirectFree(colWork.actor);
+    if(colWork.body) {
+        HuMemDirectFree(colWork.body);
     }
     if(colWork.narrowCol) {
         HuMemDirectFree(colWork.narrowCol);
@@ -3126,8 +3134,8 @@ void ColMapKill(void)
     colWork.mdlId = NULL;
     colWork.attr = 0;
     colWork.broadColNum = 0;
-    colWork.actorNum = 0;
-    colWork.actor = NULL;
+    colWork.bodyNum = 0;
+    colWork.body = NULL;
     colWork.narrowCol = NULL;
     colWork.colOrder1 = NULL;
     colWork.colOrder2 = NULL;
@@ -3138,8 +3146,8 @@ void ColMapKill(void)
             if(colMesh[no].tri) {
                 HuMemDirectFree(colMesh[no].tri);
             }
-            if(colMesh[no].actorPos) {
-                HuMemDirectFree(colMesh[no].actorPos);
+            if(colMesh[no].bodyPos) {
+                HuMemDirectFree(colMesh[no].bodyPos);
             }
         }
         HuMemDirectFree(colMesh);
@@ -3153,16 +3161,16 @@ BOOL ColMapInitCheck(void)
     return colMapInitF;
 }
 
-void ColMapDirtyClear(void)
+void ColDirtyClear(void)
 {
     colWork.attr &= ~0x18;
 }
 
 
-void ColMapAttrParamSet(COLMAP_ATTR_PARAM *param, u32 polyAttr)
+void ColAttrParamSet(COL_ATTRPARAM *param, u32 polyAttr)
 {
     int code = ColCodeNoGet(polyAttr);
-    COLMAP_ATTR_PARAM *dst;
+    COL_ATTRPARAM *dst;
     if(code < 0 || !param) {
         return;
     }
@@ -3170,10 +3178,10 @@ void ColMapAttrParamSet(COLMAP_ATTR_PARAM *param, u32 polyAttr)
     *dst = *param;
 }
 
-void ColMapAttrParamGet(COLMAP_ATTR_PARAM *param, u32 polyAttr)
+void ColAttrParamGet(COL_ATTRPARAM *param, u32 polyAttr)
 {
     int code = ColCodeNoGet(polyAttr);
-    COLMAP_ATTR_PARAM *dst;
+    COL_ATTRPARAM *dst;
     if(code < 0 || !param) {
         return;
     }
@@ -3181,43 +3189,43 @@ void ColMapAttrParamGet(COLMAP_ATTR_PARAM *param, u32 polyAttr)
     *param = *dst;
 }
 
-void ColMapActorPosSet(HuVecF *pos, int no)
+void ColBodyPosSet(HuVecF *pos, int no)
 {
-    COLMAP_ACTOR *actorP = &colWork.actor[no];
+    COLBODY *bodyP = &colWork.body[no];
     int idx = (colWork.attr & 0x4) ? 1 : 0;
     HuVecF temp = *pos;
-    actorP->pos[idx] = temp;
-    if(actorP->param.attr & 0x1000000) {
-        actorP->pos[idx^1] = temp;
+    bodyP->pos[idx] = temp;
+    if(bodyP->param.attr & COLBODY_ATTR_RESET) {
+        bodyP->pos[idx^1] = temp;
     }
 }
 
-void ColMapActorPosGet(HuVecF *pos, int no)
+void ColBodyPosGet(HuVecF *pos, int no)
 {
     int idx = (colWork.attr & 0x4) ? 1 : 0;
     if(colWork.attr & 0x8) {
         idx ^= 1;
     }
-    *pos = colWork.actor[no].pos[idx];
+    *pos = colWork.body[no].pos[idx];
 }
 
-void ColMapActorParamSet(COLMAP_ACTOR_PARAM *param, int no)
+void ColBodyParamSet(COLBODY_PARAM *param, int no)
 {
-    if(no >= 0 && no < colWork.actorNum) {
-        colWork.actor[no].param = *param;
+    if(no >= 0 && no < colWork.bodyNum) {
+        colWork.body[no].param = *param;
     }
 }
 
-COLMAP_ACTOR *ColMapActorGetSafe(int no)
+COLBODY *ColBodyGet(int no)
 {
-    if(no >= 0 && no < colWork.actorNum) {
-        return &colWork.actor[no];
+    if(no >= 0 && no < colWork.bodyNum) {
+        return &colWork.body[no];
     } else {
         return NULL;
     }
 }
 
-BOOL ColMapPolyGet(HuVecF *pos1, HuVecF *pos2, u32 mask, HuVecF *outPos, u32 *outCode, int *outMdlNo, HSFOBJECT **outObj, int *outTriNo)
+BOOL ColPolyGet(HuVecF *pos1, HuVecF *pos2, u32 mask, HuVecF *outPos, u32 *outCode, int *outMdlNo, HSFOBJECT **outObj, int *outTriNo)
 {
     HSFFACE *hsfFaceP; //r31
     COLMESH *meshP; //r30
@@ -3349,9 +3357,9 @@ BOOL ColMapPolyGet(HuVecF *pos1, HuVecF *pos2, u32 mask, HuVecF *outPos, u32 *ou
     return TRUE;
 }
 
-void ColMapActorExec(void)
+void ColBodyExec(void)
 {
-    COLMAP_ACTOR *actorP; //r31
+    COLBODY *bodyP; //r31
     COLMESH *meshP; //r30
     int i; //r27
     int no; //r22
@@ -3368,65 +3376,65 @@ void ColMapActorExec(void)
         return;
     }
     UpdateMeshMtx();
-    for(actorP=colWork.actor, no=colWork.actorNum; no--; actorP++) {
-        if(actorP->param.attr & 0x1) {
-            actorP->groundAttr = 0;
-            actorP->oldPos = actorP->pos[otherPosNo];
-            VECSubtract(&actorP->pos[posNo], &actorP->oldPos, &actorP->moveDir);
-            actorP->pos[posNo] = actorP->oldPos;
-            actorP->colT = 0;
-            actorP->oldColT = 1;
-            actorP->colPointNum = 0;
-            actorP->paramAttr = 0;
-            memset(&actorP->colBit[0], 0, sizeof(actorP->colBit));
-            ClearColPoint(actorP);
+    for(bodyP=colWork.body, no=colWork.bodyNum; no--; bodyP++) {
+        if(bodyP->param.attr & COLBODY_ATTR_ACTIVE) {
+            bodyP->groundAttr = 0;
+            bodyP->oldPos = bodyP->pos[otherPosNo];
+            VECSubtract(&bodyP->pos[posNo], &bodyP->oldPos, &bodyP->moveDir);
+            bodyP->pos[posNo] = bodyP->oldPos;
+            bodyP->colT = 0;
+            bodyP->oldColT = 1;
+            bodyP->colPointNum = 0;
+            bodyP->paramAttr = 0;
+            memset(&bodyP->colBit[0], 0, sizeof(bodyP->colBit));
+            ClearColPoint(bodyP);
         }
     }
     for(meshP=colMesh, no=colMeshCount; no--; meshP++) {
-        for(actorP=colWork.actor, i=0; i<colWork.actorNum; i++, actorP++) {
-            if(actorP->param.attr & 0x1) {
-                if(actorP->param.attr & 0x01000000) {
-                    if(actorP->param.attr & 0x8000) {
-                        MTXMultVec(meshP->mtxInvOld, &actorP->pos[otherPosNo], &temp);
+        for(bodyP=colWork.body, i=0; i<colWork.bodyNum; i++, bodyP++) {
+            if(bodyP->param.attr & COLBODY_ATTR_ACTIVE) {
+                if(bodyP->param.attr & COLBODY_ATTR_RESET) {
+                    if(bodyP->param.attr & 0x8000) {
+                        MTXMultVec(meshP->mtxInvOld, &bodyP->pos[otherPosNo], &temp);
                         MTXMultVec(meshP->mtx, &temp, &temp);
-                        VECSubtract(&temp, &actorP->pos[otherPosNo], &meshP->actorMove[i]);
+                        VECSubtract(&temp, &bodyP->pos[otherPosNo], &meshP->bodyMove[i]);
                     } else {
-                        meshP->actorMove[i].x = 0;
-                        meshP->actorMove[i].y = 0;
-                        meshP->actorMove[i].z = 0;
+                        meshP->bodyMove[i].x = 0;
+                        meshP->bodyMove[i].y = 0;
+                        meshP->bodyMove[i].z = 0;
                     }
                 } else {
-                    MTXMultVec(meshP->mtx, &meshP->actorPos[i], &temp);
-                    VECSubtract(&temp, &actorP->pos[otherPosNo], &meshP->actorMove[i]);
+                    MTXMultVec(meshP->mtx, &meshP->bodyPos[i], &temp);
+                    VECSubtract(&temp, &bodyP->pos[otherPosNo], &meshP->bodyMove[i]);
                 }
-                if(fabs(meshP->actorMove[i].x) < 0.001f) {
-                    meshP->actorMove[i].x = 0;
+                if(fabs(meshP->bodyMove[i].x) < 0.001f) {
+                    meshP->bodyMove[i].x = 0;
                 }
-                if(fabs(meshP->actorMove[i].y) < 0.001f) {
-                    meshP->actorMove[i].y = 0;
+                if(fabs(meshP->bodyMove[i].y) < 0.001f) {
+                    meshP->bodyMove[i].y = 0;
                 }
-                if(fabs(meshP->actorMove[i].z) < 0.001f) {
-                    meshP->actorMove[i].z = 0;
+                if(fabs(meshP->bodyMove[i].z) < 0.001f) {
+                    meshP->bodyMove[i].z = 0;
                 }
             }
         }
     }
-    for(actorP=colWork.actor, no=colWork.actorNum; no--; actorP++) {
-        actorP->param.attr &= 0xFFFF;
+    for(bodyP=colWork.body, no=colWork.bodyNum; no--; bodyP++) {
+        bodyP->param.attr &= 0xFFFF;
     }
     while(colNum) {
         if(colWork.attr & 0x20) {
-            _ActorMeshSphereCol();
-            colNum = _ActorColSphereBroad();
+            _BodyMeshCylCol();
+            colNum = _BodyColCylBroad();
         } else {
-            _ActorMeshCol();
-            colNum = _ActorColBroad();
+            _BodyMeshCol();
+            colNum = _BodyColBroad();
         }
-        colNum += _ActorColNarrow();
-        colNum += _ActorColResponse();
+        colNum += _BodyColNarrow();
+        colNum += _BodyColResponse();
         _ColPointUpdate();
     }
-    _ActorMeshUpdate(posNo);
+    _BodyMeshUpdate(posNo);
     colWork.attr ^= 0x4;
     colWork.attr |= 0x8;
 }

@@ -19415,15 +19415,15 @@ float MBCaspuleAngleRotCamera(float angle)
     return HuAtan(dir.x, dir.z);
 }
 
-static void GetCoef(float t, float *out)
+static void GetCoef(float t, float *a, float *b, float *c, float *d)
 {
     float temp_f25 = t*t;
     float temp_f19 = t*temp_f25;
     float sp18 = ((3.0*temp_f25)-temp_f19)-temp_f19;
-    out[0] = 1.0-sp18;
-    out[1] = sp18;
-    out[2] = t+((temp_f19-temp_f25)-temp_f25);
-    out[3] = temp_f19-temp_f25;
+    *a = 1.0-sp18;
+    *b = sp18;
+    *c = t+((temp_f19-temp_f25)-temp_f25);
+    *d = temp_f19-temp_f25;
 }
 
 static float HermiteCalc(float t, float a, float b, float c, float d)
@@ -19431,15 +19431,18 @@ static float HermiteCalc(float t, float a, float b, float c, float d)
     float temp_f25;
     float temp_f22;
     float temp_f19;
-    int spB0;
-    float spAC;
-    float spA8;
-    float spA4;
-    float spA0;
-    float sp9C;
-    float sp8C[4];
-    float sp18;
     
+    float sp8C;
+    float sp90;
+    float sp94;
+    float sp98;
+    float sp9C;
+    float spA0;
+    float spA4;
+    float spA8;
+    float spAC;
+    int spB0;
+        
     temp_f22 = c-b;
     spB0 = c-b;
     if(b == c) {
@@ -19454,11 +19457,10 @@ static float HermiteCalc(float t, float a, float b, float c, float d)
         spA4 = 0.5f;
         spAC = spA4*(temp_f22+(d-c));
     }
-    GetCoef(t, sp8C);
-    return sp9C = (sp8C[0]*b)+(sp8C[1]*c)+(sp8C[2]*spA8)+(sp8C[3]*spAC);
+    GetCoef(t, &sp8C, &sp90, &sp94, &sp98);
+    return sp9C = (sp8C*b)+(sp90*c)+(sp94*spA8)+(sp98*spAC);
 }
 
-//Stack Ordering issues related to inlines
 void MBCapsuleHermiteGetV(float t, HuVecF *a, HuVecF *b, HuVecF *c, HuVecF *d, HuVecF *out)
 {
     out->x = HermiteCalc(t, a->x, b->x, c->x, d->x);
