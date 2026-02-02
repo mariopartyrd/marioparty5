@@ -738,7 +738,7 @@ void MgPlayerModeFuncSet(MGPLAYER *playerP, MGPLAYER_MODE_FUNC *funcTbl)
     }
 }
 
-static unsigned int defMotDataNum[17] = {
+static unsigned int defMotDataNum[MGPLAYER_MOT_NUM+1] = {
     CHARMOT_HSF_c000m1_300,
     CHARMOT_HSF_c000m1_301,
     CHARMOT_HSF_c000m1_302,
@@ -910,7 +910,7 @@ static void PlayerSetMotion(MGPLAYER *playerP, u16 motNo, float start, float end
 static void PlayerModeDefault(MGPLAYER *playerP)
 {
     MgPlayerModeSet(playerP, MGPLAYER_MODE_WALK);
-    PlayerSetMotion(playerP, 0, 0, 5, HU3D_MOTATTR_LOOP);
+    PlayerSetMotion(playerP, MGPLAYER_MOT_IDLE, 0, 5, HU3D_MOTATTR_LOOP);
 }
 
 static void PlayerModeWalk(MGPLAYER *playerP)
@@ -930,11 +930,11 @@ static void PlayerModeWalk(MGPLAYER *playerP)
             if(playerP->actionFlag & MGPLAYER_ACTFLAG_WALK) {
                 float speed2 = HuMag2Point2D(playerP->actor->vel.x, playerP->actor->vel.z);
                 if(speed2 > 25) {
-                    PlayerSetMotion(playerP, 2, 0, 5, HU3D_MOTATTR_LOOP);
+                    PlayerSetMotion(playerP, MGPLAYER_MOT_RUN, 0, 5, HU3D_MOTATTR_LOOP);
                 } else if(speed2 > 0.001) {
-                    PlayerSetMotion(playerP, 1, 0, 5, HU3D_MOTATTR_LOOP);
+                    PlayerSetMotion(playerP, MGPLAYER_MOT_WALK, 0, 5, HU3D_MOTATTR_LOOP);
                 } else {
-                    PlayerSetMotion(playerP, 0, 0, 5, HU3D_MOTATTR_LOOP);
+                    PlayerSetMotion(playerP, MGPLAYER_MOT_IDLE, 0, 5, HU3D_MOTATTR_LOOP);
                 }
             }
         }
@@ -949,7 +949,7 @@ static void PlayerModeJump(MGPLAYER *playerP)
 {
     switch(playerP->subMode) {
         case 0:
-            PlayerSetMotion(playerP, 3, 0, 1, HU3D_MOTATTR_NONE);
+            PlayerSetMotion(playerP, MGPLAYER_MOT_JUMP, 0, 1, HU3D_MOTATTR_NONE);
             playerP->actor->velY = GET_ACTOR_VELY(playerP->actor, 25000);
             MgPlayerModeAttrSet(playerP, MGPLAYER_MODEATTR_AIR);
             playerP->timer = 1;
@@ -969,13 +969,13 @@ static void PlayerModeJump(MGPLAYER *playerP)
                     float speed;
                     GET_STICK_SPEED(playerP, speed);
                     if(speed < 25.0f) {
-                        PlayerSetMotion(playerP, 4, 0, 5, HU3D_MOTATTR_NONE);
+                        PlayerSetMotion(playerP, MGPLAYER_MOT_LAND, 0, 5, HU3D_MOTATTR_NONE);
                         MgPlayerAttrSet(playerP, MGPLAYER_ATTR_ANGLELOCK|MGPLAYER_ATTR_MOVEOFF);
                         playerP->timer = 10;
                         playerP->subMode = 3;
                     } else {
                         MgPlayerModeSet(playerP, MGPLAYER_MODE_WALK);
-                        PlayerSetMotion(playerP, 0, 0, 5, HU3D_MOTATTR_LOOP);
+                        PlayerSetMotion(playerP, MGPLAYER_MOT_IDLE, 0, 5, HU3D_MOTATTR_LOOP);
                     }
                 } else {
                     if(!MgPlayerAttrCheck(playerP, MGPLAYER_ATTR_COMSTK)
@@ -990,7 +990,7 @@ static void PlayerModeJump(MGPLAYER *playerP)
             break;
        
         case 2:
-            PlayerSetMotion(playerP, 3, 0, 1, HU3D_MOTATTR_NONE);
+            PlayerSetMotion(playerP, MGPLAYER_MOT_JUMP, 0, 1, HU3D_MOTATTR_NONE);
             if(((playerP->actor->colGroundAttr & 0x7F)
                 && playerP->actor->colNorm.y > 0
                 || (playerP->actor->colGroundAttr & 0x4000))
@@ -998,17 +998,17 @@ static void PlayerModeJump(MGPLAYER *playerP)
                 float speed;
                 GET_STICK_SPEED(playerP, speed);
                 if(speed < 25.0f) {
-                    PlayerSetMotion(playerP, 4, 0, 5, HU3D_MOTATTR_NONE);
+                    PlayerSetMotion(playerP, MGPLAYER_MOT_LAND, 0, 5, HU3D_MOTATTR_NONE);
                     MgPlayerAttrSet(playerP, MGPLAYER_ATTR_ANGLELOCK|MGPLAYER_ATTR_MOVEOFF);
                     playerP->timer = 10;
                     playerP->subMode = 3;
                 } else {
                     MgPlayerModeSet(playerP, MGPLAYER_MODE_WALK);
-                    PlayerSetMotion(playerP, 0, 0, 5, HU3D_MOTATTR_LOOP);
+                    PlayerSetMotion(playerP, MGPLAYER_MOT_IDLE, 0, 5, HU3D_MOTATTR_LOOP);
                     CharModelLandDustCreate(playerP->charNo, &playerP->actor->pos);
                 }
             } else {
-                if(playerP->motNo == 3) {
+                if(playerP->motNo == MGPLAYER_MOT_JUMP) {
                     if(!MgPlayerAttrCheck(playerP, MGPLAYER_ATTR_COMSTK)
                         && !MgPlayerModeAttrCheck(playerP, MGPLAYER_MODEATTR_HEADJUMP)
                         && ((HuPadBtnDown[playerP->padNo] & PAD_BUTTON_A)
@@ -1044,7 +1044,7 @@ static void PlayerModeJump(MGPLAYER *playerP)
                 playerP->timer--;
             } else {
                 MgPlayerModeSet(playerP, MGPLAYER_MODE_WALK);
-                PlayerSetMotion(playerP, 0, 0, 5, HU3D_MOTATTR_LOOP);
+                PlayerSetMotion(playerP, MGPLAYER_MOT_IDLE, 0, 5, HU3D_MOTATTR_LOOP);
             }
             break;
     }
@@ -1054,23 +1054,23 @@ static void PlayerModeFall(MGPLAYER *playerP)
 {
     switch(playerP->subMode) {
         case 0:
-            PlayerSetMotion(playerP, 3, 0, 1, HU3D_MOTATTR_NONE);
+            PlayerSetMotion(playerP, MGPLAYER_MOT_JUMP, 0, 1, HU3D_MOTATTR_NONE);
             MgPlayerModeAttrSet(playerP, MGPLAYER_MODEATTR_AIR);
             if(playerP->actor->colGroundAttr & 0x407F) {
                 float speed;
                 GET_STICK_SPEED(playerP, speed);
-                if(speed < 25) {
-                    PlayerSetMotion(playerP, 4, 0, 5, HU3D_MOTATTR_NONE);
+                if(speed < 25.0f) {
+                    PlayerSetMotion(playerP, MGPLAYER_MOT_LAND, 0, 5, HU3D_MOTATTR_NONE);
                     MgPlayerAttrSet(playerP, MGPLAYER_ATTR_ANGLELOCK|MGPLAYER_ATTR_MOVEOFF);
                     playerP->timer = 10;
                     playerP->subMode = 1;
                 } else {
                     MgPlayerModeSet(playerP, MGPLAYER_MODE_WALK);
-                    PlayerSetMotion(playerP, 0, 0, 5, HU3D_MOTATTR_LOOP);
+                    PlayerSetMotion(playerP, MGPLAYER_MOT_IDLE, 0, 5, HU3D_MOTATTR_LOOP);
                     CharModelLandDustCreate(playerP->charNo, &playerP->actor->pos);
                 }
             } else {
-                if(playerP->motNo == 3) {
+                if(playerP->motNo == MGPLAYER_MOT_JUMP) {
                     if(!MgPlayerAttrCheck(playerP, MGPLAYER_ATTR_COMSTK)
                         && ((HuPadBtnDown[playerP->padNo] & PAD_BUTTON_A)
                         || (HuPadBtnDown[playerP->padNo] & PAD_TRIGGER_L))) {
@@ -1105,7 +1105,7 @@ static void PlayerModeFall(MGPLAYER *playerP)
                 playerP->timer--;
             } else {
                 MgPlayerModeSet(playerP, MGPLAYER_MODE_WALK);
-                PlayerSetMotion(playerP, 0, 0, 5, HU3D_MOTATTR_LOOP);
+                PlayerSetMotion(playerP, MGPLAYER_MOT_IDLE, 0, 5, HU3D_MOTATTR_LOOP);
             }
             break;
     }
@@ -1119,7 +1119,7 @@ static void PlayerModePunch(MGPLAYER *playerP)
         {
             int no;
             COLBODY *body;
-            PlayerSetMotion(playerP, 5, 0, 5, HU3D_MOTATTR_NONE);
+            PlayerSetMotion(playerP, MGPLAYER_MOT_PUNCH, 0, 5, HU3D_MOTATTR_NONE);
             playerP->timer = 20;
             MgPlayerAttrSet(playerP, MGPLAYER_ATTR_ANGLELOCK|MGPLAYER_ATTR_MOVEOFF);
             no = playerP->actor->no;
@@ -1169,21 +1169,20 @@ static void PlayerModePunch(MGPLAYER *playerP)
 
         case 2:
             MgPlayerModeSet(playerP, MGPLAYER_MODE_WALK);
-            PlayerSetMotion(playerP, 0, 0, 5, HU3D_MOTATTR_LOOP);
+            PlayerSetMotion(playerP, MGPLAYER_MOT_IDLE, 0, 5, HU3D_MOTATTR_LOOP);
             break;
     }
 }
 
 static void PlayerModeKick(MGPLAYER *playerP)
 {
-    
     switch(playerP->subMode) {
         case 0:
         {
             int no;
             COLBODY *body;
             MGACTOR_PARAM param;
-            PlayerSetMotion(playerP, 6, 0, 5, HU3D_MOTATTR_NONE);
+            PlayerSetMotion(playerP, MGPLAYER_MOT_KICK, 0, 5, HU3D_MOTATTR_NONE);
             playerP->timer = 20;
             no = playerP->actor->no;
             body = ColBodyGet(no);
@@ -1213,7 +1212,7 @@ static void PlayerModeKick(MGPLAYER *playerP)
             int no;
             no = playerP->actor->no;
             if(playerP->actor->colGroundAttr & 0x407F) {
-                PlayerSetMotion(playerP, 4, 0, 5, HU3D_MOTATTR_NONE);
+                PlayerSetMotion(playerP, MGPLAYER_MOT_LAND, 0, 5, HU3D_MOTATTR_NONE);
                 KillEffectPlayer(no);
                 playerP->timer = 10;
                 playerP->subMode = 2;
@@ -1231,7 +1230,7 @@ static void PlayerModeKick(MGPLAYER *playerP)
             if(playerP->timer > 0) {
                 playerP->timer = -1;
             } else {
-                PlayerSetMotion(playerP, 0, 0, 5, HU3D_MOTATTR_LOOP);
+                PlayerSetMotion(playerP, MGPLAYER_MOT_IDLE, 0, 5, HU3D_MOTATTR_LOOP);
                 MgPlayerModeSet(playerP, MGPLAYER_MODE_WALK);
             }
             
@@ -1243,7 +1242,7 @@ static void PlayerModeHipDrop(MGPLAYER *playerP)
 {
     switch(playerP->subMode) {
         case 0:
-            PlayerSetMotion(playerP, 7, 0, 5, HU3D_MOTATTR_NONE);
+            PlayerSetMotion(playerP, MGPLAYER_MOT_HIPDROP, 0, 5, HU3D_MOTATTR_NONE);
             playerP->timer = 20;
             MgPlayerAttrSet(playerP, MGPLAYER_ATTR_ANGLELOCK|MGPLAYER_ATTR_MOVEOFF);
             playerP->subMode = 1;
@@ -1290,7 +1289,7 @@ static void PlayerModeHipDrop(MGPLAYER *playerP)
                 playerP->timer = 20;
                 playerP->subMode = 3;
                 MgPlayerVibAttrSet(playerP, 0x200);
-                PlayerSetMotion(playerP, 8, 0, 5, HU3D_MOTATTR_NONE);
+                PlayerSetMotion(playerP, MGPLAYER_MOT_HIPDROP_LAND, 0, 5, HU3D_MOTATTR_NONE);
                 KillEffectPlayer(playerP->actor->no);
             }
         }
@@ -1302,7 +1301,7 @@ static void PlayerModeHipDrop(MGPLAYER *playerP)
             } else {
                 playerP->timer = 20;
                 playerP->subMode = 4;
-                PlayerSetMotion(playerP, 9, 0, 5, HU3D_MOTATTR_NONE);
+                PlayerSetMotion(playerP, MGPLAYER_MOT_HIPDROP_END, 0, 5, HU3D_MOTATTR_NONE);
             }
             break;
         
@@ -1314,7 +1313,7 @@ static void PlayerModeHipDrop(MGPLAYER *playerP)
                     MgPlayerAttrReset(playerP, MGPLAYER_ATTR_ANGLELOCK|MGPLAYER_ATTR_MOVEOFF);
                 }
                 MgPlayerModeSet(playerP, MGPLAYER_MODE_WALK);
-                PlayerSetMotion(playerP, 0, 0, 5, HU3D_MOTATTR_LOOP);
+                PlayerSetMotion(playerP, MGPLAYER_MOT_IDLE, 0, 5, HU3D_MOTATTR_LOOP);
             }
             break;
     }
@@ -1339,10 +1338,10 @@ static void PlayerModeHit(MGPLAYER *playerP)
             MTXRotDeg(rotMtx, 'Y', playerP->stunAngle);
             MTXMultVec(rotMtx, &up, &stunDir);
             if(VECDotProduct(&rotDir, &stunDir) < 0) {
-                PlayerSetMotion(playerP, 10, 0, 5, HU3D_MOTATTR_NONE);
+                PlayerSetMotion(playerP, MGPLAYER_MOT_HIT_BACK, 0, 5, HU3D_MOTATTR_NONE);
                 playerP->actor->rotY = WrapAngle(playerP->stunAngle+180);
             } else {
-                PlayerSetMotion(playerP, 11, 0, 5, HU3D_MOTATTR_NONE);
+                PlayerSetMotion(playerP, MGPLAYER_MOT_HIT_FRONT, 0, 5, HU3D_MOTATTR_NONE);
                 playerP->actor->rotY = playerP->stunAngle;
             }
             playerP->timer = 45;
@@ -1357,11 +1356,11 @@ static void PlayerModeHit(MGPLAYER *playerP)
             if(playerP->timer > 0) {
                 playerP->actor->vel.x = 0;
                 playerP->actor->vel.y = 0;
-                if(playerP->motNo == 10) {
+                if(playerP->motNo == MGPLAYER_MOT_HIT_BACK) {
                     if(playerP->timer > 25) {
                         playerP->actor->vel.z = -(playerP->timer/1.7f)*((playerP->timer-25)/20);
                     }
-                } else if(playerP->motNo == 11) {
+                } else if(playerP->motNo == MGPLAYER_MOT_HIT_FRONT) {
                     if(playerP->timer > 0) {
                         playerP->actor->vel.z = (playerP->timer/3.0f)*(playerP->timer/45);
                     }
@@ -1376,7 +1375,7 @@ static void PlayerModeHit(MGPLAYER *playerP)
             playerP->stunType = MGPLAYER_STUN_BLINK;
             MgPlayerAttrReset(playerP, MGPLAYER_ATTR_ANGLELOCK|MGPLAYER_ATTR_MOVEOFF);
             MgPlayerModeSet(playerP, MGPLAYER_MODE_WALK);
-            PlayerSetMotion(playerP, 0, 0, 5, HU3D_MOTATTR_LOOP);
+            PlayerSetMotion(playerP, MGPLAYER_MOT_IDLE, 0, 5, HU3D_MOTATTR_LOOP);
             break;
             
     }
@@ -1401,10 +1400,10 @@ static void PlayerModeKnockback(MGPLAYER *playerP)
             MTXRotDeg(rotMtx, 'Y', playerP->stunAngle);
             MTXMultVec(rotMtx, &up, &stunDir);
             if(VECDotProduct(&rotDir, &stunDir) < 0) {
-                PlayerSetMotion(playerP, 12, 0, 5, HU3D_MOTATTR_NONE);
+                PlayerSetMotion(playerP, MGPLAYER_MOT_KNOCKBACK_BACK, 0, 5, HU3D_MOTATTR_NONE);
                 playerP->actor->rotY = WrapAngle(playerP->stunAngle+180);
             } else {
-                PlayerSetMotion(playerP, 13, 0, 5, HU3D_MOTATTR_NONE);
+                PlayerSetMotion(playerP, MGPLAYER_MOT_KNOCKBACK_FRONT, 0, 5, HU3D_MOTATTR_NONE);
                 playerP->actor->rotY = playerP->stunAngle;
             }
             playerP->timer = 45;
@@ -1419,18 +1418,18 @@ static void PlayerModeKnockback(MGPLAYER *playerP)
                 playerP->actor->vel.x = 0;
                 playerP->actor->vel.y = 0;
                 if(playerP->timer > 25) {
-                    if(playerP->motNo == 12) {
+                    if(playerP->motNo == MGPLAYER_MOT_KNOCKBACK_BACK) {
                         playerP->actor->vel.z = -(playerP->timer/1.4f)*((playerP->timer-25)/20);
-                    } else if(playerP->motNo == 13) {
+                    } else if(playerP->motNo == MGPLAYER_MOT_KNOCKBACK_FRONT) {
                         playerP->actor->vel.z = (playerP->timer/1.4f)*((playerP->timer-25)/20);
                     }
                 }
                 playerP->timer--;
             } else {
-                if(playerP->motNo == 12) {
-                    PlayerSetMotion(playerP, 14, 0, 5, HU3D_MOTATTR_NONE);
-                } else if(playerP->motNo == 13) {
-                    PlayerSetMotion(playerP, 15, 0, 5, HU3D_MOTATTR_NONE);
+                if(playerP->motNo == MGPLAYER_MOT_KNOCKBACK_BACK) {
+                    PlayerSetMotion(playerP, MGPLAYER_MOT_KNOCKBACK_BACK_END, 0, 5, HU3D_MOTATTR_NONE);
+                } else if(playerP->motNo == MGPLAYER_MOT_KNOCKBACK_FRONT) {
+                    PlayerSetMotion(playerP, MGPLAYER_MOT_KNOCKBACK_FRONT_END, 0, 5, HU3D_MOTATTR_NONE);
                 }
                 playerP->timer = 30;
                 playerP->subMode = 2;
@@ -1444,7 +1443,7 @@ static void PlayerModeKnockback(MGPLAYER *playerP)
                 playerP->stunType = MGPLAYER_STUN_BLINK;
                 MgPlayerAttrReset(playerP, MGPLAYER_ATTR_ANGLELOCK|MGPLAYER_ATTR_MOVEOFF);
                 MgPlayerModeSet(playerP, MGPLAYER_MODE_WALK);
-                PlayerSetMotion(playerP, 0, 0, 5, HU3D_MOTATTR_LOOP);
+                PlayerSetMotion(playerP, MGPLAYER_MOT_IDLE, 0, 5, HU3D_MOTATTR_LOOP);
             }
             
             break;
@@ -1488,7 +1487,7 @@ static void PlayerModeSquish(MGPLAYER *playerP)
             playerP->stunType = MGPLAYER_STUN_BLINK;
             playerP->squishTime = 90;
             MgPlayerModeSet(playerP, MGPLAYER_MODE_WALK);
-            PlayerSetMotion(playerP, 0, 0, 5, HU3D_MOTATTR_LOOP);
+            PlayerSetMotion(playerP, MGPLAYER_MOT_IDLE, 0, 5, HU3D_MOTATTR_LOOP);
             break;
     }
 }
@@ -1508,7 +1507,7 @@ static void PlayerModeSquishHard(MGPLAYER *playerP)
                 body->param.height = playerP->squishOldHeight;
             }
             playerP->timer = 5;
-            PlayerSetMotion(playerP, 0, 0, 5, HU3D_MOTATTR_LOOP);
+            PlayerSetMotion(playerP, MGPLAYER_MOT_IDLE, 0, 5, HU3D_MOTATTR_LOOP);
             playerP->stunType = MGPLAYER_STUN_FREEZE;
             playerP->subMode = 1;
             break;
@@ -1571,7 +1570,7 @@ static void PlayerModeSquishHard(MGPLAYER *playerP)
             MgPlayerAttrReset(playerP, MGPLAYER_ATTR_ANGLELOCK|MGPLAYER_ATTR_MOVEOFF);
             playerP->stunType = MGPLAYER_STUN_BLINK;
             MgPlayerModeSet(playerP, MGPLAYER_MODE_WALK);
-            PlayerSetMotion(playerP, 0, 0, 5, HU3D_MOTATTR_LOOP);
+            PlayerSetMotion(playerP, MGPLAYER_MOT_IDLE, 0, 5, HU3D_MOTATTR_LOOP);
             break;
     }
 }
@@ -1581,30 +1580,30 @@ static void PlayerModeJumpAlt(MGPLAYER *playerP)
     switch(playerP->subMode) {
         case 0:
             MgPlayerModeAttrSet(playerP, MGPLAYER_MODEATTR_AIR);
-            PlayerSetMotion(playerP, 3, 0, 1, HU3D_MOTATTR_NONE);
+            PlayerSetMotion(playerP, MGPLAYER_MOT_JUMP, 0, 1, HU3D_MOTATTR_NONE);
             playerP->actor->velY = GET_ACTOR_VELY(playerP->actor, 25000);
             playerP->subMode = 1;
             break;
         
         case 1:
         case 2:
-            PlayerSetMotion(playerP, 3, 0, 1, HU3D_MOTATTR_NONE);
+            PlayerSetMotion(playerP, MGPLAYER_MOT_JUMP, 0, 1, HU3D_MOTATTR_NONE);
             if(((playerP->actor->colGroundAttr & 0x7F)
                     && playerP->actor->colNorm.y > 0
                     || (playerP->actor->colGroundAttr & 0x4000))
                     && playerP->actor->velY < 0.001) {
                         float speed = VECSquareMag(&playerP->actor->vel);
-                        if(speed < 25) {
-                            PlayerSetMotion(playerP, 4, 0, 5, HU3D_MOTATTR_NONE);
+                        if(speed < 25.0f) {
+                            PlayerSetMotion(playerP, MGPLAYER_MOT_LAND, 0, 5, HU3D_MOTATTR_NONE);
                             MgPlayerAttrSet(playerP, MGPLAYER_ATTR_ANGLELOCK|MGPLAYER_ATTR_MOVEOFF);
                             playerP->timer = 10;
                             playerP->subMode = 3;
                         } else {
                             MgPlayerModeSet(playerP, MGPLAYER_MODE_WALK);
-                            PlayerSetMotion(playerP, 0, 0, 5, HU3D_MOTATTR_LOOP);
+                            PlayerSetMotion(playerP, MGPLAYER_MOT_IDLE, 0, 5, HU3D_MOTATTR_LOOP);
                         }
                     } else {
-                        playerP->motNo == 3;
+                        playerP->motNo == MGPLAYER_MOT_JUMP;
                     }
             break;
         
@@ -1623,7 +1622,7 @@ static void PlayerModeJumpAlt(MGPLAYER *playerP)
                     playerP->timer--;
             } else {
                 MgPlayerModeSet(playerP, MGPLAYER_MODE_WALK);
-                PlayerSetMotion(playerP, 0, 0, 5, HU3D_MOTATTR_LOOP);
+                PlayerSetMotion(playerP, MGPLAYER_MOT_IDLE, 0, 5, HU3D_MOTATTR_LOOP);
             }
             break;
     }
