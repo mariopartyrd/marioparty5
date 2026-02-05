@@ -14,7 +14,7 @@ typedef struct MgSeqManWork_s {
     s16 unk2E;
     u16 mode;
     s16 unk32;
-    s32 recordVal;
+    int recordVal;
     s16 winner[4];
     s16 modeDelayTbl[MGSEQ_MODE_MAX];
     u16 modeHookNum;
@@ -351,16 +351,16 @@ static void SeqSetTimerPos(s32 pos, MGTIMER *timer) {
     }
 }
 
-u16 MgSeqModeGet() {
+u32 MgSeqModeGet() {
     return seqWork.mode;
 }
 
-u16 MgSeqModeNext() {
+u32 MgSeqModeNext() {
     seqWork.statBit |= MGSEQ_STAT_MODENEXT;
     return seqWork.mode;
 }
 
-u16 MgSeqModeSet(u32 mode) {
+u32 MgSeqModeSet(u32 mode) {
     if (mode > MGSEQ_MODE_CLOSE) {
         mode = MGSEQ_MODE_CLOSE;
     }
@@ -386,10 +386,10 @@ s32 MgSeqTimerValueGet() {
     return MgTimerValueGet(seqWork.timer);
 }
 
-void MgSeqRecordSet(s32 arg0) {
+void MgSeqRecordSet(int recordVal) {
     if (!_CheckFlag(FLAG_MG_PRACTICE)) {
         seqWork.statBit |= MGSEQ_STAT_RECORD;
-        seqWork.recordVal = arg0;
+        seqWork.recordVal = recordVal;
     }
 }
 

@@ -875,7 +875,7 @@ config.libs = [
     Rel(
         "actmanDLL",
         objects={
-            Object(NonMatching, "REL/actmanDLL/actman.c"),
+            Object(Matching, "REL/actmanDLL/actman.c"),
         },
     ),
     Rel(
@@ -1838,6 +1838,12 @@ config.libs = [
         },
     ),
     Rel(
+        "motchkDll",
+        objects={
+            Object(NonMatching, "REL/motchkDll/motchk.c"),
+        },
+    ),
+    Rel(
         "partyresultdll",
         objects={
             Object(NonMatching, "REL/partyresultdll/partyresult.c"),
@@ -1896,12 +1902,6 @@ config.libs = [
         },
     ),
     Rel(
-        "motchkDll",
-        objects={
-            Object(NonMatching, "REL/motchkDll/motchk.c"),
-        },
-    ),
-    Rel(
         "safDll",
         objects={
             Object(NonMatching, "REL/safDll/safanim.c"),
@@ -1912,7 +1912,7 @@ config.libs = [
     Rel(
         "sequencedll",
         objects={
-            Object(NonMatching, "REL/sequencedll/sequence.c"),
+            Object(Matching, "REL/sequencedll/sequence.c"),
         },
     ),
     Rel(
