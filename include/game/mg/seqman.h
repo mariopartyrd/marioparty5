@@ -4,6 +4,7 @@
 #include "dolphin/types.h"
 #include "game/mg/timer.h"
 #include "game/gamemes.h"
+#include "game/charman.h"
 
 typedef void (*MGSEQ_FUNC)(s16 mode, s16 frameNo);
 
@@ -39,6 +40,10 @@ typedef void (*MGSEQ_FUNC)(s16 mode, s16 frameNo);
 #define MGSEQ_TIMER_BOTTOM 1
 #define MGSEQ_TIMER_RIGHT 2
 
+#define MgSeqWinnerSet1(charNo) MgSeqWinnerSet(charNo, CHARNO_NONE, CHARNO_NONE, CHARNO_NONE)
+#define MgSeqWinnerSet2(charNo1, charNo2) MgSeqWinnerSet(charNo1, charNo2, CHARNO_NONE, CHARNO_NONE)
+#define MgSeqWinnerSet3(charNo1, charNo2, charNo3) MgSeqWinnerSet(charNo1, charNo2, charNo3, CHARNO_NONE)
+
 typedef struct MgSeqParam_s {
     s16 maxTime;
     u8 timerPos;
@@ -61,13 +66,13 @@ typedef struct {
 void MgSeqCreate(MGSEQ_PARAM* param);
 void MgSeqCreatePrio(MGSEQ_PARAM* param, s32 prio);
 void MgSeqKill();
-u16 MgSeqModeGet();
-u16 MgSeqModeNext();
-u16 MgSeqModeSet(u32 mode);
+u32 MgSeqModeGet();
+u32 MgSeqModeNext();
+u32 MgSeqModeSet(u32 mode);
 u16 MgSeqModeChangeOff();
 u16 MgSeqModeChangeOn();
 s32 MgSeqTimerValueGet();
-void MgSeqRecordSet(s32 record);
+void MgSeqRecordSet(int recordVal);
 u16 MgSeqStatGet();
 u16 MgSeqWinnerSet(s16 charNo1, s16 charNo2, s16 charNo3, s16 charNo4);
 u16 MgSeqDrawSet();
