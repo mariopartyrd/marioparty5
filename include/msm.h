@@ -55,6 +55,7 @@
 #define MSM_PAN_LEFT 32
 #define MSM_PAN_CENTER 64
 #define MSM_PAN_RIGHT 96
+#define MSM_PAN_WIDTH 64
 
 #define MSM_SE_DONE 0
 #define MSM_SE_PLAY 1
