@@ -257,8 +257,7 @@ jumptable_1_data_434 = .data:0x00000434; // type:object size:0x60 scope:local
 lbl_1_data_494 = .data:0x00000494; // type:object size:0x10
 lbl_1_data_4A4 = .data:0x000004A4; // type:object size:0x80
 lbl_1_data_524 = .data:0x00000524; // type:object size:0x10 align:4 data:float
-lbl_1_data_534 = .data:0x00000534; // type:object size:0x10 align:4
-
+lbl_1_data_534 = .data:0x00000534; // type:object size:0x4 align:4
 jumptable_1_data_538 = .data:0x00000538; // type:object size:0x34 scope:local
 lbl_1_data_56C = .data:0x0000056C; // type:object size:0xC
 jumptable_1_data_578 = .data:0x00000578; // type:object size:0x74 scope:local
