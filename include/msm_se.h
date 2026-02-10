@@ -233,6 +233,14 @@
 #define MSM_SE_MENU_12 978
 #define MSM_SE_MENU_13 979
 #define MSM_SE_MENU_15 981
+#define MSM_SE_MENU_16 982
+#define MSM_SE_MENU_19 985
+#define MSM_SE_MENU_20 986
+#define MSM_SE_MENU_21 987
+#define MSM_SE_MENU_22 988
+#define MSM_SE_MENU_23 989
+#define MSM_SE_MENU_24 990
+
 
 #define MSM_SE_MENU_40 1006
 

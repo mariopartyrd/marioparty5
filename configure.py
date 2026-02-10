@@ -1787,9 +1787,9 @@ config.libs = [
     Rel(
         "mdselDll",
         objects={
-            Object(NonMatching, "REL/mdselDll/mdsel.c"),
-            Object(NonMatching, "REL/mdselDll/object.c"),
-            Object(NonMatching, "REL/mdselDll/stage.c"),
+            Object(Matching, "REL/mdselDll/mdsel.c"),
+            Object(Matching, "REL/mdselDll/object.c"),
+            Object(Matching, "REL/mdselDll/stage.c"),
         },
     ),
     Rel(

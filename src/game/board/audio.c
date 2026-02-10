@@ -652,7 +652,7 @@ u8 MBAudFXPosPanGet(Vec *pos)
     HuVecF pos2D;
     int pan;
     Hu3D3Dto2D(pos, HU3D_CAM0, &pos2D);
-    pan = (int)((pos2D.x*(1.0f/HU_DISP_WIDTH))*(MSM_PAN_RIGHT-MSM_PAN_LEFT))+MSM_PAN_LEFT;
+    pan = (int)((pos2D.x*(1.0f/HU_DISP_WIDTH))*MSM_PAN_WIDTH)+MSM_PAN_LEFT;
     if(pan < MSM_PAN_LEFT) {
         pan = MSM_PAN_LEFT;
     } else if(pan > MSM_PAN_RIGHT) {
