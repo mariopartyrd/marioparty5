@@ -1,13 +1,11 @@
-#include "REL/fileseldll.h"
-
-#define TOUEI_FB_W 64
-#define TOUEI_FB_H 64
-
-#define TOUEI_MAX 9
+#include "REL/instDll.h"
 
 
-static void *ToueiFbCopyBuf[TOUEI_MAX];
-static HuVecF ToueiFbCopyPos[TOUEI_MAX];
+#define TOUEI_FB_W 80
+#define TOUEI_FB_H 80
+
+static void *ToueiFbCopyBuf[INST_CHARMDL_MAX];
+static HuVecF ToueiFbCopyPos[INST_CHARMDL_MAX*2];
 static s16 ToueiNo;
 
 static char *ToueiCenterObj[15] = {
@@ -37,7 +35,7 @@ static float ToueiCenterOfsY[13] = {
     6,
     -5,
     20,
-    45,
+    70,
     15,
     15,
     15,
@@ -49,35 +47,38 @@ static void ToueiZClear(void);
 static void ToueiMatHook(HU3DDRAWOBJ *drawObj, HSFMATERIAL *material);
 
 
-void ToueiDispInit(void)
+void ToueiDispInit(char *movie)
 {
     s16 i;
     HuVecF pos3D;
     HuVecF pos2D;
     s16 posX, posY;
-    for(i=0; i<8; i++) {
-        ToueiFbCopyBuf[i] = HuMemDirectMallocNum(HEAP_MODEL, GXGetTexBufferSize(TOUEI_FB_W, TOUEI_FB_H, GX_TF_RGB565, GX_FALSE, 0), HU_MEMNUM_OVL);
-        if(i != 7) {
-            Hu3DModelObjPosGet(charToueiMdlId[i], ToueiCenterObj[i], &pos3D);
-            pos3D.y += ToueiCenterOfsY[i];
-        } else {
-            pos3D = Hu3DData[charToueiMdlId[i]].pos;
+    for(i=0; i<INST_CHARMDL_MAX; i++) {
+        if(CharMdlId[i] != HU3D_MODELID_NONE) {
+            ToueiFbCopyBuf[i] = HuMemDirectMallocNum(HEAP_MODEL, GXGetTexBufferSize(TOUEI_FB_W, TOUEI_FB_H, GX_TF_RGB565, GX_FALSE, 0), HU_MEMNUM_OVL);
+            if(i < GW_PLAYER_MAX) {
+                Hu3DModelObjPosGet(CharMdlId[i], ToueiCenterObj[CharNo[i]], &pos3D);
+                pos3D.y += ToueiCenterOfsY[CharNo[i]];
+            } else {
+                pos3D = Hu3DData[CharMdlId[i]].pos;
+                pos3D.y = 125;
+            }
+            Hu3D3Dto2D(&pos3D, HU3D_CAM0, &pos2D);
+            posX = pos2D.x*(640.0/576.0);
+            posY = pos2D.y;
+            posX &= 0xFFFE;
+            posY &= 0xFFFE;
+            ToueiFbCopyPos[i].x = posX;
+            ToueiFbCopyPos[i].y = posY;
+            Hu3DModelMatHookSet(StageMdlId[STAGE_MODEL_TOUEI1+i], ToueiMatHook);
         }
-        Hu3D3Dto2D(&pos3D, HU3D_CAM0, &pos2D);
-        posX = pos2D.x*(640.0/576.0);
-        posY = pos2D.y;
-        posX &= 0xFFFE;
-        posY &= 0xFFFE;
-        ToueiFbCopyPos[i].x = posX;
-        ToueiFbCopyPos[i].y = posY;
-        Hu3DModelMatHookSet(ToueiMdlId[i], ToueiMatHook);
     }
-    ToueiFbCopyBuf[i] = HuMemDirectMallocNum(HEAP_MODEL, GXGetTexBufferSize(TOUEI_FB_W, TOUEI_FB_H, GX_TF_RGB565, GX_FALSE, 0), HU_MEMNUM_OVL);
-    ToueiFbCopyPos[i].x = posX+TOUEI_FB_W;
-    ToueiFbCopyPos[i].y = posY+TOUEI_FB_H;
+    CharMdlId[INST_CHARMDL_NPC] != HU3D_MODELID_NONE;
     Hu3DLayerHookSet(0, ToueiFBCopy);
+    HuTHPSprCreateVol(movie, TRUE, 100, 0);
+    Hu3DModelMatHookSet(StageMdlId[STAGE_MODEL_MGMOVIE], HuTHPMatHook);
+    
 }
-
 
 static void ToueiFBCopy(s16 layerNo)
 {
@@ -87,9 +88,14 @@ static void ToueiFBCopy(s16 layerNo)
         GXSetFog(GX_FOG_NONE, 0, 0, 0, 0, fogColor);
     } else {
         s16 i;
-        s16 temp;
-        for(temp=i=0; i<TOUEI_MAX; i++) {
-            Hu3DFbCopyExec(ToueiFbCopyPos[i].x-(TOUEI_FB_W/2), ToueiFbCopyPos[i].y-(TOUEI_FB_H/2), TOUEI_FB_W, TOUEI_FB_H, GX_TF_RGB565, GX_FALSE, ToueiFbCopyBuf[i]);
+        s16 num;
+        GXSetFog(GX_FOG_PERSP_EXP, 2700, 4000, cameraP->near, cameraP->far, ToueiFogColor);
+        
+        for(i=num=0; i<INST_CHARMDL_MAX; i++) {
+            if(CharMdlId[i] != HU3D_MODELID_NONE && !(Hu3DData[StageMdlId[STAGE_MODEL_TOUEI1+i]].attr &HU3D_ATTR_DISPOFF)) {
+                Hu3DFbCopyExec(ToueiFbCopyPos[i].x-(TOUEI_FB_W/2), ToueiFbCopyPos[i].y-(TOUEI_FB_H/2), TOUEI_FB_W, TOUEI_FB_H, GX_TF_RGB565, GX_FALSE, ToueiFbCopyBuf[num++]);
+            }
+            
         }
         ToueiZClear();
         ToueiNo = 0;
@@ -116,7 +122,7 @@ static void ToueiZClear(void)
     GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XYZ, GX_F32, 0);
     color.r = color.g = color.b = 0;
     GXSetTevColor(GX_TEVREG0, color);
-    GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR0);
+    GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR0A0);
     GXSetTevColorIn(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, GX_CC_C0);
     GXSetTevColorOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
     GXSetTevAlphaIn(GX_TEVSTAGE0, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, GX_CA_KONST);
@@ -126,7 +132,6 @@ static void ToueiZClear(void)
     GXSetCullMode(GX_CULL_NONE);
     GXSetAlphaCompare(GX_GEQUAL, 0, GX_AOP_AND, GX_GEQUAL, 0);
     GXSetZMode(GX_TRUE, GX_ALWAYS, GX_TRUE);
-    GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_NOOP);
 
     pos.x = pos.y = pos.z = 0;
     target.x = target.y = 0;
@@ -149,13 +154,8 @@ static void ToueiMatHook(HU3DDRAWOBJ *drawObj, HSFMATERIAL *material)
     GXTexObj texObj;
     GXColor color = { 32, 32, 32, 128 };
     HU3DCAMERA *cameraP = &Hu3DCamera[Hu3DCameraNo];
-    int i;
-    for(i=0; i<SAVE_BOX_MAX; i++) {
-        if(drawObj->model == &Hu3DData[fileselBox[i].toueiMdlId]) {
-            break;
-        }
-    }
-    GXInitTexObj(&texObj, ToueiFbCopyBuf[fileselBox[i].charNo], TOUEI_FB_W, TOUEI_FB_H, GX_TF_RGB565, GX_CLAMP, GX_CLAMP, GX_FALSE);
+    GXInitTexObj(&texObj, ToueiFbCopyBuf[ToueiNo], TOUEI_FB_W, TOUEI_FB_H, GX_TF_RGB565, GX_CLAMP, GX_CLAMP, GX_FALSE);
+    
     GXInitTexObjLOD(&texObj, GX_LINEAR, GX_LINEAR, 0.0f, 0.0f, 0.0f, GX_FALSE, GX_FALSE, GX_ANISO_1);
     GXLoadTexObj(&texObj, GX_TEXMAP0);
     GXSetNumTexGens(1);
@@ -167,4 +167,5 @@ static void ToueiMatHook(HU3DDRAWOBJ *drawObj, HSFMATERIAL *material)
     GXSetTevColorOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
     GXSetTevAlphaIn(GX_TEVSTAGE0, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, GX_CA_KONST);
     GXSetTevAlphaOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+    ToueiNo++;
 }

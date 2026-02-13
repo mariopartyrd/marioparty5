@@ -25,7 +25,7 @@ typedef struct FileselBox_s {
 } FILESEL_BOX;
 
 extern HU3DMODELID charToueiMdlId[];
-extern HU3DMODELID toueiMdlId[SAVE_BOX_MAX];
+extern HU3DMODELID ToueiMdlId[SAVE_BOX_MAX];
 extern FILESEL_BOX fileselBox[SAVE_BOX_MAX];
 extern HUWINID infoWinId;
 extern HUWINID helpWinId;

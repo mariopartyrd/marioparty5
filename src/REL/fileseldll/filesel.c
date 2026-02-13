@@ -50,7 +50,7 @@ static OMOBJMAN *objman;
 HU3DMODELID charToueiMdlId[44];
 static HU3DMOTID charMotId[11][2];
 static HU3DMODELID charMdlId[11];
-HU3DMODELID toueiMdlId[SAVE_BOX_MAX];
+HU3DMODELID ToueiMdlId[SAVE_BOX_MAX];
 static HUSPRGRPID backGrpId;
 static HUSPRGRPID boxGrpId[SAVE_BOX_MAX];
 static HUWINID boxNameWinId[SAVE_BOX_MAX];
@@ -217,12 +217,12 @@ void FileselInit(void)
         Hu3DModelProjectionSet(charMdlId[i], projId);
     }
     for(i=0; i<SAVE_BOX_MAX; i++) {
-        toueiMdlId[i] = Hu3DModelCreateData(FILESEL_HSF_touei);
-        Hu3DModelPosSet(toueiMdlId[i], ((i%4)*200)-400, (i/4)*270, 0);
-        Hu3DModelScaleSet(toueiMdlId[i], 0.7f, 0.7f, 0.3f);
-        Hu3DModelCameraSet(toueiMdlId[i], HU3D_CAM1);
-        Hu3DModelLayerSet(toueiMdlId[i], 2);
-        Hu3DModelDispOff(toueiMdlId[i]);
+        ToueiMdlId[i] = Hu3DModelCreateData(FILESEL_HSF_touei);
+        Hu3DModelPosSet(ToueiMdlId[i], ((i%4)*200)-400, (i/4)*270, 0);
+        Hu3DModelScaleSet(ToueiMdlId[i], 0.7f, 0.7f, 0.3f);
+        Hu3DModelCameraSet(ToueiMdlId[i], HU3D_CAM1);
+        Hu3DModelLayerSet(ToueiMdlId[i], 2);
+        Hu3DModelDispOff(ToueiMdlId[i]);
     }
     ToueiDispInit();
     HuSprExecLayerCameraSet(32, 2, 1);
@@ -278,9 +278,8 @@ void FileselInit(void)
         HuWinBGTPLvlSet(boxNameWinId[i], 0);
         winP = &winData[boxNameWinId[i]];
         winP->charPadX = 0;
-        fileselBox[i].toueiMdlId = toueiMdlId[i];
+        fileselBox[i].toueiMdlId = ToueiMdlId[i];
         fileselBox[i].grpId = grpId;
-        
         fileselBox[i].winId = boxNameWinId[i];
     }
     HuPrcChildCreate(FileselBackUpdate, 256, 8192, 0, HuPrcCurrentGet());
@@ -365,15 +364,15 @@ void FileselBackUpdate(void)
             pos2D.y = gp->pos.y-(42*gp->scale.x);
             pos2D.z = 1600;
             Hu3D2Dto3D(&pos2D, HU3D_CAM1, &pos3D);
-            Hu3DModelPosSetV(toueiMdlId[i], &pos3D);
-            Hu3DModelScaleSet(toueiMdlId[i], gp->scale.x*0.7, gp->scale.y*0.7, gp->scale.x*0.2);
+            Hu3DModelPosSetV(ToueiMdlId[i], &pos3D);
+            Hu3DModelScaleSet(ToueiMdlId[i], gp->scale.x*0.7, gp->scale.y*0.7, gp->scale.x*0.2);
             HuWinPosSet(boxNameWinId[i], gp->pos.x-(80*gp->scale.x), gp->pos.y);
             HuWinScaleSet(boxNameWinId[i], gp->scale.x, gp->scale.y);
             if(sp->attr & HUSPR_ATTR_DISPOFF) {
-                Hu3DModelDispOff(toueiMdlId[i]);
+                Hu3DModelDispOff(ToueiMdlId[i]);
                 HuWinDispOff(boxNameWinId[i]);
             } else {
-                Hu3DModelDispOn(toueiMdlId[i]);
+                Hu3DModelDispOn(ToueiMdlId[i]);
                 HuWinDispOn(boxNameWinId[i]);
             }
         }

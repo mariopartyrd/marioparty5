@@ -576,7 +576,7 @@ void MBStorySaveInit(int mgPack, int storyDif)
     _ClearFlag(FLAG_MG_CIRCUIT);
     _SetFlag(FLAG_MGINST_ON);
     _SetFlag(FLAGNUM(FLAG_GROUP_COMMON, 13));
-    _ClearFlag(FLAG_DECA_INST);
+    _ClearFlag(FLAG_INST_DECA);
 }
 
 void MBPlayerSaveInit(BOOL teamF, BOOL bonusStarF, int mgPack, int turnMax, int handicapP1, int handicapP2, int handicapP3, int handicapP4)
@@ -595,7 +595,7 @@ void MBPlayerSaveInit(BOOL teamF, BOOL bonusStarF, int mgPack, int turnMax, int 
     _ClearFlag(FLAG_MG_CIRCUIT);
     _SetFlag(FLAG_MGINST_ON);
     _SetFlag(FLAGNUM(FLAG_GROUP_COMMON, 13));
-    _ClearFlag(FLAG_DECA_INST);
+    _ClearFlag(FLAG_INST_DECA);
 }
 
 float MBVecDistXZ(HuVecF *a, HuVecF *b)

@@ -186,7 +186,7 @@ typedef struct GwCommon_s {
     u8 partyMgPack : 3;
     u8 partyMessSpeed : 2;
     u8 partySaveMode : 2;
-    s32 sdPoint[4];
+    u32 sdPoint[4];
     u8 unkSdFlag : 1;
     u8 unkSdFlag2 : 1;
     u16 sdVsPlayCnt;

@@ -799,7 +799,7 @@ static void ExecPause(void)
 		charNum[GwPlayerConf[i].grp]++;
     }
     mgNo = MgNoGet(omcurovl);
-    if(_CheckFlag(FLAG_DECA_INST)) {
+    if(_CheckFlag(FLAG_INST_DECA)) {
         instMes = &mgDataTbl[mgNo].instMes[1][0];
     } else {
         instMes = &mgDataTbl[mgNo].instMes[0][0];

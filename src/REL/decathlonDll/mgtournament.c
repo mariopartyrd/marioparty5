@@ -1298,9 +1298,9 @@ void DecaInit(void)
     DecaStageMdlCreate();
     DecaScoreInit();
     if(his->evtno == 0) {
-        _SetFlag(FLAGNUM(FLAG_GROUP_SYSTEM, 3));
-        _SetFlag(FLAGNUM(FLAG_GROUP_SYSTEM, 1));
-        _SetFlag(FLAG_DECA_INST);
+        _SetFlag(FLAG_INST_NOHISCHG);
+        _SetFlag(FLAG_INST_MGMODE);
+        _SetFlag(FLAG_INST_DECA);
         decaModeWorkP->gameEmotion = -1;
     }
     for(player=&decaWorkP->player[0], i=0; i<GW_PLAYER_MAX; i++, player++) {
@@ -1355,9 +1355,9 @@ void DecaExit(void)
         decaWorkP->fbCopyAnim = NULL;
     }
     DecaOvlEvtnoSet(0);
-    _ClearFlag(FLAGNUM(FLAG_GROUP_SYSTEM, 3));
-    _ClearFlag(FLAGNUM(FLAG_GROUP_SYSTEM, 1));
-    _ClearFlag(FLAG_DECA_INST);
+    _ClearFlag(FLAG_INST_NOHISCHG);
+    _ClearFlag(FLAG_INST_MGMODE);
+    _ClearFlag(FLAG_INST_DECA);
     memset(decaModeWorkP, 0, sizeof(DECAMODEWORK));
 }
 

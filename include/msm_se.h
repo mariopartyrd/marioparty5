@@ -217,6 +217,8 @@
 #define MSM_SE_BOARD_138 896
 
 #define MSM_SE_INST_01 897
+#define MSM_SE_INST_02 898
+#define MSM_SE_INST_03 899
 
 #define MSM_SE_INST_25 921
 #define MSM_SE_INST_26 922

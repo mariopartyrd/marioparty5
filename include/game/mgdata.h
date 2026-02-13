@@ -60,7 +60,7 @@ extern int m562CtrlNo;
 extern BOOL mgExitStartF;
 extern BOOL mgPauseExitF;
 extern BOOL mgInstExitF;
-extern BOOL mgBoard2Force;
+extern u8 mgBoard2Force;
 
 s32 MgNoGet(s16 ovlNo);
 

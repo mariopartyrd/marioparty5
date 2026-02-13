@@ -26,7 +26,7 @@ int m562CtrlNo;
 BOOL mgExitStartF;
 BOOL mgPauseExitF;
 BOOL mgInstExitF;
-BOOL mgBoard2Force;
+u8 mgBoard2Force;
 
 #include "mgdata.inc"
 

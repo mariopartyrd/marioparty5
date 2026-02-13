@@ -154,6 +154,7 @@ void omVibrate(s16 playerNo, s16 duration, s16 off, s16 on);
 extern s16 omSysExitReq;
 extern OMOBJ *omDBGSysKeyObj;
 extern u8 omSysPauseEnableFlag;
+extern OMOVL omprevovl;
 extern OMOVL omcurovl;
 extern s32 omcurdll;
 extern s32 omovlhisidx;

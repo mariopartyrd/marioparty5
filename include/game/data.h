@@ -44,6 +44,8 @@ HUDATASTAT *HuDataDirSet(void *dirP, int dataNum);
 void HuDataDirReadAsyncCallBack(s32 result, DVDFileInfo* fileInfo);
 s32 HuDataDirReadAsync(int dataNum);
 s32 HuDataDirReadNumAsync(int dataNum, s32 num);
+void HuDataDirCancel(s16 statId);
+void HuDataDirCancelAsync(s16 statId);
 BOOL HuDataGetAsyncStat(s32 statId);
 void *HuDataRead(int dataNum);
 void *HuDataReadNum(int dataNum, s32 num);
@@ -55,6 +57,7 @@ void HuDataClose(void *ptr);
 void HuDataCloseMulti(void **ptrTbl);
 void HuDataDirClose(int dataNum);
 void HuDataDirCloseNum(s32 num);
+BOOL HuDataDirCloseAsync(s16 statId);
 void *HuDataReadNumHeapShortForce(int dataNum, s32 num, HEAPID heap);
 
 void HuDecodeData(void *src, void *dst, u32 size, s32 decode_type);
