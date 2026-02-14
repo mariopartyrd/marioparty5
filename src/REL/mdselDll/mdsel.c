@@ -205,9 +205,9 @@ void ObjectSetup(void)
     sys->evtNo = sys->ovlHis->evtno;
     _ClearFlag(FLAG_BOARD_TUTORIAL);
     _ClearFlag(FLAG_MG_PRACTICE);
-    _ClearFlag(FLAGNUM(FLAG_GROUP_SYSTEM, 1));
-    _ClearFlag(FLAG_DECA_INST);
-    _ClearFlag(FLAGNUM(FLAG_GROUP_SYSTEM, 3));
+    _ClearFlag(FLAG_INST_MGMODE);
+    _ClearFlag(FLAG_INST_DECA);
+    _ClearFlag(FLAG_INST_NOHISCHG);
     _ClearFlag(FLAGNUM(FLAG_GROUP_COMMON, 17));
     _ClearFlag(FLAG_BOARD_SAVEINIT);
     _ClearFlag(FLAG_MG_CIRCUIT);

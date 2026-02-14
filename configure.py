@@ -930,10 +930,10 @@ config.libs = [
     Rel(
         "instDll",
         objects={
-            Object(NonMatching, "REL/instDll/inst.c"),
-            Object(NonMatching, "REL/instDll/mgname.c"),
-            Object(NonMatching, "REL/instDll/toueidisp.c"),
-            Object(NonMatching, "REL/instDll/stage.c"),
+            Object(Matching, "REL/instDll/inst.c"),
+            Object(Matching, "REL/instDll/mgname.c"),
+            Object(Matching, "REL/instDll/toueidisp.c"),
+            Object(Matching, "REL/instDll/stage.c"),
         },
     ),
     Rel(

@@ -260,7 +260,7 @@ static void SeqExecProc()
         if ((seqWork.mode == MGSEQ_MODE_WINNER) || (seqWork.mode == MGSEQ_MODE_FADEOUT)) {
             seqWork.mode = MGSEQ_MODE_FADEOUT;
             if ((seqWork.statBit & MGSEQ_STAT_FADEOUT_OFF) == 0) {
-                if (!_CheckFlag(FLAG_DECA_INST)) {
+                if (!_CheckFlag(FLAG_INST_DECA)) {
                     WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_WHITEFADE, 60);
                 } else {
                     WipeCreate(WIPE_MODE_OUT, WIPE_TYPE_WHITEFADE, 60);

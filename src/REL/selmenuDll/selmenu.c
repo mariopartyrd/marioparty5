@@ -743,7 +743,7 @@ static void SMExit(OMOBJ *object)
     GwSystem.mgNo = mg;
     OSReport("mgNo=%d\n", mg);
     _ClearFlag(FLAG_BOARD_TUTORIAL);
-    _ClearFlag(FLAG_DECA_INST);
+    _ClearFlag(FLAG_INST_DECA);
     _SetFlag(FLAG_MGINST_ON);
     if(mg == -1) {
         omOvlCall(smPageData[(smPage * SM_PAGE_SIZE) + smCursorNo].ovl, 0, 0);
