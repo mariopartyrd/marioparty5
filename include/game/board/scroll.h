@@ -7,7 +7,7 @@ typedef void (*MAPVIEWHOOK)(BOOL enterF);
 
 void MBScrollInit(unsigned int dataNum, float zoom, float posZ);
 void MBScrollClose(void);
-void MBScrollExec(int playerNo);
+//void MBScrollExec(int playerNo);
 
 void MBMapViewExec(int playerNo);
 
