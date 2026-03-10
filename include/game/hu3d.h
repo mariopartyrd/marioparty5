@@ -248,8 +248,8 @@ typedef struct Hu3DAttrAnim_s {
     HuVecF trans3D;
     HuVecF rot;
     HuVecF scale3D;
-    HuVec2F scale;
-    HuVec2F trans;
+    HuVec2f scale;
+    HuVec2f trans;
     HSFBITMAP *bitMapPtr;
     u32 unk40;
 } HU3DATTRANIM;

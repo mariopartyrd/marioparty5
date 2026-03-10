@@ -88,8 +88,8 @@ typedef BOOL (*GAMEMESCREATE)(GAMEMES *mes, va_list args);
 typedef struct GameMes_s {
 	GAMEMESEXEC exec;
 	void *buf;
-	HuVec2F pos;
-	HuVec2F scale;
+	HuVec2f pos;
+	HuVec2f scale;
 	float unk18;
 	float angle;
 	float winScale;

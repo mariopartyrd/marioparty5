@@ -2776,7 +2776,7 @@ struct MB1Particle_s {
     ANIMDATA *anim; //0x38
     MB1_PARTICLE_DATA *data; //0x3C
     HuVecF *vertex; //0x40
-    HuVec2F *st; //0x44
+    HuVec2f *st; //0x44
     void *dl; //0x48
     MB1_PARTICLE_HOOK hook; //0x4C
     HU3DMODEL *hookMdlP; //0x50
@@ -3137,7 +3137,7 @@ HU3DMODELID MB1_ParticleCreate(ANIMDATA *animP, s16 num)
     MB1_PARTICLE *effP;
     MB1_PARTICLE_DATA *effDataP;
     s16 i;
-    HuVec2F *st;
+    HuVec2f *st;
     HU3DMODEL *modelP;
     HuVecF *vtx;
     HU3DMODELID modelId;
@@ -3175,7 +3175,7 @@ HU3DMODELID MB1_ParticleCreate(ANIMDATA *animP, s16 num)
     for(i=0; i<num*4; i++, vtx++) {
         vtx->x = vtx->y = vtx->z = 0;
     }
-    effP->st = st = HuMemDirectMallocNum(HEAP_MODEL, num*sizeof(HuVec2F)*4, modelP->mallocNo);
+    effP->st = st = HuMemDirectMallocNum(HEAP_MODEL, num*sizeof(HuVec2f)*4, modelP->mallocNo);
     for(i=0; i<num; i++) {
         st->x = 0;
         st->y = 0;
@@ -3227,7 +3227,7 @@ HU3DMODELID MB1_ParticleCopy(HU3DMODELID oldMdlId)
 {
     MB1_PARTICLE *newParticleP; //r31
     MB1_PARTICLE_DATA *particleDataP; //r30
-    HuVec2F *st; //r29
+    HuVec2f *st; //r29
     s16 i; //r28
     HU3DMODEL *newModelP; //r27
     MB1_PARTICLE *oldParticleP; //r26
@@ -3269,7 +3269,7 @@ HU3DMODELID MB1_ParticleCopy(HU3DMODELID oldMdlId)
     for(i=0; i<num*4; i++, pos++) {
         pos->x = pos->y = pos->z = 0;
     }
-    newParticleP->st = st = HuMemDirectMallocNum(HEAP_MODEL, sizeof(HuVec2F)*num*4, newModelP->mallocNo);
+    newParticleP->st = st = HuMemDirectMallocNum(HEAP_MODEL, sizeof(HuVec2f)*num*4, newModelP->mallocNo);
     for(i=0; i<num; i++) {
         st->x = 0;
         st->y = 0;
@@ -3296,7 +3296,7 @@ static HuVecF basePos[] = {
     { -0.5f, -0.5f, 0.0f }
 };
 
-static HuVec2F baseST[] = {
+static HuVec2f baseST[] = {
     { 0.0f, 0.0f },
     { 0.25f, 0.0f },
     { 0.25f, 0.25f },
@@ -3307,7 +3307,7 @@ static void ParticleDraw(HU3DMODEL *modelP, Mtx *mtx)
     MB1_PARTICLE *effP;
     MB1_PARTICLE_DATA *effDataP;
     HuVecF *vtx;
-    HuVec2F *st;
+    HuVec2f *st;
     HuVecF *scaleVtxP;
     s16 i;
     s16 j;
@@ -3460,7 +3460,7 @@ static void ParticleDraw(HU3DMODEL *modelP, Mtx *mtx)
             }
         }
         DCFlushRangeNoSync(effP->vertex, effP->num*sizeof(HuVecF)*4);
-        DCFlushRangeNoSync(effP->st, effP->num*sizeof(HuVec2F)*4);
+        DCFlushRangeNoSync(effP->st, effP->num*sizeof(HuVec2f)*4);
         DCFlushRangeNoSync(effP->data, effP->num*sizeof(MB1_PARTICLE_DATA));
         PPCSync();
         GXClearVtxDesc();
@@ -3472,7 +3472,7 @@ static void ParticleDraw(HU3DMODEL *modelP, Mtx *mtx)
         GXSetArray(GX_VA_CLR0, &effP->data->color, sizeof(MB1_PARTICLE_DATA));
         GXSetVtxDesc(GX_VA_TEX0, GX_INDEX16);
         GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX0, GX_TEX_ST, GX_F32, 0);
-        GXSetArray(GX_VA_TEX0, effP->st, sizeof(HuVec2F));
+        GXSetArray(GX_VA_TEX0, effP->st, sizeof(HuVec2f));
         GXCallDisplayList(effP->dl, effP->dlSize);
         if(shadowModelDrawF == FALSE) {
             if(!(effP->attr & MB1_PARTICLE_ATTR_COUNTER_UPDATE)) {

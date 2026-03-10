@@ -777,7 +777,7 @@ static BOOL PauseExitWinExec(void)
         { 288, 200 },
         { 288, 254 },
     };
-    HuVec2F sprScale[3] = {
+    HuVec2f sprScale[3] = {
         { 72, 1 },
         { 1, 12.5f },
         { 72, -1 },
@@ -843,7 +843,7 @@ static BOOL PauseExitWinExec(void)
 static void PauseWinMesSet(int no)
 {
     int i;
-    HuVec2F pos;
+    HuVec2f pos;
     if(pauseWork.winId >= 0) {
         MBWinKill(pauseWork.winId);
         pauseWork.winId = MBWIN_NONE;
@@ -872,7 +872,7 @@ static void PauseWinPadMesSet(int no)
         MESS_BOARD_PAUSE_PAD_OPTION,
         MESS_BOARD_PAUSE_PAD_QUIT
     };
-    HuVec2F pos;
+    HuVec2f pos;
     if(pauseWork.helpWinId >= 0) {
         MBWinKill(pauseWork.helpWinId);
         pauseWork.helpWinId = MBWIN_NONE;

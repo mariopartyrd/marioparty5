@@ -46,7 +46,7 @@ typedef struct mgDecaScore_s {
     s32 mgNo;
     s16 type;
     s16 pointNum;
-    HuVec2F points[10];
+    HuVec2f points[10];
 } MGDECASCORE;
 
 static MGDECASCORE mgDecaScoreTbl[DECA_SCORE_NUM] = {
@@ -207,8 +207,8 @@ int MgSubModeGet(void)
 int MgDecaScoreCalc(int gameNo, int mgScore)
 {
     MGDECASCORE *scoreP;
-    HuVec2F *point;
-    HuVec2F *pointNext;
+    HuVec2f *point;
+    HuVec2f *pointNext;
     int pointNo;
     s32 mgNo;
     float value;

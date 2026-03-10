@@ -13,7 +13,7 @@ static s8 winChoice[MBWIN_MAX];
 static BOOL winOnF[MBWIN_MAX];
 static MBWIN mbWinData[MBWIN_MAX];
 
-static HuVec2F winSizeTbl[MBWIN_TYPE_MAX] = {
+static HuVec2f winSizeTbl[MBWIN_TYPE_MAX] = {
     384, 64,
     432, 192,
     504, 96,
@@ -27,7 +27,7 @@ static HuVec2F winSizeTbl[MBWIN_TYPE_MAX] = {
     384, 64
 };
 
-static HuVec2F winPosTbl[MBWIN_TYPE_MAX] = {
+static HuVec2f winPosTbl[MBWIN_TYPE_MAX] = {
     96, 328,
     72, 128,
     36, 344,
@@ -77,7 +77,7 @@ static void MBWinProc(void)
 {
     HUPROCESS *proc = HuPrcCurrentGet();
     MBWIN *winP = proc->property;
-    HuVec2F size;
+    HuVec2f size;
     int i;
     HUWIN *huWinP;
     HuWinMesMaxSizeGet(1, &size, winP->mess);
@@ -212,7 +212,7 @@ int MBWinCreate(int type, u32 mess, int speakerNo)
     MBWIN *winP;
     int i;
     int no;
-    HuVec2F size;
+    HuVec2f size;
     
     for(i=0; i<MBWIN_MAX; i++) {
         winP = &mbWinData[mbWinNo];
@@ -356,7 +356,7 @@ void MBTopWinPosSet(s16 posX, s16 posY)
     MBWinPosSet(winStack[winSp-1], posX, posY);
 }
 
-void MBWinPosGet(s16 winNo, HuVec2F *pos)
+void MBWinPosGet(s16 winNo, HuVec2f *pos)
 {
     MBWIN *winP = &mbWinData[winNo];
     if(winP == NULL) {
@@ -366,7 +366,7 @@ void MBWinPosGet(s16 winNo, HuVec2F *pos)
     pos->y = winP->pos.y;
 }
 
-void MBTopWinPosGet(HuVec2F *pos)
+void MBTopWinPosGet(HuVec2f *pos)
 {
     if(winSp == 0) {
         return;
@@ -392,7 +392,7 @@ void MBTopWinSizeSet(s16 sizeX, s16 sizeY)
     MBWinSizeSet(winStack[winSp-1], sizeX, sizeY);
 }
 
-void MBWinMesMaxSizeGet(s16 winNo, HuVec2F *size)
+void MBWinMesMaxSizeGet(s16 winNo, HuVec2f *size)
 {
     MBWIN *winP = &mbWinData[winNo];
     if(winP == NULL) {
@@ -401,7 +401,7 @@ void MBWinMesMaxSizeGet(s16 winNo, HuVec2F *size)
     HuWinMesMaxSizeGet(1, size, winP->mess);
 }
 
-void MBTopWinMesMaxSizeGet(HuVec2F *size)
+void MBTopWinMesMaxSizeGet(HuVec2f *size)
 {
     if(winSp == 0) {
         return;
@@ -430,7 +430,7 @@ void MBTopWinScaleSet(float scaleX, float scaleY)
     MBWinScaleSet(winStack[winSp-1], scaleX, scaleY);
 }
 
-void MBWinScaleGet(s16 winNo, HuVec2F *scale)
+void MBWinScaleGet(s16 winNo, HuVec2f *scale)
 {
     MBWIN *winP = &mbWinData[winNo];
     if(winP == NULL) {
@@ -440,7 +440,7 @@ void MBWinScaleGet(s16 winNo, HuVec2F *scale)
     scale->y = winP->scale.y;
 }
 
-void MBTopWinScaleGet(HuVec2F *scale)
+void MBTopWinScaleGet(HuVec2f *scale)
 {
     if(winSp == 0) {
         return;
@@ -812,10 +812,10 @@ HUWINID MBTopWinIDGet(void)
     return MBWinIDGet(winStack[winSp-1]);
 }
 
-void MBWinCenterGet(s16 winNo, HuVec2F *pos)
+void MBWinCenterGet(s16 winNo, HuVec2f *pos)
 {
     MBWIN *winP = &mbWinData[winNo];
-    HuVec2F size;
+    HuVec2f size;
     MBWinMesMaxSizeGet(winNo, &size);
     if(winP->size.x > size.x) {
         size.x = winP->size.x;

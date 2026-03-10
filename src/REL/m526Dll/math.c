@@ -2,12 +2,12 @@
 #include <humath.h>
 
 typedef struct MathBBox_s {
-    HuVec2F min;
-    HuVec2F max;
+    HuVec2f min;
+    HuVec2f max;
 } MathBBox;
 
 typedef struct MathCircle_s {
-    HuVec2F center;
+    HuVec2f center;
     float radius;
 } MathCircle;
 
@@ -18,32 +18,32 @@ typedef struct MathSphere_s {
 
 typedef struct MathPolygon_s {
     int pointNum;
-    HuVec2F *point;
+    HuVec2f *point;
 } MathPolygon;
 
-static float MathDot2DGet(HuVec2F *a, HuVec2F *b)
+static float MathDot2DGet(HuVec2f *a, HuVec2f *b)
 {
     return (a->x*b->x)+(a->y*b->y);
 }
 
-static float MathCross2DGet(HuVec2F *a, HuVec2F *b)
+static float MathCross2DGet(HuVec2f *a, HuVec2f *b)
 {
     return (a->x*b->y)-(a->y*b->x);
 }
 
-static float MathVecMag2DGet(HuVec2F *a)
+static float MathVecMag2DGet(HuVec2f *a)
 {
     return sqrt(HuSquare(a->x)+HuSquare(a->y));
 }
 
-static void MathVecNorm2D(HuVec2F *a, HuVec2F *b)
+static void MathVecNorm2D(HuVec2f *a, HuVec2f *b)
 {
     float scale = 1/MathVecMag2DGet(b);
     a->x = b->x*scale;
     a->y = b->y*scale;
 }
 
-static BOOL MathCirclePointCheck(HuVec2F *point, MathCircle *circle)
+static BOOL MathCirclePointCheck(HuVec2f *point, MathCircle *circle)
 {
     float dx = point->x-circle->center.x;
     float dy = point->y-circle->center.y;
@@ -76,7 +76,7 @@ static BOOL MathBBoxCheck(MathBBox *a, MathBBox *b)
     return TRUE;
 }
 
-static BOOL MathPointShapeCheck(HuVec2F *point, MathPolygon *poly)
+static BOOL MathPointShapeCheck(HuVec2f *point, MathPolygon *poly)
 {
     int outNum;
     int pointNum;
@@ -87,8 +87,8 @@ static BOOL MathPointShapeCheck(HuVec2F *point, MathPolygon *poly)
     dir = 0;
     pointNum = poly->pointNum-1;
     for(i=0; i<pointNum; i++) {
-        HuVec2F *a = &poly->point[i];
-        HuVec2F *b = &poly->point[i+1];
+        HuVec2f *a = &poly->point[i];
+        HuVec2f *b = &poly->point[i+1];
         dir = ((point->x-a->x)*(point->y-b->y))-((point->y-a->y)*(point->x-b->x));
         if(dir < 0) {
             outNum++;
@@ -99,12 +99,12 @@ static BOOL MathPointShapeCheck(HuVec2F *point, MathPolygon *poly)
 
 static BOOL MathBBoxCircleCheck(MathCircle *circle, MathBBox *bbox)
 {
-    static HuVec2F size;
-    static HuVec2F centerOfs;
-    static HuVec2F dir;
-    static HuVec2F dirNorm;
-    static HuVec2F offset;
-    static HuVec2F result;
+    static HuVec2f size;
+    static HuVec2f centerOfs;
+    static HuVec2f dir;
+    static HuVec2f dirNorm;
+    static HuVec2f offset;
+    static HuVec2f result;
     static float cross;
     static float radius;
     
@@ -172,7 +172,7 @@ static BOOL MathCircleShapeCheck(MathCircle *circle, MathPolygon *poly)
 
 static BOOL MathCircleRectCheck(MathBBox *bbox, MathCircle *circle)
 {
-    static HuVec2F point[5];
+    static HuVec2f point[5];
     static MathPolygon poly;
     
     point[0].x = bbox->min.x;
@@ -226,12 +226,12 @@ static BOOL MathCircleCollide(MathCircle *a, MathCircle *b)
 
 static BOOL MathCircleRectCollide(MathCircle *circle, MathBBox *bbox)
 {
-    static HuVec2F size;
-    static HuVec2F centerOfs;
-    static HuVec2F dir;
-    static HuVec2F dirNorm;
-    static HuVec2F offset;
-    static HuVec2F result;
+    static HuVec2f size;
+    static HuVec2f centerOfs;
+    static HuVec2f dir;
+    static HuVec2f dirNorm;
+    static HuVec2f offset;
+    static HuVec2f result;
     static float cross;
     static float radius;
     static MathCircle outCircle;

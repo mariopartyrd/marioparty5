@@ -16,8 +16,8 @@
 typedef struct GameMesEntry_s {
     GAMEMESCREATE create;
     GAMEMESEXEC exec;
-    HuVec2F pos;
-	HuVec2F scale;
+    HuVec2f pos;
+    HuVec2f scale;
     int timeMax;
 } GAMEMES_ENTRY;
 
@@ -1263,7 +1263,7 @@ static void DrawScoreWin(HUSPRITE *sp)
     float sizeX = bmp->sizeX*16;
     float sizeY = bmp->sizeY*16;
     Mtx modelview;
-    HuVec2F vtx[4];
+    HuVec2f vtx[4];
     GXColor color;
     GXSetScissor(sp->scissorX, sp->scissorY, sp->scissorW, sp->scissorH);
     GXSetNumTexGens(1);

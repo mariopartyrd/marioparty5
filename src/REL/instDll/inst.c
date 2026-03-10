@@ -863,11 +863,11 @@ void InstWinMain(void)
     float t; //f31
     
     s16 charMes[GW_PLAYER_MAX][GW_PLAYER_MAX]; //sp+0x38
-    HuVec2F instSize; //sp+0x30
-    HuVec2F ctrlSize; //sp+0x28
+    HuVec2f instSize; //sp+0x30
+    HuVec2f ctrlSize; //sp+0x28
     
-    HuVec2F instPos; //sp+0x20
-    HuVec2F ctrlPos; //sp+0x18
+    HuVec2f instPos; //sp+0x20
+    HuVec2f ctrlPos; //sp+0x18
     s16 grpNum[GW_PLAYER_MAX]; //sp+0x10
     
     HUWINID instWinId[2]; //sp+0xC

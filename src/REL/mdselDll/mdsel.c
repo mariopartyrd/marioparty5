@@ -796,13 +796,13 @@ BOOL MdSelProcCameraLerp(int param)
 BOOL MdSelProcWinUpdate(int param)
 {
     MDSPRITE_WORK *sprite; //r31
-    HuVec2F *bgScale; //r30
-    HuVec2F *topPos; //r29
-    HuVec2F *bottomPos; //r28
-    HuVec2F *topScale; //r27
-    HuVec2F *bottomScale; //r26
+    HuVec2f *bgScale; //r30
+    HuVec2f *topPos; //r29
+    HuVec2f *bottomPos; //r28
+    HuVec2f *topScale; //r27
+    HuVec2f *bottomScale; //r26
     
-    HuVec2F *bgPos; //sp+0xC
+    HuVec2f *bgPos; //sp+0xC
     HUSPRGRPID grpId; //sp+0x8
     
     static int updateMode;
@@ -1302,7 +1302,7 @@ BOOL MdSelProcStarUpdate(int param)
 
 BOOL MdSelProcSprUpdate(int param)
 {
-    HuVec2F *pos; //r31
+    HuVec2f *pos; //r31
     int i; //r30
     MDSPRITE_WORK *sprite; //r29
     HUSPRGRPID grpId; //r28
@@ -1572,7 +1572,7 @@ void MdPosAdjustMode(void)
     };
     
     static MDMODEL_DEBUG_INFO *mdlInfoP;
-    static HuVec2F sprPos;
+    static HuVec2f sprPos;
     static float sprRot;
     static int menuSel;
     static int mdlSel;

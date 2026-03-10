@@ -139,7 +139,7 @@ static void CapsuleSelExec(void)
     HuVecF cursorMdlPos;
     
     HuVecF playerPos;
-    HuVec2F winPos;
+    HuVec2f winPos;
     
     s16 temp = -1;
     CAPSULESELWORK *work = HuPrcCurrentGet()->property;
@@ -550,8 +550,8 @@ static void CapMachineExec(void)
     HuVecF pos;
     HuVecF capsulePos;
     HuVecF playerPos;
-    HuVec2F winPos;
-    HuVec2F winCenterPos;
+    HuVec2f winPos;
+    HuVec2f winCenterPos;
     float weight;
     float rotY;
     

@@ -13,10 +13,10 @@
 typedef struct MgScore_s {
     int mode;
     int prevMode;
-    HuVec2F pos;
-    HuVec2F scale;
-    HuVec2F digitScale;
-    HuVec2F unitOfs;
+    HuVec2f pos;
+    HuVec2f scale;
+    HuVec2f digitScale;
+    HuVec2f unitOfs;
     float zRot;
     float digitW;
     float tpLvl;

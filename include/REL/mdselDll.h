@@ -344,8 +344,8 @@ typedef struct MdMess_s {
 typedef struct MdSprInfo_s {
     s16 animNo; //0x00
     s16 pri; //0x02
-    HuVec2F pos; //0x04
-    HuVec2F scale; //0xC
+    HuVec2f pos; //0x04
+    HuVec2f scale; //0xC
     float tpLvl; //0x14
 } MDSPR_INFO;
 
@@ -533,13 +533,13 @@ void MdMathCurveSample(float *out, int sampleNum, float *sampleT, float *sample,
 void MdMathStdCurveInit(void);
 
 void MdSpriteCreate(MDSPRITE_WORK *sprite);
-HuVec2F *MdSpritePosGet(MDSPRITE_WORK *sprite, int grpNo, int memberNo);
-HuVec2F *MdSpriteScaleGet(MDSPRITE_WORK *sprite, int grpNo, int memberNo);
+HuVec2f *MdSpritePosGet(MDSPRITE_WORK *sprite, int grpNo, int memberNo);
+HuVec2f *MdSpriteScaleGet(MDSPRITE_WORK *sprite, int grpNo, int memberNo);
 float *MdSpriteAlphaGet(MDSPRITE_WORK *sprite, int grpNo, int memberNo);
 
 void MdSpriteGrpDispSet(MDSPRITE_WORK *sprite, int grpNo, BOOL dispF);
-HuVec2F *MdSpriteGrpPosGet(MDSPRITE_WORK *sprite, int grpNo);
-HuVec2F *MdSpriteGrpScaleGet(MDSPRITE_WORK *sprite, int grpNo);
+HuVec2f *MdSpriteGrpPosGet(MDSPRITE_WORK *sprite, int grpNo);
+HuVec2f *MdSpriteGrpScaleGet(MDSPRITE_WORK *sprite, int grpNo);
 
 
 void MdModelCreate(MDMODEL_WORK *model, MDCAMERA_WORK *camera);

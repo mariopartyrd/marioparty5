@@ -49,9 +49,9 @@ struct HuSprite_s {
     s16 dirty;
     s16 prio;
     float time;
-    HuVec2F pos;
+    HuVec2f pos;
     float zRot;
-    HuVec2F scale;
+    HuVec2f scale;
     float speed;
     float a;
     GXTexWrapMode wrapS;
@@ -76,10 +76,10 @@ struct HuSprite_s {
 
 typedef struct HuSprGrp_s {
     s16 sprNum;
-    HuVec2F pos;
+    HuVec2f pos;
     float zRot;
-    HuVec2F scale;
-    HuVec2F center;
+    HuVec2f scale;
+    HuVec2f center;
     HUSPRID *sprId;
     Mtx mtx;
     s16 work[4];

@@ -628,7 +628,7 @@ static Vec basePos[] = {
     { -0.5f, -0.5f, 0.0f }
 };
 
-static HuVec2F baseST[] = {
+static HuVec2f baseST[] = {
     { 0.0f, 0.0f },
     { 1.0f, 0.0f },
     { 1.0f, 1.0f },
@@ -811,7 +811,7 @@ static void particleFunc(HU3DMODEL *modelP, Mtx *mtx)
         GXSetArray(GX_VA_CLR0, &particleP->data->color, sizeof(HU3DPARTICLEDATA));
         GXSetVtxDesc(GX_VA_TEX0, GX_INDEX16);
         GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX0, GX_TEX_ST, GX_F32, 0);
-        GXSetArray(GX_VA_TEX0, baseST, sizeof(HuVec2F));
+        GXSetArray(GX_VA_TEX0, baseST, sizeof(HuVec2f));
         GXCallDisplayList(particleP->dlBuf, particleP->dlSize);
         totalPolyCnt += particleP->maxCnt;
     }

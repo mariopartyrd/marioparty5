@@ -202,7 +202,7 @@ s32 SLFileWrite(s32 length, void *addr)
 {
     int winId;
     s32 result;
-    HuVec2F size;
+    HuVec2f size;
     if(SaveEnableF == FALSE) {
         return CARD_RESULT_READY;
     }
@@ -804,7 +804,7 @@ void SLWinIdSet(HUWINID winId)
 static HUWINID SLMessWinCreate(s32 mesNum, s32 insertMesNum1, s32 insertMesNum2, s16 posY)
 {
     HUWINID winId;
-    HuVec2F size;
+    HuVec2f size;
     if(SLWinId == HUWIN_NONE) {
         HuWinInit(1);
     }
@@ -939,7 +939,7 @@ s16 SLMessOut(s16 messId)
             break;
     }
     if(SLWinId == HUWIN_NONE) {
-        HuVec2F size;
+        HuVec2f size;
         size.x = 478;
         size.y = 94;
         winId = HuWinExCreateFrame(-10000, 200, size.x, size.y, HUWIN_SPEAKER_NONE, 2);

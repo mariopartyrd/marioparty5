@@ -15052,7 +15052,7 @@ struct CapsuleEffect_s {
     ANIMDATA *anim;
     CAPSULE_EFFDATA *data;
     HuVecF *vertex;
-    HuVec2F *st;
+    HuVec2f *st;
     void *dl;
     CAPSULE_EFFHOOK hook;
     HU3DMODEL *hookMdlP;
@@ -16204,7 +16204,7 @@ void MBCapsuleRayEffDraw(HU3DMODEL *modelP, Mtx *mtx)
     Mtx mtxPos; //sp+0x38
     ROMtx basePosMtx; //sp+0x38
     
-    static HuVec2F stTbl[4] = {
+    static HuVec2f stTbl[4] = {
         { 0, 1 },
         { 1, 1 },
         { 1, 0 },
@@ -16300,7 +16300,7 @@ void MBCapsuleRayEffDraw(HU3DMODEL *modelP, Mtx *mtx)
     GXSetArray(GX_VA_CLR0, work->color, sizeof(GXColor));
     GXSetVtxDesc(GX_VA_TEX0, GX_INDEX16);
     GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX0, GX_TEX_ST, GX_F32, 0);
-    GXSetArray(GX_VA_TEX0, stTbl, sizeof(HuVec2F));
+    GXSetArray(GX_VA_TEX0, stTbl, sizeof(HuVec2f));
     GXCallDisplayList(work->dl, work->dlSize);
 }
 
@@ -16326,7 +16326,7 @@ typedef struct HanachanRingWork_s {
     int num;
     HANANCHAN_RING_DATA *data;
     HuVecF *pos;
-    HuVec2F *st;
+    HuVec2f *st;
     ANIMDATA *animP;
     void *dl;
     u32 dlSize;
@@ -16338,7 +16338,7 @@ void MBCapsuleHanachanRingCreate(void)
     HANANCHAN_RING_WORK *work; //r30
     HuVecF *pos; //r29
     int i; //r28
-    HuVec2F *st; //r27
+    HuVec2f *st; //r27
     HU3DMODEL *modelP; //r26
     int vtxNum; //r25
     int vtx1; //r24
@@ -16382,8 +16382,8 @@ void MBCapsuleHanachanRingCreate(void)
     vtxNum = 64;
     work->pos = pos = HuMemDirectMallocNum(HEAP_MODEL, vtxNum*sizeof(HuVecF), modelP->mallocNo);
     memset(pos, 0, vtxNum*sizeof(HuVecF));
-    work->st = st = HuMemDirectMallocNum(HEAP_MODEL, vtxNum*sizeof(HuVec2F), modelP->mallocNo);
-    memset(st, 0, vtxNum*sizeof(HuVec2F));
+    work->st = st = HuMemDirectMallocNum(HEAP_MODEL, vtxNum*sizeof(HuVec2f), modelP->mallocNo);
+    memset(st, 0, vtxNum*sizeof(HuVec2f));
     for(i=0; i<vtxNum/2; i++) {
         angle = i*(720.0f/64);
         uvX = (float)i/(vtxNum/2);
@@ -16405,7 +16405,7 @@ void MBCapsuleHanachanRingCreate(void)
         st++;
     }
     DCFlushRangeNoSync(work->pos, vtxNum*sizeof(HuVecF));
-    DCFlushRangeNoSync(work->st, vtxNum*sizeof(HuVec2F));
+    DCFlushRangeNoSync(work->st, vtxNum*sizeof(HuVec2f));
     dlBegin = dlBuf = HuMemDirectMallocNum(HEAP_MODEL, 0x10000, modelP->mallocNo);
     DCFlushRange(dlBuf, 0x10000);
     GXBeginDisplayList(dlBegin, 0x10000);
@@ -16621,7 +16621,7 @@ void MBCapsuleHanachanRingDraw(HU3DMODEL *modelP, Mtx *mtx)
     GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_CLR0, GX_CLR_RGBA, GX_RGBA8, 0);
     GXSetVtxDesc(GX_VA_TEX0, GX_INDEX16);
     GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX0, GX_TEX_ST, GX_F32, 0);
-    GXSetArray(GX_VA_TEX0, work->st, sizeof(HuVec2F));
+    GXSetArray(GX_VA_TEX0, work->st, sizeof(HuVec2f));
     for(i=0; i<32; i++, effDataP++) {
         if(effDataP->flag) {
             GXSetArray(GX_VA_CLR0, &effDataP->color, sizeof(HANANCHAN_RING_DATA));
@@ -18361,7 +18361,7 @@ static HU3DMODELID CapsuleEffCreate(ANIMDATA *anim, s16 num)
     CAPSULE_EFFECT *effP;
     CAPSULE_EFFDATA *effDataP;
     s16 i;
-    HuVec2F *st;
+    HuVec2f *st;
     HU3DMODEL *modelP;
     HuVecF *vtx;
     HU3DMODELID modelId;
@@ -18399,7 +18399,7 @@ static HU3DMODELID CapsuleEffCreate(ANIMDATA *anim, s16 num)
     for(i=0; i<num*4; i++, vtx++) {
         vtx->x = vtx->y = vtx->z = 0;
     }
-    effP->st = st = HuMemDirectMallocNum(HEAP_MODEL, num*sizeof(HuVec2F)*4, modelP->mallocNo);
+    effP->st = st = HuMemDirectMallocNum(HEAP_MODEL, num*sizeof(HuVec2f)*4, modelP->mallocNo);
     for(i=0; i<num; i++) {
         st->x = 0;
         st->y = 0;
@@ -18452,7 +18452,7 @@ static void CapsuleEffDraw(HU3DMODEL *modelP, Mtx *mtx)
     CAPSULE_EFFECT *effP;
     CAPSULE_EFFDATA *effDataP;
     HuVecF *vtx;
-    HuVec2F *st;
+    HuVec2f *st;
     HuVecF *scaleVtxP;
     s16 i;
     s16 j;
@@ -18468,7 +18468,7 @@ static void CapsuleEffDraw(HU3DMODEL *modelP, Mtx *mtx)
         { -0.5f, -0.5f, 0.0f }
     };
 
-    static HuVec2F baseST[] = {
+    static HuVec2f baseST[] = {
         { 0.0f, 0.0f },
         { 0.25f, 0.0f },
         { 0.25f, 0.25f },
@@ -18618,7 +18618,7 @@ static void CapsuleEffDraw(HU3DMODEL *modelP, Mtx *mtx)
             }
         }
         DCFlushRangeNoSync(effP->vertex, effP->num*sizeof(HuVecF)*4);
-        DCFlushRangeNoSync(effP->st, effP->num*sizeof(HuVec2F)*4);
+        DCFlushRangeNoSync(effP->st, effP->num*sizeof(HuVec2f)*4);
         DCFlushRangeNoSync(effP->data, effP->num*sizeof(CAPSULE_EFFDATA));
         PPCSync();
         GXClearVtxDesc();
@@ -18630,7 +18630,7 @@ static void CapsuleEffDraw(HU3DMODEL *modelP, Mtx *mtx)
         GXSetArray(GX_VA_CLR0, &effP->data->color, sizeof(CAPSULE_EFFDATA));
         GXSetVtxDesc(GX_VA_TEX0, GX_INDEX16);
         GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX0, GX_TEX_ST, GX_F32, 0);
-        GXSetArray(GX_VA_TEX0, effP->st, sizeof(HuVec2F));
+        GXSetArray(GX_VA_TEX0, effP->st, sizeof(HuVec2f));
         GXCallDisplayList(effP->dl, effP->dlSize);
         if(shadowModelDrawF == FALSE) {
             if(!(effP->attr & CAPSULE_EFF_ATTR_COUNTER_UPDATE)) {

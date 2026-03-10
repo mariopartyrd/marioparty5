@@ -21,9 +21,9 @@ typedef struct TelopObjWork_s {
 } TELOPOBJ_WORK;
 
 typedef struct TelopBubble_s {
-    HuVec2F pos;
+    HuVec2f pos;
     float size;
-    HuVec2F vel;
+    HuVec2f vel;
     float radius;
     float angle;
     float angleSpeed;
@@ -64,7 +64,7 @@ static const unsigned int bubbleFileTbl[3] = {
 static ANIMDATA *telopAnim[4];
 
 static TELOPBUBBLE *telopBubbleData;
-static HuVec2F *telopBubbleVtx;
+static HuVec2f *telopBubbleVtx;
 static u32 telopRetrace;
 static u32 telopDlSize;
 static GXColor bubbleBlendCol;
@@ -135,10 +135,10 @@ static void TelopObjCreate(OMOBJ *obj)
     work->maxTime = (work->no >= TELOP_CHAR_MAX) ? 60 : 15;
     telopRetrace = VIGetRetraceCount();
     TelopBubbleCreate(telopAnim[0]);
-    telopBubbleVtx = HuMemDirectMallocNum(HEAP_HEAP, work->bubbleNum*sizeof(HuVec2F)*4, HU_MEMNUM_OVL);
+    telopBubbleVtx = HuMemDirectMallocNum(HEAP_HEAP, work->bubbleNum*sizeof(HuVec2f)*4, HU_MEMNUM_OVL);
     TelopDLCreate(work->bubbleNum);
     TelopBubbleUpdate();
-    DCFlushRangeNoSync(telopBubbleVtx, work->bubbleNum*sizeof(HuVec2F));
+    DCFlushRangeNoSync(telopBubbleVtx, work->bubbleNum*sizeof(HuVec2f));
     obj->objFunc = TelopObjExec;
 }
 
@@ -226,7 +226,7 @@ static void TelopObjExec(OMOBJ *obj)
                     break;
                 }
             }
-            DCFlushRangeNoSync(telopBubbleVtx, work->bubbleNum*sizeof(HuVec2F));
+            DCFlushRangeNoSync(telopBubbleVtx, work->bubbleNum*sizeof(HuVec2f));
             break;
             
     }
@@ -361,7 +361,7 @@ static void TelopDraw(HU3DMODEL *modelP, Mtx *mtx)
             GXClearVtxDesc();
             GXSetVtxDesc(GX_VA_POS, GX_INDEX16);
             GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XY, GX_F32, 0);
-            GXSetArray(GX_VA_POS, telopBubbleVtx, sizeof(HuVec2F));
+            GXSetArray(GX_VA_POS, telopBubbleVtx, sizeof(HuVec2f));
             GXSetVtxDesc(GX_VA_TEX0, GX_DIRECT);
             GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX0, GX_TEX_ST, GX_F32, 0);
             GXCallDisplayList(telopDlBuf, telopDlSize);
@@ -400,7 +400,7 @@ static void TelopBubbleUpdate(void)
 {
     TELOPOBJ_WORK *objWork = omObjGetWork(telopObj, TELOPOBJ_WORK);
     TELOPBUBBLE *bubbleP = telopBubbleData;
-    HuVec2F *vtx = telopBubbleVtx;
+    HuVec2f *vtx = telopBubbleVtx;
     int i;
     for(i=0; i<objWork->bubbleNum; i++, bubbleP++) {
         vtx->x = bubbleP->pos.x-bubbleP->size;
@@ -544,7 +544,7 @@ void MBTelopLast5Create(void)
         BOARD_ANM_telopTurnNum,
         BOARD_ANM_telopTurnMulti
     };
-    static HuVec2F posTbl[2][3] = {
+    static HuVec2f posTbl[2][3] = {
         { { -80, 0 }, { 0, 0 }, { 80, 0 } },
         { { -52, 0 }, { 0, 0 }, { 52, 0 } }
     };
@@ -699,7 +699,7 @@ void MBTelopComNumCreate(void)
         BOARD_ANM_telopComNumMinikoopa,
         BOARD_ANM_telopComNum
     };
-    static HuVec2F posTbl[3] = {
+    static HuVec2f posTbl[3] = {
         { 288, 176 }, { 224, 240 }, { 448, 240 }
     };
     

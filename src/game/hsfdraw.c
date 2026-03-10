@@ -643,7 +643,7 @@ static void FaceDraw(HU3DDRAWOBJ *drawObj, HSFFACE *face)
                 }
                 GXSetVtxDesc(GX_VA_TEX0, GX_INDEX16);
                 GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX0, GX_TEX_ST, GX_F32, 0);
-                GXSetArray(GX_VA_TEX0, objPtr->mesh.st->data, sizeof(HuVec2F));
+                GXSetArray(GX_VA_TEX0, objPtr->mesh.st->data, sizeof(HuVec2f));
                 if(vtxMode & 4) {
                     GXSetVtxDesc(GX_VA_CLR0, GX_INDEX16);
                     GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_CLR0, GX_CLR_RGBA, GX_RGBA8, 0);
@@ -1867,7 +1867,7 @@ static void FaceDrawShadow(HU3DDRAWOBJ *drawObj, HSFFACE *face)
                 }
                 GXSetVtxDesc(GX_VA_TEX0, GX_INDEX16);
                 GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX0, GX_TEX_ST, GX_F32, 0);
-                GXSetArray(GX_VA_TEX0, objPtr->mesh.st->data, sizeof(HuVec2F));
+                GXSetArray(GX_VA_TEX0, objPtr->mesh.st->data, sizeof(HuVec2f));
                 if(vtxMode & 4) {
                     GXSetVtxDesc(GX_VA_CLR0, GX_INDEX16);
                     GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_CLR0, GX_CLR_RGBA, GX_RGBA8, 0);

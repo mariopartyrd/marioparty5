@@ -59,7 +59,7 @@ struct MBEffect_s {
     ANIMDATA *anim;
     MBEFFECTDATA *data;
     HuVecF *vertex;
-    HuVec2F *st;
+    HuVec2f *st;
     void *dl;
     MBEFFHOOK hook;
 };

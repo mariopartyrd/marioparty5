@@ -1325,7 +1325,7 @@ struct CapsuleEffect_s {
     ANIMDATA *anim;
     CAPSULE_EFFDATA *data;
     HuVecF *vertex;
-    HuVec2F *st;
+    HuVec2f *st;
     void *dl;
     CAPSULE_EFFHOOK hook;
     HU3DMODEL *hookMdlP;
@@ -2745,7 +2745,7 @@ static void CapsulePosSelExec(void)
     HuVecF stkDir; //sp+0x88
     HuVecF masuDir; //sp+0x7C
     HuVecF masuPos; //sp+0x70
-    HuVec2F winPos; //sp+0x68
+    HuVec2f winPos; //sp+0x68
     int prevMasuId; //sp+0x48
     int masuMax; //sp+0x44
     int validLinkNum; //sp+0x40
@@ -3127,7 +3127,7 @@ static void CapsulePosAutoSelExec(void)
     HuVecF mdl2Pos; //sp+0x60
     HuVecF cameraOfs; //sp+0x54
     HuVecF masuPos; //sp+0x48
-    HuVec2F winPos; //sp+0x40
+    HuVec2f winPos; //sp+0x40
     int prevMasuId; //sp+0x3C
     int masuMax; //sp+0x38
     int linkCount; //sp+0x34
@@ -5311,7 +5311,7 @@ typedef struct DomeEffData_s {
     HuVecF accel;
     HuVecF vel;
     HuVecF pos[3];
-    HuVec2F uv[3];
+    HuVec2f uv[3];
     GXColor color;
 } DOME_EFF_DATA;
 
@@ -5323,7 +5323,7 @@ typedef struct DomeEffect_s {
     int vtxNum;
     int segNum;
     HuVecF *vtx;
-    HuVec2F *st;
+    HuVec2f *st;
     DOME_EFF_DATA *data;
     ANIMDATA *animP;
     GXColor color;
@@ -5387,8 +5387,8 @@ static void DomeEffInit(void)
     memset(effDataP, 0, effP->num*sizeof(DOME_EFF_DATA));
     effP->vtx = HuMemDirectMallocNum(HEAP_MODEL, effP->vtxNum*sizeof(HuVecF), modelP->mallocNo);
     memset(effP->vtx, 0, effP->vtxNum*sizeof(HuVecF));
-    effP->st = HuMemDirectMallocNum(HEAP_MODEL, effP->vtxNum*sizeof(HuVec2F), modelP->mallocNo);
-    memset(effP->st, 0, effP->vtxNum*sizeof(HuVec2F));
+    effP->st = HuMemDirectMallocNum(HEAP_MODEL, effP->vtxNum*sizeof(HuVec2f), modelP->mallocNo);
+    memset(effP->st, 0, effP->vtxNum*sizeof(HuVec2f));
     effP->animP = HuSprAnimRead(HuDataReadNum(CAPSULE_ANM_effCrack, HU_MEMNUM_OVL));
     effP->color.r = 0;
     effP->color.g = 0;
@@ -5667,7 +5667,7 @@ static void DomeEffDraw(HU3DMODEL *modelP, Mtx *mtx)
     DOME_EFF_DATA *effDataP;
     int j;
     HuVecF *pos;
-    HuVec2F *st;
+    HuVec2f *st;
     int i;
     float s;
     float c;
@@ -5738,7 +5738,7 @@ static void DomeEffDraw(HU3DMODEL *modelP, Mtx *mtx)
     }
     effDataP = effP->data;
     DCFlushRangeNoSync(effP->vtx, effP->vtxNum*sizeof(HuVecF));
-    DCFlushRangeNoSync(effP->st, effP->vtxNum*sizeof(HuVec2F));
+    DCFlushRangeNoSync(effP->st, effP->vtxNum*sizeof(HuVec2f));
     DCFlushRangeNoSync(effP->data, effP->num*sizeof(DOME_EFF_DATA));
     PPCSync();
     GXClearVtxDesc();
@@ -5750,7 +5750,7 @@ static void DomeEffDraw(HU3DMODEL *modelP, Mtx *mtx)
     GXSetArray(GX_VA_CLR0, &effP->data->color, sizeof(DOME_EFF_DATA));
     GXSetVtxDesc(GX_VA_TEX0, GX_INDEX16);
     GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX0, GX_TEX_ST, GX_F32, 0);
-    GXSetArray(GX_VA_TEX0, effP->st, sizeof(HuVec2F));
+    GXSetArray(GX_VA_TEX0, effP->st, sizeof(HuVec2f));
     GXCallDisplayList(effP->dl, effP->dlSize);
 }
 
@@ -5762,7 +5762,7 @@ typedef struct RayEffData_s {
     HuVecF rot;
     HuVecF dir;
     HuVecF pos[4];
-    HuVec2F st[4];
+    HuVec2f st[4];
     GXColor color;
 } RAY_EFF_DATA;
 
@@ -5773,7 +5773,7 @@ typedef struct RayEffect_s {
     int num;
     int vtxNum;
     HuVecF *vtx;
-    HuVec2F *st;
+    HuVec2f *st;
     RAY_EFF_DATA *data;
     ANIMDATA *animP;
     u32 dlSize;
@@ -5816,8 +5816,8 @@ static void RayEffInit(void)
         memset(effP->data, 0, effP->num*sizeof(RAY_EFF_DATA));
         effP->vtx = HuMemDirectMallocNum(HEAP_MODEL, effP->vtxNum*sizeof(HuVecF), modelP->mallocNo);
         memset(effP->vtx, 0, effP->vtxNum*sizeof(HuVecF));
-        effP->st = HuMemDirectMallocNum(HEAP_MODEL, effP->vtxNum*sizeof(HuVec2F), modelP->mallocNo);
-        memset(effP->st, 0, effP->vtxNum*sizeof(HuVec2F));
+        effP->st = HuMemDirectMallocNum(HEAP_MODEL, effP->vtxNum*sizeof(HuVec2f), modelP->mallocNo);
+        memset(effP->st, 0, effP->vtxNum*sizeof(HuVec2f));
         if(i == 0) {
             effP->animP = HuSprAnimRead(HuDataReadNum(CAPSULE_ANM_effRay, HU_MEMNUM_OVL));
         } else {
@@ -5994,7 +5994,7 @@ static void RayEffDraw(HU3DMODEL *modelP, Mtx *mtx)
     RAY_EFFECT *effP;
     RAY_EFF_DATA *effDataP;
     HuVecF *pos;
-    HuVec2F *st;
+    HuVec2f *st;
     int i;
     int j;
     
@@ -6077,7 +6077,7 @@ static void RayEffDraw(HU3DMODEL *modelP, Mtx *mtx)
     }
     effDataP = effP->data;
     DCFlushRangeNoSync(effP->vtx, effP->vtxNum*sizeof(HuVecF));
-    DCFlushRangeNoSync(effP->st, effP->vtxNum*sizeof(HuVec2F));
+    DCFlushRangeNoSync(effP->st, effP->vtxNum*sizeof(HuVec2f));
     DCFlushRangeNoSync(effP->data, effP->num*sizeof(RAY_EFF_DATA));
     PPCSync();
     GXClearVtxDesc();
@@ -6089,7 +6089,7 @@ static void RayEffDraw(HU3DMODEL *modelP, Mtx *mtx)
     GXSetArray(GX_VA_CLR0, &effP->data->color, sizeof(RAY_EFF_DATA));
     GXSetVtxDesc(GX_VA_TEX0, GX_INDEX16);
     GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX0, GX_TEX_ST, GX_F32, 0);
-    GXSetArray(GX_VA_TEX0, effP->st, sizeof(HuVec2F));
+    GXSetArray(GX_VA_TEX0, effP->st, sizeof(HuVec2f));
     GXCallDisplayList(effP->dl, effP->dlSize);
 }
 
@@ -6339,7 +6339,7 @@ static HU3DMODELID CapsuleEffCreate(ANIMDATA *anim, s16 num)
     CAPSULE_EFFECT *effP;
     CAPSULE_EFFDATA *effDataP;
     s16 i;
-    HuVec2F *st;
+    HuVec2f *st;
     HU3DMODEL *modelP;
     HuVecF *vtx;
     HU3DMODELID modelId;
@@ -6377,7 +6377,7 @@ static HU3DMODELID CapsuleEffCreate(ANIMDATA *anim, s16 num)
     for(i=0; i<num*4; i++, vtx++) {
         vtx->x = vtx->y = vtx->z = 0;
     }
-    effP->st = st = HuMemDirectMallocNum(HEAP_MODEL, num*sizeof(HuVec2F)*4, modelP->mallocNo);
+    effP->st = st = HuMemDirectMallocNum(HEAP_MODEL, num*sizeof(HuVec2f)*4, modelP->mallocNo);
     for(i=0; i<num; i++) {
         st->x = 0;
         st->y = 0;
@@ -6432,7 +6432,7 @@ static HuVecF basePos[] = {
     { -0.5f, -0.5f, 0.0f }
 };
 
-static HuVec2F baseST[] = {
+static HuVec2f baseST[] = {
     { 0.0f, 0.0f },
     { 0.25f, 0.0f },
     { 0.25f, 0.25f },
@@ -6445,7 +6445,7 @@ static void CapsuleEffDraw(HU3DMODEL *modelP, Mtx *mtx)
     CAPSULE_EFFECT *effP;
     CAPSULE_EFFDATA *effDataP;
     HuVecF *vtx;
-    HuVec2F *st;
+    HuVec2f *st;
     HuVecF *scaleVtxP;
     s16 i;
     s16 j;
@@ -6598,7 +6598,7 @@ static void CapsuleEffDraw(HU3DMODEL *modelP, Mtx *mtx)
             }
         }
         DCFlushRangeNoSync(effP->vertex, effP->num*sizeof(HuVecF)*4);
-        DCFlushRangeNoSync(effP->st, effP->num*sizeof(HuVec2F)*4);
+        DCFlushRangeNoSync(effP->st, effP->num*sizeof(HuVec2f)*4);
         DCFlushRangeNoSync(effP->data, effP->num*sizeof(CAPSULE_EFFDATA));
         PPCSync();
         GXClearVtxDesc();
@@ -6610,7 +6610,7 @@ static void CapsuleEffDraw(HU3DMODEL *modelP, Mtx *mtx)
         GXSetArray(GX_VA_CLR0, &effP->data->color, sizeof(CAPSULE_EFFDATA));
         GXSetVtxDesc(GX_VA_TEX0, GX_INDEX16);
         GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX0, GX_TEX_ST, GX_F32, 0);
-        GXSetArray(GX_VA_TEX0, effP->st, sizeof(HuVec2F));
+        GXSetArray(GX_VA_TEX0, effP->st, sizeof(HuVec2f));
         GXCallDisplayList(effP->dl, effP->dlSize);
         if(shadowModelDrawF == FALSE) {
             if(!(effP->attr & CAPSULE_EFF_ATTR_COUNTER_UPDATE)) {

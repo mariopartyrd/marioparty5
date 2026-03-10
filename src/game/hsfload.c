@@ -359,7 +359,7 @@ static void STLoad(void)
     HSFBUFFER *tempST;
     HSFBUFFER *newST;
     void *data;
-    HuVec2F *dataElem;
+    HuVec2f *dataElem;
     u32 dataOfs;
     
     if(head.st.num) {
@@ -367,7 +367,7 @@ static void STLoad(void)
         data = (void *)&fileST[head.st.num];
         for(i=0; i<head.st.num; i++, fileST++) {
             for(j=0; j<(u32)fileST->count; j++) {
-                dataElem = (HuVec2F *)(((u32)data)+((u32)fileST->data)+(j*sizeof(HuVec2F)));
+                dataElem = (HuVec2f *)(((u32)data)+((u32)fileST->data)+(j*sizeof(HuVec2f)));
             }
         }
         newST = tempST;
@@ -381,8 +381,8 @@ static void STLoad(void)
             newST->name = SetName((u32 *)&fileST->name);
             newST->data = (void *)((u32)data+dataOfs);
             for(j=0; j<newST->count; j++) {
-                dataElem = (HuVec2F *)(((u32)data)+dataOfs+(j*sizeof(HuVec2F)));
-                HuCopyVec2F(&((HuVec2F *)newST->data)[j], dataElem);
+                dataElem = (HuVec2f *)(((u32)data)+dataOfs+(j*sizeof(HuVec2f)));
+                HuCopyVec2F(&((HuVec2f *)newST->data)[j], dataElem);
             }
         }
     }

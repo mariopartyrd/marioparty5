@@ -1288,7 +1288,7 @@ void DecaInit(void)
     decaWorkP->seNo = MSM_SENO_NONE;
     decaWorkP->streamNo = MSM_STREAMNO_NONE;
     {
-        HuVec2F winSize;
+        HuVec2f winSize;
         
         HuWinInit(1);
         HuWinMesMaxSizeBetGet(&winSize, MESS_MG_DECATHLON_WELCOME, MESS_MG_DECATHLON_INST);

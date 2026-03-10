@@ -31,8 +31,8 @@ typedef struct statusWork_s {
     s8 no;
     s8 playerNo;
     HUSPRGRPID gid;
-    HuVec2F posBegin;
-    HuVec2F posEnd;
+    HuVec2f posBegin;
+    HuVec2f posEnd;
     int moveType;
     int time;
     int timeMax;
@@ -49,26 +49,26 @@ static STATUSDISP statusDispBackup[GW_PLAYER_MAX];
 static HUPROCESS *statusProc;
 static u8 statusForceFlag;
 
-static HuVec2F statusPosOn[GW_PLAYER_MAX] = {
+static HuVec2f statusPosOn[GW_PLAYER_MAX] = {
     { 114, 84 },
     { HU_DISP_WIDTH-114, 84 },
     { 114, HU_DISP_HEIGHT-84 },
     { HU_DISP_WIDTH-114, HU_DISP_HEIGHT-84 },
 };
 
-static HuVec2F statusPosOff[GW_PLAYER_MAX] = {
+static HuVec2f statusPosOff[GW_PLAYER_MAX] = {
     { -98, 84 },
     { HU_DISP_WIDTH+98, 84 },
     { -98, HU_DISP_HEIGHT-84 },
     { HU_DISP_WIDTH+98, HU_DISP_HEIGHT-84 },
 };
 
-static HuVec2F statusPosOnTeam[GW_PLAYER_MAX/2] = {
+static HuVec2f statusPosOnTeam[GW_PLAYER_MAX/2] = {
     { 140, 84 },
     { HU_DISP_WIDTH-140, 84 },
 };
 
-static HuVec2F statusPosOffTeam[GW_PLAYER_MAX/2] = {
+static HuVec2f statusPosOffTeam[GW_PLAYER_MAX/2] = {
     { -124, 84 },
     { HU_DISP_WIDTH+124, 84 },
 };
@@ -80,7 +80,7 @@ static GXColor statusColTbl[STATUS_COLOR_MAX] = {
     { 10, 180, 60, 0 },
 };
 
-static HuVec2F statusSprPosTbl[STATUS_SPR_MAX] = {
+static HuVec2f statusSprPosTbl[STATUS_SPR_MAX] = {
     { 0, 0 },
     { 0, 0 },
     { -68, 0 },
@@ -95,17 +95,17 @@ static HuVec2F statusSprPosTbl[STATUS_SPR_MAX] = {
     { -16, 0 }
 };
 
-static HuVec2F statusCapsuleOfsTbl[2] = {
+static HuVec2f statusCapsuleOfsTbl[2] = {
     { 24, 34 },
     { 24, -34 }
 };
 
-static HuVec2F statusComOfsTbl[2] = {
+static HuVec2f statusComOfsTbl[2] = {
     { -16, -32 },
     { -16, 32 }
 };
 
-static HuVec2F statusTeamSprPosTbl[STATUS_SPR_MAX] = {
+static HuVec2f statusTeamSprPosTbl[STATUS_SPR_MAX] = {
     { 0, 0 },
     { 0, 0 },
     { -100, 0 },
@@ -121,17 +121,17 @@ static HuVec2F statusTeamSprPosTbl[STATUS_SPR_MAX] = {
     { 16, 0 }
 };
 
-static HuVec2F statusTeamCapsuleOfsTbl[2] = {
+static HuVec2f statusTeamCapsuleOfsTbl[2] = {
     { -24, 34 },
     { -24, 34 }
 };
 
-static HuVec2F statusTeamComOfsTbl[2] = {
+static HuVec2f statusTeamComOfsTbl[2] = {
     { -48, -32 },
     { -48, -32 }
 };
 
-static HuVec2F statusCircuitCapsuleOfsTbl[3] = {
+static HuVec2f statusCircuitCapsuleOfsTbl[3] = {
     { 38, 12 },
     { 54, -12 },
     { 70, 12 }
@@ -350,7 +350,7 @@ static void StatusPosUpdate(STATUSWORK *status)
 {
     float weight;
     float time;
-    HuVec2F pos;
+    HuVec2f pos;
     if(status->time >= status->timeMax) {
         status->moveF = FALSE;
         return;
@@ -464,8 +464,8 @@ BOOL MBStatusOffCheckAll(void)
 static void StatusSetDisp(int playerNo, int statusNo, BOOL dispF)
 {
     STATUSWORK *status = StatusPlayerGet(playerNo);
-    HuVec2F posBegin;
-    HuVec2F posEnd;
+    HuVec2f posBegin;
+    HuVec2f posEnd;
     
     if(!dispF) {
         if(!status->dispF) {

@@ -410,7 +410,7 @@ HU3DMODELID MBEffCreate(ANIMDATA *anim, s16 maxCnt)
     MBEFFECT *effP;
     HU3DMODEL *modelP;
     HuVecF *vertex;
-    HuVec2F *st;
+    HuVec2f *st;
     void *dl;
     
     Hu3DModelCameraSet(modelId, HU3D_CAM0);
@@ -440,7 +440,7 @@ HU3DMODELID MBEffCreate(ANIMDATA *anim, s16 maxCnt)
     for(i=0; i<maxCnt*4; i++, vertex++) {
         vertex->x = vertex->y = vertex->z = 0;
     }
-    effP->st = st = HuMemDirectMallocNum(HEAP_MODEL, maxCnt*sizeof(HuVec2F)*4, modelP->mallocNo);
+    effP->st = st = HuMemDirectMallocNum(HEAP_MODEL, maxCnt*sizeof(HuVec2f)*4, modelP->mallocNo);
     for(i=0; i<maxCnt*4; i++, st++) {
         st->x = st->y = 0;
     }
@@ -488,7 +488,7 @@ static void EffectDraw(HU3DMODEL *modelP, Mtx *mtx)
     HuVecF *vertex;
     MBEFFECT *effP;
     ANIMLAYER *animLayer;
-    HuVec2F *st;
+    HuVec2f *st;
     ANIMFRAME *animFrame;
     ANIMBMP *animBmp;
     ANIMBANK *animBank;
@@ -695,7 +695,7 @@ static void EffectDraw(HU3DMODEL *modelP, Mtx *mtx)
     }
     HuSprTexLoad(effP->anim, 0, GX_TEXMAP0, GX_CLAMP, GX_CLAMP, GX_LINEAR);
     DCFlushRangeNoSync(effP->vertex, effP->num*sizeof(HuVecF)*4);
-    DCFlushRangeNoSync(effP->st, effP->num*sizeof(HuVec2F)*4);
+    DCFlushRangeNoSync(effP->st, effP->num*sizeof(HuVec2f)*4);
     GXCallDisplayList(effP->dl, effP->dlSize);
     totalPolyCnt += effP->num;
     if(shadowModelDrawF == FALSE) {

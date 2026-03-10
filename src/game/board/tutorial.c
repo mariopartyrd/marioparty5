@@ -65,7 +65,7 @@ static void KillTutorialSpr(void);
 static void TutorialWatchProcExec(void)
 {
     s16 winNo;
-    HuVec2F size;
+    HuVec2f size;
     HuPrcSleep(60);
     winNo = MBWinCreateHelp(MESS_BOARD_TUTORIAL_EXIT);
     MBWinMesMaxSizeGet(winNo, &size);

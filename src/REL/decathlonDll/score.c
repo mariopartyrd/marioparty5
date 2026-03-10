@@ -45,24 +45,24 @@ static u32 unitMesTbl[6] = {
     MESS_MG_DECATHLON_SCORE_VALUE_NUMCAP
 };
 
-static HuVec2F scoreMgPos = { 162, 202 };
-static HuVec2F scorePlayerPos = { 106, 112 };
-static HuVec2F lbl_1_data_45C = { 106, 912 };
-static HuVec2F scoreCharIconPos[GW_PLAYER_MAX] = {
+static HuVec2f scoreMgPos = { 162, 202 };
+static HuVec2f scorePlayerPos = { 106, 112 };
+static HuVec2f lbl_1_data_45C = { 106, 912 };
+static HuVec2f scoreCharIconPos[GW_PLAYER_MAX] = {
     { 93, 20 },
     { 93, 60 },
     { 93, 100 },
     { 93, 140 },
 };
 
-static HuVec2F scoreArrowPos[GW_PLAYER_MAX] = {
+static HuVec2f scoreArrowPos[GW_PLAYER_MAX] = {
     { 232, 20 },
     { 232, 60 },
     { 232, 100 },
     { 232, 140 },
 };
 
-static HuVec2F scoreWinPos[GW_PLAYER_MAX] = {
+static HuVec2f scoreWinPos[GW_PLAYER_MAX] = {
     { 0, 0 },
     { 102, 0 },
     { 105, 0 },

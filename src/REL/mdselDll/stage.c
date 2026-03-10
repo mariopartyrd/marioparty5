@@ -145,26 +145,26 @@ void MdSpriteGrpDispSet(MDSPRITE_WORK *sprite, int grpNo, BOOL dispF)
     }
 }
 
-HuVec2F *MdSpriteGrpPosGet(MDSPRITE_WORK *sprite, int grpNo)
+HuVec2f *MdSpriteGrpPosGet(MDSPRITE_WORK *sprite, int grpNo)
 {
     HUSPRGRP *grp = &HuSprGrpData[sprite->grpId[grpNo]];
     return &grp->pos;
 }
 
-HuVec2F *MdSpriteGrpScaleGet(MDSPRITE_WORK *sprite, int grpNo)
+HuVec2f *MdSpriteGrpScaleGet(MDSPRITE_WORK *sprite, int grpNo)
 {
     HUSPRGRP *grp = &HuSprGrpData[sprite->grpId[grpNo]];
     return &grp->scale;
 }
 
-HuVec2F *MdSpritePosGet(MDSPRITE_WORK *sprite, int grpNo, int memberNo)
+HuVec2f *MdSpritePosGet(MDSPRITE_WORK *sprite, int grpNo, int memberNo)
 {
     HUSPRGRP *grp = &HuSprGrpData[sprite->grpId[grpNo]];
     HUSPRITE *spr = &HuSprData[grp->sprId[memberNo]];
     return &spr->pos;
 }
 
-HuVec2F *MdSpriteScaleGet(MDSPRITE_WORK *sprite, int grpNo, int memberNo)
+HuVec2f *MdSpriteScaleGet(MDSPRITE_WORK *sprite, int grpNo, int memberNo)
 {
     HUSPRGRP *grp = &HuSprGrpData[sprite->grpId[grpNo]];
     HUSPRITE *spr = &HuSprData[grp->sprId[memberNo]];

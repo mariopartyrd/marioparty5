@@ -27,7 +27,7 @@ static void KillScoreSpr(MGTIMER* timer);
 static void UpdateTimerSpr(MGTIMER* timer);
 
 
-static const HuVec2F scoreOfsTbl[MGTIMER_TYPE_MAX][15] = {
+static const HuVec2f scoreOfsTbl[MGTIMER_TYPE_MAX][15] = {
     {
         { 0.0f,  0.0f}, { 0.0f,  0.0f}, { 0.0f,  0.0f}, { 0.0f,  0.0f},
         { 0.0f,  0.0f}, { 0.0f,  0.0f}, { 0.0f,  0.0f}, { 0.0f,  0.0f},

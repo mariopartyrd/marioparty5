@@ -195,8 +195,8 @@ typedef struct HsfAttribute_s {
     u8 unk18[8];
     float unk20;
     u8 unk24[4];
-    HuVec2F scale;
-    HuVec2F trans;
+    HuVec2f scale;
+    HuVec2f trans;
     u8 unk38[44];
     u32 wrapS;
     u32 wrapT;

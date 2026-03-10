@@ -38,9 +38,9 @@ typedef struct MBWin_s {
     s8 speakerNo;
     s16 prio;
     int playerNo;
-    HuVec2F pos;
-    HuVec2F size;
-    HuVec2F scale;
+    HuVec2f pos;
+    HuVec2f size;
+    HuVec2f scale;
     BOOL pauseF;
     BOOL choiceF;
     int choiceNo;
@@ -62,16 +62,16 @@ void MBWinKillAll(void);
 
 void MBWinPosSet(s16 winNo, s16 posX, s16 posY);
 void MBTopWinPosSet(s16 posX, s16 posY);
-void MBWinPosGet(s16 winNo, HuVec2F *pos);
-void MBTopWinPosGet(HuVec2F *pos);
+void MBWinPosGet(s16 winNo, HuVec2f *pos);
+void MBTopWinPosGet(HuVec2f *pos);
 void MBWinSizeSet(s16 winNo, s16 sizeX, s16 sizeY);
 void MBTopWinSizeSet(s16 sizeX, s16 sizeY);
-void MBWinMesMaxSizeGet(s16 winNo, HuVec2F *size);
-void MBTopWinMesMaxSizeGet(HuVec2F *size);
+void MBWinMesMaxSizeGet(s16 winNo, HuVec2f *size);
+void MBTopWinMesMaxSizeGet(HuVec2f *size);
 void MBWinScaleSet(s16 winNo, float scaleX, float scaleY);
 void MBTopWinScaleSet(float scaleX, float scaleY);
-void MBWinScaleGet(s16 winNo, HuVec2F *scale);
-void MBTopWinScaleGet(HuVec2F *scale);
+void MBWinScaleGet(s16 winNo, HuVec2f *scale);
+void MBTopWinScaleGet(HuVec2f *scale);
 int MBWinLastChoiceGet(void);
 int MBWinChoiceGet(s16 winNo);
 void MBWinPause(s16 winNo);
@@ -107,6 +107,6 @@ void MBTopWinDispSet(BOOL dispF);
 void MBWinPauseHook(BOOL dispF);
 HUWINID MBWinIDGet(s16 winNo);
 HUWINID MBTopWinIDGet(void);
-void MBWinCenterGet(s16 winNo, HuVec2F *pos);
+void MBWinCenterGet(s16 winNo, HuVec2f *pos);
 
 #endif

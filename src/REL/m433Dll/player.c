@@ -3266,7 +3266,7 @@ static u16 scoreTypeTbl[5] = { 0, 1, 2, 3, 3 };
 
 static int scoreNumFileTbl[2] = { MGCONST_ANM_scoreMedium, MGCONST_ANM_scoreMedium };
 
-static HuVec2F scoreSprOfsTbl[5] = {
+static HuVec2f scoreSprOfsTbl[5] = {
     { 0.0f, 0.0f },
     { 0.0f, 0.0f },
     { -23.0f, 0.0f },
@@ -3274,7 +3274,7 @@ static HuVec2F scoreSprOfsTbl[5] = {
     { 11.0f, 0.0f },
 };
 
-static HuVec2F scorePosTbl[2] = { { 52.0f, 56.0f }, { 524.0f, 56.0f } };
+static HuVec2f scorePosTbl[2] = { { 52.0f, 56.0f }, { 524.0f, 56.0f } };
 
 static s32 scoreNextNumFileTbl[11][4] = {
     { GAMEMES_ANM_number0, 0, 0, 0 },

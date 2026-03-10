@@ -1634,7 +1634,7 @@ void HuWinComKeyReset(void)
     comKeyIdx = comKeyIdxNow = 0;
 }
 
-void HuWinMesMaxSizeGet(s16 messCnt, HuVec2F *maxSize, ...)
+void HuWinMesMaxSizeGet(s16 messCnt, HuVec2f *maxSize, ...)
 {
     s16 i;
     va_list vaList;
@@ -1668,7 +1668,7 @@ void HuWinMesSizeCancelCRSet(s32 cancelCR)
     cancelCRF = cancelCR;
 }
 
-void HuWinMesMaxSizeBetGet(HuVec2F *maxSize, u32 messStart, u32 messEnd)
+void HuWinMesMaxSizeBetGet(HuVec2f *maxSize, u32 messStart, u32 messEnd)
 {
     u32 i;
     if(messEnd < messStart) {

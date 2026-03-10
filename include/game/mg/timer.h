@@ -43,7 +43,7 @@ typedef struct MgTimer_s {
     s32 time;
     s32 recordTime;
     s32 fadeOutTime;
-    HuVec2F pos;
+    HuVec2f pos;
     s16 timeUnit;
     GAMEMESID gameMesId;
     HUSPRGRPID winGrpId;

@@ -9,7 +9,7 @@ typedef Vec HuVecF;
 typedef struct HuVec2f_s {
     float x;
     float y;
-} HuVec2F;
+} HuVec2f;
 
 #define HuAbs(x) (((x) < 0) ? -(x) : (x))
 

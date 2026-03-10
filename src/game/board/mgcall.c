@@ -19,37 +19,37 @@
 #include "messnum/mgname.h"
 #include "messnum/board_tutorial.h"
 
-static const HuVec2F StatusPos4PBase[GW_PLAYER_MAX] = {
+static const HuVec2f StatusPos4PBase[GW_PLAYER_MAX] = {
     { 176, 184 },
     { 400, 184 },
     { 176, 296 },
     { 400, 296 },
 };
 
-static const HuVec2F StatusPos1Vs3Base[GW_PLAYER_MAX] = {
+static const HuVec2f StatusPos1Vs3Base[GW_PLAYER_MAX] = {
     { 176, 240 },
     { 400, 160 },
     { 400, 240 },
     { 400, 320 },
 };
 
-static const HuVec2F StatusPos2Vs2Base[GW_PLAYER_MAX] = {
+static const HuVec2f StatusPos2Vs2Base[GW_PLAYER_MAX] = {
     { 176, 200 },
     { 176, 280 },
     { 400, 200 },
     { 400, 280 },
 };
 
-static const HuVec2F StatusPosKettou[2] = {
+static const HuVec2f StatusPosKettou[2] = {
     { 152, 240 },
     { 424, 240 }
 };
 
 static OMOBJ *MgListObj[4];
 
-static HuVec2F MgStatusPos1Vs3[GW_PLAYER_MAX];
-static HuVec2F MgStatusPos2Vs2[GW_PLAYER_MAX];
-static HuVec2F MgStatusPos4P[GW_PLAYER_MAX];
+static HuVec2f MgStatusPos1Vs3[GW_PLAYER_MAX];
+static HuVec2f MgStatusPos2Vs2[GW_PLAYER_MAX];
+static HuVec2f MgStatusPos4P[GW_PLAYER_MAX];
 
 
 static s16 MgPlayListKettou[14];
@@ -107,9 +107,9 @@ void MBMgCallInit(void)
     memset(&MgPlayList2Vs2[0], 0, sizeof(MgPlayList1Vs3));
     memset(&MgPlayListBattle[0], 0, sizeof(MgPlayListBattle));
     memset(&MgPlayListKettou[0], 0, sizeof(MgPlayListKettou));
-    memcpy(&MgStatusPos4P[0], &StatusPos4PBase[0], GW_PLAYER_MAX*sizeof(HuVec2F));
-    memcpy(&MgStatusPos2Vs2[0], &StatusPos2Vs2Base[0], GW_PLAYER_MAX*sizeof(HuVec2F));
-    memcpy(&MgStatusPos1Vs3[0], &StatusPos1Vs3Base[0], GW_PLAYER_MAX*sizeof(HuVec2F));
+    memcpy(&MgStatusPos4P[0], &StatusPos4PBase[0], GW_PLAYER_MAX*sizeof(HuVec2f));
+    memcpy(&MgStatusPos2Vs2[0], &StatusPos2Vs2Base[0], GW_PLAYER_MAX*sizeof(HuVec2f));
+    memcpy(&MgStatusPos1Vs3[0], &StatusPos1Vs3Base[0], GW_PLAYER_MAX*sizeof(HuVec2f));
 }
 
 static void MgCallMain(void);
@@ -145,7 +145,7 @@ static void MgCallMain(void)
     HuVecF pos;
     HuVecF explodePos2D;
     HuVecF explodePos3D;
-    HuVec2F statusPos;
+    HuVec2f statusPos;
     
     MGCALL_WORK *workP = &work;
     int i;
@@ -851,7 +851,7 @@ static void MgListObjExec(OMOBJ *obj)
     MGLISTWORK *work = omObjGetWork(obj, MGLISTWORK);
     float weight;
     float time;
-    HuVec2F winSize;
+    HuVec2f winSize;
     
     if(work->killF || MBKillCheck()) {
         MBWinKill(work->winNo);
@@ -1243,13 +1243,13 @@ static int MgCallBattleSelect(MGCALL_WORK *workP, int listNum, s16 *list)
           1
     };
     
-    static HuVec2F posTbl[3] = {
+    static HuVec2f posTbl[3] = {
         { 128, 240 },
         { 288, 240 },
         { 448, 240 }
     };
     
-    static HuVec2F playerOfsTbl[GW_PLAYER_MAX] = {
+    static HuVec2f playerOfsTbl[GW_PLAYER_MAX] = {
         { -56, -16 },
         { -38, -48 },
         { 6, -48 },

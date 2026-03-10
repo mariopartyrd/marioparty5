@@ -170,7 +170,7 @@ static void PauseProcExec(void)
     MBDataAsyncWait(statId);
     while(cancelF == FALSE) {
         int helpWin = MBWinCreateHelp(padWinMesTbl[_CheckFlag(FLAG_MG_CIRCUIT) ? 1 : 0]);
-        HuVec2F center;
+        HuVec2f center;
         MBWinCenterGet(helpWin, &center);
         MBWinPosSet(helpWin, center.x, _CheckFlag(FLAG_MG_CIRCUIT) ? 288 : 376);
         PauseScreenCreate(work);
@@ -240,7 +240,7 @@ static void PauseScreenCreate(PAUSEWORK *work)
     HuVecF pos2D, pos3D;
     int i;
     int turn;
-    static const HuVec2F turnPos[] = {
+    static const HuVec2f turnPos[] = {
         -136, 0,
         -96, 0,
         0, 0,

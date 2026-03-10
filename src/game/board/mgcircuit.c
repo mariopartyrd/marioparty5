@@ -370,7 +370,7 @@ static void CircuitTurnNumDisp(CIRCUIT_TURN_NUM *work)
 	float scale; //f30
 	float xOfs; //f28
 	
-	static const HuVec2F sprPosTbl[3] = {
+	static const HuVec2f sprPosTbl[3] = {
 		{ 288, 132 },
 		{ 344, 132 },
 		{ 288, 104 },
