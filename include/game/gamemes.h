@@ -14,7 +14,7 @@
 
 #define GAMEMES_MAX 8
 
-#define GAMEMES_STRMAX 16
+#define GAMEMES_SPRMAX 16
 
 #define GAMEMES_MES_NULL 0
 #define GAMEMES_MES_TIMER 1
@@ -103,8 +103,8 @@ typedef struct GameMes_s {
 	s16 dispMode;
 	s16 dispValue;
 	s16 mesMode;
-	HUSPRGRPID strGrpId[GAMEMES_STRMAX];
-	HUSPRID strSprId[GAMEMES_STRMAX];
+	HUSPRGRPID grpId[GAMEMES_SPRMAX];
+	HUSPRID sprId[GAMEMES_SPRMAX];
 	u8 mesNo;
 	u8 stat;
 	GXColor color;
@@ -126,7 +126,7 @@ BOOL GameMesKillCheck(void);
 void GameMesStub(void);
 void GameMesSprKill(GAMEMES *mes);
 int GameMesStrCreate(GAMEMES *mes, char *str, s16 flag);
-int GameMesStrCopy(GAMEMES *mes, s16 id);
+//int GameMesStrCopy(GAMEMES *mes, GAMEMESID id);
 void GameMesPauseCreate(void);
 void GameMesPauseCancel(void);
 void GameMesPauseEnable(BOOL enable);

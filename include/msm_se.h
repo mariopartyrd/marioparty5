@@ -15,6 +15,11 @@
 #define MSM_SE_CMN_17 16
 #define MSM_SE_CMN_19 18
 #define MSM_SE_CMN_25 24
+#define MSM_SE_CMN_26 25
+#define MSM_SE_CMN_27 26
+#define MSM_SE_CMN_28 27
+#define MSM_SE_CMN_29 28
+
 #define MSM_SE_CMN_51 50
 
 #define MSM_SE_MARIO 142

@@ -346,7 +346,7 @@ game/mg/actman.c:
 	.bss        start:0x8024A848 end:0x8024A868
 	.sdata2     start:0x80289E78 end:0x80289FC0
 
-game/mg/mess.c:
+game/mg/gamemes.c:
 	.text       start:0x80080934 end:0x8008BF20
 	.data       start:0x801C90F0 end:0x801C9690
 	.bss        start:0x8024A868 end:0x8024AC90

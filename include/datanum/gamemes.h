@@ -14,7 +14,7 @@ enum {
     GAMEMES_ANM_recordIcon = DATANUM(DATA_gamemes, 7),
     GAMEMES_ANM_recordJpn = DATANUM(DATA_gamemes, 8),
     GAMEMES_ANM_recordEng = DATANUM(DATA_gamemes, 9),
-    GAMEMES_ANM_recordGet = DATANUM(DATA_gamemes, 10),
+    GAMEMES_ANM_recordGer = DATANUM(DATA_gamemes, 10),
     GAMEMES_ANM_recordFra = DATANUM(DATA_gamemes, 11),
     GAMEMES_ANM_recordIta = DATANUM(DATA_gamemes, 12),
     GAMEMES_ANM_recordSpa = DATANUM(DATA_gamemes, 13),
