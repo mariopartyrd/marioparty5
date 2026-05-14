@@ -247,6 +247,9 @@
 #define MSM_SE_MENU_22 988
 #define MSM_SE_MENU_23 989
 #define MSM_SE_MENU_24 990
+#define MSM_SE_MENU_27 993
+#define MSM_SE_MENU_28 994
+#define MSM_SE_MENU_29 995
 
 
 #define MSM_SE_MENU_40 1006
