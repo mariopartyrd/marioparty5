@@ -958,7 +958,7 @@ BOOL MBCircuitCarMoveExec(int playerNo)
 			MBWalkNumKill(playerNo);
 			MBPlayerMotionNoShiftSet(playerNo, MB_PLAYER_MOT_WIN, 0, 8, HU3D_MOTATTR_LOOP);
 			modelP = MBModelGet(MBPlayerModelGet(playerNo));
-			Hu3DMotionAttrSet(modelP->motId[MB_PLAYER_MOT_WIN], 1);
+			Hu3DMotionAttrSet(modelP->motId[MB_PLAYER_MOT_WIN], HU3D_ATTR_MOT_RESET_LOCK);
 		}
 		if(MBMasuTypeGet(MASU_LAYER_DEFAULT, GwPlayer[playerNo].masuId)) {
 			GwPlayer[playerNo].walkNum = GwPlayer[playerNo].walkNum-dir;

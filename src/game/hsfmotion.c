@@ -790,7 +790,7 @@ void Hu3DMotionExec(HU3DMODELID modelId, HU3DMOTID motId, float time, BOOL copyX
                     } else if(objP->type == HSF_OBJ_LIGHT) {
                         SetObjLightMotion(modelId, trackP, GetCurve(trackP, time));
                     } else if(trackP->channel == HSF_CHANNEL_LOCK) {
-                        if((motP->attr & 0x1) && 0.0 == modelP->motWork.start && GetCurve(trackP, time) == 1.0f && MLoopCheck(objP)) { 
+                        if((motP->attr & HU3D_ATTR_MOT_RESET_LOCK) && 0.0 == modelP->motWork.start && GetCurve(trackP, time) == 1.0f && MLoopCheck(objP)) { 
                             modelP->motWork.start = time;
                         }
                         if(!modelP->timingHook || objP != modelP->timingHookObj || GetCurve(trackP, time) != 1.0f || !TimingHookCheck(modelId, motId, objP)) {
@@ -951,7 +951,7 @@ void Hu3DSubMotionExec(HU3DMODELID modelId)
                     obj = &hsf->object[trackP->target];
                     channel = trackP->channel;
                     if(channel == HSF_CHANNEL_LOCK) {
-                        if((motP->attr & 0x1) && 0.0 == modelP->motShiftWork.start && GetCurve(trackP, modelP->motShiftWork.time) == 1.0f && MLoopCheck(obj)) { 
+                        if((motP->attr & HU3D_ATTR_MOT_RESET_LOCK) && 0.0 == modelP->motShiftWork.start && GetCurve(trackP, modelP->motShiftWork.time) == 1.0f && MLoopCheck(obj)) { 
                             modelP->motShiftWork.start = modelP->motShiftWork.time;
                         }
                         if(modelP->timingHook && obj == modelP->timingHookObj && GetCurve(trackP, modelP->motShiftWork.time) == 1.0f) {
