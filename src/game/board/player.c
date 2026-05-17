@@ -16,6 +16,8 @@
 #include "game/wipe.h"
 
 #include "datanum/w20.h"
+#include "datanum/bdemo.h"
+
 #include "messnum/charaname.h"
 
 static MBPLAYERWORK playerWork[GW_PLAYER_MAX];
@@ -2764,7 +2766,7 @@ static void PlayerLoseExec(int playerNo)
         GwPlayer[playerNo].deadF = TRUE;
     } else {
         int aliveNum;
-        motTbl[0] = MBPlayerMotionCreate(playerNo, DATANUM(DATA_bdemo, 35));
+        motTbl[0] = MBPlayerMotionCreate(playerNo, BDEMO_HSF_minikoopaLose);
         
         MBPlayerMotionNoShiftSet(playerNo, motTbl[0], 0, 8, HU3D_MOTATTR_NONE);
         MBPlayerWinLoseVoicePlay(playerNo, motTbl[0], CHARVOICEID(10));
