@@ -59,8 +59,8 @@ void MBModelDispOffCamera(u16 cameraBit, BOOL dispOff);
 void MBModelAmbSetAll(float r, float g, float b);
 void MBModelCameraSetAll(u16 cameraBit);
 
-MBMODELID MBModelCreate(int dataNum, int *motDataNum, BOOL link);
-MBMODELID MBModelCreateChar(int charNo, int dataNum, int *motDataNum, BOOL link);
+MBMODELID MBModelCreate(int dataNum, const int *motDataNum, BOOL link);
+MBMODELID MBModelCreateChar(int charNo, int dataNum, const int *motDataNum, BOOL link);
 MBMODELID MBModelCreateParam(MBMODELPARAM *param, HuVecF *pos, HuVecF *rot);
 
 void MBModelKill(MBMODELID modelId);

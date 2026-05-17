@@ -15,7 +15,7 @@ void MBStarScrollStart(void);
 BOOL MBStarScrollDoneCheck(void);
 void MBStarScrollKill(void);
 
-void MBMapViewCameraSet(HuVecF *rot, HuVecF *pos, float zoom);
+void MBMapViewCameraSet(const HuVecF *rot, const HuVecF *pos, float zoom);
 void MBMapViewHookSet(MAPVIEWHOOK hook);
 
 #endif

@@ -2040,13 +2040,13 @@ config.libs = [
     Rel(
         "w10Dll",
         objects={
-            Object(NonMatching, "REL/w10Dll/world10.c"),
+            Object(Matching, "REL/w10Dll/world10.c"),
         },
     ),
     Rel(
         "w20Dll",
         objects={
-            Object(NonMatching, "REL/w20Dll/world20.c"),
+            Object(Matching, "REL/w20Dll/world20.c"),
         },
     ),
 ]

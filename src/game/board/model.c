@@ -14,7 +14,7 @@ static OMOBJ *modelManObj;
 
 static void ModelManExec(OMOBJ *obj);
 static BOOL InitData(MBMODEL *modelP, int dataNum, BOOL linkF);
-static BOOL InitMotionData(MBMODEL *modelP, int motNum, int *motDataNum);
+static BOOL InitMotionData(MBMODEL *modelP, int motNum, const int *motDataNum);
 
 void MBModelInit(void)
 {
@@ -143,7 +143,7 @@ void MBModelCameraSetAll(u16 cameraBit)
     }
 }
 
-static MBMODELID CreateMBModel(int charNo, int dataNum, int *motDataNum, BOOL linkF)
+static MBMODELID CreateMBModel(int charNo, int dataNum, const int *motDataNum, BOOL linkF)
 {
     int i;
     for(i=0; i<MB_MODEL_MAX; i++) {
@@ -198,12 +198,12 @@ static MBMODELID CreateMBModel(int charNo, int dataNum, int *motDataNum, BOOL li
     }
 }
 
-MBMODELID MBModelCreate(int dataNum, int *motDataNum, BOOL linkF)
+MBMODELID MBModelCreate(int dataNum, const int *motDataNum, BOOL linkF)
 {
     return CreateMBModel(CHARNO_NONE, dataNum, motDataNum, linkF);
 }
 
-MBMODELID MBModelCreateChar(int charNo, int dataNum, int *motDataNum, BOOL linkF)
+MBMODELID MBModelCreateChar(int charNo, int dataNum, const int *motDataNum, BOOL linkF)
 {
     return CreateMBModel(charNo, dataNum, motDataNum, linkF);
 }
@@ -1122,7 +1122,7 @@ static BOOL InitData(MBMODEL *modelP, int dataNum, BOOL linkF)
     }
 }
 
-static BOOL InitMotionData(MBMODEL *modelP, int motNum, int *motDataNum)
+static BOOL InitMotionData(MBMODEL *modelP, int motNum, const int *motDataNum)
 {
     void *dataP;
     modelP->motId[0] = Hu3DData[modelP->modelId].motId;

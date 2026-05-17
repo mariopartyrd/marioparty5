@@ -1083,7 +1083,7 @@ static void MasuDraw(HU3DMODEL *modelP, Mtx *mtx)
     }
 }
 
-void MBMapViewCameraSet(HuVecF *rot, HuVecF *pos, float zoom)
+void MBMapViewCameraSet(const HuVecF *rot, const HuVecF *pos, float zoom)
 {
     if(rot) {
         mapViewRot = *rot;
