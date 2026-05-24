@@ -259,7 +259,7 @@ void MB6_LightReset(void)
 int MB6Ev_MasuHatena(int playerNo)
 {
     MASU *masu = MBMasuGet(MASU_LAYER_DEFAULT, GwPlayer[playerNo].masuId);
-    u16 flag = masu->flag;
+    u32 flag = masu->flag & MASU_FLAG_MAP;
     if(flag & MB6EV_CAKEMOVE_FLAG) {
         MB6Ev_CakeMove(playerNo, GwPlayer[playerNo].masuId);
     }

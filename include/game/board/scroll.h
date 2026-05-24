@@ -11,6 +11,7 @@ void MBScrollClose(void);
 
 void MBMapViewExec(int playerNo);
 
+void MBStarScrollCreate(HuVecF *startPos, HuVecF *endPos, s16 maxTime);
 void MBStarScrollStart(void);
 BOOL MBStarScrollDoneCheck(void);
 void MBStarScrollKill(void);

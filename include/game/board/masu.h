@@ -31,6 +31,7 @@
 #define MASU_FLAG_BITFIELD(bitStart, bitNum, value) (((unsigned int)(value) & ((1 << bitNum)-1)) << (bitStart))
 
 #define MASU_FLAG_NONE 0
+#define MASU_FLAG_MAP 0xFFFF
 #define MASU_FLAG_JUMPTO MASU_FLAG_BIT(16)
 #define MASU_FLAG_JUMPFROM MASU_FLAG_BIT(17)
 #define MASU_FLAG_CLIMBTO MASU_FLAG_BIT(18)

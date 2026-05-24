@@ -405,7 +405,7 @@ void MB6_LightReset(void)
 int MB6Ev_MasuHatena(int playerNo)
 {
     MASU *masuP = MBMasuGet(MASU_LAYER_DEFAULT, GwPlayer[playerNo].masuId);
-    u32 flag = masuP->flag & 0xFFFF;
+    u32 flag = masuP->flag & MASU_FLAG_MAP;
     if(flag & MB6EV_CAKEMOVE_FLAG) {
         MB6Ev_CakeMove(playerNo, GwPlayer[playerNo].masuId);
     } else if(flag & MB6EV_CAKETHROW_FLAG) {
@@ -431,7 +431,7 @@ int MB6Ev_MasuWalkPost(int playerNo)
 {
     s16 masuId = GwPlayer[playerNo].masuId;
     MASU *masuP = MBMasuGet(MASU_LAYER_DEFAULT, masuId);
-    u32 flag = masuP->flag  & 0xFFFF;
+    u32 flag = masuP->flag & MASU_FLAG_MAP;
     if(flag & MB6EV_COOKIE_FLAG) {
         mb6_Work.masuIdCookie[playerNo] = masuId;
         MB6Ev_CookiePathFlagSet(masuId);

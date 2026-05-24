@@ -10,7 +10,6 @@
 #include "game/board/coin.h"
 #include "game/board/audio.h"
 #include "game/board/tutorial.h"
-#include "game/board/scroll.h"
 
 #include "game/sprite.h"
 #include "game/wipe.h"
