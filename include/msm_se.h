@@ -304,6 +304,29 @@
 
 #define MSM_SE_BD3_13 1512
 
+#define MSM_SE_BD5_01 1522
+#define MSM_SE_BD5_02 1523
+#define MSM_SE_BD5_03 1524
+#define MSM_SE_BD5_04 1525
+#define MSM_SE_BD5_05 1526
+#define MSM_SE_BD5_06 1527
+#define MSM_SE_BD5_07 1528
+#define MSM_SE_BD5_08 1529
+#define MSM_SE_BD5_09 1530
+#define MSM_SE_BD5_10 1531
+#define MSM_SE_BD5_11 1532
+#define MSM_SE_BD5_12 1533
+#define MSM_SE_BD5_13 1534
+#define MSM_SE_BD5_14 1535
+#define MSM_SE_BD5_15 1536
+#define MSM_SE_BD5_16 1537
+#define MSM_SE_BD5_17 1538
+#define MSM_SE_BD5_18 1539
+#define MSM_SE_BD5_19 1540
+#define MSM_SE_BD5_20 1541
+#define MSM_SE_BD5_21 1542
+#define MSM_SE_BD5_22 1543
+
 #define MSM_SE_BD6_01 1544
 #define MSM_SE_BD6_02 1545
 #define MSM_SE_BD6_03 1546
