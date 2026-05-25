@@ -69,11 +69,6 @@ do { \
     b = temp; \
 } while(0)
 
-extern inline float fabsf2(float x)
-{
-   return (float)fabs((float)x);
-}
-
 static void SortCollisions(COLNARROW *narrowP, int num)
 {
     s16 idx2; //r31
@@ -716,7 +711,7 @@ static float _GetColLineTime(COLLINE *a, COLLINE *b, float t, BOOL *result)
     if(*result) {
         return 0;
     }
-    if(fabsf2(t) < 0.0001f)  {
+    if(fabsf(t) < 0.0001f)  {
         return -1;
     }
     if(a->endA > b->endA) {
@@ -756,7 +751,7 @@ static BOOL _EdgeCylColInline(HuVecF *startPos, HuVecF *endPos, HuVecF *vtxStart
     endDot = VECDotProduct(&temp, endPos);
     dirDot = VECDotProduct(&temp, dir);
     scale = (endMag2*dirMag2)-(endDirDot*endDirDot);
-    if(fabsf2(scale) < 0.0001f) {
+    if(fabsf(scale) < 0.0001f) {
         return FALSE;
     }
     *arg5 = ((dirMag2*endDot)-(endDirDot*dirDot))/scale;
@@ -885,7 +880,7 @@ static BOOL _EdgeCylCol(HuVecF *startPos, HuVecF *endPos, float radius, HuVecF v
         }
         temp_f31 = (temp_f26*temp_f26)-(mag2*edgeMag);
         if(temp_f31 < 0) {
-            if(temp_f31 < -fabsf2(temp_f31*0.0001f)) {
+            if(temp_f31 < -fabsf(temp_f31*0.0001f)) {
                 return FALSE;
             } else {
                 temp_f31 = 0;
@@ -893,7 +888,7 @@ static BOOL _EdgeCylCol(HuVecF *startPos, HuVecF *endPos, float radius, HuVecF v
         } else {
             temp_f31 = sqrt(temp_f31);
         }
-        if(fabsf2(mag2) < 0.0001f) {
+        if(fabsf(mag2) < 0.0001f) {
             return FALSE;
         }
         t = (-temp_f26-temp_f31)/mag2;
@@ -930,7 +925,7 @@ static BOOL _EdgeCylCol(HuVecF *startPos, HuVecF *endPos, float radius, HuVecF v
     edgeMag = (GetVecDot(sp238, sp238)-(sp138*sp138))-r2;
     temp_f31 = (temp_f26*temp_f26)-(mag2*edgeMag);
     if(temp_f31 < 0) {
-        if(temp_f31 < -fabsf2(temp_f31*0.0001f)) {
+        if(temp_f31 < -fabsf(temp_f31*0.0001f)) {
             return FALSE;
         } else {
             temp_f31 = 0;
@@ -938,7 +933,7 @@ static BOOL _EdgeCylCol(HuVecF *startPos, HuVecF *endPos, float radius, HuVecF v
     } else {
         temp_f31 = sqrt(temp_f31);
     }
-    if(fabsf2(mag2) < 0.0001f) {
+    if(fabsf(mag2) < 0.0001f) {
         return FALSE;
     }
     t = (-temp_f26-temp_f31)/mag2;
@@ -1206,14 +1201,14 @@ static BOOL _ColCapsuleEdgeCalc(HuVecF *pos, HuVecF *posNew, HuVecF *posDelta, f
         } else {
             temp_f29 = (temp_f25*temp_f25)-(temp_f26*sp60);
             if(temp_f29 < 0) {
-                if(temp_f29 < -fabsf2(temp_f29*0.0001f)) {
+                if(temp_f29 < -fabsf(temp_f29*0.0001f)) {
                     continue;
                 }
                 temp_f29 = 0;
             } else {
                 temp_f29 = sqrt(temp_f29);
             }
-            if(fabsf2(temp_f26) < 0.0001f) {
+            if(fabsf(temp_f26) < 0.0001f) {
                 continue;
             }
             t = (-temp_f25-temp_f29)/temp_f26;
@@ -1281,7 +1276,7 @@ static BOOL _ColCapsuleVtxCalc(HuVecF *pos, HuVecF *posDelta, float radius, floa
         VECSubtract(pos, vtx, &vtxDir);
         outR = dtMag-(VECSquareMag(&vtxDir)-r2);
         if(outR < 0) {
-            if(outR < -fabsf2(outR*0.0001f)) {
+            if(outR < -fabsf(outR*0.0001f)) {
                 continue;
             }
             outR = 0;
@@ -1486,7 +1481,7 @@ static float _ColCylTest(COLCYLINDER *a, COLCYLINDER *b, int *result)
     lineB.startB = endPosB.y-bRadius;
     colLineTime = _GetColLineTime(&lineA, &lineB, relVel.y, &lineColResult);
     if(lineColResult) {
-        endDist = (bRadius+aRadius)-fabsf2(b->startPos.y-a->startPos.y);
+        endDist = (bRadius+aRadius)-fabsf(b->startPos.y-a->startPos.y);
     }
     startA = a->startPos;
     startA.y = 0;
@@ -1583,7 +1578,7 @@ static float _ColCapsuleTest(COLCYLINDER *a, COLCYLINDER *b, int *result)
     lineB.startB = endPosB.y;
     colLineTime = _GetColLineTime(&lineA, &lineB, relVel.y, &lineColResult);
     if(lineColResult) {
-        endDist = (0.5f*(a->height+b->height))-fabsf2(endPosA.y-endPosB.y);
+        endDist = (0.5f*(a->height+b->height))-fabsf(endPosA.y-endPosB.y);
     }
     startA = a->startPos;
     startA.y = 0;
@@ -1785,12 +1780,12 @@ static void _BodyMeshCol(void)
                                             sp1EC.x = norm.x;
                                             sp1EC.y = 0;
                                             sp1EC.z = norm.z;
-                                            if(fabsf2(sp1EC.x) > 0.001f || fabsf2(sp1EC.z) > 0.001f) {
+                                            if(fabsf(sp1EC.x) > 0.001f || fabsf(sp1EC.z) > 0.001f) {
                                                 VECNormalize(&sp1EC, &sp1EC);
                                             }
                                             temp_f29 /= 2;
                                             sp1EC.x *= temp_f28;
-                                            if(fabsf2(norm.y) < 0.001f) {
+                                            if(fabsf(norm.y) < 0.001f) {
                                                 sp1EC.y = 0;
                                             } else {
                                                 if(norm.y > 0) {
@@ -1995,12 +1990,12 @@ static void _BodyMeshCylCol(void)
                                     ejectDir.x = norm.x;
                                     ejectDir.y = 0;
                                     ejectDir.z = norm.z;
-                                    if(fabsf2(ejectDir.x) > 0.001f || fabsf2(ejectDir.z) > 0.001f) {
+                                    if(fabsf(ejectDir.x) > 0.001f || fabsf(ejectDir.z) > 0.001f) {
                                         VECNormalize(&ejectDir, &ejectDir);
                                     }
                                     height /= 2;
                                     ejectDir.x *= radius;
-                                    if(fabsf2(norm.y) < 0.001f) {
+                                    if(fabsf(norm.y) < 0.001f) {
                                         ejectDir.y = 0;
                                     } else {
                                         if(norm.y > 0) {

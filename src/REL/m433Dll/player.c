@@ -849,12 +849,12 @@ void M433PlayerComMain(OMOBJ *obj)
             }
             if(M433BallCoordGet(&pos)) {
                 if(work->comWideF != 0) {
-                    if((fabsf(pos.z) > 1.1f) || (pos.x > 1.1f)) {
+                    if((fabsf2(pos.z) > 1.1f) || (pos.x > 1.1f)) {
                         work->comMag = 0.0f;
                     }
                 }
                 else {
-                    if((fabsf(pos.z) > 0.95f) || (pos.x > 0.95f)) {
+                    if((fabsf2(pos.z) > 0.95f) || (pos.x > 0.95f)) {
                         work->comMag = 0.0f;
                     }
                 }
@@ -1057,11 +1057,11 @@ void M433PlayerComMain(OMOBJ *obj)
                         }
                     }
                     if(work->comWideF) {
-                        if((fabsf(pos.z) > 1.1f) || (pos.x > 1.1f)) {
+                        if((fabsf2(pos.z) > 1.1f) || (pos.x > 1.1f)) {
                             work->comMag = 0.0f;
                         }
                     } else {
-                        if((fabsf(pos.z) > 0.95f) || (pos.x > 0.95f)) {
+                        if((fabsf2(pos.z) > 0.95f) || (pos.x > 0.95f)) {
                             work->comMag = 0.0f;
                         }
                     }
@@ -1953,7 +1953,7 @@ void M433PlayerShock(OMOBJ *obj)
             work->vel.x = work->vel.y = work->vel.z = 0;
             M433BallPointCheck(0, &pos);
             VECSubtract(&work->pos, &pos, &dir);
-            if(fabsf(dir.y) < 0.01f) {
+            if(fabsf2(dir.y) < 0.01f) {
                 dir.y = 0.01f;
             }
             dist = VECMag(&dir);
@@ -2572,7 +2572,7 @@ BOOL M433BallUpdate(OMOBJ *obj)
                 ball->killF = TRUE;
                 gameman->bPointWin = TRUE;
                 gameman->sGroundGrp = -1;
-                if(fabsf(ball->pos.z) < 350 && fabsf(ball->pos.x) < 700) {
+                if(fabsf2(ball->pos.z) < 350 && fabsf2(ball->pos.x) < 700) {
                     gameman->sGroundGrp = 0;
                     if(ball->pos.x >= 0) {
                         gameman->sGroundGrp = 1;
@@ -2750,7 +2750,7 @@ void M433BallTargetSet(M433_BALLTARGET *target, HuVecF *pos, HuVecF *posNext, un
     if(target->radiusMax <= 0) {
         if(posNext->x*pos->x < 0 && pos->x != 0.0f && targetTbl[type].x > 0) {
             target->maxY = targetTbl[type].x;
-            target->scale = fabsf(pos->x/(posNext->x-pos->x));
+            target->scale = fabsf2(pos->x/(posNext->x-pos->x));
             dy = pos->y+(target->scale*(posNext->y-pos->y));
             if(dy < target->maxY) {
                 pos2.x = pos->x+(target->scale*(posNext->x-pos->x));
@@ -3792,7 +3792,7 @@ BOOL M433BallCoordGet(HuVecF *pos)
         return FALSE;
     }
     *pos = ball->cursorAPos;
-    pos->x = fabsf(pos->x);
+    pos->x = fabsf2(pos->x);
     pos->x -= 465;
     pos->x *= 0.004255319f;
     pos->z *= 0.0028571428f;
@@ -3975,7 +3975,7 @@ BOOL M433BallJumpCheck(HuVecF *pos)
     if(ball->pos.x == 0 || dir.x == 0) {
         return FALSE;
     } else {
-        float scale = fabsf(ball->pos.x/dir.x);
+        float scale = fabsf2(ball->pos.x/dir.x);
         VECScale(&dir, &dir, scale);
         VECAdd(&ball->pos, &dir, pos);
         return TRUE;

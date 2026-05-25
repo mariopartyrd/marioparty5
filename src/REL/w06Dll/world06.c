@@ -1816,7 +1816,7 @@ static void MB6Ev_CakeThrowPlayerUpdate(int playerNo)
                 evPlayer->ballNo = -1;
                 evPlayer->timer++;
             } else if(evPlayer->timer == 1) {
-                if(fabsf(MB6_AngleDiff(evPlayer->rot.y, evPlayer->angleStart)) < 10.0f) {
+                if(fabsf2(MB6_AngleDiff(evPlayer->rot.y, evPlayer->angleStart)) < 10.0f) {
                     evPlayer->ballNo = MB6Ev_CakeThrowBallSet(playerNo);
                     if(evPlayer->ballNo >= 0) {
                         evPlayer->ballDist = 0;

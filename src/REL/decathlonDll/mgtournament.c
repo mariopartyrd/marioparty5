@@ -366,24 +366,19 @@ void DecaArrayShuffle(s8 *arr, int num)
     }
 }
 
-extern inline float fabsf2(float x)
-{
-   return fabs(x);
-}
-
 BOOL DecaAngleSub(float *angle, float end, float speed)
 {
     float diff = *angle-end;
     float change = fmodf(diff, 180);
     float wrap = fmodf(diff, 360);
-    if(fabsf2(wrap) > 180.0f) {
+    if(fabsf(wrap) > 180.0f) {
         if(change > 0) {
-            change = -(180.0f-fabsf2(change));
+            change = -(180.0f-fabsf(change));
         } else {
-            change = 180.0f-fabsf2(change);
+            change = 180.0f-fabsf(change);
         }
     }
-    if(fabsf2(change) < speed) {
+    if(fabsf(change) < speed) {
         *angle = end;
         return TRUE;
     }
