@@ -436,11 +436,6 @@ static void KillEffectPlayer(int playerNo)
     }
 }
 
-extern inline float fabsf2(float x)
-{
-   return (float)fabs((float)x);
-}
-
 #define GET_ACTOR_VELY(actorP, speed) \
     ((actorP->gravity) ? (actorP->gravity+(actorP->gravity*((-1+sqrtf(1+(8*(speed/actorP->gravity))))/2))) : 0)
 
@@ -473,7 +468,7 @@ static int PlayerColHook(COL_NARROW_PARAM *a, COL_NARROW_PARAM *b)
             dot = VECDotProduct(&up, &dir);
             if(dot > cos(M_PI/3)) {
                 if(MgPlayerModeAttrCheck(playerP2, MGPLAYER_MODEATTR_AIR)) {
-                    if(fabsf2(playerP1->actor->velY) <= 1000.0f) {
+                    if(fabsf(playerP1->actor->velY) <= 1000.0f) {
                         if(playerP2->actor->velY < 0 || MgPlayerVibAttrCheck(playerP2, MGPLAYER_VIBATTR_HEADJUMP)) {
                             if(MgPlayerStunSet(playerP1, MGPLAYER_STUN_SQUISH, 0, -1)) {
                                 MgPlayerVibAttrSet(playerP1, MGPLAYER_VIBATTR_SQUISH);
@@ -517,7 +512,7 @@ static int PlayerColHook(COL_NARROW_PARAM *a, COL_NARROW_PARAM *b)
                 } else {
                     HuVecF norm = dir;
                     norm.y = 0;
-                    if(fabsf2(VECSquareMag(&norm)) < 0.001) {
+                    if(fabsf(VECSquareMag(&norm)) < 0.001) {
                         norm.x = 1;
                     } else {
                         VECNormalize(&norm, &norm);
@@ -939,7 +934,7 @@ static void PlayerModeWalk(MGPLAYER *playerP)
             }
         }
     } else {
-        if(fabsf2(playerP->actor->velY) > 2000) {
+        if(fabsf(playerP->actor->velY) > 2000) {
             MgPlayerModeSet(playerP, MGPLAYER_MODE_FALL);
         }
     }

@@ -78,7 +78,12 @@ extern inline double fabs(double x)
    return __fabs(x);
 }
 
-_MATH_INLINE float fabsf(register float x)
+extern inline float fabsf(float x)
+{
+   return fabs(x);
+}
+
+_MATH_INLINE float fabsf2(register float x)
 {
     register float outF;
 	// clang-format off
