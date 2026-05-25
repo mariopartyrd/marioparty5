@@ -18,7 +18,6 @@ typedef struct M507EffectParam_s {
 
 s16 fn_1_7AE8(s16 arg0, float arg2, float arg3, float arg4, float arg5, M507EffectParam *arg1);
 void fn_1_7D8C(void);
-void fn_1_7FF0(void);
 void fn_1_8214(HU3DMODEL *modelP, HU3DPARTICLE *particleP, Mtx mtx);
 
 M507EffectParam lbl_1_data_3E8 = {
@@ -77,7 +76,7 @@ s16 fn_1_7AE8(s16 arg0, float arg2, float arg3, float arg4, float arg5, M507Effe
     M507EffectParam *paramP;
     s16 modelId;
     HU3DPARTICLE *particleP;
-    HU3DPARTICLEDATA *dataP;
+    HU3DPARTICLEDATA *particleDataP;
 
     fn_1_7D8C();
     result = -1;
@@ -92,33 +91,33 @@ s16 fn_1_7AE8(s16 arg0, float arg2, float arg3, float arg4, float arg5, M507Effe
             modelP = &Hu3DData[modelId];
             particleP = modelP->hookData;
             paramP = particleP->work;
-            dataP = &particleP->data[particleP->emitCnt];
+            particleDataP = &particleP->data[particleP->emitCnt];
             index = particleP->emitCnt;
-            for (; index < particleP->maxCnt; index++, dataP++) {
-                if (!dataP->scale) {
+            for (; index < particleP->maxCnt; index++, particleDataP++) {
+                if (!particleDataP->scale) {
                     break;
                 }
             }
             if (index >= particleP->maxCnt) {
-                dataP = particleP->data;
-                for (index = 0; index < particleP->maxCnt; index++, dataP++) {
-                    if (!dataP->scale) {
+                particleDataP = particleP->data;
+                for (index = 0; index < particleP->maxCnt; index++, particleDataP++) {
+                    if (!particleDataP->scale) {
                         break;
                     }
                 }
             }
             if (index != particleP->maxCnt) {
                 paramP[index] = *arg1;
-                dataP->cameraBit = arg0;
-                dataP->pos.x = arg2;
-                dataP->pos.y = arg3;
-                dataP->pos.z = arg4;
-                dataP->vel = arg1->vel;
-                dataP->color = arg1->colorStart;
-                dataP->scaleBase = arg5;
-                dataP->scale = arg5;
-                dataP->time = 0;
-                dataP->parManId = -1;
+                particleDataP->cameraBit = arg0;
+                particleDataP->pos.x = arg2;
+                particleDataP->pos.y = arg3;
+                particleDataP->pos.z = arg4;
+                particleDataP->vel = arg1->vel;
+                particleDataP->color = arg1->colorStart;
+                particleDataP->scaleBase = arg5;
+                particleDataP->scale = arg5;
+                particleDataP->time = 0;
+                particleDataP->parManId = -1;
                 particleP->emitCnt = index;
                 result = index;
             }
@@ -134,7 +133,7 @@ void fn_1_7D8C(void)
     void *data;
     ANIMDATA *anim;
     HU3DPARTICLE *particleP;
-    HU3DPARTICLEDATA *dataP;
+    HU3DPARTICLEDATA *particleDataP;
 
     anim = NULL;
     for (cameraNo = 0; cameraNo < 16; cameraNo++) {
@@ -146,7 +145,7 @@ void fn_1_7D8C(void)
                 }
             }
             else {
-                if (anim == 0) {
+                if (!anim) {
                     data = HuDataSelHeapReadNum(0x410016, HU_MEMNUM_OVL, HEAP_MODEL);
                     anim = HuSprAnimRead(data);
                 }
@@ -154,7 +153,7 @@ void fn_1_7D8C(void)
                 Hu3DModelLayerSet(lbl_1_bss_133C[cameraNo], 4);
                 Hu3DParticleHookSet(lbl_1_bss_133C[cameraNo], fn_1_8214);
                 Hu3DModelCameraSet(lbl_1_bss_133C[cameraNo], 1 << cameraNo);
-                if (lbl_1_bss_1338 == 0) {
+                if (!lbl_1_bss_1338) {
                     lbl_1_bss_1338 = HuMemDirectMallocNum(HEAP_HEAP, 0x20D0, HU_MEMNUM_OVL);
                 }
                 Hu3DParticleBlendModeSet(lbl_1_bss_133C[cameraNo], 0);
@@ -162,8 +161,8 @@ void fn_1_7D8C(void)
                 particleP->emitCnt = 0;
                 particleP->work = lbl_1_bss_1338;
                 particleP->count = 1;
-                for (dataP = particleP->data, i = 0; i < particleP->maxCnt; i++, dataP++) {
-                    dataP->scale = 0.0f;
+                for (particleDataP = particleP->data, i = 0; i < particleP->maxCnt; i++, particleDataP++) {
+                    particleDataP->scale = 0.0f;
                 }
             }
         }
@@ -177,12 +176,12 @@ void fn_1_7FF0(void)
     ANIMDATA *anim;
     s16 i;
     HU3DPARTICLE *particleP;
-    HU3DPARTICLEDATA *dataP;
+    HU3DPARTICLEDATA *particleDataP;
 
     anim = NULL;
     for (cameraNo = 0; cameraNo < 16; cameraNo++) {
         if ((Hu3DCamera[cameraNo].fov != -1.0f) && (lbl_1_bss_133C[cameraNo] == -1)) {
-            if (anim == 0) {
+            if (!anim) {
                 data = HuDataSelHeapReadNum(0x410016, HU_MEMNUM_OVL, HEAP_MODEL);
                 anim = HuSprAnimRead(data);
             }
@@ -190,7 +189,7 @@ void fn_1_7FF0(void)
             Hu3DModelLayerSet(lbl_1_bss_133C[cameraNo], 4);
             Hu3DParticleHookSet(lbl_1_bss_133C[cameraNo], fn_1_8214);
             Hu3DModelCameraSet(lbl_1_bss_133C[cameraNo], 1 << cameraNo);
-            if (lbl_1_bss_1338 == 0) {
+            if (!lbl_1_bss_1338) {
                 lbl_1_bss_1338 = HuMemDirectMallocNum(HEAP_HEAP, 0x20D0, HU_MEMNUM_OVL);
             }
             Hu3DParticleBlendModeSet(lbl_1_bss_133C[cameraNo], 0);
@@ -198,8 +197,8 @@ void fn_1_7FF0(void)
             particleP->emitCnt = 0;
             particleP->work = lbl_1_bss_1338;
             particleP->count = 1;
-            for (dataP = particleP->data, i = 0; i < particleP->maxCnt; i++, dataP++) {
-                dataP->scale = 0.0f;
+            for (particleDataP = particleP->data, i = 0; i < particleP->maxCnt; i++, particleDataP++) {
+                particleDataP->scale = 0.0f;
             }
         }
     }
@@ -207,7 +206,7 @@ void fn_1_7FF0(void)
 
 void fn_1_8214(HU3DMODEL *modelP, HU3DPARTICLE *particleP, Mtx mtx)
 {
-    HU3DPARTICLEDATA *dataP;
+    HU3DPARTICLEDATA *particleDataP;
     M507EffectParam *paramP;
     s16 i;
     s16 color;
@@ -215,70 +214,70 @@ void fn_1_8214(HU3DMODEL *modelP, HU3DPARTICLE *particleP, Mtx mtx)
 
     paramP = particleP->work;
     if (particleP->count == 0) {
-        for (dataP = particleP->data, i = 0; i < particleP->maxCnt; i++, dataP++) {
-            dataP->scale = 0.0f;
+        for (particleDataP = particleP->data, i = 0; i < particleP->maxCnt; i++, particleDataP++) {
+            particleDataP->scale = 0.0f;
         }
     }
-    for (dataP = particleP->data, i = 0; i < particleP->maxCnt; i++, dataP++) {
-        if (dataP->scale) {
-            dataP->vel.x *= paramP[i].speedDecay.x;
-            dataP->vel.y *= paramP[i].speedDecay.y;
-            dataP->vel.z *= paramP[i].speedDecay.z;
-            VECAdd(&dataP->vel, &dataP->pos, &dataP->pos);
-            dataP->vel.y += paramP[i].accelY;
+    for (particleDataP = particleP->data, i = 0; i < particleP->maxCnt; i++, particleDataP++) {
+        if (particleDataP->scale) {
+            particleDataP->vel.x *= paramP[i].speedDecay.x;
+            particleDataP->vel.y *= paramP[i].speedDecay.y;
+            particleDataP->vel.z *= paramP[i].speedDecay.z;
+            VECAdd(&particleDataP->vel, &particleDataP->pos, &particleDataP->pos);
+            particleDataP->vel.y += paramP[i].accelY;
 
-            color = dataP->color.r + (paramP[i].colorStep * (paramP[i].colorEnd.r - paramP[i].colorStart.r));
+            color = particleDataP->color.r + (paramP[i].colorStep * (paramP[i].colorEnd.r - paramP[i].colorStart.r));
             if (color < 0) {
                 color = 0;
             }
             else if (color > 255) {
                 color = 255;
             }
-            dataP->color.r = color;
+            particleDataP->color.r = color;
 
-            color = dataP->color.g + (paramP[i].colorStep * (paramP[i].colorEnd.g - paramP[i].colorStart.g));
+            color = particleDataP->color.g + (paramP[i].colorStep * (paramP[i].colorEnd.g - paramP[i].colorStart.g));
             if (color < 0) {
                 color = 0;
             }
             else if (color > 255) {
                 color = 255;
             }
-            dataP->color.g = color;
+            particleDataP->color.g = color;
 
-            color = dataP->color.b + (paramP[i].colorStep * (paramP[i].colorEnd.b - paramP[i].colorStart.b));
+            color = particleDataP->color.b + (paramP[i].colorStep * (paramP[i].colorEnd.b - paramP[i].colorStart.b));
             if (color < 0) {
                 color = 0;
             }
             else if (color > 255) {
                 color = 255;
             }
-            dataP->color.b = color;
+            particleDataP->color.b = color;
 
-            color = dataP->color.a + paramP[i].alphaStep;
+            color = particleDataP->color.a + paramP[i].alphaStep;
             if (color < 1) {
-                dataP->scale = 0.0f;
+                particleDataP->scale = 0.0f;
             }
-            dataP->color.a = color;
+            particleDataP->color.a = color;
 
-            if (dataP->scale) {
+            if (particleDataP->scale) {
                 if (paramP[i].flags & 1) {
-                    if ((dataP->time + i) & 1) {
+                    if ((particleDataP->time + i) & 1) {
                         scale = 1.0;
                     }
                     else {
                         scale = 0.5;
                     }
-                    dataP->scale = dataP->scaleBase * scale;
+                    particleDataP->scale = particleDataP->scaleBase * scale;
                 }
                 else {
-                    dataP->scale = dataP->scaleBase;
+                    particleDataP->scale = particleDataP->scaleBase;
                 }
-                dataP->scaleBase += paramP[i].scaleDecay;
-                if (dataP->scaleBase <= 0.01f) {
-                    dataP->scale = 0.0f;
+                particleDataP->scaleBase += paramP[i].scaleDecay;
+                if (particleDataP->scaleBase <= 0.01f) {
+                    particleDataP->scale = 0.0f;
                 }
             }
-            dataP->time++;
+            particleDataP->time++;
         }
     }
     DCStoreRangeNoSync(particleP->data, particleP->maxCnt * sizeof(HU3DPARTICLEDATA));
