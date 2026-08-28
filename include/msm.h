@@ -212,7 +212,7 @@ s32 msmMusGetNumPlay(BOOL baseGrp);
 
 int msmStreamPlay(int streamId, MSM_STREAMPARAM *streamParam);
 s32 msmStreamStop(int streamNo, s32 speed);
-s32 msmStreamPauseAll(BOOL pause, s32 speed);
+void msmStreamPauseAll(BOOL pause, s32 speed);
 s32 msmStreamPause(int streamNo, BOOL pause, s32 speed);
 
 void msmStreamStopAll(s32 speed);

@@ -94,6 +94,8 @@ static u32 msmStreamUpdateFunc(void* buffer1, u32 len1, void* buffer2, u32 len2,
 static s32 msmStreamSlotInit(MSM_STREAM_SLOT* arg0, MSM_STREAM_PACK* arg1, STREAM_PARAM* arg2, s32 arg3);
 static void msmStreamPauseOff(s32 streamNo);
 static void msmStreamPauseOn(s32 streamNo, s32 arg1);
+static void msmStreamSetParamSub(MSM_STREAM_SLOT* slot);
+s32 msmStreamPause(int streamNo, BOOL pause, s32 speed);
 static s32 msmStreamPackStartStereo(s32 streamId, MSM_STREAMPARAM *param, s32 sampleOfs);
 static s32 msmStreamPackStartMono(s32 streamId, MSM_STREAMPARAM *param, s32 sampleOfs);
 static void msmStreamSlotOff(s32 streamNo);
@@ -174,6 +176,92 @@ static inline BOOL msmStreamIsPlay(MSM_STREAM_SLOT* slot) {
     } else {
         return FALSE;
     }
+}
+
+s32 msmStreamSetParam(int streamNo, MSM_STREAMPARAM *param) {
+    MSM_STREAM_SLOT* slot;
+
+    if (streamNo < 0 || streamNo >= StreamInfo.header.chanMax) {
+        return MSM_ERR_RANGE_STREAM;
+    }
+    slot = &StreamInfo.slot[streamNo];
+    if (param->flag & MSM_STREAMPARAM_VOL) {
+        slot->vol = param->vol;
+    }
+    if (param->flag & MSM_STREAMPARAM_PAN) {
+        slot->pan = param->pan;
+    }
+    if (param->flag & MSM_STREAMPARAM_SPAN) {
+        slot->span = param->span;
+    }
+    if (param->flag & MSM_STREAMPARAM_AUXA) {
+        slot->auxA = param->auxA;
+    }
+    if (param->flag & MSM_STREAMPARAM_AUXB) {
+        slot->auxB = param->auxB;
+    }
+    msmStreamSetParamSub(slot);
+    if (slot->slotL != -1) {
+        msmStreamSetParamSub(&StreamInfo.slot[slot->slotL]);
+    }
+    if (slot->slotR != -1) {
+        msmStreamSetParamSub(&StreamInfo.slot[slot->slotR]);
+    }
+    return 0;
+}
+
+static inline void msmStreamSetPause(s32 streamNo, BOOL pause, s32 speed) {
+    MSM_STREAM_SLOT* slot;
+
+    if (pause) {
+        msmStreamPauseOn(streamNo, speed);
+    } else {
+        slot = &StreamInfo.slot[streamNo];
+        slot->pauseTime = speed / 15 + 1;
+    }
+}
+
+void msmStreamPauseAll(BOOL pause, s32 speed) {
+    s32 i;
+
+    msmSysIrqDisable();
+    for (i = 0; i < StreamInfo.header.chanMax; i++) {
+        msmStreamPause(i, pause, speed);
+    }
+    msmSysIrqEnable();
+}
+
+s32 msmStreamPause(int streamNo, BOOL pause, s32 speed) {
+    MSM_STREAM_SLOT* slot;
+
+    if (streamNo < 0 || streamNo >= StreamInfo.header.chanMax) {
+        return MSM_ERR_RANGE_STREAM;
+    }
+    slot = &StreamInfo.slot[streamNo];
+    msmSysIrqDisable();
+    if (pause) {
+        if (slot->status != 0 && slot->status != 5) {
+            msmStreamPauseOn(streamNo, speed);
+            if (slot->slotL != -1) {
+                msmStreamPauseOn(slot->slotL, speed);
+            }
+            if (slot->slotR != -1) {
+                msmStreamPauseOn(slot->slotR, speed);
+            }
+        }
+    } else {
+        if (slot->status != 0 && slot->status != 5) {
+            slot->pauseTime = speed / 15 + 1;
+            if (slot->slotL != -1) {
+                StreamInfo.slot[slot->slotL].pauseTime = slot->pauseTime;
+            }
+            if (slot->slotR != -1) {
+                StreamInfo.slot[slot->slotR].pauseTime = slot->pauseTime;
+            }
+        }
+    }
+    msmSysIrqEnable();
+    return 0;
 }
 
 void msmStreamStopAll(s32 speed)
