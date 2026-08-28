@@ -12,11 +12,13 @@
 #define MSM_SEPARAM_AUXVOLA (1 << 4)
 #define MSM_SEPARAM_AUXVOLB (1 << 5)
 #define MSM_SEPARAM_POS (1 << 6)
+#define MSM_SEPARAM_PAD (1 << 7)
 
 #define MSM_LISTENER_NONE 0
 #define MSM_LISTENER_STARTDIS (1 << 0)
 #define MSM_LISTENER_FRONTSURDIS (1 << 1)
 #define MSM_LISTENER_BACKSURDIS (1 << 2)
+#define MSM_LISTENER_NO_UPDATA -34
 
 #define MSM_MUSPARAM_NONE 0
 #define MSM_MUSPARAM_CHAN (1 << 0)
@@ -45,6 +47,8 @@
 #define MSM_ERR_STREAMALLOC_FAIL -35
 #define MSM_ERR_INSTALLED -36
 #define MSM_ERR_GRP_NOTLOADED -103
+#define MSM_ERR_CHANLIMIT -110
+#define MSM_ERR_INVALIDSE -111
 #define MSM_ERR_INVALIDID -120
 #define MSM_ERR_INVALIDFILE -121
 #define MSM_ERR_REMOVEDID -122
@@ -140,7 +144,7 @@ typedef struct msmSe_s {
 	u8 span;
 	u8 reverb;
 	u8 chorus;
-	u8 doppler;
+	s8 doppler;
 	s8 comp;
 	u8 pad[3];
 } MSMSE;
@@ -172,7 +176,7 @@ typedef struct msmStreamParam_s {
 } MSM_STREAMPARAM;
 
 s32 msmSysInit(MSM_INIT *init, MSM_ARAM *aram);
-void msmSysSetOutputMode(SND_OUTPUTMODE mode);
+BOOL msmSysSetOutputMode(SND_OUTPUTMODE mode);
 void msmSysSetGroupLoadMode(s8 mode);
 
 s32 msmSysDelGroupAll(void);
@@ -183,7 +187,7 @@ s32 msmSysDelGroupBase(s32 grpNum);
 s32 msmSeSetParam(int seNo, MSM_SEPARAM *param);
 int msmSePlay(int seId, MSM_SEPARAM *param);
 s32 msmSeStop(int seNo, s32 speed);
-s32 msmSePauseAll(BOOL pause, s32 speed);
+void msmSePauseAll(BOOL pause, s32 speed);
 s32 msmSePause(int seNo, BOOL pause, s32 speed);
 void msmSeStopAll(BOOL checkGrp, s32 speed);
 s32 msmSeSetListener(Vec *pos, Vec *heading, float sndDist, float sndSpeed, MSM_SELISTENER *listener);
@@ -191,11 +195,11 @@ s32 msmSeUpdataListener(Vec *pos, Vec *heading);
 void msmSeDelListener(void);
 s32 msmSeGetStatus(int seNo);
 s32 msmSeGetNumPlay(BOOL baseGrp);
-s32 msmSeGetEntryID(s16 seId, int *seNo);
+s32 msmSeGetEntryID(s32 seId, int *seNo);
 
 int msmMusPlay(int musId, MSM_MUSPARAM *musParam);
 s32 msmMusStop(int musNo, s32 speed);
-s32 msmMusPauseAll(BOOL pause, s32 speed);
+void msmMusPauseAll(BOOL pause, s32 speed);
 s32 msmMusPause(int musNo, BOOL pause, s32 speed);
 s32 msmMusGetMidiCtrl(int musNo, s32 channel, s32 ctrl);
 void msmMusStopAll(BOOL checkGrp, s32 speed);
@@ -211,6 +215,6 @@ void msmStreamStopAll(s32 speed);
 s32 msmStreamGetStatus(int streamNo);
 
 MSMSE *msmSeGetIndexPtr(s32 seId);
-void msmMusSetMasterVolume(int volume);
+void msmMusSetMasterVolume(s32 volume);
 
 #endif
