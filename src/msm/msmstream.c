@@ -181,7 +181,10 @@ static inline BOOL msmStreamIsPlay(MSM_STREAM_SLOT* slot) {
 s32 msmStreamSetParam(int streamNo, MSM_STREAMPARAM *param) {
     MSM_STREAM_SLOT* slot;
     MSM_STREAM_SLOT* slotL;
-    s32 unused;
+    // s32 rather than int: MWCC distinguishes long from int and the two produce
+    // different register allocation here. int gets 97.6%.
+    s32 pan;
+    s32 vol;
 
     if (streamNo < 0 || streamNo >= StreamInfo.header.chanMax) {
         return MSM_ERR_RANGE_STREAM;
@@ -204,8 +207,23 @@ s32 msmStreamSetParam(int streamNo, MSM_STREAMPARAM *param) {
     if (param->flag & MSM_STREAMPARAM_AUXB) {
         slot->auxB = param->auxB;
     }
+    // The body of msmStreamSetParamSub, written out rather than called: the
+    // original inlines it at both sites here while keeping the out-of-line
+    // function for its other callers.
     if (slot->status != 0) {
-        msmStreamSetParamSub(slot);
+        if (StreamInfo.outputMode != 0) {
+            pan = slot->panBase + slot->pan - 64;
+            if (pan < 0) {
+                pan = 0;
+            }
+            if (pan > 127) {
+                pan = 127;
+            }
+        } else {
+            pan = 64;
+        }
+        vol = slot->volBase * slot->vol * slot->volFade * slot->pauseVol / (127*127*127);
+        sndStreamMixParameterEx(slot->stid, vol * StreamInfo.masterVol / 127, pan, slot->span, slot->auxA, slot->auxB);
     }
     if (slot->slotL != -1) {
         slotL = &StreamInfo.slot[slot->slotL];
@@ -214,7 +232,19 @@ s32 msmStreamSetParam(int streamNo, MSM_STREAMPARAM *param) {
         slotL->auxA = slot->auxA;
         slotL->auxB = slot->auxB;
         if (slotL->status != 0) {
-            msmStreamSetParamSub(slotL);
+            if (StreamInfo.outputMode != 0) {
+                pan = slotL->panBase + slotL->pan - 64;
+                if (pan < 0) {
+                    pan = 0;
+                }
+                if (pan > 127) {
+                    pan = 127;
+                }
+            } else {
+                pan = 64;
+            }
+            vol = slotL->volBase * slotL->vol * slotL->volFade * slotL->pauseVol / (127*127*127);
+            sndStreamMixParameterEx(slotL->stid, vol * StreamInfo.masterVol / 127, pan, slotL->span, slotL->auxA, slotL->auxB);
         }
     }
     return 0;
