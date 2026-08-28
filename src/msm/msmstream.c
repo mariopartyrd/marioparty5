@@ -11,7 +11,7 @@
 typedef struct {
     /* 0x00 */ SND_STREAMID stid;
     /* 0x04 */ s16 streamId;
-    /* 0x06 */ u8 status;
+    /* 0x06 */ volatile u8 status;
     /* 0x07 */ u8 stereoF;
     /* 0x08 */ u8 volBase;
     /* 0x09 */ u8 vol;
@@ -180,6 +180,8 @@ static inline BOOL msmStreamIsPlay(MSM_STREAM_SLOT* slot) {
 
 s32 msmStreamSetParam(int streamNo, MSM_STREAMPARAM *param) {
     MSM_STREAM_SLOT* slot;
+    MSM_STREAM_SLOT* slotL;
+    s32 unused;
 
     if (streamNo < 0 || streamNo >= StreamInfo.header.chanMax) {
         return MSM_ERR_RANGE_STREAM;
@@ -189,7 +191,9 @@ s32 msmStreamSetParam(int streamNo, MSM_STREAMPARAM *param) {
         slot->vol = param->vol;
     }
     if (param->flag & MSM_STREAMPARAM_PAN) {
-        slot->pan = param->pan;
+        if (slot->slotL == -1) {
+            slot->pan = param->pan;
+        }
     }
     if (param->flag & MSM_STREAMPARAM_SPAN) {
         slot->span = param->span;
@@ -200,12 +204,18 @@ s32 msmStreamSetParam(int streamNo, MSM_STREAMPARAM *param) {
     if (param->flag & MSM_STREAMPARAM_AUXB) {
         slot->auxB = param->auxB;
     }
-    msmStreamSetParamSub(slot);
-    if (slot->slotL != -1) {
-        msmStreamSetParamSub(&StreamInfo.slot[slot->slotL]);
+    if (slot->status != 0) {
+        msmStreamSetParamSub(slot);
     }
-    if (slot->slotR != -1) {
-        msmStreamSetParamSub(&StreamInfo.slot[slot->slotR]);
+    if (slot->slotL != -1) {
+        slotL = &StreamInfo.slot[slot->slotL];
+        slotL->vol = slot->vol;
+        slotL->span = slot->span;
+        slotL->auxA = slot->auxA;
+        slotL->auxB = slot->auxB;
+        if (slotL->status != 0) {
+            msmStreamSetParamSub(slotL);
+        }
     }
     return 0;
 }
@@ -240,24 +250,24 @@ s32 msmStreamPause(int streamNo, BOOL pause, s32 speed) {
     slot = &StreamInfo.slot[streamNo];
     msmSysIrqDisable();
     if (pause) {
-        if (slot->status != 0 && slot->status != 5) {
-            msmStreamPauseOn(streamNo, speed);
-            if (slot->slotL != -1) {
-                msmStreamPauseOn(slot->slotL, speed);
-            }
-            if (slot->slotR != -1) {
-                msmStreamPauseOn(slot->slotR, speed);
+        if (slot->status != 0) {
+            if (slot->status != 5) {
+                msmStreamPauseOn(streamNo, speed);
+                if (slot->slotL != -1) {
+                    msmStreamPauseOn(slot->slotL, speed);
+                }
+                if (slot->slotR != -1) {
+                    msmStreamPauseOn(slot->slotR, speed);
+                }
             }
         }
     } else {
-        if (slot->status != 0 && slot->status != 5) {
-            slot->pauseTime = speed / 15 + 1;
-            if (slot->slotL != -1) {
-                StreamInfo.slot[slot->slotL].pauseTime = slot->pauseTime;
-            }
-            if (slot->slotR != -1) {
-                StreamInfo.slot[slot->slotR].pauseTime = slot->pauseTime;
-            }
+        slot->pauseTime = speed / 15 + 1;
+        if (slot->slotL != -1) {
+            StreamInfo.slot[slot->slotL].pauseTime = slot->pauseTime;
+        }
+        if (slot->slotR != -1) {
+            StreamInfo.slot[slot->slotR].pauseTime = slot->pauseTime;
         }
     }
     msmSysIrqEnable();
