@@ -46,6 +46,10 @@
 #define CHARMOT_DATANUM(dataNum, charName) (DATANUM(DATA_##charName##mot, FILENUM(dataNum)))
 #define CHAR_DATANUM(dataNum, charName) (DATANUM(DATA_##charName, FILENUM(dataNum)))
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void CharInit(void);
 AMEM_PTR CharMotionAMemPGet(s16 charNo);
 void CharMotionInit(s16 charNo);
@@ -113,5 +117,9 @@ s16 CharMotionTotalTimeGet(s16 charNo, int motNo);
 s16 CharMotionExtraTimeGet(s16 charNo, int motNo);
 
 extern unsigned int charDataDirTbl[CHARNO_MAX][6];
+
+#ifdef __cplusplus
+};
+#endif
 
 #endif

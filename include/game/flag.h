@@ -5,6 +5,10 @@
 
 #define FLAGNUM(group, index) ((group)|(index))
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 enum {
     FLAG_GROUP_SAVE = (0 << 16),
     FLAG_GROUP_COMMON = (1 << 16),
@@ -63,5 +67,9 @@ s32 _CheckFlag(u32 flag);
 void _SetFlag(u32 flag);
 void _ClearFlag(u32 flag);
 void _InitFlag(void);
+
+#ifdef __cplusplus
+};
+#endif
 
 #endif

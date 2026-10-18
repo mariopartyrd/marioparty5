@@ -994,7 +994,7 @@ char *MakeObjectName(char *name)
             numSeparate++;
             break;
         }
-        buf[index] = *name;
+        buf[index] = name[0];
         name++;
         index++;
     }
@@ -1002,7 +1002,7 @@ char *MakeObjectName(char *name)
     return buf;
 }
 
-s32 CmpObjectName(char *name1, char *name2)
+s32 CmpObjectName(const char *name1, const char *name2)
 {
     s32 temp = 0;
     return strcmp(name1, name2);

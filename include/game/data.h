@@ -34,6 +34,10 @@ typedef struct HuDataStat_s {
     DVDFileInfo dvdFile;
 } HUDATASTAT;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void HuDataInit(void);
 s32 HuDataReadChk(int dataNum);
 HUDATASTAT *HuDataGetStatus(void *dirP);
@@ -63,5 +67,9 @@ void *HuDataReadNumHeapShortForce(int dataNum, s32 num, HEAPID heap);
 void HuDecodeData(void *src, void *dst, u32 size, s32 decode_type);
 
 extern u32 DirDataSize;
+
+#ifdef __cplusplus
+};
+#endif
 
 #endif

@@ -21,7 +21,7 @@ void Hu3DAnimInit(void)
     }
 }
 
-HU3DANIMID Hu3DAnimCreate(void *dataP, HU3DMODELID modelId, char *bmpName)
+HU3DANIMID Hu3DAnimCreate(void *dataP, HU3DMODELID modelId, const char *bmpName)
 {
     HU3DTEXANIM *texAnimP;
     HU3DANIMID animId;
@@ -80,7 +80,7 @@ HU3DANIMID Hu3DAnimCreate(void *dataP, HU3DMODELID modelId, char *bmpName)
     return animId;
 }
 
-HU3DANIMID Hu3DAnimLink(HU3DANIMID linkAnimId, HU3DMODELID modelId, char *bmpName)
+HU3DANIMID Hu3DAnimLink(HU3DANIMID linkAnimId, HU3DMODELID modelId, const char *bmpName)
 {
     HU3DTEXANIM *texAnimP;
     HU3DANIMID animId;
@@ -341,7 +341,7 @@ void Hu3DAnimExec(void)
     }
 }
 
-HU3DTEXSCRID Hu3DTexScrollCreate(HU3DMODELID modelId, char *bmpName)
+HU3DTEXSCRID Hu3DTexScrollCreate(HU3DMODELID modelId, const char *bmpName)
 {
     HU3DTEXSCROLL *texScrP;
     HU3DTEXSCRID texScrId;

@@ -35,6 +35,10 @@ struct Process_s {
     void *property;
 };
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void HuPrcInit(void);
 void HuPrcEnd(void);
 HUPROCESS *HuPrcCreate(void (*func)(void), u16 prio, u32 stackSize, s32 extraSize);
@@ -57,5 +61,10 @@ void HuPrcSetStat(HUPROCESS *process, u16 value);
 void HuPrcResetStat(HUPROCESS *process, u16 value);
 void HuPrcAllPause(s32 flag);
 void HuPrcAllUPause(s32 flag);
+
+
+#ifdef __cplusplus
+};
+#endif
 
 #endif

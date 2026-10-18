@@ -522,6 +522,11 @@ typedef struct Hu3DWater_s {
     float maxTime;
 } HU3DWATER;
 
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void Hu3DDrawPreInit(void);
 void Hu3DDraw(HU3DMODEL *model, Mtx matrix, HuVecF *scale);
 BOOL ObjCullCheck(HSFDATA *hsf, HSFOBJECT *object, Mtx mtx);
@@ -537,8 +542,8 @@ void mtxRot(Mtx dst, float x, float y, float z);
 void mtxScaleCat(Mtx dst, float x, float y, float z);
 s16 HmfInverseMtxF3X3(Mtx dst, Mtx src);
 void SetDefLight(HuVecF *pos, HuVecF *dir, u8 colorR, u8 colorG, u8 colorB, u8 ambR, u8 ambG, u8 ambB, u8 matR, u8 matG, u8 matB);
-void Hu3DModelObjPosGet(HU3DMODELID modelId, char *objName, HuVecF *pos);
-void Hu3DModelObjMtxGet(HU3DMODELID modelId, char *objName, Mtx mtx);
+void Hu3DModelObjPosGet(HU3DMODELID modelId, const char *objName, HuVecF *pos);
+void Hu3DModelObjMtxGet(HU3DMODELID modelId, const char *objName, Mtx mtx);
 void PGObjCall(HU3DMODEL *model, HSFOBJECT *object);
 void PGObjCalc(HU3DMODEL *model, HSFOBJECT *object);
 void PGObjReplica(HU3DMODEL *model, HSFOBJECT *object);
@@ -546,7 +551,7 @@ HSFOBJECT *Hu3DObjDuplicate(HSFDATA *hsf, u32 mallocNo);
 HSFATTRIBUTE *Hu3DAttrDuplicate(HSFDATA *hsf, u32 mallocNo);
 HSFMATERIAL *Hu3DMatDuplicate(HSFDATA *hsf, u32 mallocNo);
 void Hu3DModelObjDrawInit(void);
-void Hu3DModelObjDraw(HU3DMODELID modelId, char *objName, Mtx mtx);
+void Hu3DModelObjDraw(HU3DMODELID modelId, const char *objName, Mtx mtx);
 void Hu3DModelObjPtrDraw(HU3DMODELID modelId, HSFOBJECT *objPtr, Mtx mtx);
 
 void Hu3DInit(void);
@@ -576,7 +581,7 @@ void Hu3DModelClusterAttrSet(HU3DMODELID modelId, s16 clusterNo, s32 clusterAttr
 void Hu3DModelClusterAttrReset(HU3DMODELID modelId, s16 clusterNo, s32 clusterAttr);
 void Hu3DModelCameraSet(HU3DMODELID modelId, u16 cameraBit);
 void Hu3DModelLayerSet(HU3DMODELID modelId, s16 layerNo);
-HSFOBJECT *Hu3DModelObjPtrGet(HU3DMODELID modelId, char *objName);
+HSFOBJECT *Hu3DModelObjPtrGet(HU3DMODELID modelId, const char *objName);
 void Hu3DModelTPLvlSet(HU3DMODELID modelId, float tpLvl);
 void Hu3DModelHiliteMapSet(HU3DMODELID modelId, ANIMDATA *anim);
 void Hu3DModelShadowSet(HU3DMODELID modelId);
@@ -584,12 +589,12 @@ void Hu3DModelShadowReset(HU3DMODELID modelId);
 void Hu3DModelShadowDispOn(HU3DMODELID modelId);
 void Hu3DModelShadowDispOff(HU3DMODELID modelId);
 void Hu3DModelShadowMapSet(HU3DMODELID modelId);
-void Hu3DModelShadowMapObjSet(HU3DMODELID modelId, char *objName);
+void Hu3DModelShadowMapObjSet(HU3DMODELID modelId, const char *objName);
 void Hu3DModelShadowMapObjReset(HU3DMODELID modelId);
 void Hu3DModelAmbSet(HU3DMODELID modelId, float ambR, float ambG, float ambB);
-void Hu3DModelHookSet(HU3DMODELID modelId, char *objName, HU3DMODELID hookMdlId);
+void Hu3DModelHookSet(HU3DMODELID modelId, const char *objName, HU3DMODELID hookMdlId);
 void Hu3DModelHookReset(HU3DMODELID modelId);
-void Hu3DModelHookObjReset(HU3DMODELID modelId, char *objName);
+void Hu3DModelHookObjReset(HU3DMODELID modelId, const char *objName);
 void Hu3DModelProjectionSet(HU3DMODELID modelId, HU3DPROJID projId);
 void Hu3DModelProjectionReset(HU3DMODELID modelId, HU3DPROJID projId);
 void Hu3DModelHiliteTypeSet(HU3DMODELID modelId, s16 hiliteType);
@@ -643,7 +648,7 @@ void Hu3DLLightStaticSet(HU3DMODELID modelId, HU3DLLIGHTID lightId, BOOL staticF
 s16 Hu3DLLightParamGet(HU3DLIGHTID lLightId, Vec *pos, Vec *dir, GXColor *color);
 s16 Hu3DGLightParamGet(HU3DLIGHTID gLightId, Vec *pos, Vec *dir, GXColor *color);
 s32 Hu3DModelLightInfoSet(HU3DMODELID modelId, s16 staticF);
-HU3DLIGHTID Hu3DModelLightIdGet(HU3DMODELID modelId, char *objName);
+HU3DLIGHTID Hu3DModelLightIdGet(HU3DMODELID modelId, const char *objName);
 s16 Hu3DLightSet(HU3DMODEL *modelP, Mtx cameraMtx, Mtx cameraMtxXPose, float hilitePower);
 void Hu3DReflectMapSet(ANIMDATA *anim);
 void Hu3DReflectNoSet(s16 no);
@@ -664,7 +669,7 @@ HU3DPROJID Hu3DProjectionCreate(ANIMDATA *anim, float fov, float near, float far
 void Hu3DProjectionKill(HU3DPROJID projId);
 void Hu3DProjectionPosSet(HU3DPROJID projId, HuVecF *camPos, HuVecF *camUp, HuVecF *camTarget);
 void Hu3DProjectionTPLvlSet(HU3DPROJID projId, float tpLvl);
-void Hu3DMipMapSet(void *animData, HU3DMODELID modelId, char *bmpName);
+void Hu3DMipMapSet(void *animData, HU3DMODELID modelId, const char *bmpName);
 void Hu3DFbCopyExec(s16 x, s16 y, s16 w, s16 h, GXTexFmt texFmt, s16 mipmapF, void *buf);
 void Hu3DFbCopyLayerSet(s16 layerNo, s16 x, s16 y, s16 w, s16 h, GXTexFmt texFmt, s16 mipmapF, void *buf);
 void Hu3DZClear(void);
@@ -710,9 +715,9 @@ void Hu3DMotionStartEndSet(HU3DMODELID modelId, float start, float end);
 BOOL Hu3DMotionEndCheck(HU3DMODELID modelId);
 void Hu3DMotionSpeedSet(HU3DMODELID modelId, float speed);
 void Hu3DMotionShiftSpeedSet(HU3DMODELID modelId, float speed);
-void Hu3DMotionNoMotSet(HU3DMODELID modelId, char *objName, u32 forceAttr);
-void Hu3DMotionNoMotReset(HU3DMODELID modelId, char *objName, u32 forceAttr);
-void Hu3DMotionForceSet(HU3DMODELID modelId, char *objName, u32 forceAttr, float value);
+void Hu3DMotionNoMotSet(HU3DMODELID modelId, const char *objName, u32 forceAttr);
+void Hu3DMotionNoMotReset(HU3DMODELID modelId, const char *objName, u32 forceAttr);
+void Hu3DMotionForceSet(HU3DMODELID modelId, const char *objName, u32 forceAttr, float value);
 void Hu3DMotionTimingHookSet(HU3DMODELID modelId, HU3DTIMINGHOOK timingHook);
 void Hu3DMotionAttrSet(HU3DMOTID motId, u16 attr);
 void Hu3DMotionAttrReset(HU3DMOTID motId, u16 attr);
@@ -739,8 +744,8 @@ void Hu3DSubMotionTimeSet(HU3DMODELID modelId, float time);
 void Hu3DMotionShiftTimeSet(HU3DMODELID modelId, float time);
 
 void Hu3DAnimInit(void);
-HU3DANIMID Hu3DAnimCreate(void *dataP, HU3DMODELID modelId, char *bmpName);
-HU3DANIMID Hu3DAnimLink(HU3DANIMID linkAnimId, HU3DMODELID modelId, char *bmpName);
+HU3DANIMID Hu3DAnimCreate(void *dataP, HU3DMODELID modelId, const char *bmpName);
+HU3DANIMID Hu3DAnimLink(HU3DANIMID linkAnimId, HU3DMODELID modelId, const char *bmpName);
 void Hu3DAnimKill(HU3DANIMID animId);
 void Hu3DAnimModelKill(HU3DMODELID modelId);
 void Hu3DAnimAllKill(void);
@@ -750,7 +755,7 @@ void Hu3DAnimSpeedSet(HU3DANIMID animId, float speed);
 void Hu3DAnimBankSet(HU3DANIMID animId, s32 bank);
 void Hu3DAnmNoSet(HU3DANIMID animId, u16 anmNo);
 void Hu3DAnimExec(void);
-HU3DTEXSCRID Hu3DTexScrollCreate(HU3DMODELID modelId, char *bmpName);
+HU3DTEXSCRID Hu3DTexScrollCreate(HU3DMODELID modelId, const char *bmpName);
 void Hu3DTexScrollKill(HU3DTEXSCRID texScrId);
 void Hu3DTexScrollAllKill(void);
 void Hu3DTexScrollPosSet(HU3DTEXSCRID texScrId, float posX, float posY, float posZ);
@@ -850,5 +855,10 @@ extern HU3DTEXANIM Hu3DTexAnimData[HU3D_TEXANIM_MAX];
 extern HU3DTEXSCROLL Hu3DTexScrData[HU3D_TEXSCROLL_MAX];
 
 extern HU3DWATER Hu3DWaterData;
+
+
+#ifdef __cplusplus
+};
+#endif
 
 #endif

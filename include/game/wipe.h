@@ -39,6 +39,10 @@ typedef struct WipeWork_s {
 	u8 stat;
 } WIPEWORK;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void WipeInit(GXRenderModeObj *rmode);
 void WipeExecAlways(void);
 void WipeCreate(s16 mode, s16 type, s16 maxTime);
@@ -56,5 +60,10 @@ static inline void WipeWait(void)
 
 extern WIPEWORK wipeData;
 extern BOOL wipeFadeInF;
+
+#ifdef __cplusplus
+};
+#endif
+
 
 #endif

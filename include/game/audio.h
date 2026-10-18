@@ -15,6 +15,11 @@ typedef struct sndGrpTbl_s {
     s8 auxBVol;
 } SNDGRPTBL;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
 void HuAudInit(void);
 void HuAudAllStop(void);
 void HuAudFadeOut(s32 speed);
@@ -88,5 +93,10 @@ extern float Snd3DSpeedOffset;
 extern float Snd3DDistOffset;
 extern BOOL musicOffF;
 extern u8 fadeStat;
+
+#ifdef __cplusplus
+};
+#endif
+
 
 #endif
