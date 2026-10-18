@@ -55,6 +55,10 @@ typedef struct MgTimer_s {
     u8 digitB;
 } MGTIMER;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 MGTIMER* MgTimerCreate(int type);
 void MgTimerKill(MGTIMER* timer);
 int MgTimerModeGet(MGTIMER* timer);
@@ -73,5 +77,8 @@ void MgTimerDispOff(MGTIMER* timer);
 void MgTimerRecordDispOn(MGTIMER* timer);
 void MgTimerRecordDispOff(MGTIMER* timer);
 
+#ifdef __cplusplus
+};
+#endif
 
 #endif

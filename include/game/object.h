@@ -108,6 +108,10 @@ typedef struct omCameraView_s {
 #define OM_CAMERAMOVE_LINEAR 2
 #define OM_CAMERAMOVE_COSSIN 2
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void omOvlCallEx(OMOVL ovl, s16 unlinkF, s32 evtno, s32 stat);
 void omOvlGotoEx(OMOVL ovl, s16 unlinkF, s32 evtno, s32 stat);
 void omOvlReturnEx(s16 hisOfs, s16 unlinkF);
@@ -168,6 +172,10 @@ extern HuVecF CRotM[HU3D_CAM_MAX];
 extern float CZoom;
 extern HuVecF Center;
 extern HuVecF CRot;
+
+#ifdef __cplusplus
+};
+#endif
 
 
 #endif

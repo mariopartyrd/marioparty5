@@ -1,0 +1,17 @@
+#include "REL/mg_cpp/new.cpp"
+#include "REL/mg_cpp/prolog.cpp"
+#include "REL/mg_cpp/assert.cpp"
+#include "REL/mg_cpp/camera.cpp"
+#include "REL/mg_cpp/handle.cpp"
+#include "REL/mg_cpp/linknode.cpp"
+#include "REL/mg_cpp/game_object.cpp"
+#include "REL/mg_cpp/minigame_core.cpp"
+#include "REL/mg_cpp/model.cpp"
+#include "REL/mg_cpp/mt19937.cpp"
+#include "REL/mg_cpp/om.cpp"
+#include "REL/mg_cpp/sphere.cpp"
+#include "REL/mg_cpp/subthread.cpp"
+#include "REL/mg_cpp/thread.cpp"
+#include "REL/mg_cpp/timer.cpp"
+
+CMinigameCore *CSingleton<CMinigameCore>::ms_pointer;

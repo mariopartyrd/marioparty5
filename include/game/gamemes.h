@@ -112,6 +112,10 @@ typedef struct GameMes_s {
 
 extern GAMEMES GameMesData[GAMEMES_MAX];
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void GameMesInit(void);
 void *GameMesDataRead(unsigned int dataNum);
 void GameMesExec(void);
@@ -171,5 +175,10 @@ extern u8 GameMesCloseF;
 extern unsigned int GameMesVWait;
 extern int GameMesLanguageNo;
 extern OMOVL GameMesOvlPrev;
+
+
+#ifdef __cplusplus
+};
+#endif
 
 #endif

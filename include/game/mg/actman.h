@@ -154,6 +154,12 @@ typedef struct MgActorColMapPoly_s {
     int triNo;
 } MGACTOR_COLMAP_POLY;
 
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+
 BOOL MgPlayerComStkOn(MGPLAYER *playerP);
 void MgPlayerComStkOff(MGPLAYER *playerP);
 BOOL MgPlayerVecChase(MGPLAYER *playerP, HuVecF *pos, float velZ, float radius);
@@ -209,5 +215,10 @@ void MgPlayerModeAttrReset(MGPLAYER *playerP, u16 attr);
 void MgPlayerModeAttrSet(MGPLAYER *playerP, u16 attr);
 
 BOOL MgPlayerStunSet(MGPLAYER *playerP, int stunType, float angle, int maxTime);
+
+
+#ifdef __cplusplus
+};
+#endif
 
 #endif

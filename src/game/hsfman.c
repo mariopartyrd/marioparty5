@@ -849,13 +849,13 @@ void Hu3DModelLayerSet(HU3DMODELID modelId, s16 layerNo)
     layerNum[layerNo]++;
 }
 
-HSFOBJECT *Hu3DModelObjPtrGet(HU3DMODELID modelId, char *objName)
+HSFOBJECT *Hu3DModelObjPtrGet(HU3DMODELID modelId, const char *objName)
 {
     char name[OBJNAME_MAX_LEN];
     HSFDATA *hsf = Hu3DData[modelId].hsf;
     s16 i;
     HSFOBJECT *objPtr = hsf->object;
-    strcpy(name, MakeObjectName(objName));
+    strcpy(name, MakeObjectName((char *)objName));
     for(i=0; i<hsf->objectNum; objPtr++, i++) {
         HSFOBJECT *obj = objPtr;
         if(strcmp(name, obj->name) == 0) {
@@ -978,13 +978,13 @@ void Hu3DModelShadowMapSet(HU3DMODELID modelId)
     }
 }
 
-void Hu3DModelShadowMapObjSet(HU3DMODELID modelId, char *objName)
+void Hu3DModelShadowMapObjSet(HU3DMODELID modelId, const char *objName)
 {
     char name[OBJNAME_MAX_LEN];
     HSFDATA *hsf = Hu3DData[modelId].hsf;
     s16 i;
     HSFOBJECT *objPtr = hsf->object;
-    strcpy(name, MakeObjectName(objName));
+    strcpy(name, MakeObjectName((char *)objName));
     for(i=0; i<hsf->objectNum; i++, objPtr++) {
         HSFOBJECT *obj = objPtr;
         if(obj->constData && !strcmp(name, obj->name)) {
@@ -1019,7 +1019,7 @@ void Hu3DModelAmbSet(HU3DMODELID modelId, float ambR, float ambG, float ambB)
     modelP->ambB = ambB;
 }
 
-void Hu3DModelHookSet(HU3DMODELID modelId, char *objName, HU3DMODELID hookMdlId)
+void Hu3DModelHookSet(HU3DMODELID modelId, const char *objName, HU3DMODELID hookMdlId)
 {
     char name[OBJNAME_MAX_LEN];
     HSFDATA *hsf = Hu3DData[modelId].hsf;
@@ -1028,7 +1028,7 @@ void Hu3DModelHookSet(HU3DMODELID modelId, char *objName, HU3DMODELID hookMdlId)
     
     Hu3DMotionCalc(modelId);
     objPtr = hsf->object;
-    strcpy(name, MakeObjectName(objName));
+    strcpy(name, MakeObjectName((char *)objName));
     for(i=0; i<hsf->objectNum; i++, objPtr++) {
         HSFOBJECT *obj = objPtr;
         if(obj->constData && !strcmp(name, obj->name)) {
@@ -1058,13 +1058,13 @@ void Hu3DModelHookReset(HU3DMODELID modelId)
     }
 }
 
-void Hu3DModelHookObjReset(HU3DMODELID modelId, char *objName)
+void Hu3DModelHookObjReset(HU3DMODELID modelId, const char *objName)
 {
     char name[OBJNAME_MAX_LEN];
     HSFDATA *hsf = Hu3DData[modelId].hsf;
     s16 i;
     HSFOBJECT *objPtr = hsf->object;
-    strcpy(name, MakeObjectName(objName));
+    strcpy(name, MakeObjectName((char *)objName));
     for(i=0; i<hsf->objectNum; i++, objPtr++) {
         HSFOBJECT *obj = objPtr;
         if(obj->constData && !strcmp(name, obj->name)) {
@@ -1797,7 +1797,7 @@ s32 Hu3DModelLightInfoSet(HU3DMODELID modelId, s16 staticF)
     return lightNum;
 }
 
-HU3DLIGHTID Hu3DModelLightIdGet(HU3DMODELID modelId, char *objName)
+HU3DLIGHTID Hu3DModelLightIdGet(HU3DMODELID modelId, const char *objName)
 {
     char name[OBJNAME_MAX_LEN];
     HU3DMODEL *modelP = &Hu3DData[modelId];
@@ -1805,7 +1805,7 @@ HU3DLIGHTID Hu3DModelLightIdGet(HU3DMODELID modelId, char *objName)
     HSFOBJECT *objPtr;
     s16 i;
     s16 lightNo;
-    strcpy(name, MakeObjectName(objName));
+    strcpy(name, MakeObjectName((char *)objName));
     for(objPtr = hsf->object, i=lightNo=0; i<hsf->objectNum; i++, objPtr++) {
         HSFOBJECT *obj = objPtr;
         if(obj->type != HSF_OBJ_LIGHT) {
@@ -2295,7 +2295,7 @@ void Hu3DProjectionTPLvlSet(HU3DPROJID projId, float tpLvl)
     Hu3DProjection[projId].alpha = tpLvl*255;
 }
 
-void Hu3DMipMapSet(void *animData, HU3DMODELID modelId, char *bmpName)
+void Hu3DMipMapSet(void *animData, HU3DMODELID modelId, const char *bmpName)
 {
     HU3DMODEL *modelP = &Hu3DData[modelId];
     HSFDATA *hsf = modelP->hsf;

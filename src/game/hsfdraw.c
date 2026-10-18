@@ -3111,7 +3111,7 @@ void SetDefLight(HuVecF *pos, HuVecF *dir, u8 colorR, u8 colorG, u8 colorB, u8 a
     SetDefLightColor(&lightObj, colorR, colorG, colorB, ambR, ambG, ambB, matR, matG, matB);
 }
 
-void Hu3DModelObjPosGet(HU3DMODELID modelId, char *objName, HuVecF *pos)
+void Hu3DModelObjPosGet(HU3DMODELID modelId, const char *objName, HuVecF *pos)
 {
     Mtx mtx;
 
@@ -3125,7 +3125,7 @@ void Hu3DModelObjPosGet(HU3DMODELID modelId, char *objName, HuVecF *pos)
     }
 }
 
-void Hu3DModelObjMtxGet(HU3DMODELID modelId, char *objName, Mtx mtx)
+void Hu3DModelObjMtxGet(HU3DMODELID modelId, const char *objName, Mtx mtx)
 {
     HU3DMODEL *modelP;
     HSFDATA *hsf;
@@ -3145,7 +3145,7 @@ void Hu3DModelObjMtxGet(HU3DMODELID modelId, char *objName, Mtx mtx)
     PGFinishF = FALSE;
     hookIdx = HU3D_MODELID_NONE;
     PGName = HuMemDirectMallocNum(HEAP_HEAP, 0x200, HU_MEMNUM_OVL);
-    strcpy(PGName, MakeObjectName(objName));
+    strcpy(PGName, MakeObjectName((char *)objName));
     if(modelP->motId != HU3D_MOTID_NONE) {
         attachMotionF = TRUE;
     } else {
@@ -3413,7 +3413,7 @@ void Hu3DModelObjDrawInit(void) {
     attachMotionF = FALSE;
 }
 
-void Hu3DModelObjDraw(HU3DMODELID modelId, char *objName, Mtx mtx)
+void Hu3DModelObjDraw(HU3DMODELID modelId, const char *objName, Mtx mtx)
 {
     HU3DDRAWOBJ drawObj;
     HSFCONSTDATA *constData;

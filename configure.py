@@ -302,6 +302,17 @@ cflags_rel = [
     "-pool off",
 ]
 
+# REL flags
+cflags_rel_cpp = [
+    *cflags_base,
+    "-O0,p",
+    "-char unsigned",
+    "-fp_contract off",
+    "-sdata 0",
+    "-sdata2 0",
+    "-pool off",
+]
+
 # Game flags
 cflags_game = [
     *cflags_base,
@@ -369,7 +380,16 @@ def Rel(lib_name: str, objects: List[Object]) -> Dict[str, Any]:
         "host": True,
         "objects": objects,
     }
-
+   
+# Helper function for REL script objects
+def RelCpp(lib_name: str, objects: List[Object]) -> Dict[str, Any]:
+    return {
+        "lib": lib_name,
+        "mw_version": "GC/1.3.2",
+        "cflags": cflags_rel_cpp,
+        "host": True,
+        "objects": objects,
+    }
 
 Matching = True                   # Object matches and should be linked
 NonMatching = False               # Object does not match and should not be linked
@@ -944,10 +964,10 @@ config.libs = [
             Object(Matching, "REL/m433Dll/player.c"),
         },
     ),
-    Rel(
+    RelCpp(
         "m501Dll",
         objects={
-            Object(NonMatching, "REL/m501Dll/m501.cpp"),
+            Object(Matching, "REL/m501Dll/m501.cpp"),
             Object(NonMatching, "REL/m501Dll/asiato.cpp"),
             Object(NonMatching, "REL/m501Dll/gamemaster.cpp"),
             Object(NonMatching, "REL/m501Dll/aisu.cpp"),
@@ -1031,7 +1051,7 @@ config.libs = [
             Object(NonMatching, "REL/m508Dll/object.c"),
         },
     ),
-    Rel(
+    RelCpp(
         "m509Dll",
         objects={
             Object(NonMatching, "REL/m509Dll/m509.cpp"),
@@ -1064,7 +1084,7 @@ config.libs = [
             Object(NonMatching, "REL/m510dll/score.c"),
         },
     ),
-    Rel(
+    RelCpp(
         "m511Dll",
         objects={
             Object(NonMatching, "REL/m511Dll/boat.cpp"),
@@ -1086,7 +1106,7 @@ config.libs = [
             Object(NonMatching, "REL/m511Dll/water.cpp"),
         },
     ),
-    Rel(
+    RelCpp(
         "m512Dll",
         objects={
             Object(NonMatching, "REL/m512Dll/m512.cpp"),
@@ -1101,7 +1121,7 @@ config.libs = [
             Object(NonMatching, "REL/m512Dll/heiho.cpp"),
         },
     ),
-    Rel(
+    RelCpp(
         "m513Dll",
         objects={
             Object(NonMatching, "REL/m513Dll/m513.cpp"),
@@ -1151,7 +1171,7 @@ config.libs = [
             Object(NonMatching, "REL/m516Dll/actor.c"),
         },
     ),
-    Rel(
+    RelCpp(
         "m517Dll",
         objects={
             Object(NonMatching, "REL/m517Dll/effect.cpp"),
@@ -1189,7 +1209,7 @@ config.libs = [
             Object(NonMatching, "REL/m520Dll/m520.c"),
         },
     ),
-    Rel(
+    RelCpp(
         "m521Dll",
         objects={
             Object(NonMatching, "REL/m521Dll/clock.cpp"),
@@ -1205,7 +1225,7 @@ config.libs = [
             Object(NonMatching, "REL/m521Dll/score.cpp"),
         },
     ),
-    Rel(
+    RelCpp(
         "m522Dll",
         objects={
             Object(NonMatching, "REL/m522Dll/fire.cpp"),
@@ -1272,7 +1292,7 @@ config.libs = [
             Object(NonMatching, "REL/m530Dll/effect.c"),
         },
     ),
-    Rel(
+    RelCpp(
         "m531Dll",
         objects={
             Object(NonMatching, "REL/m531Dll/m531.cpp"),
@@ -1291,7 +1311,7 @@ config.libs = [
             Object(NonMatching, "REL/m531Dll/cleaneff.cpp"),
         },
     ),
-    Rel(
+    RelCpp(
         "m532Dll",
         objects={
             Object(NonMatching, "REL/m532Dll/ball.cpp"),
@@ -1331,7 +1351,7 @@ config.libs = [
             Object(NonMatching, "REL/m535Dll/m535.c"),
         },
     ),
-    Rel(
+    RelCpp(
         "m536Dll",
         objects={
             Object(NonMatching, "REL/m536Dll/m536.cpp"),
@@ -1346,7 +1366,7 @@ config.libs = [
             Object(NonMatching, "REL/m536Dll/gun.cpp"),
         },
     ),
-    Rel(
+    RelCpp(
         "m537Dll",
         objects={
             Object(NonMatching, "REL/m537Dll/m537.cpp"),
@@ -1367,7 +1387,7 @@ config.libs = [
             Object(NonMatching, "REL/m538Dll/m538.c"),
         },
     ),
-    Rel(
+    RelCpp(
         "m539Dll",
         objects={
             Object(NonMatching, "REL/m539Dll/m539.cpp"),
@@ -1604,7 +1624,7 @@ config.libs = [
             Object(NonMatching, "REL/m567Dll/m567.c"),
         },
     ),
-    Rel(
+    RelCpp(
         "m568Dll",
         objects={
             Object(NonMatching, "REL/m568Dll/archive.cpp"),
@@ -1703,7 +1723,7 @@ config.libs = [
             Object(NonMatching, "REL/m577Dll/effect.c"),
         },
     ),
-    Rel(
+    RelCpp(
         "m579Dll",
         objects={
             Object(NonMatching, "REL/m579Dll/m579.cpp"),

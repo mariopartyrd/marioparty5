@@ -461,7 +461,7 @@ void Hu3DMotionShiftSpeedSet(HU3DMODELID modelId, float speed)
     modelP->motShiftWork.speed = speed;
 }
 
-void Hu3DMotionNoMotSet(HU3DMODELID modelId, char *objName, u32 forceAttr)
+void Hu3DMotionNoMotSet(HU3DMODELID modelId, const char *objName, u32 forceAttr)
 {
     HSFOBJECT *objP = Hu3DModelObjPtrGet(modelId, objName);
     HSFCONSTDATA *constData;
@@ -491,14 +491,14 @@ void Hu3DMotionNoMotSet(HU3DMODELID modelId, char *objName, u32 forceAttr)
     }
 }
 
-void Hu3DMotionNoMotReset(HU3DMODELID modelId, char *objName, u32 forceAttr)
+void Hu3DMotionNoMotReset(HU3DMODELID modelId, const char *objName, u32 forceAttr)
 {
     HSFOBJECT *objP = Hu3DModelObjPtrGet(modelId, objName);
     HSFCONSTDATA *constData = objP->constData;
     constData->attr &= ~forceAttr;
 }
 
-void Hu3DMotionForceSet(HU3DMODELID modelId, char *objName, u32 forceAttr, float value)
+void Hu3DMotionForceSet(HU3DMODELID modelId, const char *objName, u32 forceAttr, float value)
 {
     HSFOBJECT *objP = Hu3DModelObjPtrGet(modelId, objName);
     HSFCONSTDATA *constData;

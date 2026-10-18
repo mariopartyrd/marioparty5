@@ -16,6 +16,9 @@ typedef enum HeapID_s {
     HEAP_MAX
 } HEAPID;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 void HuMemInitAll(void);
 void *HuMemInit(void *ptr, s32 size);
@@ -43,5 +46,10 @@ s32 HuMemUsedMemoryBlockGet(void *heap);
 s32 HuMemMemorySizeGet(void *heap);
 s32 HuMemMemoryAllocSizeGet(s32 size);
 void HuMemHeapDump(void *heap, s16 status);
+
+
+#ifdef __cplusplus
+};
+#endif
 
 #endif

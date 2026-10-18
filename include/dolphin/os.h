@@ -261,4 +261,6 @@ u32 OSGetConsoleSimulatedMemSize(void);
 #include <dolphin/os/OSResetSW.h>
 #include <dolphin/os/OSSerial.h>
 #include <dolphin/os/OSThread.h>
+#include <dolphin/os/OSSemaphore.h>
+
 #endif // _DOLPHIN_OS

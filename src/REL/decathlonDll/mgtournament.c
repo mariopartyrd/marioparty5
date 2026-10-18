@@ -1508,7 +1508,7 @@ BOOL DecaEvtMgScore(void)
         HuPrcVSleep();
     }
     DecaMgScoreDisp(TRUE);
-    HuAudJinglePlay(MSM_STREAM_JNGL_MGWARS_MG_WIN);
+    HuAudJinglePlay(MSM_STREAM_JNGL_MG_RECORD);
     for(tempNo=0; tempNo<GW_PLAYER_MAX; tempNo++) {
         int tieNum;
         player = &decaWorkP->player[DecaPlayerRankGet(tempNo, &tieNum, NULL)];

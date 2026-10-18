@@ -60,8 +60,14 @@ typedef int BOOL;
 #ifdef TARGET_PC
 #include <stddef.h>
 #else
+#ifdef __cplusplus
+#ifndef NULL
+#define NULL 0
+#endif
+#else
 #ifndef NULL
 #define NULL ((void *)0)
+#endif
 #endif
 #endif
 #if !defined(__cplusplus) || __cplusplus < 201103L

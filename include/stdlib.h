@@ -3,4 +3,6 @@
 
 #define abs(x) __abs(x)
 
+void abort(void);
+
 #endif
