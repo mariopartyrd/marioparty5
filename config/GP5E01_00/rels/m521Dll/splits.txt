@@ -13,7 +13,7 @@ REL/m521Dll/clock.cpp:
 	.data       start:0x00000000 end:0x00000020
 	.bss        start:0x00000000 end:0x00000010
 
-REL/m521Dll/clockhand.cpp:
+REL/m521Dll/clock_hand.cpp:
 	.text       start:0x000048FC end:0x00004A68
 	.rodata     start:0x00000118 end:0x00000120
 
@@ -24,7 +24,7 @@ REL/m521Dll/m521.cpp:
 	.data       start:0x00000020 end:0x00000230
 	.bss        start:0x00000010 end:0x00000A00
 
-REL/m521Dll/debugline.cpp:
+REL/m521Dll/debug_line.cpp:
 	.text       start:0x0000AADC end:0x0000AF00
 	.rodata     start:0x00000190 end:0x00000198
 
@@ -35,14 +35,14 @@ REL/m521Dll/driver.cpp:
 	.data       start:0x00000230 end:0x00000538
 	.bss        start:0x00000A00 end:0x00000A18
 
-REL/m521Dll/gamemaster.cpp:
+REL/m521Dll/game_master.cpp:
 	.text       start:0x00011520 end:0x000140D8
 	.ctors      start:0x0000000C end:0x00000010
 	.rodata     start:0x00000240 end:0x00000278
 	.data       start:0x00000538 end:0x00000568
 	.bss        start:0x00000A18 end:0x00000A88
 
-REL/m521Dll/objectsetup.cpp:
+REL/m521Dll/object_setup.cpp:
 	.text       start:0x000140D8 end:0x0001416C
 	.ctors      start:0x00000010 end:0x00000014
 	.bss        start:0x00000A88 end:0x00000A98

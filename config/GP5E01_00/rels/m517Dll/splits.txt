@@ -25,13 +25,13 @@ REL/m517Dll/input.cpp:
 	.data       start:0x00000260 end:0x00000338
 	.bss        start:0x00000A00 end:0x00000A10
 
-REL/m517Dll/gamemaster.cpp:
+REL/m517Dll/game_master.cpp:
 	.text       start:0x0000A168 end:0x0000BDB0
 	.ctors      start:0x00000004 end:0x00000008
 	.data       start:0x00000338 end:0x000003F0
 	.bss        start:0x00000A10 end:0x00000A28
 
-REL/m517Dll/dusteff.cpp:
+REL/m517Dll/dust_eff.cpp:
 	.text       start:0x0000BDB0 end:0x0000C994
 	.rodata     start:0x000001B8 end:0x00000218
 
@@ -40,7 +40,7 @@ REL/m517Dll/kuribo.cpp:
 	.rodata     start:0x00000218 end:0x00000248
 	.data       start:0x000003F0 end:0x00000480
 
-REL/m517Dll/objectsetup.cpp:
+REL/m517Dll/object_setup.cpp:
 	.text       start:0x0000DBB8 end:0x0000DC4C
 	.ctors      start:0x00000008 end:0x0000000C
 	.bss        start:0x00000A28 end:0x00000A38
@@ -66,7 +66,7 @@ REL/m517Dll/choro.cpp:
 	.data       start:0x00000588 end:0x00000678
 	.bss        start:0x00000A38 end:0x00000A48
 
-REL/m517Dll/papereff.cpp:
+REL/m517Dll/paper_eff.cpp:
 	.text       start:0x00013590 end:0x00015500
 	.rodata     start:0x00000498 end:0x00000588
 	.data       start:0x00000678 end:0x000006D0
@@ -78,7 +78,7 @@ REL/m517Dll/player.cpp:
 	.data       start:0x000006D0 end:0x00000858
 	.bss        start:0x00000A48 end:0x00000A58
 
-REL/m517Dll/dustcloud.cpp:
+REL/m517Dll/dust_cloud.cpp:
 	.text       start:0x0001A4D4 end:0x0001B48C
 	.rodata     start:0x000006A8 end:0x00000718
 	.data       start:0x00000858 end:0x00000880

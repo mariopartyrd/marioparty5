@@ -10,41 +10,40 @@ REL/m513Dll/m513.cpp:
 	.text       start:0x00000000 end:0x00006578
 	.ctors      start:0x00000000 end:0x00000004
 	.rodata     start:0x00000000 end:0x00000080
-	.data       start:0x00000000 end:0x00000248
-	.bss        start:0x00000000 end:0x000009F8
+	.data       start:0x00000000 end:0x00000230
+	.bss        start:0x00000000 end:0x000009F0
 
 REL/m513Dll/input.cpp:
-	.text       start:0x00006578 end:0x00006D50
+	.text       start:0x00006578 end:0x00006D0C
 	.rodata     start:0x00000080 end:0x000000D8
-	.data       start:0x00000248 end:0x00000288
+	.data       start:0x00000230 end:0x00000288
 
 REL/m513Dll/taimatsu.cpp:
-	.text       start:0x00006D50 end:0x000077A4
+	.text       start:0x00006D0C end:0x000077A4
 	.rodata     start:0x000000D8 end:0x00000140
 	.data       start:0x00000288 end:0x000002B8
 
-REL/m513Dll/leaf.cpp:
+REL/m513Dll/flower.cpp:
 	.text       start:0x000077A4 end:0x00008E78
 	.rodata     start:0x00000140 end:0x000001C8
 	.data       start:0x000002B8 end:0x00000330
-	.bss        start:0x000009F8 end:0x00000A00
 
-REL/m513Dll/powereff.cpp:
+REL/m513Dll/power_eff.cpp:
 	.text       start:0x00008E78 end:0x0000AE0C
 	.rodata     start:0x000001C8 end:0x00000248
 	.data       start:0x00000330 end:0x00000378
 
-REL/m513Dll/powerind.cpp:
+REL/m513Dll/power_ind.cpp:
 	.text       start:0x0000AE0C end:0x0000B570
 	.rodata     start:0x00000248 end:0x00000258
-	.data       start:0x00000378 end:0x000003D0
+	.data       start:0x00000378 end:0x000003B8
 
-REL/m513Dll/gamemaster.cpp:
+REL/m513Dll/game_master.cpp:
 	.text       start:0x0000B570 end:0x0000D738
 	.ctors      start:0x00000004 end:0x00000008
 	.rodata     start:0x00000258 end:0x00000360
-	.data       start:0x000003D0 end:0x00000488
-	.bss        start:0x00000A00 end:0x00000A10
+	.data       start:0x000003B8 end:0x00000488
+	.bss        start:0x000009F0 end:0x00000A28
 
 REL/m513Dll/heiho.cpp:
 	.text       start:0x0000D738 end:0x0000EDE0
@@ -55,9 +54,8 @@ REL/m513Dll/kuribo.cpp:
 	.text       start:0x0000EDE0 end:0x0000FCCC
 	.rodata     start:0x000003A8 end:0x00000400
 	.data       start:0x000005F8 end:0x000006C8
-	.bss        start:0x00000A10 end:0x00000A28
 
-REL/m513Dll/objectsetup.cpp:
+REL/m513Dll/object_setup.cpp:
 	.text       start:0x0000FCCC end:0x0000FD60
 	.ctors      start:0x00000008 end:0x0000000C
 	.bss        start:0x00000A28 end:0x00000A38
