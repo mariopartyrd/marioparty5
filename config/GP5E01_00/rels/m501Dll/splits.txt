@@ -20,7 +20,7 @@ REL/m501Dll/asiato.cpp:
 	.data       start:0x00000230 end:0x00000238
 	.bss        start:0x00000030 end:0x00000058
 
-REL/m501Dll/gamemaster.cpp:
+REL/m501Dll/game_master.cpp:
 	.text       start:0x00006638 end:0x000073C8
 	.ctors      start:0x00000008 end:0x0000000C
 	.rodata     start:0x00000098 end:0x000000D8
@@ -38,7 +38,7 @@ REL/m501Dll/joint.cpp:
 	.text       start:0x0000930C end:0x00009AA8
 	.data       start:0x00000350 end:0x00000380
 
-REL/m501Dll/objectsetup.cpp:
+REL/m501Dll/object_setup.cpp:
 	.text       start:0x00009AA8 end:0x00009B3C
 	.ctors      start:0x00000010 end:0x00000014
 	.bss        start:0x000000C0 end:0x000000D0

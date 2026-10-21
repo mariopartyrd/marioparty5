@@ -24,26 +24,26 @@ REL/m511Dll/m511.cpp:
 	.data       start:0x00000058 end:0x00000258
 	.bss        start:0x00000020 end:0x00000A10
 
-REL/m511Dll/effring.cpp:
+REL/m511Dll/sun.cpp:
 	.text       start:0x00006B0C end:0x00007C78
 	.rodata     start:0x000000D0 end:0x000001E0
 	.data       start:0x00000258 end:0x00000298
 	.bss        start:0x00000A10 end:0x00000A18
 
-REL/m511Dll/gamemaster.cpp:
+REL/m511Dll/game_master.cpp:
 	.text       start:0x00007C78 end:0x00008488
 	.ctors      start:0x00000008 end:0x0000000C
 	.rodata     start:0x000001E0 end:0x000001E8
 	.data       start:0x00000298 end:0x00000338
 	.bss        start:0x00000A18 end:0x00000A38
 
-REL/m511Dll/particle.cpp:
+REL/m511Dll/glow.cpp:
 	.text       start:0x00008488 end:0x00009734
 	.rodata     start:0x000001E8 end:0x00000248
 	.data       start:0x00000338 end:0x00000368
 	.bss        start:0x00000A38 end:0x00000A40
 
-REL/m511Dll/objectsetup.cpp:
+REL/m511Dll/object_setup.cpp:
 	.text       start:0x00009734 end:0x000097C8
 	.ctors      start:0x0000000C end:0x00000010
 	.bss        start:0x00000A40 end:0x00000A50
@@ -54,7 +54,7 @@ REL/m511Dll/camera.cpp:
 	.data       start:0x00000368 end:0x000003F0
 	.bss        start:0x00000A50 end:0x00000A78
 
-REL/m511Dll/boatshadow.cpp:
+REL/m511Dll/effect.cpp:
 	.text       start:0x0000BD18 end:0x0000C55C
 	.rodata     start:0x00000340 end:0x00000360
 	.data       start:0x000003F0 end:0x00000438
@@ -71,7 +71,7 @@ REL/m511Dll/star.cpp:
 	.rodata     start:0x00000388 end:0x00000430
 	.data       start:0x00000478 end:0x000004B8
 
-REL/m511Dll/staryaji.cpp:
+REL/m511Dll/star_yaji.cpp:
 	.text       start:0x0000E8BC end:0x0000FACC
 	.ctors      start:0x00000014 end:0x00000018
 	.rodata     start:0x00000430 end:0x00000510
@@ -90,7 +90,7 @@ REL/m511Dll/score.cpp:
 	.rodata     start:0x00000850 end:0x000008F0
 	.data       start:0x00000600 end:0x00000658
 
-REL/m511Dll/boatsplash.cpp:
+REL/m511Dll/boat_effect.cpp:
 	.text       start:0x00016E40 end:0x00018A9C
 	.rodata     start:0x000008F0 end:0x000009A0
 	.data       start:0x00000658 end:0x00000678

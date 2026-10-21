@@ -40,11 +40,6 @@ void CGameObject::UpdateAll()
     }
 }
 
-void CGameObject::on_update()
-{
-    
-}
-
 void CGameObject::Close()
 {
     while(!s_objectList.IsEmpty()) {

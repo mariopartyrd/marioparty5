@@ -21,7 +21,7 @@ public:
     };
 
     virtual void set_phase(ObjPhase phase) = 0;
-    virtual void on_update();
+    virtual void on_update() {}
 
 public:
     static void SetGlobalPhase(ObjPhase phase);

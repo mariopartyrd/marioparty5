@@ -13,7 +13,7 @@ REL/m509Dll/m509.cpp:
 	.data       start:0x00000000 end:0x00000210
 	.bss        start:0x00000000 end:0x00000030
 
-REL/m509Dll/mazedata.cpp:
+REL/m509Dll/maze_data.cpp:
 	.data       start:0x00000210 end:0x00003210
 
 REL/m509Dll/maze.cpp:
@@ -22,25 +22,25 @@ REL/m509Dll/maze.cpp:
 	.data       start:0x00003210 end:0x00003280
 	.bss        start:0x00000030 end:0x00000038
 
-REL/m509Dll/gamemaster.cpp:
+REL/m509Dll/game_master.cpp:
 	.text       start:0x0000C2D0 end:0x0000C924
 	.ctors      start:0x00000004 end:0x00000008
 	.rodata     start:0x00000220 end:0x00000230
 	.data       start:0x00003280 end:0x00003308
 	.bss        start:0x00000038 end:0x00000050
 
-REL/m509Dll/startspr.cpp:
+REL/m509Dll/start_spr.cpp:
 	.text       start:0x0000C924 end:0x0000CED0
 	.rodata     start:0x00000230 end:0x00000278
 	.data       start:0x00003308 end:0x00003398
 	.bss        start:0x00000050 end:0x00000058
 
-REL/m509Dll/back.cpp:
+REL/m509Dll/back_obj.cpp:
 	.text       start:0x0000CED0 end:0x0000DDBC
 	.rodata     start:0x00000278 end:0x00000318
 	.data       start:0x00003398 end:0x000033D0
 
-REL/m509Dll/objectsetup.cpp:
+REL/m509Dll/object_setup.cpp:
 	.text       start:0x0000DDBC end:0x0000DEEC
 	.ctors      start:0x00000008 end:0x0000000C
 	.bss        start:0x00000058 end:0x00000068
@@ -51,11 +51,15 @@ REL/m509Dll/camera.cpp:
 	.data       start:0x000033D0 end:0x00003438
 	.bss        start:0x00000068 end:0x00000088
 
+REL/m509Dll/stage.cpp:
+	.text       start:0x0000EB14 end:0x0000EE38
+	.data       start:0x00003438 end:0x000034B8
+
 REL/m509Dll/player.cpp:
-	.text       start:0x0000EB14 end:0x00012DBC
+	.text       start:0x0000EE38 end:0x00012DBC
 	.ctors      start:0x0000000C end:0x00000010
 	.rodata     start:0x000003D8 end:0x00000520
-	.data       start:0x00003438 end:0x000035B3
+	.data       start:0x000034B8 end:0x000035B3
 	.bss        start:0x00000088 end:0x000000B0
 
 REL/m509Dll/random.cpp:
