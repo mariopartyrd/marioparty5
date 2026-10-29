@@ -17,12 +17,12 @@ public:
     {
         return m_next == this && m_next == m_prev;
     }
-    CLinkNodeBase *getNextNode()
+    CLinkNodeBase *getNextNode() const
     {
         return m_next;
     }
     
-    CLinkNodeBase *getPrevNode()
+    CLinkNodeBase *getPrevNode() const
     {
         return m_prev;
     }
@@ -44,9 +44,14 @@ public:
     ~CLinkNode() {}
 
 public:
-    T *next()
+    T *next() const
     {
         return (T *)m_next;
+    }
+    
+    void removeLink()
+    {
+        CLinkNodeBase::removeLink();
     }
 };
     
@@ -56,7 +61,7 @@ public:
     CLinkList() {}
     ~CLinkList() {}
 public:
-    T *Begin()
+    T *Begin() const
     {
         return (T *)getNextNode();
     }
@@ -66,14 +71,24 @@ public:
         return (T *)getPrevNode();
     }
     
-    T *End()
+    T *End() const
     {
         return (T *)this;
     }
     
-    bool IsEmpty()
+    void Copy(CLinkList *other)
+    {
+        copyLink(other);
+    }
+    
+    bool IsEmpty() const
     {
         return m_next == this && m_next == m_prev;
+    }
+    
+    void InsertBack(T *node)
+    {
+        ((CLinkNodeBase *)node)->insertBack(this);
     }
 };
 

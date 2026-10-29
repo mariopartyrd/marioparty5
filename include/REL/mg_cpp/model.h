@@ -36,6 +36,11 @@ public:
     void dispOnObjChild(const char *objName);
     void setMotTime(int time);
     
+    operator HU3DMODELID() const
+    {
+        return m_mdlId;
+    }
+    
 public:
     HU3DMODELID getMdlId() const
     {
