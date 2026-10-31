@@ -55,6 +55,10 @@ extern inline double sqrt(double x)
 
 #pragma cplusplus reset
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 double atan(double x);
 double copysign(double x, double y);
 double cos(double x);
@@ -72,6 +76,9 @@ double log(double x);
 double pow(double x, double y);
 float tanf(float x);
 
+#ifdef __cplusplus
+};
+#endif
 
 extern inline double fabs(double x)
 {
